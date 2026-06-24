@@ -1,4 +1,59 @@
-// @ts-nocheck
+export type ContentMenuItemTitle = string | ((page: unknown) => string)
+
+export interface ContentMenuBaseItem {
+    type?: "header" | "separator" | "action"
+    title?: ContentMenuItemTitle
+    tooltip?: string
+    action?: (page: unknown) => void
+    disabled?: (page: unknown) => boolean
+    selected?: boolean
+    order?: number
+    icon?: string
+}
+
+export interface ContentMenuHeaderItem extends ContentMenuBaseItem {
+    type: "header"
+    title: ContentMenuItemTitle
+}
+
+export interface ContentMenuSeparatorItem extends ContentMenuBaseItem {
+    type: "separator"
+}
+
+export interface ContentMenuActionItem extends ContentMenuBaseItem {
+    type?: "action"
+    title: ContentMenuItemTitle
+    action: (page: unknown) => void
+}
+
+export type ContentMenuItem =
+    | ContentMenuHeaderItem
+    | ContentMenuSeparatorItem
+    | ContentMenuActionItem
+
+export interface ContentMenuInit {
+    content: ContentMenuItem[]
+}
+
+export interface ContentMenuPosition {
+    X: number
+    Y: number
+}
+
+export interface ContentMenuOptions {
+    id?: string | false
+    page?: unknown | false
+    classes?: string | false
+    menu?: ContentMenuInit
+    height?: number | false
+    width?: number | false
+    onClose?: (() => void) | false
+    scroll?: boolean | false
+    dialogEl?: HTMLElement | false
+    backdropEl?: HTMLElement | false
+    menuPos?: ContentMenuPosition | false
+}
+
 const menuTemplate = ({
     id,
     classes,
@@ -8,6 +63,15 @@ const menuTemplate = ({
     menu,
     scroll,
     page
+}: {
+    id: string | false
+    classes: string | false
+    height: string
+    width: string
+    zIndex: number
+    menu: ContentMenuInit
+    scroll: boolean | false
+    page: unknown | false
 }) =>
     `<div tabindex="-1" role="incontent_menu"
         class="ui-content-menu ui-corner-all ui-widget ui-widget-content ui-front"
@@ -19,7 +83,7 @@ const menuTemplate = ({
             .map((menuItem, index) => {
                 switch (menuItem.type) {
                     case "header":
-                        return `<li><span class="content-menu-item-header" title="${menuItem.tooltip}">${
+                        return `<li><span class="content-menu-item-header" title="${menuItem.tooltip || ""}">${
                             typeof menuItem.title === "function"
                                 ? menuItem.title(page)
                                 : menuItem.title
@@ -33,7 +97,7 @@ const menuTemplate = ({
                                 : menuItem.selected
                                   ? " selected"
                                   : ""
-                        }" title='${menuItem.tooltip}'>
+                        }" title='${menuItem.tooltip || ""}'>
                         ${
                             typeof menuItem.title === "function"
                                 ? menuItem.title(page)
@@ -54,6 +118,21 @@ const menuTemplate = ({
 <div class="ui-widget-overlay ui-front" style="z-index: ${zIndex - 1}"></div>`
 
 export class ContentMenu {
+    id: string | false
+    page: unknown | false
+    classes: string | false
+    menu: ContentMenuInit
+    height: string
+    width: string
+    onClose: (() => void) | false
+    scroll: boolean | false
+    dialogEl!: HTMLElement
+    backdropEl!: HTMLElement
+    menuPos: ContentMenuPosition | false
+
+    focusedIndex: number
+    previouslyFocusedElement: Element | null
+
     constructor({
         id = false,
         page = false,
@@ -66,7 +145,7 @@ export class ContentMenu {
         dialogEl = false,
         backdropEl = false,
         menuPos = false
-    }) {
+    }: ContentMenuOptions = {}) {
         this.id = id
         this.page = page
         this.classes = classes
@@ -75,15 +154,15 @@ export class ContentMenu {
         this.width = width ? `${width}px` : "auto"
         this.onClose = onClose
         this.scroll = scroll
-        this.dialogEl = dialogEl
-        this.backdropEl = backdropEl
+        this.dialogEl = (dialogEl || null) as HTMLElement
+        this.backdropEl = (backdropEl || null) as HTMLElement
         this.menuPos = menuPos
 
         this.focusedIndex = 0
         this.previouslyFocusedElement = null
     }
 
-    open() {
+    open(): void {
         if (this.dialogEl) {
             return
         }
@@ -103,9 +182,10 @@ export class ContentMenu {
                 page: this.page
             })
         )
-        this.backdropEl = document.body.lastElementChild
-        this.dialogEl = this.backdropEl.previousElementSibling
-        if (this.menuPos?.X && this.menuPos?.Y) {
+        this.backdropEl = document.body.lastElementChild as HTMLElement
+        this.dialogEl = this.backdropEl
+            .previousElementSibling as HTMLElement
+        if (this.menuPos && this.menuPos.X && this.menuPos.Y) {
             this.positionDialog()
         } else {
             this.centerDialog()
@@ -115,7 +195,7 @@ export class ContentMenu {
         this.focusFirstMenuItem()
     }
 
-    renderColumnsHtml(columns) {
+    renderColumnsHtml(columns: number): string {
         const itemsPerColumn = Math.ceil(this.menu.content.length / columns)
         let html = '<div class="content-menu-columns">'
         for (let col = 0; col < columns; col++) {
@@ -132,7 +212,7 @@ export class ContentMenu {
                 const menuItem = this.menu.content[i]
                 switch (menuItem.type) {
                     case "header":
-                        html += `<li><span class="content-menu-item-header" title="${menuItem.tooltip}">${
+                        html += `<li><span class="content-menu-item-header" title="${menuItem.tooltip || ""}">${
                             typeof menuItem.title === "function"
                                 ? menuItem.title(this.page)
                                 : menuItem.title
@@ -149,7 +229,7 @@ export class ContentMenu {
                                 : menuItem.selected
                                   ? " selected"
                                   : ""
-                        }" title='${menuItem.tooltip}'>
+                        }" title='${menuItem.tooltip || ""}'>
                         ${
                             typeof menuItem.title === "function"
                                 ? menuItem.title(this.page)
@@ -168,7 +248,7 @@ export class ContentMenu {
         return html
     }
 
-    checkAndAddColumns() {
+    checkAndAddColumns(): void {
         const dialogRect = this.dialogEl.getBoundingClientRect()
         const viewportHeight = window.innerHeight
         const viewportWidth = window.innerWidth
@@ -178,8 +258,8 @@ export class ContentMenu {
         if (dialogRect.height >= maxHeight) {
             const contentEl = this.dialogEl.querySelector(
                 ".ui-content-menu-content"
-            )
-            const contentDiv = contentEl.querySelector(":scope > div")
+            ) as HTMLElement
+            const contentDiv = contentEl.querySelector(":scope > div") as HTMLElement
             let columns = 2
             while (columns <= 6) {
                 contentDiv.innerHTML = this.renderColumnsHtml(columns)
@@ -192,7 +272,7 @@ export class ContentMenu {
                 }
                 const newRect = this.dialogEl.getBoundingClientRect()
                 if (newRect.height < maxHeight && newRect.width < maxWidth) {
-                    if (this.menuPos?.X && this.menuPos?.Y) {
+                    if (this.menuPos && this.menuPos.X && this.menuPos.Y) {
                         this.positionDialog()
                     } else {
                         this.centerDialog()
@@ -205,9 +285,9 @@ export class ContentMenu {
             contentDiv.innerHTML = `<ul class="content-menu-list">${this.renderSingleColumnHtml()}</ul>`
             contentEl.style.width = this.width
             this.dialogEl
-                .querySelector(".ui-content-menu-content")
+                .querySelector(".ui-content-menu-content")!
                 .classList.add("ui-scrollable")
-            if (this.menuPos?.X && this.menuPos?.Y) {
+            if (this.menuPos && this.menuPos.X && this.menuPos.Y) {
                 this.positionDialog()
             } else {
                 this.centerDialog()
@@ -215,12 +295,12 @@ export class ContentMenu {
         }
     }
 
-    renderSingleColumnHtml() {
+    renderSingleColumnHtml(): string {
         return this.menu.content
             .map((menuItem, index) => {
                 switch (menuItem.type) {
                     case "header":
-                        return `<li><span class="content-menu-item-header" title="${menuItem.tooltip}">${
+                        return `<li><span class="content-menu-item-header" title="${menuItem.tooltip || ""}">${
                             typeof menuItem.title === "function"
                                 ? menuItem.title(this.page)
                                 : menuItem.title
@@ -234,7 +314,7 @@ export class ContentMenu {
                                 : menuItem.selected
                                   ? " selected"
                                   : ""
-                        }" title='${menuItem.tooltip}'>
+                        }" title='${menuItem.tooltip || ""}'>
                     ${
                         typeof menuItem.title === "function"
                             ? menuItem.title(this.page)
@@ -250,7 +330,7 @@ export class ContentMenu {
             .join("")
     }
 
-    centerDialog() {
+    centerDialog(): void {
         const totalWidth = window.innerWidth,
             totalHeight = window.innerHeight,
             dialogRect = this.dialogEl.getBoundingClientRect(),
@@ -262,7 +342,7 @@ export class ContentMenu {
         this.dialogEl.style.left = `${(totalWidth - dialogWidth) / 2 + scrollLeftOffset}px`
     }
 
-    positionDialog() {
+    positionDialog(): void {
         const dialogHeight = this.dialogEl.getBoundingClientRect().height + 10,
             dialogWidth = this.dialogEl.getBoundingClientRect().width + 10,
             scrollTopOffset = window.pageYOffset,
@@ -271,8 +351,8 @@ export class ContentMenu {
 
         // We try to ensure that the menu is seen in the browser at the preferred location.
         // Adjustments are made in case it doesn't fit.
-        let top = this.menuPos.Y,
-            left = this.menuPos.X
+        let top = this.menuPos ? this.menuPos.Y : 0,
+            left = this.menuPos ? this.menuPos.X : 0
 
         if (top + dialogHeight > scrollTopOffset + clientHeight) {
             top -= top + dialogHeight - (scrollTopOffset + clientHeight)
@@ -290,7 +370,7 @@ export class ContentMenu {
         this.dialogEl.style.left = `${left}px`
     }
 
-    bind() {
+    bind(): void {
         this.backdropEl.addEventListener("click", () => this.close())
         this.dialogEl.addEventListener("click", event => this.onclick(event))
         this.dialogEl.addEventListener("keydown", event =>
@@ -299,34 +379,34 @@ export class ContentMenu {
         this.dialogEl.focus()
     }
 
-    getHighestDialogZIndex() {
+    getHighestDialogZIndex(): number {
         let zIndex = 100
         document
             .querySelectorAll("div.ui-content-menu")
             .forEach(
-                dialogEl => (zIndex = Math.max(zIndex, dialogEl.style.zIndex))
+                dialogEl => (zIndex = Math.max(zIndex, parseInt((dialogEl as HTMLElement).style.zIndex) || 100))
             )
         document
             .querySelectorAll("div.ui-dialog")
             .forEach(
-                dialogEl => (zIndex = Math.max(zIndex, dialogEl.style.zIndex))
+                dialogEl => (zIndex = Math.max(zIndex, parseInt((dialogEl as HTMLElement).style.zIndex) || 100))
             )
         return zIndex
     }
 
-    close() {
+    close(): void {
         if (!this.dialogEl || !this.dialogEl.parentElement) {
             return
         }
         this.dialogEl.parentElement.removeChild(this.dialogEl)
-        this.backdropEl.parentElement.removeChild(this.backdropEl)
+        this.backdropEl.parentElement!.removeChild(this.backdropEl)
 
         // Restore focus to the previously focused element
         if (
             this.previouslyFocusedElement &&
-            this.previouslyFocusedElement.focus
+            (this.previouslyFocusedElement as HTMLElement).focus
         ) {
-            this.previouslyFocusedElement.focus()
+            (this.previouslyFocusedElement as HTMLElement).focus()
         }
 
         if (this.onClose) {
@@ -334,13 +414,16 @@ export class ContentMenu {
         }
     }
 
-    onclick(event) {
+    onclick(event: MouseEvent): void {
         event.preventDefault()
         event.stopImmediatePropagation()
-        const target = event.target.closest("li.content-menu-item")
+        const target = (event.target as Element).closest("li.content-menu-item") as HTMLElement
         if (target) {
             const menuNumber = target.dataset.index
-            const menuItem = this.menu.content[menuNumber]
+            if (menuNumber === undefined) {
+                return
+            }
+            const menuItem = this.menu.content[parseInt(menuNumber)] as ContentMenuActionItem
             if (menuItem.disabled?.(this.page)) {
                 return
             }
@@ -349,7 +432,7 @@ export class ContentMenu {
         }
     }
 
-    onKeyDown(event) {
+    onKeyDown(event: KeyboardEvent): void {
         const {key} = event
         const menuItems = this.dialogEl.querySelectorAll(
             "li.content-menu-item:not(.disabled)"
@@ -445,7 +528,7 @@ export class ContentMenu {
             case "Enter":
             case " ": {
                 event.preventDefault()
-                const menuItem = this.menu.content[this.focusedIndex]
+                const menuItem = this.menu.content[this.focusedIndex] as ContentMenuActionItem
                 if (!menuItem.disabled?.(this.page)) {
                     menuItem.action(this.page)
                     this.close()
@@ -455,7 +538,7 @@ export class ContentMenu {
         }
     }
 
-    focusFirstMenuItem() {
+    focusFirstMenuItem(): void {
         const menuItems = this.dialogEl.querySelectorAll(
             "li.content-menu-item:not(.disabled)"
         )
@@ -465,12 +548,12 @@ export class ContentMenu {
         }
     }
 
-    focusMenuItem(index) {
+    focusMenuItem(index: number): void {
         const menuItems = this.dialogEl.querySelectorAll(
             "li.content-menu-item:not(.disabled)"
         )
         if (menuItems[index]) {
-            menuItems[index].focus()
+            (menuItems[index] as HTMLElement).focus()
         }
     }
 }

@@ -1,4 +1,3 @@
-// @ts-nocheck
 export {OverviewMenuView} from "./overview_menu.js"
 export {
     dropdownSelect,

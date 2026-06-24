@@ -1,15 +1,18 @@
-// @ts-nocheck
 import {escapeText} from "../basic.js"
 import {postJson} from "../network.js"
 
-export const shortFileTitle = (title, path) => {
+export const shortFileTitle = (title: string, path: string): string => {
     if (!path.length || path.endsWith("/")) {
         return escapeText(title || gettext("Untitled"))
     }
-    return escapeText(path.split("/").pop())
+    return escapeText(path.split("/").pop() || "")
 }
 
-export const longFilePath = (title, path, prefix = "") => {
+export const longFilePath = (
+    title: string,
+    path: string,
+    prefix = ""
+): string => {
     if (!path.length) {
         path = "/"
     }
@@ -26,7 +29,7 @@ export const longFilePath = (title, path, prefix = "") => {
     return path
 }
 
-export const cleanPath = (title, path) => {
+export const cleanPath = (title: string, path: string): string => {
     if (!path.startsWith("/")) {
         path = "/" + path
     }
@@ -45,14 +48,20 @@ export const cleanPath = (title, path) => {
     return path
 }
 
-export const moveFile = (fileId, title, path, moveUrl) => {
+export const moveFile = (
+    fileId: number,
+    title: string,
+    path: string,
+    moveUrl: string
+): Promise<string> => {
     path = cleanPath(title, path)
     return new Promise((resolve, reject) => {
         postJson(moveUrl, {id: fileId, path}).then(({json}) => {
-            if (json.done) {
+            const response = json as {done?: boolean}
+            if (response.done) {
                 resolve(path)
             } else {
-                reject()
+                reject(new Error("Could not move file"))
             }
         })
     })

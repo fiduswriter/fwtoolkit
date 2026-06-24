@@ -1,5 +1,4 @@
-// @ts-nocheck
-export function convertDataURIToBlob(dataURI) {
+export function convertDataURIToBlob(dataURI: string): Blob {
     const byteString = atob(dataURI.split(",")[1])
     const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0]
     const ab = new ArrayBuffer(byteString.length)

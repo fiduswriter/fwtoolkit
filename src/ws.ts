@@ -1,7 +1,67 @@
-// @ts-nocheck
+export interface WebSocketMessage {
+    type?: string
+    s?: number
+    c?: number
+    base?: string
+    from?: number
+    [key: string]: unknown
+}
+
+export type GetMessage = () => WebSocketMessage | false
+
+export interface WebSocketConnectorOptions {
+    base?: string
+    path?: string
+    appLoaded?: () => boolean
+    anythingToSend?: () => boolean
+    messagesElement?: () => HTMLElement | false | null
+    initialMessage?: () => WebSocketMessage
+    resubScribed?: () => void
+    restartMessage?: () => WebSocketMessage
+    warningNotAllSent?: string
+    infoDisconnected?: string
+    receiveData?: (data: WebSocketMessage) => void
+    failedAuth?: () => void
+}
+
+interface MessageTracker {
+    server: number
+    client: number
+    lastTen: WebSocketMessage[]
+}
+
 /* Sets up communicating with server (retrieving document, saving, collaboration, etc.).
  */
 export class WebSocketConnector {
+    base: string
+    path: string
+    appLoaded: () => boolean
+    anythingToSend: () => boolean
+    messagesElement: () => HTMLElement | false | null
+    initialMessage: () => WebSocketMessage
+    resubScribed: () => void
+    restartMessage: () => WebSocketMessage
+    warningNotAllSent: string
+    infoDisconnected: string
+    receiveData: (data: WebSocketMessage) => void
+    failedAuth: () => void
+
+    messages: MessageTracker
+    messagesToSend: GetMessage[]
+    oldMessages: GetMessage[]
+
+    online: boolean
+    connected: boolean
+    connectionCount: number
+    recentlySent: boolean
+    listeners: Record<string, (event: Event) => void>
+
+    ws: WebSocket | undefined
+
+    //heartbeat
+    pingTimer: number | false
+    pongTimer: number | false
+
     constructor({
         base = "", // needs to be specified
         path = "", // needs to be specified
@@ -13,11 +73,11 @@ export class WebSocketConnector {
         restartMessage = () => ({type: "restart"}), // Too many messages have been lost and we need to restart
         warningNotAllSent = gettext("Warning! Some data is unsaved"), // Info to show while disconnected WITH unsaved data
         infoDisconnected = gettext("Disconnected. Attempting to reconnect..."), // Info to show while disconnected WITHOUT unsaved data
-        receiveData = _data => {},
+        receiveData = () => {},
         failedAuth = () => {
             window.location.href = "/"
         }
-    }) {
+    }: WebSocketConnectorOptions = {}) {
         this.base = base
         this.path = path
         this.appLoaded = appLoaded
@@ -48,31 +108,32 @@ export class WebSocketConnector {
         //heartbeat
         this.pingTimer = false
         this.pongTimer = false
+
+        this.messages = {
+            server: 0,
+            client: 0,
+            lastTen: []
+        }
     }
 
-    init() {
+    init(): void {
         this.createWSConnection()
 
         // Close the socket manually for now when the connection is lost. Sometimes the socket isn't closed on disconnection.
-        this.listeners.onOffline = _event => this.ws.close()
+        this.listeners.onOffline = () => this.ws!.close()
         window.addEventListener("offline", this.listeners.onOffline)
     }
 
-    goOffline() {
+    goOffline(): void {
         // Simulate offline mode due to lack of ways of doing this in Chrome/Firefox
         // https://bugzilla.mozilla.org/show_bug.cgi?id=1421357
         // https://bugs.chromium.org/p/chromium/issues/detail?id=423246
         this.online = false
         this.connected = false
-        this.ws.close()
+        this.ws!.close()
     }
 
-    goOnline() {
-        // Reconnect from offline mode
-        this.online = true
-    }
-
-    close() {
+    close(): void {
         if (this.ws) {
             this.ws.onclose = () => {}
             this.ws.close()
@@ -80,14 +141,14 @@ export class WebSocketConnector {
         window.removeEventListener("offline", this.listeners.onOffline)
     }
 
-    createWSConnection() {
+    createWSConnection(): void {
         // Messages object used to ensure that data is received in right order.
         this.messages = {
             server: 0,
             client: 0,
             lastTen: []
         }
-        let url
+        let url: string
         if (this.online) {
             if (this.base.startsWith("/")) {
                 url = this.base + this.path
@@ -113,7 +174,7 @@ export class WebSocketConnector {
         this.ws.onclose = () => this.onclose()
     }
 
-    waitForWS() {
+    waitForWS(): Promise<void> {
         return new Promise((resolve, reject) => {
             const checkState = () => {
                 if (!this.ws) {
@@ -138,22 +199,22 @@ export class WebSocketConnector {
         })
     }
 
-    onmessage(event) {
-        const data = JSON.parse(event.data)
+    onmessage(event: MessageEvent): void {
+        const data = JSON.parse(event.data) as WebSocketMessage
         const expectedServer = this.messages.server + 1
         if (data.type === "request_resend") {
-            this.resend_messages(data.from)
+            this.resend_messages(data.from!)
         } else if (data.type === "pong") {
             this.heartbeat()
-        } else if (data.s < expectedServer) {
+        } else if ((data.s as number) < expectedServer) {
             // Receive a message already received at least once. Ignore.
             return
-        } else if (data.s > expectedServer) {
+        } else if ((data.s as number) > expectedServer) {
             // Messages from the server have been lost.
             // Request resend.
             this.waitForWS()
                 .then(() =>
-                    this.ws.send(
+                    this.ws!.send(
                         JSON.stringify({
                             type: "request_resend",
                             from: this.messages.server
@@ -167,27 +228,27 @@ export class WebSocketConnector {
             this.messages.server = expectedServer
             if (data.c === this.messages.client) {
                 this.receive(data)
-            } else if (data.c < this.messages.client) {
+            } else if ((data.c as number) < this.messages.client) {
                 // We have received all server messages, but the server seems
                 // to have missed some of the client's messages. They could
                 // have been sent simultaneously.
                 // The server wins over the client in this case.
                 this.waitForWS().then(() => {
-                    const clientDifference = this.messages.client - data.c
-                    this.messages.client = data.c
+                    const clientDifference = this.messages.client - (data.c as number)
+                    this.messages.client = data.c as number
                     if (clientDifference > this.messages.lastTen.length) {
                         // We cannot fix the situation
                         this.send(this.restartMessage)
                         return
                     }
-                    this.messages["lastTen"]
+                    this.messages.lastTen
                         .slice(0 - clientDifference)
                         .forEach(data => {
                             this.messages.client += 1
                             data.c = this.messages.client
                             data.s = this.messages.server
 
-                            this.ws.send(JSON.stringify(data))
+                            this.ws!.send(JSON.stringify(data))
                         })
                     this.receive(data)
                 })
@@ -195,7 +256,7 @@ export class WebSocketConnector {
         }
     }
 
-    onclose() {
+    onclose(): void {
         this.connected = false
         window.setTimeout(() => {
             this.createWSConnection()
@@ -215,7 +276,7 @@ export class WebSocketConnector {
         }
     }
 
-    open() {
+    open(): void {
         const messagesElement = this.messagesElement()
         if (messagesElement) {
             messagesElement.innerHTML = ""
@@ -230,19 +291,19 @@ export class WebSocketConnector {
         this.send(() => message)
     }
 
-    subscribed() {
+    subscribed(): void {
         if (this.connectionCount > 1) {
             this.resubScribed()
         }
         while (this.oldMessages.length > 0) {
-            this.send(this.oldMessages.shift())
+            this.send(this.oldMessages.shift()!)
         }
     }
 
     /** Sends data to server or keeps it in a list if currently offline. */
-    send(getData, timer = 80) {
-        if (this.connected && this.ws.readyState !== this.ws.OPEN) {
-            this.ws.close()
+    send(getData: GetMessage, timer = 80): void {
+        if (this.connected && this.ws!.readyState !== this.ws!.OPEN) {
+            this.ws!.close()
             return
         }
         if (this.connected && !this.recentlySent) {
@@ -255,11 +316,11 @@ export class WebSocketConnector {
             data.c = this.messages.client
             data.s = this.messages.server
             this.messages.lastTen.push(data)
-            this.messages.lastTen = this.messages["lastTen"].slice(-10)
+            this.messages.lastTen = this.messages.lastTen.slice(-10)
 
             this.waitForWS()
                 .then(() => {
-                    this.ws.send(JSON.stringify(data))
+                    this.ws!.send(JSON.stringify(data))
                     this.setRecentlySentTimer(timer)
                 })
                 .catch(() => {
@@ -275,20 +336,20 @@ export class WebSocketConnector {
         }
     }
 
-    setRecentlySentTimer(timer) {
+    setRecentlySentTimer(timer: number): void {
         this.recentlySent = true
         window.setTimeout(() => {
             this.recentlySent = false
             const oldMessages = this.messagesToSend
             this.messagesToSend = []
             while (oldMessages.length > 0) {
-                const getData = oldMessages.shift()
+                const getData = oldMessages.shift()!
                 this.send(getData, Math.min(timer * 1.2, 10000))
             }
         }, timer)
     }
 
-    resend_messages(from) {
+    resend_messages(from: number): Promise<void> {
         return this.waitForWS()
             .then(() => {
                 const toSend = this.messages.client - from
@@ -302,7 +363,7 @@ export class WebSocketConnector {
                     this.messages.client += 1
                     data.c = this.messages.client
                     data.s = this.messages.server
-                    this.ws.send(JSON.stringify(data))
+                    this.ws!.send(JSON.stringify(data))
                 })
             })
             .catch(() => {
@@ -311,10 +372,10 @@ export class WebSocketConnector {
             })
     }
 
-    receive(data) {
+    receive(data: WebSocketMessage): void {
         switch (data.type) {
             case "redirect":
-                this.base = data.base
+                this.base = data.base as string
                 break
             case "welcome":
                 this.open()
@@ -332,15 +393,19 @@ export class WebSocketConnector {
         }
     }
 
-    heartbeat() {
-        clearTimeout(this.pingTimer)
-        clearTimeout(this.pongTimer)
-        this.pingTimer = setTimeout(() => {
+    heartbeat(): void {
+        if (this.pingTimer !== false) {
+            clearTimeout(this.pingTimer)
+        }
+        if (this.pongTimer !== false) {
+            clearTimeout(this.pongTimer)
+        }
+        this.pingTimer = window.setTimeout(() => {
             // Don't send ping if WebSocket is not open
-            if (this.ws.readyState === this.ws.OPEN) {
-                this.ws.send('{"type": "ping"}')
-                this.pongTimer = setTimeout(() => {
-                    this.listeners.onOffline()
+            if (this.ws!.readyState === this.ws!.OPEN) {
+                this.ws!.send('{"type": "ping"}')
+                this.pongTimer = window.setTimeout(() => {
+                    this.listeners.onOffline(new Event("offline"))
                 }, 10000)
             }
         }, 60000)

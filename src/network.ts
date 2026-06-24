@@ -1,10 +1,21 @@
-// @ts-nocheck
 import {getSettings} from "./settings.js"
+
+export interface FileUploadValue {
+    file: Blob
+    filename: string
+}
+
+export type PostFiles = Record<string, Blob | File | FileUploadValue | Blob[] | File[] | string[] | string>
+
+export interface PostOptions {
+    csrfToken?: string
+    keepalive?: boolean
+}
 
 /** Get cookie to set as part of the request header of all AJAX requests to the server.
  * @param name The name of the token to look for in the cookie.
  */
-export const getCookie = name => {
+export const getCookie = (name: string): string | null => {
     if (!document.cookie || document.cookie === "") {
         return null
     }
@@ -25,18 +36,20 @@ export const getCookie = name => {
 }
 
 /* from https://www.tjvantoll.com/2015/09/13/fetch-and-errors/ */
-const handleFetchErrors = response => {
+const handleFetchErrors = (response: Response): Response => {
     if (!response.ok) {
         throw response
     }
     return response
 }
 
-export const get = (url, params = {}, csrfToken = false) => {
+export const get = (
+    url: string,
+    params: Record<string, string> = {},
+    csrfToken: string | false = false
+): Promise<Response> => {
     const settings = getSettings()
-    if (!csrfToken) {
-        csrfToken = settings.getCsrfToken() // Won't work in web worker.
-    }
+    const token = csrfToken || settings.getCsrfToken() // Won't work in web worker.
     const queryString = Object.keys(params)
         .map(
             key =>
@@ -49,7 +62,7 @@ export const get = (url, params = {}, csrfToken = false) => {
     return fetch(settings.apiUrl(url), {
         method: "GET",
         headers: {
-            "X-CSRFToken": csrfToken,
+            "X-CSRFToken": token,
             Accept: "application/json",
             "X-Requested-With": "XMLHttpRequest"
         },
@@ -57,16 +70,24 @@ export const get = (url, params = {}, csrfToken = false) => {
     }).then(handleFetchErrors)
 }
 
-export const getJson = (url, params = {}, csrfToken = false) =>
-    get(url, params, csrfToken).then(response => response.json())
+export const getJson = (
+    url: string,
+    params: Record<string, string> = {},
+    csrfToken: string | false = false
+): Promise<unknown> => get(url, params, csrfToken).then(response => response.json())
 
-export const postBare = (url, object = {}, files = {}, options = {}) => {
+export const postBare = (
+    url: string,
+    object: Record<string, unknown> = {},
+    files: PostFiles = {},
+    options: PostOptions = {}
+): Promise<Response> => {
     const settings = getSettings()
 
     const {csrfToken: csrfTokenOpt, keepalive = false} = options
     const csrfToken = csrfTokenOpt || settings.getCsrfToken() // Won't work in web worker.
 
-    const fetchOptions = {
+    const fetchOptions: RequestInit = {
         method: "POST",
         headers: {
             "X-CSRFToken": csrfToken,
@@ -83,34 +104,51 @@ export const postBare = (url, object = {}, files = {}, options = {}) => {
         body.append("json", JSON.stringify(object))
         Object.keys(files).forEach(key => {
             const value = files[key]
-            if (typeof value === "object" && value.file && value.filename) {
-                body.append(key, value.file, value.filename)
+            if (
+                typeof value === "object" &&
+                value !== null &&
+                "file" in value &&
+                "filename" in value
+            ) {
+                const uploadValue = value as FileUploadValue
+                body.append(key, uploadValue.file, uploadValue.filename)
             } else if (Array.isArray(value)) {
                 value.forEach(item => body.append(`${key}[]`, item))
-            } else {
-                body.append(key, value)
+            } else if (value !== undefined && value !== null) {
+                body.append(key, value as Blob | string)
             }
         })
         fetchOptions.body = body
     } else {
-        fetchOptions.headers["Content-Type"] = "application/json"
+        ;(fetchOptions.headers as Record<string, string>)["Content-Type"] =
+            "application/json"
         fetchOptions.body = JSON.stringify(object)
     }
 
     return fetch(settings.apiUrl(url), fetchOptions)
 }
 
-export const post = (url, object = {}, files = {}, options = {}) => {
+export const post = (
+    url: string,
+    object: Record<string, unknown> = {},
+    files: PostFiles = {},
+    options: PostOptions = {}
+): Promise<Response> => {
     return postBare(url, object, files, options).then(handleFetchErrors)
 }
 
 // post json object and return json and status
-export const postJson = (url, object = {}, files = {}, options = {}) =>
+export const postJson = (
+    url: string,
+    object: Record<string, unknown> = {},
+    files: PostFiles = {},
+    options: PostOptions = {}
+): Promise<{json: unknown; status: number}> =>
     post(url, object, files, options).then(response =>
         response.json().then(json => ({json, status: response.status}))
     )
 
-export const ensureCSS = cssUrl => {
+export const ensureCSS = (cssUrl: string | string[]): boolean | void => {
     if (typeof cssUrl === "object") {
         cssUrl.forEach(url => ensureCSS(url))
         return

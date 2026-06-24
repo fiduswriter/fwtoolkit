@@ -1,9 +1,18 @@
-// @ts-nocheck
 import {escapeText} from "./basic.js"
 import {Dialog} from "./dialog.js"
 import {ensureCSS} from "./network.js"
 
-const faqTemplate = ({escapedQuestions}) =>
+export interface FAQQuestion extends Array<string | {hasImage?: boolean}> {
+    0: string
+    1: string
+}
+
+export interface FAQDialogOptions {
+    title?: string
+    questions?: FAQQuestion[]
+}
+
+const faqTemplate = ({escapedQuestions}: {escapedQuestions: [string, string][]}) =>
     `<div class="faq">
     <ol class="faq-list">
         ${escapedQuestions
@@ -20,16 +29,21 @@ const faqTemplate = ({escapedQuestions}) =>
 </div>`
 
 export class faqDialog {
-    constructor({title = "", questions = []}) {
+    faqDialog: Dialog
+
+    constructor({title = "", questions = []}: FAQDialogOptions = {}) {
         ensureCSS(staticUrl("css/faq_dialog.css"))
-        const escapedQuestions = []
+        const escapedQuestions: [string, string][] = []
 
         questions.forEach(q => {
             const question = escapeText(q[0])
-            let answer
+            let answer: string
             q[1] = escapeText(q[1])
-            if (q[q.length - 1].hasImage) {
-                answer = interpolate(...q.slice(1, q.length), true)
+            if ((q[q.length - 1] as {hasImage?: boolean}).hasImage) {
+                // TODO: the original runtime spreads the tail of the question
+                // array into interpolate; keep this behavior but type loosely.
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                answer = (interpolate as any)(...q.slice(1, q.length), true)
             } else {
                 answer = q[1]
             }
@@ -45,14 +59,14 @@ export class faqDialog {
         })
     }
 
-    open() {
+    open(): void {
         this.faqDialog.open()
-        this.faqDialog.dialogEl
+        this.faqDialog.dialogEl!
             .querySelectorAll(".faq-question")
             .forEach(element => {
                 element.addEventListener("click", () => {
-                    const iconEle = element.firstElementChild
-                    const answerEle = element.nextElementSibling
+                    const iconEle = element.firstElementChild as HTMLElement
+                    const answerEle = element.nextElementSibling as HTMLElement
                     if (answerEle.style.display == "") {
                         iconEle.classList.remove("fa-minus-circle")
                         iconEle.classList.add("fa-plus-circle")

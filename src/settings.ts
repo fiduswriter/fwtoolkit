@@ -1,7 +1,12 @@
-// @ts-nocheck
-let _settings = null
+export interface Settings {
+    apiUrl: (url: string) => string
+    getCsrfToken: () => string
+    [key: string]: unknown
+}
 
-export function initSettings(rawSettings) {
+let _settings: Settings | null = null
+
+export function initSettings(rawSettings: Settings): void {
     if (_settings) {
         throw new Error("Settings already initialized")
     }
@@ -9,7 +14,7 @@ export function initSettings(rawSettings) {
     _settings = Object.freeze({...rawSettings})
 }
 
-export function getSettings() {
+export function getSettings(): Settings {
     if (!_settings) {
         throw new Error(
             "App settings not initialized. Call initSettings() first."

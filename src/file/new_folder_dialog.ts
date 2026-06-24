@@ -1,9 +1,11 @@
-// @ts-nocheck
 import {Dialog} from "../dialog.js"
 import {newFolderTemplate} from "./templates.js"
 
 export class NewFolderDialog {
-    constructor(callback = _foldername => {}) {
+    callback: (folderName: string) => void
+    dialog: Dialog
+
+    constructor(callback: (folderName: string) => void = () => {}) {
         this.callback = callback
         this.dialog = new Dialog({
             title: gettext("New folder"),
@@ -18,9 +20,9 @@ export class NewFolderDialog {
                     classes: "fw-dark",
                     click: () => {
                         const folderName =
-                            this.dialog.dialogEl.querySelector(
+                            (this.dialog.dialogEl!.querySelector(
                                 "#new-folder-name"
-                            ).value
+                            ) as HTMLInputElement).value
                         this.dialog.close()
                         if (!folderName.length) {
                             return
@@ -32,7 +34,7 @@ export class NewFolderDialog {
         })
     }
 
-    open() {
+    open(): void {
         return this.dialog.open()
     }
 }

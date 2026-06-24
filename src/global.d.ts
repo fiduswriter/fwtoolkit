@@ -1,11 +1,18 @@
 // Globals provided by the Fidus Writer host page.
 
-declare const gettext: (msgid: string) => string
+declare function gettext(msgid: string): string
 
-declare const staticUrl: (path: string) => string
+declare function interpolate(
+    fmt: string,
+    args: unknown[],
+    named?: boolean
+): string
 
-declare const settings: Record<string, any>
+declare function staticUrl(path: string): string
+
+declare const settings: Record<string, unknown>
 
 interface Window {
-    settings?: Record<string, any>
+    settings?: Record<string, unknown>
+    csrfToken?: string
 }

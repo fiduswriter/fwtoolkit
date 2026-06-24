@@ -1,13 +1,50 @@
-// @ts-nocheck
 import {keyName} from "w3c-keyname"
 
 import {whenReady} from "./basic.js"
-import {ContentMenu} from "./content_menu.js"
+import {ContentMenu, ContentMenuInit} from "./content_menu.js"
+
+export interface DataTableCell {
+    data: unknown
+    text: string
+}
+
+export interface DataTableRow {
+    cells: DataTableCell[]
+}
+
+export interface DataTableData {
+    data: DataTableRow[]
+}
+
+export interface DataTable {
+    dom: HTMLElement
+    data: DataTableData
+    update: () => void
+}
+
+export interface DatatableBulkPage {
+    dom: HTMLElement
+    getSelected: () => unknown[]
+}
 
 let bulkId = 0
 
 export class DatatableBulk {
-    constructor(page, model, checkboxColumn) {
+    page: DatatableBulkPage
+    model: ContentMenuInit
+    checkboxColumn: number
+
+    id: string
+    table: DataTable | undefined
+    boundOnClick: ((event: MouseEvent) => void) | undefined
+    boundOnTableCheckChange: ((event: Event) => void) | undefined
+    boundOnKeyDown: ((event: KeyboardEvent) => void) | undefined
+
+    constructor(
+        page: DatatableBulkPage,
+        model: ContentMenuInit,
+        checkboxColumn: number
+    ) {
         this.page = page
         this.model = model
         this.checkboxColumn = checkboxColumn
@@ -15,31 +52,31 @@ export class DatatableBulk {
         this.id = `dt-bulk-${++bulkId}`
     }
 
-    init(table) {
+    init(table: DataTable): void {
         this.table = table
         whenReady().then(() => this.bindEvents())
     }
 
-    update() {
+    update(): void {
         this.model.content = this.model.content.sort(
-            (a, b) => a.order - b.order
+            (a, b) => (a.order || 0) - (b.order || 0)
         )
     }
 
-    bindEvents() {
+    bindEvents(): void {
         // Store the bound functions as instance variables so we can remove them later
         this.boundOnClick = this.onClick.bind(this)
         this.boundOnTableCheckChange = this.onTableCheckChange.bind(this)
         this.boundOnKeyDown = this.onKeyDown.bind(this)
 
         this.page.dom.addEventListener("click", this.boundOnClick)
-        this.table.dom.addEventListener("change", this.boundOnTableCheckChange)
-        this.table.dom.addEventListener("keydown", this.boundOnKeyDown)
+        this.table!.dom.addEventListener("change", this.boundOnTableCheckChange)
+        this.table!.dom.addEventListener("keydown", this.boundOnKeyDown)
         this.onTableCheckChange()
     }
 
     // The new destroy() method removes all event listeners that were added and cleans up DOM elements.
-    destroy() {
+    destroy(): void {
         if (this.page && this.page.dom && this.boundOnClick) {
             this.page.dom.removeEventListener("click", this.boundOnClick)
         }
@@ -65,12 +102,12 @@ export class DatatableBulk {
         }
 
         // Clear any references to help garbage collection
-        this.page = null
-        this.table = null
-        this.model = null
+        this.page = null as unknown as DatatableBulkPage
+        this.table = undefined
+        this.model = {content: []}
     }
 
-    onKeyDown(event) {
+    onKeyDown(event: KeyboardEvent): void {
         const key = keyName(event)
         const el = this.page.dom.querySelector(`#${this.id}`)
 
@@ -89,8 +126,8 @@ export class DatatableBulk {
                 width: 280,
                 page: this.page,
                 menuPos: {
-                    X: Number.parseInt(el.getBoundingClientRect().left),
-                    Y: Number.parseInt(el.getBoundingClientRect().bottom)
+                    X: Number.parseInt(el.getBoundingClientRect().left as unknown as string),
+                    Y: Number.parseInt(el.getBoundingClientRect().bottom as unknown as string)
                 }
             })
             contentMenu.open()
@@ -115,7 +152,7 @@ export class DatatableBulk {
         }
     }
 
-    toggleSelectAll(checked) {
+    toggleSelectAll(checked: boolean): void {
         // Update the DataTable instance
         if (this.table) {
             this.table.data.data.forEach(row => {
@@ -130,26 +167,26 @@ export class DatatableBulk {
         this.onTableCheckChange()
     }
 
-    onTableCheckChange() {
+    onTableCheckChange(): void {
         const el = this.page.dom.querySelector(`#${this.id}`)
         if (!el) {
             return
         }
 
         const allChecked = this.isAllChecked()
-        el.querySelector("input[type=checkbox]").checked = allChecked
+        ;(el.querySelector("input[type=checkbox]") as HTMLInputElement).checked = allChecked
     }
 
-    isAllChecked() {
+    isAllChecked(): boolean {
         const checkboxes = Array.from(
-            this.table.dom.querySelectorAll("input.entry-select[type=checkbox]")
+            this.table!.dom.querySelectorAll("input.entry-select[type=checkbox]")
         )
-        const unchecked = checkboxes.filter(box => !box.checked)
-        return !unchecked.length && checkboxes.length
+        const unchecked = checkboxes.filter(box => !(box as HTMLInputElement).checked)
+        return !unchecked.length && checkboxes.length > 0
     }
 
-    onClick(event) {
-        const target = event.target
+    onClick(event: MouseEvent): void {
+        const target = event.target as Element
         if (target.matches(`#${this.id} *`)) {
             event.preventDefault()
             event.stopImmediatePropagation()
@@ -164,8 +201,8 @@ export class DatatableBulk {
                         width: 280,
                         page: this.page,
                         menuPos: {
-                            X: Number.parseInt(event.pageX),
-                            Y: Number.parseInt(event.pageY)
+                            X: Number.parseInt(event.pageX as unknown as string),
+                            Y: Number.parseInt(event.pageY as unknown as string)
                         }
                     })
                     contentMenu.open()
@@ -176,9 +213,9 @@ export class DatatableBulk {
                 // Click on bulk checkbox
                 const isChecked = this.isAllChecked()
                 this.toggleSelectAll(!isChecked)
-                target
-                    .closest("div.datatable-wrapper")
-                    .querySelector("input[type=checkbox]").checked = !isChecked
+                ;(target
+                    .closest("div.datatable-wrapper")!
+                    .querySelector("input[type=checkbox]") as HTMLInputElement).checked = !isChecked
                 this.onTableCheckChange()
             }
         } else if (target.matches(".fw-data-table .entry-select + label")) {
@@ -186,18 +223,18 @@ export class DatatableBulk {
             event.preventDefault()
             event.stopImmediatePropagation()
             event.stopPropagation()
-            const tr = target.closest("tr")
-            const index = parseInt(tr.dataset.index)
-            const row = this.table.data.data[index]
+            const tr = target.closest("tr") as HTMLTableRowElement
+            const index = parseInt(tr.dataset.index!)
+            const row = this.table!.data.data[index]
             const cell = row.cells[this.checkboxColumn]
             cell.data = !cell.data
             cell.text = String(cell.data)
-            this.table.update()
+            this.table!.update()
             this.onTableCheckChange()
         }
     }
 
-    getHTML() {
+    getHTML(): string {
         return `<div id="${this.id}" class="dt-bulk" role="group" aria-label="Bulk actions">
                         <input type="checkbox" id="${this.id}_check" class="fw-check" aria-label="Select all">
                         <label for="${this.id}_check"></label>

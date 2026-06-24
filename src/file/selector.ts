@@ -1,18 +1,65 @@
-// @ts-nocheck
 import {escapeText, findTarget} from "../basic.js"
 import {ensureCSS} from "../network.js"
 
+export interface FileDescriptor {
+    id?: number
+    title?: string
+    path: string
+    [key: string]: unknown
+}
+
+export interface FileSelectorFolder {
+    name: string
+    type: "folder"
+    open: boolean
+    selected: boolean
+    path: string
+    children: FileSelectorEntry[]
+}
+
+export interface FileSelectorFile {
+    name: string
+    type: "file"
+    path: string
+    selected?: boolean
+    file: FileDescriptor
+}
+
+export type FileSelectorEntry = FileSelectorFolder | FileSelectorFile
+
+export interface FileSelectorOptions {
+    dom: HTMLElement
+    files: FileDescriptor[]
+    showFiles?: boolean
+    selectFolders?: boolean
+    multiSelect?: boolean
+    selectDir?: (path: string) => void
+    selectFile?: (path: string) => void
+    fileIcon?: string
+}
+
 export class FileSelector {
+    dom: HTMLElement
+    files: FileDescriptor[]
+    showFiles: boolean
+    selectFolders: boolean
+    multiSelect: boolean
+    selectDir: (path: string) => void
+    selectFile: (path: string) => void
+    fileIcon: string
+    root: FileSelectorFolder
+    selected: FileSelectorEntry[]
+
     constructor({
         dom,
         files,
         showFiles = true,
         selectFolders = true,
         multiSelect = false,
-        selectDir = _path => {},
-        selectFile = _path => {},
+        selectDir = () => {},
+        selectFile = () => {},
         fileIcon = "far fa-file-alt"
-    }) {
+    }: FileSelectorOptions) {
         this.dom = dom
         this.files = files
         this.showFiles = showFiles // Whether to show existing files or only folders
@@ -36,7 +83,7 @@ export class FileSelector {
         }
     }
 
-    init() {
+    init(): void {
         this.readDirStructure()
         this.sortDirStructure()
         ensureCSS(staticUrl("css/file_selector.css"))
@@ -45,7 +92,7 @@ export class FileSelector {
         this.bind()
     }
 
-    readDirStructure() {
+    readDirStructure(): void {
         // Read directory structure from existing file paths.
         // A file's title is used as the final path segment when the file has
         // no explicit folder path. We strip any "/" from that segment because
@@ -80,7 +127,7 @@ export class FileSelector {
                 }
                 let folder = treeWalker.find(
                     item => item.name === pathPart && item.type === "folder"
-                )
+                ) as FileSelectorFolder | undefined
                 if (!folder) {
                     folder = {
                         name: pathPart,
@@ -97,7 +144,7 @@ export class FileSelector {
         })
     }
 
-    sortDirStructure(entries = this.root.children) {
+    sortDirStructure(entries = this.root.children): void {
         entries.sort((a, b) => {
             if (a.type !== b.type) {
                 return a.type === "folder" ? -1 : 1
@@ -111,32 +158,33 @@ export class FileSelector {
         })
     }
 
-    addFolder(rawName) {
+    addFolder(rawName: string): void {
         const name = rawName.replace(/\//g, "")
         // Add a new folder as a subfolder to the currently selected folder
         if (
             !this.selected.length ||
             this.selected[0].type !== "folder" ||
-            this.selected[0].children.find(
+            (this.selected[0] as FileSelectorFolder).children.find(
                 child => child.type === "folder" && child.name === name
             )
         ) {
             // A file is selected. Give up.
             return
         }
-        const newFolder = {
+        const selectedFolder = this.selected[0] as FileSelectorFolder
+        const newFolder: FileSelectorFolder = {
             name,
             type: "folder",
             open: true,
             selected: true,
-            path: this.selected[0].path + name + "/",
+            path: selectedFolder.path + name + "/",
             children: []
         }
-        this.selected[0].children.push(newFolder)
-        this.sortDirStructure(this.selected[0].children)
-        this.selected[0].open = true
+        selectedFolder.children.push(newFolder)
+        this.sortDirStructure(selectedFolder.children)
+        selectedFolder.open = true
         if (!this.multiSelect) {
-            this.selected[0].selected = false
+            selectedFolder.selected = false
             this.selected = []
         }
         this.selected.push(newFolder)
@@ -144,17 +192,17 @@ export class FileSelector {
         this.render()
     }
 
-    deselectAll() {
+    deselectAll(): void {
         this.selected.forEach(entry => (entry.selected = false))
         this.selected = []
         this.render()
     }
 
-    render() {
+    render(): void {
         this.dom.innerHTML = this.renderFolder(this.root)
     }
 
-    renderFolder(folder, indentLevel = 0) {
+    renderFolder(folder: FileSelectorFolder, indentLevel = 0): string {
         let returnString = ""
         returnString += `<div class="folder${folder.open ? "" : " closed"}">`
         returnString += `<p style="margin-left:${indentLevel * 10}px;">${
@@ -179,42 +227,44 @@ export class FileSelector {
         return returnString
     }
 
-    findEntry(dom) {
-        const searchPath = []
-        let seekItem = dom
-        while (seekItem.closest("div.folder, p.file")) {
+    findEntry(dom: Element): FileSelectorEntry {
+        const searchPath: number[] = []
+        let seekItem: Element | null = dom
+        let closest = seekItem.closest("div.folder, p.file")
+        while (closest) {
+            seekItem = closest
             let itemNumber = 0
-            seekItem = seekItem.closest("div.folder, p.file")
             while (seekItem.previousElementSibling) {
                 itemNumber++
                 seekItem = seekItem.previousElementSibling
             }
             searchPath.push(itemNumber)
             seekItem = seekItem.parentElement
+            closest = seekItem?.closest("div.folder, p.file") ?? null
         }
-        let entry = this.root
+        let entry: FileSelectorEntry = this.root
         searchPath.pop()
         while (searchPath.length) {
-            entry = entry.children[searchPath.pop()]
+            entry = (entry as FileSelectorFolder).children[searchPath.pop()!]
         }
         return entry
     }
 
-    bind() {
+    bind(): void {
         this.dom.addEventListener("click", event => {
-            const el = {}
+            const el: {target?: Element | null} = {}
             switch (true) {
                 case findTarget(event, ".fa-plus-square", el): {
                     event.preventDefault()
-                    const entry = this.findEntry(el.target)
-                    entry.open = true
+                    const entry = this.findEntry(el.target!)
+                    ;(entry as FileSelectorFolder).open = true
                     this.render()
                     break
                 }
                 case findTarget(event, ".fa-minus-square", el): {
                     event.preventDefault()
-                    const entry = this.findEntry(el.target)
-                    entry.open = false
+                    const entry = this.findEntry(el.target!)
+                    ;(entry as FileSelectorFolder).open = false
                     this.render()
                     break
                 }
@@ -224,7 +274,7 @@ export class FileSelector {
                         // Folders cannot be selected
                         return
                     }
-                    const entry = this.findEntry(el.target)
+                    const entry = this.findEntry(el.target!)
                     if (this.selected.includes(entry)) {
                         entry.selected = false
                         this.selected = this.selected.filter(e => e !== entry)
@@ -236,13 +286,13 @@ export class FileSelector {
                         }
                         this.selected.push(entry)
                         this.render()
-                        this.selectDir(entry.path)
+                        this.selectDir((entry as FileSelectorFolder).path)
                     }
                     break
                 }
                 case findTarget(event, ".file-name", el): {
                     event.preventDefault()
-                    const entry = this.findEntry(el.target)
+                    const entry = this.findEntry(el.target!)
                     if (this.selected.includes(entry)) {
                         entry.selected = false
                         this.selected = this.selected.filter(e => e !== entry)
@@ -254,7 +304,7 @@ export class FileSelector {
                         }
                         this.selected.push(entry)
                         this.render()
-                        this.selectFile(entry.path)
+                        this.selectFile((entry as FileSelectorFile).path)
                     }
                     break
                 }

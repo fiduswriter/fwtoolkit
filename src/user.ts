@@ -1,7 +1,6 @@
-// @ts-nocheck
 import {post} from "./network.js"
 
-export const setLanguage = (_config, language) =>
+export const setLanguage = (_config: unknown, language: string): Promise<unknown> =>
     post("/api/i18n/setlang/", {language}).then(() => {
         // We delete the network cache as this contains the JS
         // translations.
@@ -13,9 +12,9 @@ export const setLanguage = (_config, language) =>
         })
     })
 
-const COLOR_CACHE = {}
+const COLOR_CACHE: Record<string, string> = {}
 
-const userColor = string => {
+const userColor = (string: string): string => {
     // Source https://gist.github.com/0x263b/2bdd90886c2036a1ad5bcf06d6e6fb37
     if (string.length === 0) {
         return "rgb(0,0,0)"
@@ -35,8 +34,14 @@ const userColor = string => {
     return COLOR_CACHE[string]
 }
 
+interface AvatarUser {
+    username?: string
+    name?: string
+    avatar?: string
+}
+
 /** A template for the default round avatar view. */
-export const avatarTemplate = ({user}) => {
+export const avatarTemplate = ({user}: {user: AvatarUser}): string => {
     const name = user.username || user.name || "A"
     if (user.avatar) {
         return `<img class="fw-avatar" src="${user.avatar}" alt="${name}">`

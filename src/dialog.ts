@@ -1,7 +1,50 @@
-// @ts-nocheck
 import {keyName} from "w3c-keyname"
 
 import {findTarget} from "./basic.js"
+
+export interface DialogButtonSpec {
+    type?: "close" | "cancel" | "ok"
+    text?: string
+    classes?: string
+    click?: (event?: Event) => unknown
+    icon?: string
+    dropdown?: boolean
+}
+
+export interface DialogOptions {
+    id?: string | false
+    classes?: string | false
+    title?: string
+    body?: string
+    restoreActiveElement?: boolean
+    height?: number | false
+    width?: number | false
+    canClose?: boolean
+    help?: (() => void) | false
+    note?: {text?: string; display?: boolean}
+    blur?: boolean
+    buttons?: DialogButtonSpec[]
+    beforeClose?: (() => void) | false
+    onClose?: (() => void) | false
+    icon?: string | false
+    scroll?: boolean | false
+    canEscape?: boolean
+    fullScreen?: boolean | false
+    initialFocus?: string | null
+}
+
+interface InternalDialogButton {
+    text: string
+    classes: string | false
+    click: (event?: Event) => unknown
+    icon: string | false
+    dropdown: boolean
+}
+
+interface NoteSpec {
+    text?: string
+    display?: boolean
+}
 
 const dialogTemplate = ({
     id,
@@ -18,6 +61,21 @@ const dialogTemplate = ({
     canClose,
     note,
     blur
+}: {
+    id: string | false
+    classes: string | false
+    title: string
+    height: string
+    width: string
+    icon: string | false
+    buttons: InternalDialogButton[]
+    zIndex: number
+    body: string
+    scroll: boolean | false
+    help: (() => void) | false
+    canClose: boolean
+    note: NoteSpec
+    blur: boolean
 }) =>
     `<div tabindex="-1" role="dialog"
         class="ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-dialog-buttons"
@@ -55,13 +113,13 @@ const dialogTemplate = ({
 </div>
 <div class="ui-widget-overlay ui-front${blur === false ? " no-blur" : ""}" style="z-index: ${zIndex - 1}"></div>`
 
-const noteTemplate = note => {
+const noteTemplate = (note: NoteSpec): string => {
     return note.text
         ? `<p class="noteEl ${note.display ? "" : "hide"}">${note.text}</p>`
         : ""
 }
 
-const buttonsTemplate = ({buttons}) =>
+const buttonsTemplate = ({buttons}: {buttons: InternalDialogButton[]}): string =>
     buttons.map(button => buttonTemplate(button)).join("")
 
 const buttonTemplate = ({
@@ -69,13 +127,16 @@ const buttonTemplate = ({
     classes,
     icon,
     dropdown
-}) => `<button type="button" class="${classes ? classes : "fw-light"} fw-button ui-button ui-corner-all ui-widget">
+}: InternalDialogButton): string => `<button type="button" class="${classes ? classes : "fw-light"} fw-button ui-button ui-corner-all ui-widget">
     ${icon ? `<i class="fa fa-${icon}" aria-hidden="true"></i>` : ""}
     ${text}
     ${dropdown ? '<i class="fa fa-caret-down" aria-hidden="true"></i>' : ""}
 </button>`
 
-const BUTTON_TYPES = {
+const BUTTON_TYPES: Record<
+    "close" | "cancel" | "ok",
+    {text: string; classes: string; click: (dialog: Dialog) => () => void}
+> = {
     close: {
         text: gettext("Close"),
         classes: "fw-orange",
@@ -94,7 +155,37 @@ const BUTTON_TYPES = {
 }
 
 export class Dialog {
-    constructor(options) {
+    id: string | false
+    classes: string | false
+    title: string
+    body: string
+    restoreActiveElement: boolean
+    height: string
+    width: string
+    canClose: boolean
+    help: (() => void) | false
+    note: NoteSpec
+    blur: boolean
+    buttons: InternalDialogButton[]
+    beforeClose: (() => void) | false
+    onClose: (() => void) | false
+    icon: string | false
+    scroll: boolean | false
+    canEscape: boolean
+    dialogEl!: HTMLElement
+    backdropEl!: HTMLElement
+    dragging: {x: number; y: number} | false
+    hasBeenMoved: boolean
+    listeners: Record<string, (event: Event) => void>
+    fullScreen: boolean | false
+    initialFocus: string | null
+
+    previousActiveElement: Element | null
+    firstFocusableEl: Element | null
+    lastFocusableEl: Element | null
+    focusableEls: Element[] | null
+
+    constructor(options: DialogOptions) {
         this.id = options.id || false
         this.classes = options.classes || false
         this.title = options.title || ""
@@ -102,10 +193,10 @@ export class Dialog {
         this.restoreActiveElement = options.restoreActiveElement !== false // default is true
         this.height = options.height ? `${options.height}px` : "auto"
         this.width = options.width ? `${options.width}px` : "auto"
-        this.canClose = "canClose" in options ? options.canClose : true
-        this.help = "help" in options ? options.help : false
-        this.note = "note" in options ? options.note : {}
-        this.blur = "blur" in options ? options.blur : true
+        this.canClose = "canClose" in options ? options.canClose! : true
+        this.help = "help" in options ? options.help! : false
+        this.note = "note" in options ? options.note! : {}
+        this.blur = "blur" in options ? options.blur! : true
         this.buttons = []
         if (options.buttons) {
             this.setButtons(options.buttons)
@@ -116,12 +207,11 @@ export class Dialog {
         this.scroll = options.scroll || false
         this.canEscape =
             options.canEscape ??
-            options.buttons?.find(button =>
-                ["cancel", "close"].includes(button.type)
-            ) ??
-            false
-        this.dialogEl = false
-        this.backdropEl = false
+            !!options.buttons?.find(button =>
+                ["cancel", "close"].includes(button.type || "")
+            )
+        this.dialogEl = null!
+        this.backdropEl = null!
         this.dragging = false
         this.hasBeenMoved = false
         this.listeners = {}
@@ -134,7 +224,7 @@ export class Dialog {
         this.focusableEls = null
     }
 
-    setButtons(buttons) {
+    setButtons(buttons: DialogButtonSpec[]): void {
         this.buttons = buttons.map(button => ({
             text: button.text
                 ? button.text
@@ -150,13 +240,13 @@ export class Dialog {
                 ? button.click
                 : button.type
                   ? BUTTON_TYPES[button.type].click(this)
-                  : "",
+                  : () => {},
             icon: button.icon ? button.icon : false,
             dropdown: button.dropdown ? true : false
         }))
     }
 
-    open() {
+    open(): void {
         if (this.dialogEl) {
             return
         }
@@ -189,8 +279,8 @@ export class Dialog {
                 blur: this.blur
             })
         )
-        this.backdropEl = document.body.lastElementChild
-        this.dialogEl = this.backdropEl.previousElementSibling
+        this.backdropEl = document.body.lastElementChild as HTMLElement
+        this.dialogEl = this.backdropEl.previousElementSibling as HTMLElement
         if (this.fullScreen) {
             this.dialogEl.style.width = "98%"
             this.dialogEl.style.height = "100%"
@@ -205,20 +295,21 @@ export class Dialog {
         this.dialogEl.setAttribute("aria-modal", "true")
         if (this.title) {
             this.dialogEl.setAttribute("aria-labelledby", "dialog-title")
-            this.dialogEl.querySelector(".ui-dialog-title").id = "dialog-title"
+            const titleEl = this.dialogEl.querySelector(".ui-dialog-title") as HTMLElement
+            titleEl.id = "dialog-title"
         }
 
         // Get all focusable elements
         this.focusableEls = this.getFocusableElements()
-        this.firstFocusableEl = this.focusableEls[0]
-        this.lastFocusableEl = this.focusableEls[this.focusableEls.length - 1]
+        this.firstFocusableEl = this.focusableEls[0] || null
+        this.lastFocusableEl = this.focusableEls[this.focusableEls.length - 1] || null
 
         // Set initial focus to the most appropriate element
         const initialFocusElement = this.getInitialFocusElement()
         if (initialFocusElement) {
-            setTimeout(() => initialFocusElement.focus(), 0)
+            setTimeout(() => (initialFocusElement as HTMLElement).focus(), 0)
         } else if (this.firstFocusableEl) {
-            this.firstFocusableEl.focus()
+            (this.firstFocusableEl as HTMLElement).focus()
         } else {
             this.dialogEl.focus()
         }
@@ -226,18 +317,17 @@ export class Dialog {
         this.bind()
     }
 
-    refreshButtons() {
-        this.dialogEl.querySelector(".ui-dialog-buttonset").innerHTML =
-            buttonsTemplate({buttons: this.buttons})
+    refreshButtons(): void {
+        const buttonSet = this.dialogEl.querySelector(".ui-dialog-buttonset")!
+        buttonSet.innerHTML = buttonsTemplate({buttons: this.buttons})
     }
 
-    refreshNote() {
-        this.dialogEl.querySelector(".note-container").innerHTML = noteTemplate(
-            this.note
-        )
+    refreshNote(): void {
+        const noteContainer = this.dialogEl.querySelector(".note-container")!
+        noteContainer.innerHTML = noteTemplate(this.note)
     }
 
-    centerDialog() {
+    centerDialog(): void {
         const totalWidth = window.innerWidth,
             totalHeight = window.innerHeight,
             dialogWidth = this.dialogEl.clientWidth,
@@ -249,7 +339,7 @@ export class Dialog {
         this.dialogEl.style.left = `${(totalWidth - dialogWidth) / 2 + scrollLeftOffset}px`
     }
 
-    adjustDialogToScroll() {
+    adjustDialogToScroll(): void {
         this.dialogEl.style.top = `${Math.max(
             Math.min(
                 this.dialogEl.offsetTop,
@@ -261,7 +351,10 @@ export class Dialog {
         )}px`
     }
 
-    moveDialog(x, y) {
+    moveDialog(x: number, y: number): void {
+        if (!this.dragging) {
+            return
+        }
         this.dialogEl.style.top = `${Math.min(
             Math.max(y - this.dragging.y, 0),
             this.backdropEl.scrollHeight -
@@ -275,7 +368,7 @@ export class Dialog {
         this.hasBeenMoved = true
     }
 
-    onScroll(_event) {
+    onScroll(_event: Event): void {
         if (this.hasBeenMoved) {
             // The dialog has been moved manually. We just adjust the position to make it stay in the view.
             this.adjustDialogToScroll()
@@ -284,7 +377,7 @@ export class Dialog {
         }
     }
 
-    onKeydown(event) {
+    onKeydown(event: KeyboardEvent): void {
         let name = keyName(event)
         if (event.altKey) {
             name = "Alt-" + name
@@ -305,26 +398,26 @@ export class Dialog {
         } else if (name === "Tab") {
             if (document.activeElement === this.lastFocusableEl) {
                 event.preventDefault()
-                this.firstFocusableEl.focus()
+                ;(this.firstFocusableEl as HTMLElement).focus()
             }
         } else if (name === "Shift-Tab") {
             if (document.activeElement === this.firstFocusableEl) {
                 event.preventDefault()
-                this.lastFocusableEl.focus()
+                ;(this.lastFocusableEl as HTMLElement).focus()
             }
         }
     }
 
-    bind() {
-        this.listeners.onKeydown = event => this.onKeydown(event)
+    bind(): void {
+        this.listeners.onKeydown = event => this.onKeydown(event as KeyboardEvent)
         document.body.addEventListener("keydown", this.listeners.onKeydown)
         this.dialogEl.addEventListener("click", event => {
-            const el = {}
+            const el: {target?: Element | null} = {}
             switch (true) {
                 case findTarget(event, ".ui-dialog-buttonpane button", el): {
                     event.preventDefault()
                     let buttonNumber = 0
-                    let seekItem = el.target
+                    let seekItem = el.target as Element
                     while (seekItem.previousElementSibling) {
                         buttonNumber++
                         seekItem = seekItem.previousElementSibling
@@ -338,7 +431,9 @@ export class Dialog {
                     break
                 case findTarget(event, ".ui-dialog-titlebar-help", el):
                     event.preventDefault()
-                    this.help()
+                    if (this.help) {
+                        this.help()
+                    }
                     break
                 default:
                     break
@@ -348,12 +443,12 @@ export class Dialog {
             this.listeners.onScroll = event => this.onScroll(event)
             window.addEventListener("scroll", this.listeners.onScroll, false)
             this.dialogEl.addEventListener("mousedown", event => {
-                const el = {}
+                const el: {target?: Element | null} = {}
                 switch (true) {
                     case findTarget(event, ".ui-dialog-titlebar", el):
                         this.dragging = {
-                            x: event.clientX - this.dialogEl.offsetLeft,
-                            y: event.clientY - this.dialogEl.offsetTop
+                            x: (event as MouseEvent).clientX - this.dialogEl.offsetLeft,
+                            y: (event as MouseEvent).clientY - this.dialogEl.offsetTop
                         }
                         break
                     default:
@@ -361,7 +456,7 @@ export class Dialog {
                 }
             })
             this.dialogEl.addEventListener("mouseup", event => {
-                const el = {}
+                const el: {target?: Element | null} = {}
                 switch (true) {
                     case findTarget(event, ".ui-dialog-titlebar", el):
                         this.dragging = false
@@ -374,7 +469,7 @@ export class Dialog {
                 if (!this.dragging) {
                     return
                 }
-                this.moveDialog(event.clientX, event.clientY)
+                this.moveDialog((event as MouseEvent).clientX, (event as MouseEvent).clientY)
             })
         }
 
@@ -392,19 +487,19 @@ export class Dialog {
         })
     }
 
-    nextDialogZIndex() {
+    nextDialogZIndex(): number {
         let zIndex = 100
         document
             .querySelectorAll("div.ui-dialog")
             .forEach(
-                dialogEl => (zIndex = Math.max(zIndex, dialogEl.style.zIndex))
+                dialogEl => (zIndex = Math.max(zIndex, parseInt((dialogEl as HTMLElement).style.zIndex) || 100))
             )
         zIndex += 2
-        document.body.style.setProperty("--highest-dialog-z-index", zIndex)
+        document.body.style.setProperty("--highest-dialog-z-index", String(zIndex))
         return zIndex
     }
 
-    getFocusableElements() {
+    getFocusableElements(): Element[] {
         // Get all focusable elements
         const focusableSelectors = [
             "button:not([disabled])",
@@ -426,7 +521,7 @@ export class Dialog {
         })
     }
 
-    getInitialFocusElement() {
+    getInitialFocusElement(): Element | undefined {
         if (this.initialFocus) {
             const customFocusElement = this.dialogEl.querySelector(
                 this.initialFocus
@@ -441,7 +536,7 @@ export class Dialog {
         // Try to find the most appropriate initial focus target
         const priorityElements = [
             // First try to find a text input
-            elements.find(el => el.tagName === "INPUT" && el.type === "text"),
+            elements.find(el => el.tagName === "INPUT" && (el as HTMLInputElement).type === "text"),
             // Then try to find the first button in the button pane
             elements.find(el => el.closest(".ui-dialog-buttonpane")),
             // Then try to find any input
@@ -459,7 +554,7 @@ export class Dialog {
         return priorityElements.find(el => el) || elements[0]
     }
 
-    close() {
+    close(): void {
         if (!this.dialogEl) {
             return
         }
@@ -470,12 +565,12 @@ export class Dialog {
         if (this.beforeClose) {
             this.beforeClose()
         }
-        this.dialogEl.parentElement.removeChild(this.dialogEl)
-        this.backdropEl.parentElement.removeChild(this.backdropEl)
+        this.dialogEl.parentElement!.removeChild(this.dialogEl)
+        this.backdropEl.parentElement!.removeChild(this.backdropEl)
 
         // Restore focus to previous element
-        if (this.previousActiveElement && this.previousActiveElement.focus) {
-            this.previousActiveElement.focus()
+        if (this.previousActiveElement && (this.previousActiveElement as HTMLElement).focus) {
+            (this.previousActiveElement as HTMLElement).focus()
         }
 
         if (this.onClose) {

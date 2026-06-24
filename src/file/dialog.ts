@@ -1,15 +1,46 @@
-// @ts-nocheck
 import {Dialog} from "../dialog.js"
 import {FileSelector} from "./selector.js"
 import {addAlert} from "../basic.js"
 import {NewFolderDialog} from "./new_folder_dialog.js"
 import {moveTemplate} from "./templates.js"
 import {moveFile, shortFileTitle} from "./tools.js"
+
+export interface MovingFile {
+    id: number
+    title: string
+    path: string
+    [key: string]: unknown
+}
+
+export interface FileDialogOptions {
+    title?: string
+    movingFiles?: MovingFile[]
+    allFiles?: import("./selector.js").FileDescriptor[]
+    moveUrl?: string
+    successMessage?: string
+    errorMessage?: string
+    succcessCallback?: (file: MovingFile, path: string) => void
+    fileIcon?: string
+}
+
 /**
  * Functions for the document move dialog.
  */
 
 export class FileDialog {
+    title: string
+    movingFiles: MovingFile[]
+    allFiles: import("./selector.js").FileDescriptor[]
+    moveUrl: string
+    successMessage: string
+    errorMessage: string
+    succcessCallback: (file: MovingFile, path: string) => void
+    fileIcon: string
+
+    path: string
+    dialog: Dialog
+    fileSelector: FileSelector | false
+
     constructor({
         title = "", // Dialog title
         movingFiles = [], // Array of all files that are to be moved.
@@ -17,9 +48,9 @@ export class FileDialog {
         moveUrl = "", // URL to use for moving files
         successMessage = "", // Message for success
         errorMessage = "", // Message for failure
-        succcessCallback = (_file, _path) => {}, // Callback on success
+        succcessCallback = () => {}, // Callback on success
         fileIcon = "far fa-file-alt"
-    }) {
+    }: FileDialogOptions = {}) {
         this.title = title
         this.movingFiles = movingFiles
         this.allFiles = allFiles
@@ -31,9 +62,10 @@ export class FileDialog {
 
         this.path = this.getPath()
         this.fileSelector = false
+        this.dialog = new Dialog({body: ""}) // placeholder, replaced in init()
     }
 
-    getPath() {
+    getPath(): string {
         if (this.movingFiles.length === 1) {
             let path = this.movingFiles[0].path
             if (path.endsWith("/")) {
@@ -48,15 +80,15 @@ export class FileDialog {
         return this.movingFiles[0].path.split("/").slice(0, -1).join("/") + "/"
     }
 
-    updatePathDir(path) {
-        const fileName = this.dialog.dialogEl
-            .querySelector("#path")
-            .value.split("/")
-            .pop()
-        this.dialog.dialogEl.querySelector("#path").value = path + fileName
+    updatePathDir(path: string): void {
+        const pathInput = this.dialog.dialogEl!.querySelector(
+            "#path"
+        ) as HTMLInputElement
+        const fileName = pathInput.value.split("/").pop() || ""
+        pathInput.value = path + fileName
     }
 
-    init() {
+    init(): void {
         this.dialog = new Dialog({
             title: this.title,
             id: "move-dialog",
@@ -86,7 +118,9 @@ export class FileDialog {
                     click: () => {
                         //apply the current state to server
                         let path =
-                            this.dialog.dialogEl.querySelector("#path").value
+                            (this.dialog.dialogEl!.querySelector(
+                                "#path"
+                            ) as HTMLInputElement).value
                         this.dialog.close()
 
                         if (path === this.path) {
@@ -115,7 +149,7 @@ export class FileDialog {
         this.dialog.open()
 
         this.fileSelector = new FileSelector({
-            dom: this.dialog.dialogEl.querySelector(".file-selector"),
+            dom: this.dialog.dialogEl!.querySelector(".file-selector") as HTMLElement,
             files: this.allFiles,
             showFiles: false,
             selectDir: path => this.updatePathDir(path),
@@ -124,7 +158,7 @@ export class FileDialog {
         this.fileSelector.init()
     }
 
-    moveFile(file, requestedPath) {
+    moveFile(file: MovingFile, requestedPath: string): Promise<void> {
         return moveFile(file.id, file.title, requestedPath, this.moveUrl)
             .then(path => {
                 addAlert(

@@ -1,4 +1,3 @@
-// @ts-nocheck
 export {FileDialog} from "./dialog.js"
 export {FileSelector} from "./selector.js"
 export {

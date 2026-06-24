@@ -1,7 +1,7 @@
 {
   "name": "fwtoolkit",
-  "version": "0.1.0-alpha.3",
-  "description": "Fidus Writer Toolkit — reusable utilities and UI helpers for Fidus Writer and other applications",
+  "version": "0.1.0-alpha.5",
+  "description": "Fidus Writer Toolkit — reusable utilities, UI helpers and styles for Fidus Writer and other applications",
   "type": "module",
   "license": "LGPL-3.0-or-later",
   "repository": {
@@ -11,6 +11,7 @@
   "author": "Johannes Wilm",
   "files": [
     "src/",
+    "css/",
     "README.md",
     "LICENSE"
   ],

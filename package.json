@@ -1,9 +1,13 @@
 {
   "name": "fwtoolkit",
-  "version": "0.1.0-alpha.1",
-  "description": "Fidus Writer Toolkit — reusable utilities for Fidus Writer and other applications",
+  "version": "0.1.0-alpha.3",
+  "description": "Fidus Writer Toolkit — reusable utilities and UI helpers for Fidus Writer and other applications",
   "type": "module",
   "license": "LGPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://codeberg.org/fiduswriter/fwtoolkit.git"
+  },
   "author": "Johannes Wilm",
   "files": [
     "src/",
@@ -13,5 +17,9 @@
   "exports": {
     ".": "./src/index.js",
     "./*": "./src/*"
+  },
+  "dependencies": {
+    "diff-dom": "^5.2.1",
+    "w3c-keyname": "^2.2.8"
   }
 }

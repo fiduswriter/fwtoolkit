@@ -1,0 +1,17 @@
+{
+  "name": "fwtoolkit",
+  "version": "0.1.0-alpha.1",
+  "description": "Fidus Writer Toolkit — reusable utilities for Fidus Writer and other applications",
+  "type": "module",
+  "license": "LGPL-3.0-or-later",
+  "author": "Johannes Wilm",
+  "files": [
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": "./src/index.js",
+    "./*": "./src/*"
+  }
+}

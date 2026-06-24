@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fwtoolkit — Dialog options demo</title>
+    <link rel="stylesheet" href="./fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="./css/colors.css">
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./demo.css">
+    <link rel="stylesheet" href="./css/buttons.css">
+    <link rel="stylesheet" href="./css/dialog.css">
+    <link rel="stylesheet" href="./css/alerts.css">
+    <link rel="stylesheet" href="./css/loader.css">
+    <style>
+        body { padding: 2rem; }
+        .demo-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; }
+        pre { background: #f4f4f4; padding: 1rem; overflow: auto; }
+    </style>
+    <script type="importmap">
+    {
+        "imports": {
+            "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+            "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+        }
+    }
+    </script>
+    <script>
+        window.gettext = s => s;
+        window.interpolate = (fmt, arr) => fmt.replace(/%s/g, () => arr.shift());
+    </script>
+</head>
+<body>
+    <main class="demo-container">
+        <p><a href="./index.html">&larr; Back to demos</a></p>
+        <h1>Dialog options</h1>
+
+        <div class="demo-actions">
+            <button id="dialog-note" class="fw-button fw-dark">Dialog with note</button>
+            <button id="dialog-sized" class="fw-button fw-dark">Sized dialog</button>
+            <button id="dialog-scrollable" class="fw-button fw-dark">Scrollable dialog</button>
+            <button id="dialog-no-cancel" class="fw-button fw-dark">Non-cancelable</button>
+            <button id="dialog-buttons" class="fw-button fw-dark">Custom buttons</button>
+        </div>
+
+        <pre id="log">Dialog results will be logged here…</pre>
+
+        <div id="wait"><i class="fa fa-spinner fa-spin"></i></div>
+    </main>
+
+    <script type="module">
+        import { Dialog, addAlert } from "./dist/index.js";
+
+        const log = msg => {
+            const el = document.getElementById("log");
+            el.textContent = `${new Date().toLocaleTimeString()} — ${msg}\n` + el.textContent;
+        };
+
+        const ipsum = Array(20).fill("<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>").join("");
+
+        document.getElementById("dialog-note").addEventListener("click", () => {
+            const dialog = new Dialog({
+                title: "Dialog with a note",
+                body: "<p>This dialog has a note below the body.</p>",
+                note: {
+                    text: "This note can provide extra context or a warning.",
+                    display: true
+                },
+                buttons: [{ type: "close" }]
+            });
+            dialog.open();
+        });
+
+        document.getElementById("dialog-sized").addEventListener("click", () => {
+            const dialog = new Dialog({
+                title: "Sized dialog",
+                body: "<p>This dialog is 500 × 300 pixels.</p>",
+                width: 500,
+                height: 300,
+                buttons: [{ type: "close" }]
+            });
+            dialog.open();
+        });
+
+        document.getElementById("dialog-scrollable").addEventListener("click", () => {
+            const dialog = new Dialog({
+                title: "Scrollable dialog",
+                body: ipsum,
+                width: 500,
+                height: 300,
+                scrollable: true,
+                buttons: [{ type: "close" }]
+            });
+            dialog.open();
+        });
+
+        document.getElementById("dialog-no-cancel").addEventListener("click", () => {
+            const dialog = new Dialog({
+                title: "Non-cancelable dialog",
+                body: "<p>This dialog has no close button and ignores Escape.</p>",
+                canCancel: false,
+                buttons: [
+                    {
+                        text: "I understand",
+                        classes: "fw-dark",
+                        click: () => {
+                            log("Non-cancelable dialog acknowledged");
+                            dialog.close();
+                        }
+                    }
+                ]
+            });
+            dialog.open();
+        });
+
+        document.getElementById("dialog-buttons").addEventListener("click", () => {
+            const dialog = new Dialog({
+                title: "Dialog with custom buttons",
+                body: "<p>Buttons can have custom text, classes and callbacks.</p>",
+                buttons: [
+                    { type: "cancel" },
+                    {
+                        text: "Trigger alert",
+                        classes: "fw-light",
+                        click: () => addAlert("info", "Alert from custom button")
+                    },
+                    {
+                        text: "Confirm",
+                        classes: "fw-dark",
+                        click: () => {
+                            log("Confirmed");
+                            dialog.close();
+                        }
+                    }
+                ]
+            });
+            dialog.open();
+        });
+    </script>
+</body>
+</html>

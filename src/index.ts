@@ -42,9 +42,7 @@ export {
 export {Dialog} from "./dialog.js"
 export {ContentMenu} from "./content_menu.js"
 export {makeWorker} from "./worker.js"
-export {baseBodyTemplate} from "./templates.js"
 export {WebSocketConnector} from "./ws.js"
-export {filterPrimaryEmail} from "./user_util.js"
 export {DatatableBulk} from "./datatable_bulk.js"
 export {faqDialog} from "./faq_dialog.js"
 export {

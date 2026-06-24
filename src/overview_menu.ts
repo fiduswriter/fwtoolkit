@@ -589,7 +589,7 @@ export class OverviewMenuView {
                 class="fw-search-field"
                 id="${menuItem.id}-input"
                 aria-description="${gettext("Type to search")}"
-                placeholder="${menuItem.title}"
+                placeholder="${menuItem.placeholder || ""}"
                 aria-label="${menuItem.title}"
                 >
             ${menuItem.icon ? `<i class="fa-solid fa-${menuItem.icon}" aria-hidden="true"></i>` : ""}

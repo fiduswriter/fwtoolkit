@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fwtoolkit — FAQ dialog demo</title>
+    <link rel="stylesheet" href="./fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="./css/colors.css">
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./demo.css">
+    <link rel="stylesheet" href="./css/buttons.css">
+    <link rel="stylesheet" href="./css/dialog.css">
+    <link rel="stylesheet" href="./css/faq_dialog.css">
+    <style>
+        body { padding: 2rem; }
+        .demo-actions { margin: 1.5rem 0; }
+    </style>
+    <script type="importmap">
+    {
+        "imports": {
+            "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+            "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+        }
+    }
+    </script>
+    <script>
+        window.gettext = s => s;
+        window.interpolate = (fmt, arr) => fmt.replace(/%s/g, () => arr.shift());
+        window.staticUrl = url => url;
+    </script>
+</head>
+<body>
+    <main class="demo-container">
+        <p><a href="./index.html">&larr; Back to demos</a></p>
+        <h1>FAQ dialog</h1>
+        <p><code>faqDialog</code> builds an expandable list of questions and answers inside a dialog.</p>
+        <div class="demo-actions">
+            <button id="open-faq" class="fw-button fw-dark">Open FAQ dialog</button>
+        </div>
+    </main>
+
+    <script type="module">
+        import { faqDialog } from "./dist/index.js";
+
+        document.getElementById("open-faq").addEventListener("click", () => {
+            const dialog = new faqDialog({
+                title: "Frequently asked questions",
+                questions: [
+                    [
+                        "What is fwtoolkit?",
+                        "fwtoolkit is a collection of reusable UI utilities extracted from Fidus Writer."
+                    ],
+                    [
+                        "How do I install it?",
+                        "Run <code>npm install fwtoolkit</code> in your project."
+                    ],
+                    [
+                        "Does it require Django?",
+                        "No. Some helpers assume globals like <code>gettext</code> or <code>staticUrl</code>, but the UI components are framework-agnostic."
+                    ]
+                ]
+            });
+            dialog.open();
+        });
+    </script>
+</body>
+</html>

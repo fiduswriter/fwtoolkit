@@ -4,6 +4,13 @@
     padding: 11px 8px;
 }
 
+#fw-overview-menu,
+#fw-overview-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
 #fw-overview-menu {
     position: relative;
     margin: 0 213px;

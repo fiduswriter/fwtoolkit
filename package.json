@@ -1,7 +1,7 @@
 {
   "name": "fwtoolkit",
-  "version": "0.1.0-alpha.5",
-  "description": "Fidus Writer Toolkit — reusable utilities, UI helpers and styles for Fidus Writer and other applications",
+  "version": "0.1.0-alpha.7",
+  "description": "Fidus Writer Toolkit — reusable TypeScript utilities, UI helpers and styles for Fidus Writer and other applications",
   "type": "module",
   "license": "LGPL-3.0-or-later",
   "repository": {
@@ -9,18 +9,40 @@
     "url": "https://codeberg.org/fiduswriter/fwtoolkit.git"
   },
   "author": "Johannes Wilm",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "src/",
+    "dist/",
     "css/",
     "README.md",
     "LICENSE"
   ],
   "exports": {
-    ".": "./src/index.js",
-    "./*": "./src/*"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build && npm test",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.js"
   },
   "dependencies": {
     "diff-dom": "^5.2.1",
     "w3c-keyname": "^2.2.8"
+  },
+  "devDependencies": {
+    "@fortawesome/fontawesome-free": "^7.2.0",
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.8.2"
   }
 }

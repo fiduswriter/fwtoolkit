@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fwtoolkit — Alerts</title>
+    <link rel="stylesheet" href="./fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="./css/colors.css">
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/buttons.css">
+    <link rel="stylesheet" href="./css/alerts.css">
+    <link rel="stylesheet" href="./demo.css">
+    <script type="importmap">
+    {
+        "imports": {
+            "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+            "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+        }
+    }
+    </script>
+    <script>
+        window.gettext = s => s;
+        window.interpolate = (fmt, arr) => fmt.replace(/%s/g, () => arr.shift());
+    </script>
+</head>
+<body>
+    <main class="demo-container">
+        <p><a href="./index.html">&larr; Back to demos</a></p>
+        <h1>Alerts</h1>
+        <div class="demo-actions">
+            <button class="fw-button" id="info">Info alert</button>
+            <button class="fw-button" id="success">Success alert</button>
+            <button class="fw-button" id="warning">Warning alert</button>
+            <button class="fw-button" id="error">Error alert</button>
+        </div>
+    </main>
+    <script type="module">
+        import { addAlert } from "./dist/index.js"
+
+        document.getElementById("info").addEventListener("click", () =>
+            addAlert("info", "This is an informational message.")
+        )
+        document.getElementById("success").addEventListener("click", () =>
+            addAlert("success", "Operation completed successfully.")
+        )
+        document.getElementById("warning").addEventListener("click", () =>
+            addAlert("warning", "Please review your input.")
+        )
+        document.getElementById("error").addEventListener("click", () =>
+            addAlert("error", "Something went wrong.")
+        )
+    </script>
+</body>
+</html>

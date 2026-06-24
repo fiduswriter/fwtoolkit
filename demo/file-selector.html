@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fwtoolkit — File Selector</title>
+    <link rel="stylesheet" href="./fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="./css/colors.css">
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/buttons.css">
+    <link rel="stylesheet" href="./css/file_selector.css">
+    <link rel="stylesheet" href="./css/dialog.css">
+    <link rel="stylesheet" href="./demo.css">
+    <style>
+        #selector { min-height: 300px; border: 1px solid var(--cs-light-border); margin-top: 20px; padding: 10px; }
+    </style>
+    <script type="importmap">
+    {
+        "imports": {
+            "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+            "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+        }
+    }
+    </script>
+    <script>
+        window.gettext = s => s;
+        window.interpolate = (fmt, arr) => fmt.replace(/%s/g, () => arr.shift());
+        window.staticUrl = url => url;
+    </script>
+</head>
+<body>
+    <main class="demo-container">
+        <p><a href="./index.html">&larr; Back to demos</a></p>
+        <h1>File Selector</h1>
+        <div class="demo-actions">
+            <button class="fw-button" id="render">Render file selector</button>
+        </div>
+        <div id="selector"></div>
+        <p id="selection"></p>
+    </main>
+    <script type="module">
+        import { FileSelector } from "./dist/file/selector.js"
+
+        const files = [
+            {title: "Readme.md", path: "/"},
+            {title: "Chapter 1.md", path: "/book/"},
+            {title: "Chapter 2.md", path: "/book/"},
+            {title: "Notes.txt", path: "/misc/"}
+        ]
+
+        document.getElementById("render").addEventListener("click", () => {
+            const dom = document.getElementById("selector")
+            dom.innerHTML = ""
+            const selector = new FileSelector({
+                dom,
+                files,
+                showFiles: true,
+                selectFolders: true,
+                multiSelect: false,
+                selectFile: path => {
+                    document.getElementById("selection").textContent =
+                        `Selected: ${path}`
+                }
+            })
+            selector.init()
+        })
+    </script>
+</body>
+</html>

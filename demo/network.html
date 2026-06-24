@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fwtoolkit — Network helpers demo</title>
+    <link rel="stylesheet" href="./fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="./css/colors.css">
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/buttons.css">
+    <link rel="stylesheet" href="./css/alerts.css">
+    <link rel="stylesheet" href="./css/loader.css">
+    <style>
+        body { padding: 2rem; }
+        .demo-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; }
+        pre { background: #f4f4f4; padding: 1rem; overflow: auto; max-height: 60vh; }
+    </style>
+    <script type="importmap">
+    {
+        "imports": {
+            "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+            "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+        }
+    }
+    </script>
+    <script>
+        window.gettext = s => s;
+        window.interpolate = (fmt, arr) => fmt.replace(/%s/g, () => arr.shift());
+    </script>
+</head>
+<body>
+    <h1>Network helpers demo</h1>
+    <p>The helpers below use <a href="https://jsonplaceholder.typicode.com/" target="_blank" rel="noopener">JSONPlaceholder</a> so you can see real fetch traffic.</p>
+    <div class="demo-actions">
+        <button id="get-post" class="fw-button fw-dark">GET a post</button>
+        <button id="get-posts" class="fw-button fw-dark">GET posts (with wait)</button>
+        <button id="post-post" class="fw-button fw-dark">POST a post</button>
+    </div>
+    <pre id="log">Responses will be logged here…</pre>
+
+    <div id="wait"><i class="fa fa-spinner fa-spin"></i></div>
+
+    <script type="module">
+        import { initSettings, getJson, postJson, activateWait, deactivateWait } from "./dist/index.js";
+
+        initSettings({
+            apiUrl: url => url,
+            getCsrfToken: () => "demo-csrf-token"
+        });
+
+        const log = msg => {
+            const el = document.getElementById("log");
+            const text = typeof msg === "object" ? JSON.stringify(msg, null, 2) : String(msg);
+            el.textContent = `${new Date().toLocaleTimeString()} — ${text}\n` + el.textContent;
+        };
+
+        document.getElementById("get-post").addEventListener("click", () => {
+            getJson("https://jsonplaceholder.typicode.com/posts/1")
+                .then(data => log(data))
+                .catch(err => log(`Error: ${err.status || err.message}`));
+        });
+
+        document.getElementById("get-posts").addEventListener("click", () => {
+            activateWait(true, "Fetching posts…");
+            getJson("https://jsonplaceholder.typicode.com/posts?_limit=3")
+                .then(data => {
+                    deactivateWait();
+                    log(data);
+                })
+                .catch(err => {
+                    deactivateWait();
+                    log(`Error: ${err.status || err.message}`);
+                });
+        });
+
+        document.getElementById("post-post").addEventListener("click", () => {
+            postJson("https://jsonplaceholder.typicode.com/posts", {
+                title: "Hello from fwtoolkit",
+                body: "This request was sent with the network helpers.",
+                userId: 1
+            })
+                .then(({ json, status }) => log({ status, json }))
+                .catch(err => log(`Error: ${err.status || err.message}`));
+        });
+    </script>
+</body>
+</html>

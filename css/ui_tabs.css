@@ -1,7 +1,9 @@
 .ui-tabs-nav {
     display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px;
     border-bottom: 2px solid var(--tabs-border-color);
-    margin-bottom: 16px;
     height: auto;
     width: auto;
 }

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fwtoolkit — TypeSwitch demo</title>
+    <link rel="stylesheet" href="./fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="./css/fwtoolkit.css">
+    <link rel="stylesheet" href="./demo.css">
+    <style>
+        body { padding: 2rem; }
+        #switch-host { margin-top: 1rem; }
+        .demo-value { margin-top: 1rem; font-family: monospace; }
+    </style>
+    <script type="importmap">
+    {
+        "imports": {
+            "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+            "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+        }
+    }
+    </script>
+    <script>
+        window.gettext = s => s;
+        window.staticUrl = s => s;
+        window.interpolate = (fmt, arr) => fmt.replace(/%s/g, () => arr.shift());
+    </script>
+</head>
+<body>
+    <h1>TypeSwitch demo</h1>
+    <p>Sliding two-state toggle rendered by <code>fwtoolkit/TypeSwitch</code>.</p>
+    <div id="switch-host"></div>
+    <p class="demo-value">Current mode: <span id="mode-value">1</span></p>
+
+    <script type="module">
+        import { TypeSwitch } from "./dist/index.js";
+
+        const modeValue = document.getElementById("mode-value");
+        new TypeSwitch({
+            dom: document.getElementById("switch-host"),
+            label1: "Plain text",
+            label2: "Rich text",
+            render1: () => "<input type='text' placeholder='Enter plain text'>",
+            render2: () => "<textarea placeholder='Enter rich text'></textarea>",
+            onChange: mode => { modeValue.textContent = String(mode); }
+        });
+    </script>
+</body>
+</html>

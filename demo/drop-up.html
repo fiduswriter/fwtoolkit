@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fwtoolkit — Drop-up demo</title>
+    <link rel="stylesheet" href="./fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="./css/fwtoolkit.css">
+    <link rel="stylesheet" href="./demo.css">
+    <style>
+        body { padding: 2rem; }
+        #drop-up-anchor {
+            position: relative;
+            display: inline-block;
+            margin-top: 8rem;
+        }
+        pre { background: #f4f4f4; padding: 1rem; overflow: auto; }
+    </style>
+    <script type="importmap">
+    {
+        "imports": {
+            "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+            "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+        }
+    }
+    </script>
+    <script>
+        window.gettext = s => s;
+        window.interpolate = (fmt, arr) => fmt.replace(/%s/g, () => arr.shift());
+    </script>
+</head>
+<body>
+    <h1>Drop-up demo</h1>
+    <p>A generic drop-up widget with keyboard navigation. Focus the button and press <kbd>Enter</kbd> or click it to open the drop-up.</p>
+    <div id="drop-up-anchor">
+        <button id="trigger" class="fw-button fw-light">Open drop-up</button>
+    </div>
+    <pre id="log">Actions will be logged here…</pre>
+
+    <script type="module">
+        import { DropUp } from "./dist/index.js";
+
+        const log = msg => {
+            const el = document.getElementById("log");
+            el.textContent = `${new Date().toLocaleTimeString()} — ${msg}\n` + el.textContent;
+        };
+
+        const dropUp = new DropUp({
+            head: "<div class=\"link-title\">Contributor</div>",
+            options: [
+                { title: "Edit", className: "edit-contributor", action: () => log("Edit") },
+                { title: "Remove", className: "remove-contributor", action: () => log("Remove") }
+            ],
+            onClose: () => log("Drop-up closed")
+        });
+
+        const anchor = document.getElementById("drop-up-anchor");
+        anchor.appendChild(dropUp.render());
+
+        document.getElementById("trigger").addEventListener("click", () => {
+            dropUp.open();
+        });
+    </script>
+</body>
+</html>

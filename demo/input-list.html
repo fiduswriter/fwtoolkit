@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fwtoolkit — InputList demo</title>
+    <link rel="stylesheet" href="./fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="./css/fwtoolkit.css">
+    <link rel="stylesheet" href="./demo.css">
+    <style>
+        body { padding: 2rem; }
+        #list-host { margin-top: 1rem; max-width: 500px; }
+        .demo-value { margin-top: 1rem; font-family: monospace; }
+    </style>
+    <script type="importmap">
+    {
+        "imports": {
+            "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+            "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+        }
+    }
+    </script>
+    <script>
+        window.gettext = s => s;
+        window.staticUrl = s => s;
+        window.interpolate = (fmt, arr) => fmt.replace(/%s/g, () => arr.shift());
+    </script>
+</head>
+<body>
+    <h1>InputList demo</h1>
+    <p>Add/remove list rendered by <code>fwtoolkit/InputList</code>.</p>
+    <div id="list-host"></div>
+    <p class="demo-value">Values: <span id="list-value">[]</span></p>
+
+    <script type="module">
+        import { InputList } from "./dist/index.js";
+
+        const valueEl = document.getElementById("list-value");
+        const updateValue = values => { valueEl.textContent = JSON.stringify(values); };
+
+        new InputList({
+            dom: document.getElementById("list-host"),
+            initialValues: ["First item"],
+            emptyValue: "",
+            renderItem: value => ({ html: `<input type='text' value="${value}" style="width:100%">` }),
+            getValue: el => el.querySelector("input").value,
+            onChange: updateValue
+        });
+    </script>
+</body>
+</html>

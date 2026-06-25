@@ -41,6 +41,8 @@
 
 .fw-pulldown > ul {
     position: relative;
+    list-style: none;
+    margin: 0;
     padding: 12px 0;
     border: 0 none;
 }
@@ -61,8 +63,10 @@
     cursor: pointer;
 }
 
-.disabled .fw-pulldown-item {
+.disabled .fw-pulldown-item,
+.fw-pulldown-item.disabled {
     color: var(--cs-disabled);
+    cursor: not-allowed;
 }
 
 .fw-pulldown-item.selected {

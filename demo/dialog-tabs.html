@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fwtoolkit — DialogTabs demo</title>
+    <link rel="stylesheet" href="./fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="./css/fwtoolkit.css">
+    <link rel="stylesheet" href="./demo.css">
+    <style>
+        body { padding: 2rem; }
+        .demo-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; }
+        #tab-container { max-width: 600px; }
+    </style>
+    <script type="importmap">
+    {
+        "imports": {
+            "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+            "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+        }
+    }
+    </script>
+    <script>
+        window.gettext = s => s;
+        window.staticUrl = s => s;
+        window.interpolate = (fmt, arr) => fmt.replace(/%s/g, () => arr.shift());
+    </script>
+</head>
+<body>
+    <h1>DialogTabs demo</h1>
+    <p>Tab switching rendered by <code>fwtoolkit/DialogTabs</code>.</p>
+    <div class="demo-actions">
+        <button id="show-tab-0" class="fw-button fw-light">Show first tab</button>
+        <button id="show-tab-1" class="fw-button fw-light">Show second tab</button>
+    </div>
+    <div id="tab-container"></div>
+
+    <script type="module">
+        import { DialogTabs } from "./dist/index.js";
+
+        const tabs = new DialogTabs([
+            {
+                title: "General",
+                description: "General settings",
+                template: () => "<p>This is the general settings tab.</p>"
+            },
+            {
+                title: "Advanced",
+                description: "Advanced settings",
+                template: () => "<p>This is the advanced settings tab.</p>"
+            }
+        ]);
+
+        const container = document.getElementById("tab-container");
+        container.innerHTML = tabs.render();
+        tabs.bind(container);
+
+        document.getElementById("show-tab-0").addEventListener("click", () => tabs.showTab(0));
+        document.getElementById("show-tab-1").addEventListener("click", () => tabs.showTab(1));
+    </script>
+</body>
+</html>

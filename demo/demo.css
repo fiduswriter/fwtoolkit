@@ -13,6 +13,7 @@ body {
     padding: 40px;
     background: var(--main-background-color);
     color: var(--main-text-color);
+    overflow-y: initial;
 }
 
 .demo-container {

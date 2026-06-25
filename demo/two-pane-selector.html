@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fwtoolkit — TwoPaneSelector demo</title>
+    <link rel="stylesheet" href="./fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="./css/fwtoolkit.css">
+    <link rel="stylesheet" href="./demo.css">
+    <style>
+        body { padding: 2rem; }
+        #selector-host { margin-top: 1rem; }
+        .demo-value { margin-top: 1rem; font-family: monospace; }
+    </style>
+    <script type="importmap">
+    {
+        "imports": {
+            "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+            "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+        }
+    }
+    </script>
+    <script>
+        window.gettext = s => s;
+        window.staticUrl = s => s;
+        window.interpolate = (fmt, arr) => fmt.replace(/%s/g, () => arr.shift());
+    </script>
+</head>
+<body>
+    <h1>TwoPaneSelector demo</h1>
+    <p>Two-pane add/remove selector rendered by <code>fwtoolkit/TwoPaneSelector</code>.</p>
+    <div id="selector-host"></div>
+    <p class="demo-value">Selected: <span id="selector-value">[]</span></p>
+
+    <script type="module">
+        import { TwoPaneSelector } from "./dist/index.js";
+
+        const valueEl = document.getElementById("selector-value");
+        new TwoPaneSelector({
+            dom: document.getElementById("selector-host"),
+            availableItems: [
+                { id: 1, name: "Alice" },
+                { id: 2, name: "Bob" },
+                { id: 3, name: "Carol" }
+            ],
+            selectedItems: [],
+            renderItem: item => `<span>${item.name}</span>`,
+            getItemId: item => String(item.id),
+            leftTitle: "Available",
+            rightTitle: "Selected",
+            removeButtonTitle: "Remove",
+            onChange: selected => { valueEl.textContent = JSON.stringify(selected.map(i => i.name)); }
+        });
+    </script>
+</body>
+</html>

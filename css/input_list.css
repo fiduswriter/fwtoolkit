@@ -1,0 +1,33 @@
+.input-list-wrapper {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.input-list-wrapper tr {
+    vertical-align: top;
+}
+
+.input-list-wrapper td {
+    padding: 2px 0;
+}
+
+.input-list-item-cell {
+    width: 100%;
+}
+
+.input-field-list-ctrl {
+    white-space: nowrap;
+    padding-left: 8px;
+    padding-top: 10px;
+    color: var(--cs-light-text);
+}
+
+.input-field-list-ctrl .fa-minus-circle,
+.input-field-list-ctrl .fa-plus-circle {
+    cursor: pointer;
+}
+
+.input-list-wrapper tr.fw-form-error .input-list-item-cell input,
+.input-list-wrapper tr.fw-form-error .input-list-item-cell textarea {
+    background-color: var(--input-error-background-color);
+}

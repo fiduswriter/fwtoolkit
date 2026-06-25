@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fwtoolkit — OverviewDataTable demo</title>
+    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../css/fwtoolkit.css">
+    <link rel="stylesheet" href="../demo.css">
+    <style>
+        body { padding: 2rem; margin: 0; box-sizing: border-box; }
+        #overview-host { margin-top: 1rem; max-width: 100%; overflow-x: auto; }
+        .demo-value { margin-top: 1rem; font-family: monospace; }
+        .demo-actions { margin-top: 1rem; }
+    </style>
+    <script type="importmap">
+    {
+        "imports": {
+            "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+            "diff-dom": "https://esm.sh/diff-dom@5.2.1",
+            "simple-datatables": "https://esm.sh/simple-datatables@10.2.0"
+        }
+    }
+    </script>
+    <script>
+        window.gettext = s => s;
+        window.staticUrl = s => s;
+        window.interpolate = (fmt, arr) => fmt.replace(/%s/g, () => arr.shift());
+    </script>
+</head>
+<body>
+    <h1>OverviewDataTable demo</h1>
+    <p>Overview table with checkboxes, bulk actions, sorting and keyboard navigation.</p>
+    <div id="overview-host"></div>
+    <p class="demo-value">Selected ids: <span id="overview-value">[]</span></p>
+    <div class="demo-actions">
+        <button id="add-row" class="fw-button fw-light">Add row</button>
+        <button id="remove-selected" class="fw-button fw-light">Remove selected</button>
+    </div>
+
+    <script type="module">
+        import { OverviewDataTable } from "../dist/index.js";
+
+        const valueEl = document.getElementById("overview-value");
+        const updateValue = selected => { valueEl.textContent = JSON.stringify(selected); };
+
+        let nextId = 4;
+        let rows = [
+            { cells: [1, false, "Alice", "alice@example.com", "2024-01-15"] },
+            { cells: [2, false, "Bob", "bob@example.com", "2024-02-20"] },
+            { cells: [3, false, "Carol", "carol@example.com", "2024-03-10"] }
+        ];
+
+        const dt = new OverviewDataTable({
+            dom: document.getElementById("overview-host"),
+            columns: [
+                { select: 0, hidden: true },
+                { select: 1, sortable: false },
+                { select: 2, title: "Name" },
+                { select: 3, title: "Email" },
+                { select: 4, title: "Date", type: "date" }
+            ],
+            data: rows,
+            searchable: true,
+            scrollY: "300px",
+            bulkMenu: {
+                content: [
+                    {
+                        title: "Delete selected",
+                        icon: "fa fa-trash",
+                        action: () => {
+                            const selected = dt.getSelected();
+                            dt.removeRows(selected);
+                            updateValue(dt.getSelected());
+                        }
+                    },
+                    {
+                        title: "Show selected",
+                        icon: "fa fa-eye",
+                        action: () => {
+                            alert("Selected ids: " + JSON.stringify(dt.getSelected()));
+                        }
+                    }
+                ]
+            },
+            onSelectionChange: selected => updateValue(selected),
+            onEnter: (row) => {
+                alert("Opened row with id " + row.cells[0].text);
+            },
+            onDelete: (row) => {
+                dt.removeRows([row.cells[0].text]);
+                updateValue(dt.getSelected());
+            }
+        });
+        dt.init();
+
+        document.getElementById("add-row").addEventListener("click", () => {
+            const id = nextId++;
+            rows.push({ cells: [id, false, "User " + id, "user" + id + "@example.com", "2024-04-01"] });
+            dt.update(rows);
+            updateValue(dt.getSelected());
+        });
+
+        document.getElementById("remove-selected").addEventListener("click", () => {
+            dt.removeRows(dt.getSelected());
+            updateValue(dt.getSelected());
+        });
+    </script>
+</body>
+</html>

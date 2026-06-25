@@ -45,6 +45,14 @@ export {ContentMenu} from "./content_menu.js"
 export {makeWorker} from "./worker.js"
 export {WebSocketConnector} from "./ws.js"
 export {DatatableBulk} from "./datatable_bulk.js"
+export {
+    OverviewDataTable,
+    OverviewDataTableOptions
+} from "./datatable/overview.js"
+export {
+    SelectionDataTable,
+    SelectionDataTableOptions
+} from "./datatable/selection.js"
 export {DialogTabs, DialogTab} from "./dialog_tabs.js"
 export {TypeSwitch, TypeSwitchOptions} from "./type_switch.js"
 export {InputList, InputListOptions, InputListItemRenderResult} from "./input_list.js"

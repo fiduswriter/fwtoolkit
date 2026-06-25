@@ -5,7 +5,7 @@ import {ContentMenu, ContentMenuInit} from "./content_menu.js"
 
 export interface DataTableCell {
     data: unknown
-    text: string
+    text?: string
 }
 
 export interface DataTableRow {
@@ -33,6 +33,7 @@ export class DatatableBulk {
     page: DatatableBulkPage
     model: ContentMenuInit
     checkboxColumn: number
+    onChange?: () => void
 
     id: string
     table: DataTable | undefined
@@ -43,11 +44,13 @@ export class DatatableBulk {
     constructor(
         page: DatatableBulkPage,
         model: ContentMenuInit,
-        checkboxColumn: number
+        checkboxColumn: number,
+        onChange?: () => void
     ) {
         this.page = page
         this.model = model
         this.checkboxColumn = checkboxColumn
+        this.onChange = onChange
 
         this.id = `dt-bulk-${++bulkId}`
     }
@@ -165,6 +168,9 @@ export class DatatableBulk {
         }
 
         this.onTableCheckChange()
+        if (this.onChange) {
+            this.onChange()
+        }
     }
 
     onTableCheckChange(): void {
@@ -231,6 +237,9 @@ export class DatatableBulk {
             cell.text = String(cell.data)
             this.table!.update()
             this.onTableCheckChange()
+            if (this.onChange) {
+                this.onChange()
+            }
         }
     }
 

@@ -3,6 +3,19 @@ table.fw-data-table {
     line-height: 1.25;
 }
 
+/* Prevent the search/top bar from overflowing a padded parent */
+.datatable-top,
+.datatable-container,
+.datatable-search,
+.datatable-search .datatable-input {
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+.datatable-search .datatable-input {
+    width: auto;
+}
+
 table.fw-data-table:focus {
     outline: none;
 }
@@ -156,14 +169,29 @@ table.fw-data-table:focus > tbody > tr.fw-datatable-cursor {
 
 table.fw-data-table tbody td.checkable {
     position: relative;
+    cursor: pointer;
+    text-align: center;
 }
 
 table.fw-data-table tbody tr.fw-checked td.checkable::after {
+    display: inline-block;
+    font-family: "Font Awesome 7 Free", "Font Awesome 6 Free", "FontAwesome", monospace;
+    font-weight: 900;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: "\f00c";
     width: 1em;
     height: 1em;
     position: absolute;
     right: 12px;
     top: 12px;
+}
+
+/* Selection tables (e.g. dialog pickers) */
+table.fw-data-table.fw-selection-table tbody tr {
+    cursor: pointer;
 }
 
 /* Word counter dialog table */

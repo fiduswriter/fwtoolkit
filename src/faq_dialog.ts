@@ -13,14 +13,14 @@ export interface FAQDialogOptions {
 }
 
 const faqTemplate = ({escapedQuestions}: {escapedQuestions: [string, string][]}) =>
-    `<div class="faq">
-    <ol class="faq-list">
+    `<div class="fw-faq">
+    <ol class="fw-faq-list">
         ${escapedQuestions
             .map(
-                question => `<li class="faq-item">
+                question => `<li class="fw-faq-item">
                 <div>
-                    <div class="faq-question fw-button fw-light"><i class="fa-solid fa-plus-circle"></i>${question[0]}</div>
-                    <div class="faq-answer" style="display: none;">${question[1]}</div>
+                    <div class="fw-faq-question fw-button fw-light"><i class="fa-solid fa-plus-circle"></i>${question[0]}</div>
+                    <div class="fw-faq-answer" style="display: none;">${question[1]}</div>
                 </div>
             </li>`
             )
@@ -62,7 +62,7 @@ export class faqDialog {
     open(): void {
         this.faqDialog.open()
         this.faqDialog.dialogEl!
-            .querySelectorAll(".faq-question")
+            .querySelectorAll(".fw-faq-question")
             .forEach(element => {
                 element.addEventListener("click", () => {
                     const iconEle = element.firstElementChild as HTMLElement

@@ -200,9 +200,7 @@ export class OverviewMenuView {
                             : 0
                 }
 
-                const nextMenuItem = menuItems[newIndex].querySelector(
-                    ".fw-dropdown-menu, .fw-text-menu, button, input"
-                )
+                const nextMenuItem = menuItems[newIndex].querySelector(".fw-dropdown-menu, .fw-text-menu, button, input")
                 if (nextMenuItem) {
                     (nextMenuItem as HTMLElement).focus()
                 }
@@ -420,9 +418,7 @@ export class OverviewMenuView {
             }
             return false
         } else if (
-            target.matches(
-                "#fw-overview-menu li .select-action input[type=checkbox]"
-            )
+            target.matches("#fw-overview-menu li .fw-select-action input[type=checkbox]")
         ) {
             event.preventDefault()
             event.stopImmediatePropagation()
@@ -509,7 +505,7 @@ export class OverviewMenuView {
         return `<ul id="fw-overview-menu">${this.model.content
             .map(
                 menuItem =>
-                    `<li class="fw-overview-menu-item${menuItem.id ? ` ${menuItem.id}` : ""} ${menuItem.type}">${this.getMenuItemHTML(
+                    `<li class="fw-overview-menu-item${menuItem.id ? ` ${menuItem.id}` : ""} fw-${menuItem.type}">${this.getMenuItemHTML(
                         menuItem
                     )}</li>`
             )
@@ -525,7 +521,7 @@ export class OverviewMenuView {
         if (index === -1) {
             return escapeText(title)
         }
-        return `${escapeText(title.substring(0, index))}<span class="access-key">${escapeText(
+        return `${escapeText(title.substring(0, index))}<span class="fw-access-key">${escapeText(
             title.charAt(index)
         )}</span>${escapeText(title.substring(index + 1))}`
     }
@@ -557,9 +553,9 @@ export class OverviewMenuView {
 
     getSelectionActionDropdownHTML(menuItem: OverviewMenuSelectActionDropdownItem): string {
         return `
-        <div class="select-action fw-button fw-light fw-large">
+        <div class="fw-select-action fw-button fw-light fw-large">
             <input type="checkbox" ${menuItem.checked ? "checked" : ""}>
-            <span class="select-action-dropdown"><i class="fa-solid fa-caret-down"></i></span>
+            <span class="fw-select-action-dropdown"><i class="fa-solid fa-caret-down"></i></span>
         </div>
         ${this.getDropdownListHTML(menuItem)}
         `
@@ -614,7 +610,7 @@ export class OverviewMenuView {
         const isSelected = menuItem.selectedIndex === index
         return `
       <li role="none">
-          <span class="fw-pulldown-item${isSelected ? " selected" : ""}"
+          <span class="fw-pulldown-item${isSelected ? " fw-selected" : ""}"
                 role="menuitem" tabindex="0">
               ${escapeText(menuOption.title)}
           </span>
@@ -655,7 +651,7 @@ export class OverviewMenuView {
     getSearchHTML(menuItem: OverviewMenuSearchItem): string {
         const accessKey = menuItem.keys?.split("-")[1]
         return `
-        <div class="fw-button fw-light fw-large disabled fw-search-field-container">
+        <div class="fw-button fw-light fw-large fw-disabled fw-search-field-container">
             <label for="${menuItem.id}-input" class="fw-search-label">
                 ${this.getAccessKeyHTML(menuItem.title || "", accessKey)}
             </label>

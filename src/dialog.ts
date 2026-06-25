@@ -78,44 +78,42 @@ const dialogTemplate = ({
     blur: boolean
 }) =>
     `<div tabindex="-1" role="dialog"
-        class="ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-dialog-buttons"
+        class="fw-dialog"
         ${id ? `aria-describedby="${id}"` : ""} style="z-index: ${zIndex};">
-    <div class="ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix">
+    <div class="fw-dialog-titlebar">
         ${icon ? `<i class="fa fa-${icon}" aria-hidden="true"></i>` : ""}
-        <span id="ui-id-2" class="ui-dialog-title">${title}</span>
+        <span class="fw-dialog-title">${title}</span>
         ${
             help
-                ? `<button type="button" class="ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-help" title="${gettext("Help")}">
-            <span class="ui-button-icon ui-icon ui-icon-help"> </span>
-            <span class="ui-button-icon-space"> </span>
+                ? `<button type="button" class="fw-dialog-titlebar-button fw-dialog-button-icon-only fw-dialog-titlebar-help" title="${gettext("Help")}">
+            <span class="fw-icon fw-icon-help"> </span>
             ${gettext("Help")}
         </button>`
                 : ""
         }
         ${
             canClose
-                ? `<button type="button" class="ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close" title="${gettext("Close")}">
-            <span class="ui-button-icon ui-icon ui-icon-closethick"> </span>
-            <span class="ui-button-icon-space"> </span>
+                ? `<button type="button" class="fw-dialog-titlebar-button fw-dialog-button-icon-only fw-dialog-titlebar-close" title="${gettext("Close")}">
+            <span class="fw-icon fw-icon-close"> </span>
             ${gettext("Close")}
         </button>`
                 : ""
         }
 
     </div>
-    <div ${id ? `id="${id}"` : ""} class="ui-dialog-content ui-widget-content${classes ? ` ${classes}` : ""}${scroll ? " ui-scrollable" : ""}" style="width: ${width}; height: ${height};">
-        ${note.text ? `<div class="note-container">${noteTemplate(note)}</div>` : ""}
+    <div ${id ? `id="${id}"` : ""} class="fw-dialog-content${classes ? ` ${classes}` : ""}${scroll ? " fw-scrollable" : ""}" style="width: ${width}; height: ${height};">
+        ${note.text ? `<div class="fw-note-container">${noteTemplate(note)}</div>` : ""}
         ${body}
     </div>
-    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-        <div class="ui-dialog-buttonset">${buttonsTemplate({buttons})}</div>
+    <div class="fw-dialog-buttonpane">
+        <div class="fw-dialog-buttonset">${buttonsTemplate({buttons})}</div>
     </div>
 </div>
-<div class="ui-widget-overlay ui-front${blur === false ? " no-blur" : ""}" style="z-index: ${zIndex - 1}"></div>`
+<div class="fw-overlay${blur === false ? " fw-no-blur" : ""}" style="z-index: ${zIndex - 1}"></div>`
 
 const noteTemplate = (note: NoteSpec): string => {
     return note.text
-        ? `<p class="noteEl ${note.display ? "" : "hide"}">${note.text}</p>`
+        ? `<p class="fw-note-el ${note.display ? "" : "fw-hide"}">${note.text}</p>`
         : ""
 }
 
@@ -127,7 +125,7 @@ const buttonTemplate = ({
     classes,
     icon,
     dropdown
-}: InternalDialogButton): string => `<button type="button" class="${classes ? classes : "fw-light"} fw-button ui-button ui-corner-all ui-widget">
+}: InternalDialogButton): string => `<button type="button" class="${classes ? classes : "fw-light"} fw-button">
     ${icon ? `<i class="fa fa-${icon}" aria-hidden="true"></i>` : ""}
     ${text}
     ${dropdown ? '<i class="fa fa-caret-down" aria-hidden="true"></i>' : ""}
@@ -295,7 +293,7 @@ export class Dialog {
         this.dialogEl.setAttribute("aria-modal", "true")
         if (this.title) {
             this.dialogEl.setAttribute("aria-labelledby", "dialog-title")
-            const titleEl = this.dialogEl.querySelector(".ui-dialog-title") as HTMLElement
+            const titleEl = this.dialogEl.querySelector(".fw-dialog-title") as HTMLElement
             titleEl.id = "dialog-title"
         }
 
@@ -318,12 +316,12 @@ export class Dialog {
     }
 
     refreshButtons(): void {
-        const buttonSet = this.dialogEl.querySelector(".ui-dialog-buttonset")!
+        const buttonSet = this.dialogEl.querySelector(".fw-dialog-buttonset")!
         buttonSet.innerHTML = buttonsTemplate({buttons: this.buttons})
     }
 
     refreshNote(): void {
-        const noteContainer = this.dialogEl.querySelector(".note-container")!
+        const noteContainer = this.dialogEl.querySelector(".fw-note-container")!
         noteContainer.innerHTML = noteTemplate(this.note)
     }
 
@@ -414,7 +412,7 @@ export class Dialog {
         this.dialogEl.addEventListener("click", event => {
             const el: {target?: Element | null} = {}
             switch (true) {
-                case findTarget(event, ".ui-dialog-buttonpane button", el): {
+                case findTarget(event, ".fw-dialog-buttonpane button", el): {
                     event.preventDefault()
                     let buttonNumber = 0
                     let seekItem = el.target as Element
@@ -425,11 +423,11 @@ export class Dialog {
                     this.buttons[buttonNumber].click(event)
                     break
                 }
-                case findTarget(event, ".ui-dialog-titlebar-close", el):
+                case findTarget(event, ".fw-dialog-titlebar-close", el):
                     event.preventDefault()
                     this.close()
                     break
-                case findTarget(event, ".ui-dialog-titlebar-help", el):
+                case findTarget(event, ".fw-dialog-titlebar-help", el):
                     event.preventDefault()
                     if (this.help) {
                         this.help()
@@ -445,7 +443,7 @@ export class Dialog {
             this.dialogEl.addEventListener("mousedown", event => {
                 const el: {target?: Element | null} = {}
                 switch (true) {
-                    case findTarget(event, ".ui-dialog-titlebar", el):
+                    case findTarget(event, ".fw-dialog-titlebar", el):
                         this.dragging = {
                             x: (event as MouseEvent).clientX - this.dialogEl.offsetLeft,
                             y: (event as MouseEvent).clientY - this.dialogEl.offsetTop
@@ -458,7 +456,7 @@ export class Dialog {
             this.dialogEl.addEventListener("mouseup", event => {
                 const el: {target?: Element | null} = {}
                 switch (true) {
-                    case findTarget(event, ".ui-dialog-titlebar", el):
+                    case findTarget(event, ".fw-dialog-titlebar", el):
                         this.dragging = false
                         break
                     default:
@@ -490,7 +488,7 @@ export class Dialog {
     nextDialogZIndex(): number {
         let zIndex = 100
         document
-            .querySelectorAll("div.ui-dialog")
+            .querySelectorAll("div.fw-dialog")
             .forEach(
                 dialogEl => (zIndex = Math.max(zIndex, parseInt((dialogEl as HTMLElement).style.zIndex) || 100))
             )
@@ -538,15 +536,15 @@ export class Dialog {
             // First try to find a text input
             elements.find(el => el.tagName === "INPUT" && (el as HTMLInputElement).type === "text"),
             // Then try to find the first button in the button pane
-            elements.find(el => el.closest(".ui-dialog-buttonpane")),
+            elements.find(el => el.closest(".fw-dialog-buttonpane")),
             // Then try to find any input
             elements.find(el => el.tagName === "INPUT"),
             // Then try to find any button except close/help
             elements.find(
                 el =>
                     el.tagName === "BUTTON" &&
-                    !el.classList.contains("ui-dialog-titlebar-close") &&
-                    !el.classList.contains("ui-dialog-titlebar-help")
+                    !el.classList.contains("fw-dialog-titlebar-close") &&
+                    !el.classList.contains("fw-dialog-titlebar-help")
             )
         ]
 

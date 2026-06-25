@@ -24,9 +24,7 @@ export class DropUp {
         this.focusedIndex = -1
         this.isOpen = false
         this.element = this.buildElement()
-        this.listElement = this.element.querySelector(
-            ".fw-drop-up-options"
-        ) as HTMLElement
+        this.listElement = this.element.querySelector(".fw-drop-up-options") as HTMLElement
         this.bindEvents()
     }
 
@@ -152,7 +150,7 @@ export class DropUp {
             this.listElement.querySelectorAll(".fw-drop-up-option")
         )
         if (options[index]) {
-            options[index].classList.remove("focused")
+            options[index].classList.remove("fw-focused")
         }
         if (this.focusedIndex === index) {
             this.focusedIndex = -1
@@ -163,12 +161,12 @@ export class DropUp {
         const options = Array.from(
             this.listElement.querySelectorAll(".fw-drop-up-option")
         )
-        options.forEach(option => option.classList.remove("focused"))
+        options.forEach(option => option.classList.remove("fw-focused"))
         if (
             this.focusedIndex >= 0 &&
             this.focusedIndex < options.length
         ) {
-            options[this.focusedIndex].classList.add("focused")
+            options[this.focusedIndex].classList.add("fw-focused")
         }
     }
 

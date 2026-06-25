@@ -1,4 +1,4 @@
-.ui-content-menu {
+.fw-content-menu {
     position: absolute;
     color: var(--cs-white-text);
     background-color: var(--cs-white-background);
@@ -13,17 +13,17 @@
     outline: 0;
 }
 
-.ui-content-menu-content.ui-scrollable {
+.fw-content-menu-content.fw-scrollable {
     overflow-y: scroll;
 }
 
-.ui-content-menu-content {
+.fw-content-menu-content {
     position: relative;
     margin-top: 8px;
     overflow: hidden;
 }
 
-.ui-widget-overlay {
+.fw-overlay {
     position: fixed;
     left: 0;
     top: 0;
@@ -34,17 +34,17 @@
     backdrop-filter: blur(2px);
 }
 
-.ui-widget-overlay.no-blur {
+.fw-overlay.fw-no-blur {
     backdrop-filter: none;
 }
 
-.content-menu-list {
+.fw-content-menu-list {
     list-style: none;
     padding: 0 0 5px;
     cursor: pointer;
 }
 
-.content-menu-item {
+.fw-content-menu-item {
     padding: 18px 31px 15px;
     color: var(--cs-white-text);
     font-family: Lato, sans-serif;
@@ -53,33 +53,33 @@
     line-height: 1em;
 }
 
-.content-menu-item.disabled {
+.fw-content-menu-item.fw-disabled {
     pointer-events: none;
     opacity: 0.6;
 }
 
-.content-menu-item.selected {
+.fw-content-menu-item.fw-selected {
     color: var(--cs-white-selected);
     background-color: var(--cs-white-background-selected);
 }
 
-.content-menu-item:hover {
+.fw-content-menu-item:hover {
     color: var(--cs-white-hover);
     background-color: var(--cs-white-background-hover);
 }
 
-.content-menu-item:focus {
+.fw-content-menu-item:focus {
     color: var(--cs-white-focus);
     background-color: var(--cs-white-background-focus);
     outline: none;
 }
 
-.content-menu-item-divider {
+.fw-content-menu-item-divider {
     border: 0 none;
     border-top: 1px solid var(--pulldown-separator-color) !important;
 }
 
-.content-menu-item-header {
+.fw-content-menu-item-header {
     line-height: 18px;
     background-color: var(--pulldown-header-background-color);
     color: var(--pulldown-header-text-color);
@@ -87,18 +87,18 @@
     text-align: center;
 }
 
-.content-menu-item-icon {
+.fw-content-menu-item-icon {
     position: absolute;
     right: 40px;
     color: var(--cs-white-text);
 }
 
-.content-menu-columns {
+.fw-content-menu-columns {
     display: flex;
     flex-direction: row;
 }
 
-.content-menu-columns .content-menu-list {
+.fw-content-menu-columns .fw-content-menu-list {
     flex: 1 0 200px;
     min-width: 200px;
     padding: 0 0 5px;

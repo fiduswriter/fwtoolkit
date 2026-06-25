@@ -8,17 +8,17 @@ table.fw-data-table:focus {
 }
 
 table.fw-data-table thead,
-table.datatable-table thead {
+table.fw-datatable-table thead {
     font-weight: 900;
     font-size: 11px;
 }
 
-table.datatable-table thead th a {
+table.fw-datatable-table thead th a {
     color: var(--cs-1-hover);
 }
 
 table.fw-data-table td,
-table.datatable-table td {
+table.fw-datatable-table td {
     padding: 15px 0;
     vertical-align: top;
     border-bottom: solid 1px var(--cs-white-border);
@@ -30,7 +30,7 @@ table.fw-data-table tbody td {
 }
 
 table.fw-data-table th,
-table.datatable-table th {
+table.fw-datatable-table th {
     padding: 15px 0;
     vertical-align: top;
     border-bottom: solid 1px var(--cs-white-header-border);
@@ -38,8 +38,8 @@ table.datatable-table th {
 
 table.fw-data-table th:last-child,
 table.fw-data-table td:last-child,
-table.datatable-table th:last-child,
-table.datatable-table td:last-child {
+table.fw-datatable-table th:last-child,
+table.fw-datatable-table td:last-child {
     padding-right: 0;
 }
 
@@ -47,8 +47,8 @@ table.fw-data-table:focus tbody td {
     border-bottom-color: var(--menu-cursor-border-color);
 }
 
-table.fw-data-table .date,
-table.datatable-table .date {
+table.fw-data-table .fw-date,
+table.fw-datatable-table .fw-date {
     white-space: nowrap;
 }
 
@@ -86,11 +86,11 @@ table.fw-data-table-title i.fas {
     margin-right: 10px;
 }
 
-table.fw-data-table .icon-trash {
+table.fw-data-table .fw-icon-trash {
     font-size: 15px;
 }
 
-.owned-by-user .icon-access-right,
+.fw-owned-by-user .fw-icon-access-right,
 table.fw-data-table .fa-clock,
 table.fw-data-table .fa-trash,
 table.fw-data-table .fa-download,
@@ -99,7 +99,7 @@ table.fw-data-table .fa-history {
     cursor: pointer;
 }
 
-.owned-by-user .icon-access-right:hover,
+.fw-owned-by-user .fw-icon-access-right:hover,
 table.fw-data-table .fa-clock:hover,
 table.fw-data-table .fa-trash:hover,
 table.fw-data-table .fa-download:hover,
@@ -108,7 +108,7 @@ table.fw-data-table .fa-history:hover {
 }
 
 /* A deleted access rights row */
-.collaborator-tr[data-right="delete"] {
+.fw-collaborator-tr[data-right="delete"] {
     display: none;
 }
 
@@ -125,7 +125,7 @@ table.fw-data-table > tbody > tr > td:first-child {
     padding-left: 2px;
 }
 
-table.fw-data-table:focus > tbody > tr.datatable-cursor {
+table.fw-data-table:focus > tbody > tr.fw-datatable-cursor {
     background-color: var(--cs-white-background-selected);
 }
 
@@ -158,7 +158,7 @@ table.fw-data-table tbody td.checkable {
     position: relative;
 }
 
-table.fw-data-table tbody tr.checked td.checkable::after {
+table.fw-data-table tbody tr.fw-checked td.checkable::after {
     width: 1em;
     height: 1em;
     position: absolute;
@@ -172,18 +172,18 @@ table.fw-data-table tbody tr.checked td.checkable::after {
 }
 
 /* Bulk action */
-.dt-bulk {
+.fw-dt-bulk {
     display: block;
     position: relative;
     min-width: 30px;
 }
 
-.dt-bulk .fw-check + label {
+.fw-dt-bulk .fw-check + label {
     display: inline-block;
     vertical-align: middle;
 }
 
-.dt-bulk-dropdown {
+.fw-dt-bulk-dropdown {
     display: inline-block;
     vertical-align: middle;
     padding-left: 3px;

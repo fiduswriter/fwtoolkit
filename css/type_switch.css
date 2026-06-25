@@ -1,4 +1,4 @@
-.type-switch {
+.fw-type-switch {
     position: relative;
     width: 140px;
     height: 38px;
@@ -16,12 +16,12 @@
     cursor: pointer;
 }
 
-.type-switch.disabled {
+.fw-type-switch.fw-disabled {
     color: var(--cs-disabled);
     background-color: var(--cs-disabled-background);
 }
 
-.type-switch-inner {
+.fw-type-switch-inner {
     position: absolute;
     display: block;
     left: 0;
@@ -30,7 +30,7 @@
     transition: left 0.3s;
 }
 
-.type-switch-inner::after {
+.fw-type-switch-inner::after {
     box-sizing: border-box;
     display: block;
     position: absolute;
@@ -44,37 +44,37 @@
     border: 1px solid var(--cs-light-border);
 }
 
-.value2 .type-switch-inner {
+.fw-value2 .fw-type-switch-inner {
     left: calc(-100% + 38px);
 }
 
-.type-switch-label {
+.fw-type-switch-label {
     box-sizing: border-box;
     display: block;
     width: 50%;
     float: left;
 }
 
-.type-switch-label:first-child {
+.fw-type-switch-label:first-child {
     padding-right: 12px;
 }
 
-.type-switch-label:last-child {
+.fw-type-switch-label:last-child {
     padding-left: 12px;
 }
 
-.type-switch-input-wrapper {
+.fw-type-switch-input-wrapper {
     width: 686px;
     max-width: 80vw;
 }
 
-.type-switch-input-wrapper::after {
+.fw-type-switch-input-wrapper::after {
     content: "";
     display: table;
     clear: both;
 }
 
-.type-switch-input-inner {
+.fw-type-switch-input-inner {
     position: relative;
     float: left;
     width: calc(100% - 145px);

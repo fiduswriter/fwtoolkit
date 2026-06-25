@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>fwtoolkit — Web worker demo</title>
-    <link rel="stylesheet" href="./fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="./css/fwtoolkit.css">
-    <link rel="stylesheet" href="./demo.css">
+    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../css/fwtoolkit.css">
+    <link rel="stylesheet" href="../demo.css">
     <style>
         body { padding: 2rem; }
         .demo-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; }
@@ -27,7 +27,7 @@
 </head>
 <body>
     <main class="demo-container">
-        <p><a href="./index.html">&larr; Back to demos</a></p>
+        <p><a href="../index.html">&larr; Back to demos</a></p>
         <h1>makeWorker</h1>
         <p><code>makeWorker</code> creates a same-origin Web Worker from a remote script by loading it via a blob <code>importScripts</code>. This is useful when the worker file lives on a CDN or another origin.</p>
         <div class="demo-actions">
@@ -38,7 +38,7 @@
     </main>
 
     <script type="module">
-        import { makeWorker } from "./dist/index.js";
+        import { makeWorker } from "../dist/index.js";
 
         const log = msg => {
             const el = document.getElementById("log");
@@ -49,7 +49,7 @@
 
         document.getElementById("start-worker").addEventListener("click", () => {
             if (!worker) {
-                worker = makeWorker("./demo-worker.js");
+                worker = makeWorker("../demo-worker.js");
                 worker.addEventListener("message", event => {
                     log(`Worker result: ${event.data.result}`);
                 });

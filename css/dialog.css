@@ -1,4 +1,4 @@
-.ui-dialog {
+.fw-dialog {
     position: absolute;
     background-color: var(--cs-light-background);
     font-size: 14px;
@@ -13,15 +13,15 @@
     user-select: none; /* Prevent interaction with background content */
 }
 
-.ui-dialog-fullpage {
+.fw-dialog-fullpage {
     position: initial !important;
 }
 
-.ui-dialog-content.ui-scrollable {
+.fw-dialog-content.fw-scrollable {
     overflow-y: auto;
 }
 
-.ui-dialog-titlebar {
+.fw-dialog-titlebar {
     position: relative;
     margin: 0 -19px;
     padding: 19px 40px 19px 19px;
@@ -32,36 +32,36 @@
     user-select: none;
 }
 
-.ui-dialog-title {
+.fw-dialog-title {
     font-size: 15px;
     font-weight: 400;
     text-transform: none;
 }
 
-.ui-dialog-titlebar-close {
+.fw-dialog-titlebar-close {
     right: 19px;
 }
 
-.ui-dialog-titlebar-help {
+.fw-dialog-titlebar-help {
     right: 39px;
 }
 
-.ui-button-icon-only {
+.fw-dialog-button-icon-only {
     width: 2em;
     box-sizing: border-box;
     text-indent: -9999px;
     white-space: nowrap;
 }
 
-.ui-dialog-titlebar .ui-button-icon-only {
+.fw-dialog-titlebar .fw-dialog-button-icon-only {
     color: var(--cs-dark-text);
 }
 
-.ui-dialog-titlebar .ui-button-icon-only:hover {
+.fw-dialog-titlebar .fw-dialog-button-icon-only:hover {
     color: var(--cs-dark-hover);
 }
 
-.ui-button-icon-only .ui-icon {
+.fw-dialog-button-icon-only .fw-icon {
     position: absolute;
     top: 0;
     left: 0;
@@ -69,7 +69,7 @@
     margin-left: 0;
 }
 
-.ui-dialog-content {
+.fw-dialog-content {
     position: relative;
     margin-top: 24px;
     overflow: hidden auto;
@@ -79,39 +79,39 @@
     max-width: calc(100vw - 4px);
 }
 
-.input-list-wrapper > tbody > tr:last-child > td {
+.fw-input-list-wrapper > tbody > tr:last-child > td {
     padding-bottom: 0;
 }
 
-.input-list-wrapper td.input-field-list-ctrl {
+.fw-input-list-wrapper td.fw-input-field-list-ctrl {
     padding-right: 20px;
     text-align: right;
     vertical-align: middle;
 }
 
-.input-list-wrapper td.input-field-list-ctrl .fa {
+.fw-input-list-wrapper td.fw-input-field-list-ctrl .fa {
     display: inline;
 }
 
-.entry-field input[type="text"],
-.entry-field input[type="number"] {
+.fw-entry-field input[type="text"],
+.fw-entry-field input[type="number"] {
     margin: 0;
 }
 
-.ui-dialog-buttonpane {
+.fw-dialog-buttonpane {
     padding-top: 20px;
 }
 
-.ui-dialog-buttonset {
+.fw-dialog-buttonset {
     position: relative;
     text-align: right;
 }
 
-.ui-dialog-buttonset .fw-button {
+.fw-dialog-buttonset .fw-button {
     margin-left: 6px;
 }
 
-.ui-widget-overlay {
+.fw-overlay {
     position: fixed;
     left: 0;
     top: 0;
@@ -122,11 +122,11 @@
     backdrop-filter: blur(2px);
 }
 
-.ui-widget-overlay.no-blur {
+.fw-overlay.fw-no-blur {
     backdrop-filter: none;
 }
 
-.ui-dialog-content textarea {
+.fw-dialog-content textarea {
     min-height: 112px;
     min-width: 350px;
     height: auto;
@@ -136,23 +136,23 @@
     display: none;
 }
 
-.ui-dialog-content .noteEl {
+.fw-dialog-content .fw-note-el {
     margin-bottom: 10px;
     font-size: smaller;
     color: var(--error-background-color);
 }
 
-.ui-dialog-content .noteEl.hide {
+.fw-dialog-content .fw-note-el.fw-hide {
     display: none;
 }
 
-.ui-dialog form {
+.fw-dialog form {
     padding: 8px;
 }
 
 /* Rules migrated from the old ui_dialogs.css so that dialogs render correctly
    without loading a separate stylesheet. */
-.ui-dialog-titlebar .ui-button {
+.fw-dialog-titlebar .fw-dialog-titlebar-button {
     font-size: 14px;
     line-height: 1em;
     border: none;
@@ -162,8 +162,8 @@
     cursor: pointer;
 }
 
-.ui-dialog-titlebar-close,
-.ui-dialog-titlebar-help {
+.fw-dialog-titlebar-close,
+.fw-dialog-titlebar-help {
     position: absolute;
     top: 50%;
     width: 20px;
@@ -172,7 +172,7 @@
     padding: 1px;
 }
 
-.ui-button-icon-only .ui-icon::before {
+.fw-dialog-button-icon-only .fw-icon::before {
     display: inline-block;
     font-family: "Font Awesome 7 Free", "Font Awesome 6 Free", "FontAwesome", monospace;
     font-weight: 900;
@@ -183,21 +183,21 @@
     text-indent: 5019px;
 }
 
-.ui-icon-closethick::before {
+.fw-icon-close::before {
     width: 0.7em;
     height: 1em;
     padding-top: 5px;
     content: "\f00d";
 }
 
-.ui-icon-help::before {
+.fw-icon-help::before {
     width: 0.7em;
     height: 1em;
     padding-top: 5px;
     content: "\f128";
 }
 
-.ui-dialog-titlebar .ui-button-icon-only {
+.fw-dialog-titlebar .fw-dialog-button-icon-only {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -206,7 +206,7 @@
     border: none;
 }
 
-.ui-dialog-titlebar .ui-button-icon-only:focus {
+.fw-dialog-titlebar .fw-dialog-button-icon-only:focus {
     outline: 2px solid var(--cs-dark-text);
     outline-offset: 2px;
     border-radius: 4px;

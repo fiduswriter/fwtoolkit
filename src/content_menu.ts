@@ -74,28 +74,28 @@ const menuTemplate = ({
     page: unknown | false
 }) =>
     `<div tabindex="-1" role="incontent_menu"
-        class="ui-content-menu ui-corner-all ui-widget ui-widget-content ui-front"
+        class="fw-content-menu"
         ${id ? `aria-describedby="${id}"` : ""} style="z-index: ${zIndex};">
-    <div ${id ? `id="${id}"` : ""} class="ui-content-menu-content ui-widget-content${classes ? ` ${classes}` : ""}${scroll ? " ui-scrollable" : ""}" style="width: ${width}; height: ${height};">
+    <div ${id ? `id="${id}"` : ""} class="fw-content-menu-content${classes ? ` ${classes}` : ""}${scroll ? " fw-scrollable" : ""}" style="width: ${width}; height: ${height};">
     <div>
-        <ul class="content-menu-list">
+        <ul class="fw-content-menu-list">
         ${menu.content
             .map((menuItem, index) => {
                 switch (menuItem.type) {
                     case "header":
-                        return `<li><span class="content-menu-item-header" title="${menuItem.tooltip || ""}">${
+                        return `<li><span class="fw-content-menu-item-header" title="${menuItem.tooltip || ""}">${
                             typeof menuItem.title === "function"
                                 ? menuItem.title(page)
                                 : menuItem.title
                         }</span></li>`
                     case "separator":
-                        return '<li><hr class="content-menu-item-divider"/></li>'
+                        return '<li><hr class="fw-content-menu-item-divider"/></li>'
                     default:
-                        return `<li tabindex="0" data-index="${index}" class="content-menu-item${
+                        return `<li tabindex="0" data-index="${index}" class="fw-content-menu-item${
                             menuItem.disabled && menuItem.disabled(page)
-                                ? " disabled"
+                                ? " fw-disabled"
                                 : menuItem.selected
-                                  ? " selected"
+                                  ? " fw-selected"
                                   : ""
                         }" title='${menuItem.tooltip || ""}'>
                         ${
@@ -104,7 +104,7 @@ const menuTemplate = ({
                                 : menuItem.title
                         } ${
                             menuItem.icon
-                                ? `<span class="content-menu-item-icon"><i class="fa fa-${menuItem.icon}"></i></span>`
+                                ? `<span class="fw-content-menu-item-icon"><i class="fa fa-${menuItem.icon}"></i></span>`
                                 : ""
                         }
                         </li>`
@@ -115,7 +115,7 @@ const menuTemplate = ({
     </div>
     </div>
 </div>
-<div class="ui-widget-overlay ui-front" style="z-index: ${zIndex - 1}"></div>`
+<div class="fw-overlay" style="z-index: ${zIndex - 1}"></div>`
 
 export class ContentMenu {
     id: string | false
@@ -197,7 +197,7 @@ export class ContentMenu {
 
     renderColumnsHtml(columns: number): string {
         const itemsPerColumn = Math.ceil(this.menu.content.length / columns)
-        let html = '<div class="content-menu-columns">'
+        let html = '<div class="fw-content-menu-columns">'
         for (let col = 0; col < columns; col++) {
             const start = col * itemsPerColumn
             const end = Math.min(
@@ -207,12 +207,12 @@ export class ContentMenu {
             if (start >= this.menu.content.length) {
                 break
             }
-            html += '<ul class="content-menu-list">'
+            html += '<ul class="fw-content-menu-list">'
             for (let i = start; i < end; i++) {
                 const menuItem = this.menu.content[i]
                 switch (menuItem.type) {
                     case "header":
-                        html += `<li><span class="content-menu-item-header" title="${menuItem.tooltip || ""}">${
+                        html += `<li><span class="fw-content-menu-item-header" title="${menuItem.tooltip || ""}">${
                             typeof menuItem.title === "function"
                                 ? menuItem.title(this.page)
                                 : menuItem.title
@@ -220,14 +220,14 @@ export class ContentMenu {
                         break
                     case "separator":
                         html +=
-                            '<li><hr class="content-menu-item-divider"/></li>'
+                            '<li><hr class="fw-content-menu-item-divider"/></li>'
                         break
                     default:
-                        html += `<li tabindex="0" data-index="${i}" class="content-menu-item${
+                        html += `<li tabindex="0" data-index="${i}" class="fw-content-menu-item${
                             menuItem.disabled && menuItem.disabled(this.page)
-                                ? " disabled"
+                                ? " fw-disabled"
                                 : menuItem.selected
-                                  ? " selected"
+                                  ? " fw-selected"
                                   : ""
                         }" title='${menuItem.tooltip || ""}'>
                         ${
@@ -236,7 +236,7 @@ export class ContentMenu {
                                 : menuItem.title
                         } ${
                             menuItem.icon
-                                ? `<span class="content-menu-item-icon"><i class="fa fa-${menuItem.icon}"></i></span>`
+                                ? `<span class="fw-content-menu-item-icon"><i class="fa fa-${menuItem.icon}"></i></span>`
                                 : ""
                         }
                         </li>`
@@ -256,16 +256,12 @@ export class ContentMenu {
         const maxWidth = viewportWidth * 0.95
 
         if (dialogRect.height >= maxHeight) {
-            const contentEl = this.dialogEl.querySelector(
-                ".ui-content-menu-content"
-            ) as HTMLElement
+            const contentEl = this.dialogEl.querySelector(".fw-content-menu-content") as HTMLElement
             const contentDiv = contentEl.querySelector(":scope > div") as HTMLElement
             let columns = 2
             while (columns <= 6) {
                 contentDiv.innerHTML = this.renderColumnsHtml(columns)
-                const columnsDiv = contentDiv.querySelector(
-                    ".content-menu-columns"
-                )
+                const columnsDiv = contentDiv.querySelector(".fw-content-menu-columns")
                 if (columnsDiv) {
                     const naturalWidth = columnsDiv.scrollWidth + 20
                     contentEl.style.width = `${naturalWidth}px`
@@ -282,11 +278,11 @@ export class ContentMenu {
                 columns++
             }
             // Fallback: restore single column with scrolling
-            contentDiv.innerHTML = `<ul class="content-menu-list">${this.renderSingleColumnHtml()}</ul>`
+            contentDiv.innerHTML = `<ul class="fw-content-menu-list">${this.renderSingleColumnHtml()}</ul>`
             contentEl.style.width = this.width
             this.dialogEl
-                .querySelector(".ui-content-menu-content")!
-                .classList.add("ui-scrollable")
+                .querySelector(".fw-content-menu-content")!
+                .classList.add("fw-scrollable")
             if (this.menuPos && this.menuPos.X && this.menuPos.Y) {
                 this.positionDialog()
             } else {
@@ -300,19 +296,19 @@ export class ContentMenu {
             .map((menuItem, index) => {
                 switch (menuItem.type) {
                     case "header":
-                        return `<li><span class="content-menu-item-header" title="${menuItem.tooltip || ""}">${
+                        return `<li><span class="fw-content-menu-item-header" title="${menuItem.tooltip || ""}">${
                             typeof menuItem.title === "function"
                                 ? menuItem.title(this.page)
                                 : menuItem.title
                         }</span></li>`
                     case "separator":
-                        return '<li><hr class="content-menu-item-divider"/></li>'
+                        return '<li><hr class="fw-content-menu-item-divider"/></li>'
                     default:
-                        return `<li tabindex="0" data-index="${index}" class="content-menu-item${
+                        return `<li tabindex="0" data-index="${index}" class="fw-content-menu-item${
                             menuItem.disabled && menuItem.disabled(this.page)
-                                ? " disabled"
+                                ? " fw-disabled"
                                 : menuItem.selected
-                                  ? " selected"
+                                  ? " fw-selected"
                                   : ""
                         }" title='${menuItem.tooltip || ""}'>
                     ${
@@ -321,7 +317,7 @@ export class ContentMenu {
                             : menuItem.title
                     } ${
                         menuItem.icon
-                            ? `<span class="content-menu-item-icon"><i class="fa fa-${menuItem.icon}"></i></span>`
+                            ? `<span class="fw-content-menu-item-icon"><i class="fa fa-${menuItem.icon}"></i></span>`
                             : ""
                     }
                     </li>`
@@ -382,12 +378,12 @@ export class ContentMenu {
     getHighestDialogZIndex(): number {
         let zIndex = 100
         document
-            .querySelectorAll("div.ui-content-menu")
+            .querySelectorAll("div.fw-content-menu")
             .forEach(
                 dialogEl => (zIndex = Math.max(zIndex, parseInt((dialogEl as HTMLElement).style.zIndex) || 100))
             )
         document
-            .querySelectorAll("div.ui-dialog")
+            .querySelectorAll("div.fw-dialog")
             .forEach(
                 dialogEl => (zIndex = Math.max(zIndex, parseInt((dialogEl as HTMLElement).style.zIndex) || 100))
             )
@@ -417,7 +413,7 @@ export class ContentMenu {
     onclick(event: MouseEvent): void {
         event.preventDefault()
         event.stopImmediatePropagation()
-        const target = (event.target as Element).closest("li.content-menu-item") as HTMLElement
+        const target = (event.target as Element).closest("li.fw-content-menu-item") as HTMLElement
         if (target) {
             const menuNumber = target.dataset.index
             if (menuNumber === undefined) {
@@ -434,13 +430,11 @@ export class ContentMenu {
 
     onKeyDown(event: KeyboardEvent): void {
         const {key} = event
-        const menuItems = this.dialogEl.querySelectorAll(
-            "li.content-menu-item:not(.disabled)"
-        )
+        const menuItems = this.dialogEl.querySelectorAll("li.fw-content-menu-item:not(.fw-disabled)")
 
-        const columnsDiv = this.dialogEl.querySelector(".content-menu-columns")
+        const columnsDiv = this.dialogEl.querySelector(".fw-content-menu-columns")
         const totalColumns = columnsDiv
-            ? columnsDiv.querySelectorAll(".content-menu-list").length
+            ? columnsDiv.querySelectorAll(".fw-content-menu-list").length
             : 1
         const itemsPerColumn =
             totalColumns > 1
@@ -539,9 +533,7 @@ export class ContentMenu {
     }
 
     focusFirstMenuItem(): void {
-        const menuItems = this.dialogEl.querySelectorAll(
-            "li.content-menu-item:not(.disabled)"
-        )
+        const menuItems = this.dialogEl.querySelectorAll("li.fw-content-menu-item:not(.fw-disabled)")
         if (menuItems.length > 0) {
             this.focusedIndex = 0
             this.focusMenuItem(this.focusedIndex)
@@ -549,9 +541,7 @@ export class ContentMenu {
     }
 
     focusMenuItem(index: number): void {
-        const menuItems = this.dialogEl.querySelectorAll(
-            "li.content-menu-item:not(.disabled)"
-        )
+        const menuItems = this.dialogEl.querySelectorAll("li.fw-content-menu-item:not(.fw-disabled)")
         if (menuItems[index]) {
             (menuItems[index] as HTMLElement).focus()
         }

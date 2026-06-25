@@ -28,12 +28,12 @@
     outline: none;
 }
 
-.fw-pulldown-menu-title.disabled {
+.fw-pulldown-menu-title.fw-disabled {
     color: var(--cs-disabled);
     cursor: not-allowed;
 }
 
-.fw-pulldown-menu-title .access-key {
+.fw-pulldown-menu-title .fw-access-key {
     text-decoration: underline;
 }
 
@@ -42,6 +42,6 @@
     margin-top: 4px;
 }
 
-.fw-pulldown-menu-item.cursor {
+.fw-pulldown-menu-item.fw-cursor {
     background-color: var(--cs-white-background-hover);
 }

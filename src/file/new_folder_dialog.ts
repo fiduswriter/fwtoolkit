@@ -20,9 +20,7 @@ export class NewFolderDialog {
                     classes: "fw-dark",
                     click: () => {
                         const folderName =
-                            (this.dialog.dialogEl!.querySelector(
-                                "#new-folder-name"
-                            ) as HTMLInputElement).value
+                            (this.dialog.dialogEl!.querySelector("#new-folder-name") as HTMLInputElement).value
                         this.dialog.close()
                         if (!folderName.length) {
                             return

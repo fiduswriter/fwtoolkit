@@ -1,4 +1,4 @@
-#alerts-outer-wrapper {
+#fw-alerts-outer-wrapper {
     position: fixed;
     right: 22px;
     bottom: 10px;
@@ -7,12 +7,12 @@
     z-index: calc(var(--highest-dialog-z-index, 100) + 2);
 }
 
-#alerts-wrapper {
+#fw-alerts-wrapper {
     z-index: 1600;
     direction: ltr;
 }
 
-#alerts-wrapper li {
+#fw-alerts-wrapper li {
     display: block; /* else several of them will stack horizontally. */
     position: relative;
     width: 247px;
@@ -29,11 +29,11 @@
     -webkit-column-break-inside: avoid;
 }
 
-#alerts-wrapper li.visible {
+#fw-alerts-wrapper li.fw-visible {
     opacity: 1;
 }
 
-#alerts-wrapper li::before {
+#fw-alerts-wrapper li::before {
     position: absolute;
     left: 20px;
     top: 20px;
@@ -47,28 +47,28 @@
     content: var(--fa, "");
 }
 
-#alerts-wrapper .alerts-error {
+#fw-alerts-wrapper .alerts-error {
     color: var(--error-text-color);
     background-color: var(--error-background-color);
 }
 
-#alerts-wrapper .alerts-warning {
+#fw-alerts-wrapper .alerts-warning {
     color: var(--warning-text-color);
     background-color: rgb(var(--warning-background-color));
 }
 
-#alerts-wrapper .alerts-info {
+#fw-alerts-wrapper .alerts-info {
     color: var(--info-text-color);
     background-color: rgb(var(--info-background-color));
 }
 
-#alerts-wrapper .alerts-success {
+#fw-alerts-wrapper .alerts-success {
     color: var(--success-text-color);
     background-color: rgb(var(--success-background-color));
 }
 
 /* A form wasn't filled out correctly and the warning was added to the form. */
-div.warning {
+div.fw-warning {
     margin: 0 0 5px;
     border: 1px solid rgb(var(--warning-border-color));
     background-color: rgb(var(--warning-background-color));

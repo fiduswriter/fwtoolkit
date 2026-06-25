@@ -16,15 +16,15 @@
     cursor: pointer;
 }
 
-.input-list-wrapper > tbody > tr:last-child > td > .fa-minus-circle {
+.fw-input-list-wrapper > tbody > tr:last-child > td > .fa-minus-circle {
     display: none;
 }
 
-.fw-tablerow-title.wtooltip {
+.fw-tablerow-title.fw-wtooltip {
     position: relative;
 }
 
-.fw-tablerow-title.wtooltip::after {
+.fw-tablerow-title.fw-wtooltip::after {
     display: inline-block;
     vertical-align: baseline;
     content: "?";
@@ -39,7 +39,7 @@
     padding-top: 2px;
 }
 
-.fw-tablerow-title .tooltip {
+.fw-tablerow-title .fw-tooltip {
     position: absolute;
     min-width: 260px;
     top: calc(100% + 2px);
@@ -56,12 +56,12 @@
     z-index: 1;
 }
 
-.fw-tablerow-title:hover .tooltip {
+.fw-tablerow-title:hover .fw-tooltip {
     visibility: visible;
     opacity: 1;
 }
 
-.tooltip em {
+.fw-tooltip em {
     font-style: italic;
 }
 

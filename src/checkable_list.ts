@@ -39,7 +39,7 @@ export class CheckableList {
             .map(
                 option =>
                     `<div class="fw-checkable fw-checkable-label${
-                        this.selected.has(option.id) ? " checked" : ""
+                        this.selected.has(option.id) ? " fw-checked" : ""
                     }" data-id="${option.id}">${escapeText(
                         option.label
                     )}</div>`
@@ -57,20 +57,20 @@ export class CheckableList {
         if (id === null) {
             return
         }
-        const isChecked = target.classList.contains("checked")
+        const isChecked = target.classList.contains("fw-checked")
 
         if (!this.options.multiple) {
             this.dom
-                .querySelectorAll(".fw-checkable-label.checked")
-                .forEach(el => el.classList.remove("checked"))
+                .querySelectorAll(".fw-checkable-label.fw-checked")
+                .forEach(el => el.classList.remove("fw-checked"))
             this.selected.clear()
         }
 
         if (isChecked) {
-            target.classList.remove("checked")
+            target.classList.remove("fw-checked")
             this.selected.delete(id)
         } else {
-            target.classList.add("checked")
+            target.classList.add("fw-checked")
             this.selected.add(id)
         }
 

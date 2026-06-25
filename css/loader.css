@@ -1,19 +1,19 @@
-#wait i {
+#fw-wait i {
     display: none;
 }
 
-#wait.active {
+#fw-wait.fw-active {
     position: fixed;
     inset: 0;
     background-color: rgb(var(--wait-active-background-color));
     z-index: 1500;
 }
 
-#wait.active.full {
+#fw-wait.fw-active.fw-full {
     background-color: rgb(var(--wait-active-full-background-color));
 }
 
-#wait.active i {
+#fw-wait.fw-active i {
     display: block;
     height: 1em;
     position: fixed;
@@ -24,11 +24,11 @@
     margin-left: -0.5em;
 }
 
-#wait span {
+#fw-wait span {
     display: none;
 }
 
-#wait.active span.message {
+#fw-wait.fw-active span.fw-message {
     display: flex;
     justify-content: center;
     align-items: center;

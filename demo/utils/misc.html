@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>fwtoolkit — Misc utilities demo</title>
-    <link rel="stylesheet" href="./fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="./css/fwtoolkit.css">
-    <link rel="stylesheet" href="./demo.css">
+    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../css/fwtoolkit.css">
+    <link rel="stylesheet" href="../demo.css">
     <style>
         body { padding: 2rem; }
         .demo-section { margin: 2rem 0; padding: 1rem; border: 1px solid var(--cs-light-border); border-radius: 4px; }
@@ -34,7 +34,7 @@
 </head>
 <body>
     <main class="demo-container">
-        <p><a href="./index.html">&larr; Back to demos</a></p>
+        <p><a href="../index.html">&larr; Back to demos</a></p>
         <h1>Miscellaneous utilities</h1>
 
         <div class="demo-section">
@@ -113,7 +113,7 @@
             <pre id="focus-output">Saved focus index: none</pre>
         </div>
 
-        <div id="wait"><i class="fa fa-spinner fa-spin"></i></div>
+        <div id="fw-wait"><i class="fa fa-spinner fa-spin"></i></div>
     </main>
 
     <script type="module">
@@ -125,7 +125,7 @@
             convertDataURIToBlob,
             infoTooltip,
             getFocusIndex, setFocusIndex
-        } from "./dist/index.js";
+        } from "../dist/index.js";
 
         const log = (id, msg) => {
             const el = document.getElementById(id);

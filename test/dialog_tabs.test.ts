@@ -31,11 +31,11 @@ describe("DialogTabs", () => {
         ])
         tabs.bind(container)
 
-        const panels = container.querySelectorAll(".tab-content")
+        const panels = container.querySelectorAll(".fw-tab-content")
         expect((panels[0] as HTMLElement).style.display).not.toBe("none")
         expect((panels[1] as HTMLElement).style.display).toBe("none")
 
-        const secondLink = container.querySelectorAll(".tab-link a")[1]
+        const secondLink = container.querySelectorAll(".fw-tab-link a")[1]
         secondLink.dispatchEvent(new MouseEvent("click", {bubbles: true}))
 
         expect((panels[0] as HTMLElement).style.display).toBe("none")

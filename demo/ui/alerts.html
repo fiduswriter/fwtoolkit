@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>fwtoolkit — Alerts</title>
-    <link rel="stylesheet" href="./fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="./css/fwtoolkit.css">
-    <link rel="stylesheet" href="./demo.css">
+    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../css/fwtoolkit.css">
+    <link rel="stylesheet" href="../demo.css">
     <script type="importmap">
     {
         "imports": {
@@ -22,7 +22,7 @@
 </head>
 <body>
     <main class="demo-container">
-        <p><a href="./index.html">&larr; Back to demos</a></p>
+        <p><a href="../index.html">&larr; Back to demos</a></p>
         <h1>Alerts</h1>
         <div class="demo-actions">
             <button class="fw-button" id="info">Info alert</button>
@@ -32,7 +32,7 @@
         </div>
     </main>
     <script type="module">
-        import { addAlert } from "./dist/index.js"
+        import { addAlert } from "../dist/index.js"
 
         document.getElementById("info").addEventListener("click", () =>
             addAlert("info", "This is an informational message.")

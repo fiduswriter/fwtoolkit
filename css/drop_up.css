@@ -75,11 +75,11 @@
 }
 
 .fw-drop-up-option:hover,
-.fw-drop-up-option.focused {
+.fw-drop-up-option.fw-focused {
     background-color: var(--cs-light-background-hover);
 }
 
-.fw-drop-up-option.focused {
+.fw-drop-up-option.fw-focused {
     outline: 2px solid var(--cs-light-border);
     outline-offset: -2px;
 }

@@ -7,7 +7,7 @@ body {
     overflow-y: hidden;
 }
 
-body.scrollable {
+body.fw-scrollable {
     overflow-y: auto;
 }
 
@@ -49,7 +49,7 @@ body.scrollable {
     margin-bottom: 0.2em;
 }
 
-.fw-contents .errorlist {
+.fw-contents .fw-errorlist {
     border: 2px solid var(--error-border-color);
     background-color: var(--error-background-color);
     color: var(--error-text-color);
@@ -58,7 +58,7 @@ body.scrollable {
     font-size: 1.4em;
 }
 
-.fw-contents .errorlist:empty {
+.fw-contents .fw-errorlist:empty {
     display: none;
 }
 
@@ -142,29 +142,29 @@ table .fw-inline {
     color: var(--cs-white-text-secondary);
 }
 
-.ProseMirror span.placeholder::before {
+.ProseMirror span.fw-placeholder::before {
     color: var(--cs-white-placeholder-text);
     content: attr(data-placeholder);
     cursor: text;
 }
 
-.ProseMirror-focused span.placeholder.selected {
+.ProseMirror-focused span.fw-placeholder.fw-selected {
     display: none;
 }
 
 .ProseMirror-focused
     .ProseMirror:not(.ProseMirror-focused)
-    span.placeholder.selected {
+    span.fw-placeholder.fw-selected {
     display: inline;
 }
 
-.clearfix::after {
+.fw-clearfix::after {
     content: "";
     clear: both;
     display: block;
 }
 
-div.input {
+div.fw-input {
     box-sizing: border-box;
     font-size: 14px;
     line-height: 1.33em;
@@ -176,7 +176,7 @@ div.input {
     background-color: var(--cs-light-background);
 }
 
-.access-key {
+.fw-access-key {
     text-decoration: underline;
     text-underline-offset: 2px; /* Adjust for better visibility */
     pointer-events: none;

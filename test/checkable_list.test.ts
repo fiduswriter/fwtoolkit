@@ -17,8 +17,8 @@ describe("CheckableList", () => {
         })
         const items = dom.querySelectorAll(".fw-checkable-label")
         expect(items.length).toBe(2)
-        expect(items[0].classList.contains("checked")).toBe(true)
-        expect(items[1].classList.contains("checked")).toBe(false)
+        expect(items[0].classList.contains("fw-checked")).toBe(true)
+        expect(items[1].classList.contains("fw-checked")).toBe(false)
         expect(list.value).toEqual([1])
     })
 
@@ -35,7 +35,7 @@ describe("CheckableList", () => {
         const items = dom.querySelectorAll(".fw-checkable-label")
         ;(items[1] as HTMLElement).click()
         expect(list.value).toEqual([2])
-        expect(items[0].classList.contains("checked")).toBe(false)
+        expect(items[0].classList.contains("fw-checked")).toBe(false)
     })
 
     test("multiple selection accumulates values", () => {

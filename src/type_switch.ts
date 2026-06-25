@@ -29,12 +29,12 @@ export class TypeSwitch {
         this.currentMode = options.initialMode || 1
         ensureCSS(staticUrl("css/type_switch.css"))
         this.renderWrapper()
-        this.switcher = this.dom.querySelector(".type-switch") as HTMLElement
-        this.inner = this.dom.querySelector(".type-switch-input-inner") as HTMLElement
+        this.switcher = this.dom.querySelector(".fw-type-switch") as HTMLElement
+        this.inner = this.dom.querySelector(".fw-type-switch-input-inner") as HTMLElement
         this.updateView(false)
 
         if (options.disabled) {
-            this.switcher.classList.add("disabled")
+            this.switcher.classList.add("fw-disabled")
         } else {
             this.switcher.addEventListener("click", () => this.switchMode())
         }
@@ -68,23 +68,23 @@ export class TypeSwitch {
     }
 
     private renderWrapper(): void {
-        this.dom.innerHTML = `<div class="type-switch-input-wrapper">
-            <button class="type-switch value${this.currentMode}">
-                <span class="type-switch-inner">
-                    <span class="type-switch-label">${escapeText(
+        this.dom.innerHTML = `<div class="fw-type-switch-input-wrapper">
+            <button class="fw-type-switch fw-value${this.currentMode}">
+                <span class="fw-type-switch-inner">
+                    <span class="fw-type-switch-label">${escapeText(
                         this.options.label1
                     )}</span>
-                    <span class="type-switch-label">${escapeText(
+                    <span class="fw-type-switch-label">${escapeText(
                         this.options.label2
                     )}</span>
                 </span>
             </button>
-            <div class="type-switch-input-inner"></div>
+            <div class="fw-type-switch-input-inner"></div>
         </div>`
     }
 
     private updateView(notify: boolean): void {
-        this.switcher.classList.remove("value1", "value2")
+        this.switcher.classList.remove("fw-value1", "fw-value2")
         this.switcher.classList.add(`value${this.currentMode}`)
 
         const content =

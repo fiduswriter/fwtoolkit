@@ -70,7 +70,7 @@ export class InputList<T> {
 
     private render(): void {
         this.dom.innerHTML =
-            '<table class="input-list-wrapper"><tbody></tbody></table>'
+            '<table class="fw-input-list-wrapper"><tbody></tbody></table>'
         const tbody = this.dom.querySelector("tbody") as HTMLElement
         this.values_.forEach((value, index) => this.addRow(tbody, value, index))
     }
@@ -80,8 +80,8 @@ export class InputList<T> {
         tbody.insertAdjacentHTML(
             "beforeend",
             `<tr>
-                <td class="input-list-item-cell">${html}</td>
-                <td class="input-field-list-ctrl">
+                <td class="fw-input-list-item-cell">${html}</td>
+                <td class="fw-input-field-list-ctrl">
                     <span class="fa fa-minus-circle" tabindex="0" role="button" aria-label="${gettext(
                         "Remove"
                     )}"></span>&nbsp;<span class="fa fa-plus-circle" tabindex="0" role="button" aria-label="${gettext(
@@ -91,9 +91,7 @@ export class InputList<T> {
             </tr>`
         )
         const row = tbody.lastElementChild as HTMLElement
-        const itemCell = row.querySelector(
-            ".input-list-item-cell"
-        ) as HTMLElement
+        const itemCell = row.querySelector(".fw-input-list-item-cell") as HTMLElement
         if (bind) {
             bind(itemCell, value, index)
         }
@@ -146,7 +144,7 @@ export class InputList<T> {
 
     private readValues(): T[] {
         return this.listRows().map(row => {
-            const itemCell = row.querySelector(".input-list-item-cell") as HTMLElement
+            const itemCell = row.querySelector(".fw-input-list-item-cell") as HTMLElement
             return this.options.getValue(itemCell)
         })
     }

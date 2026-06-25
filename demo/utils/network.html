@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>fwtoolkit — Network helpers demo</title>
-    <link rel="stylesheet" href="./fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="./css/fwtoolkit.css">
-    <link rel="stylesheet" href="./demo.css">
+    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../css/fwtoolkit.css">
+    <link rel="stylesheet" href="../demo.css">
     <style>
         body { padding: 2rem; }
         .demo-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; }
@@ -35,10 +35,10 @@
     </div>
     <pre id="log">Responses will be logged here…</pre>
 
-    <div id="wait"><i class="fa fa-spinner fa-spin"></i></div>
+    <div id="fw-wait"><i class="fa fa-spinner fa-spin"></i></div>
 
     <script type="module">
-        import { initSettings, getJson, postJson, activateWait, deactivateWait } from "./dist/index.js";
+        import { initSettings, getJson, postJson, activateWait, deactivateWait } from "../dist/index.js";
 
         initSettings({
             apiUrl: url => url,

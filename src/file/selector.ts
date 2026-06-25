@@ -204,20 +204,20 @@ export class FileSelector {
 
     renderFolder(folder: FileSelectorFolder, indentLevel = 0): string {
         let returnString = ""
-        returnString += `<div class="folder${folder.open ? "" : " closed"}">`
+        returnString += `<div class="fw-folder${folder.open ? "" : " fw-closed"}">`
         returnString += `<p style="margin-left:${indentLevel * 10}px;">${
             folder.children.length
                 ? `<i class="far fa-${folder.open ? "minus" : "plus"}-square"></i>&nbsp;`
                 : ""
-        }<span class="folder-name${folder.selected ? " selected" : ""}"><i class="fas fa-folder"></i>&nbsp;${escapeText(folder.name)}</span></p>`
+        }<span class="fw-folder-name${folder.selected ? " fw-selected" : ""}"><i class="fas fa-folder"></i>&nbsp;${escapeText(folder.name)}</span></p>`
         if (folder.open) {
-            returnString += '<div class="folder-content">'
+            returnString += '<div class="fw-folder-content">'
             returnString += folder.children
                 .map(child => {
                     if (child.type === "folder") {
                         return this.renderFolder(child, indentLevel + 1)
                     } else {
-                        return `<p class="file" style="margin-left:${(indentLevel + 1) * 10 + 20}px;"><span class="file-name${child.selected ? " selected" : ""}"><i class="${this.fileIcon}"></i>&nbsp;${escapeText(child.name)}</span></p>`
+                        return `<p class="fw-file" style="margin-left:${(indentLevel + 1) * 10 + 20}px;"><span class="fw-file-name${child.selected ? " fw-selected" : ""}"><i class="${this.fileIcon}"></i>&nbsp;${escapeText(child.name)}</span></p>`
                     }
                 })
                 .join("")
@@ -230,7 +230,7 @@ export class FileSelector {
     findEntry(dom: Element): FileSelectorEntry {
         const searchPath: number[] = []
         let seekItem: Element | null = dom
-        let closest = seekItem.closest("div.folder, p.file")
+        let closest = seekItem.closest("div.fw-folder, p.fw-file")
         while (closest) {
             seekItem = closest
             let itemNumber = 0
@@ -240,7 +240,7 @@ export class FileSelector {
             }
             searchPath.push(itemNumber)
             seekItem = seekItem.parentElement
-            closest = seekItem?.closest("div.folder, p.file") ?? null
+            closest = seekItem?.closest("div.fw-folder, p.fw-file") ?? null
         }
         let entry: FileSelectorEntry = this.root
         searchPath.pop()
@@ -268,7 +268,7 @@ export class FileSelector {
                     this.render()
                     break
                 }
-                case findTarget(event, ".folder-name", el): {
+                case findTarget(event, ".fw-folder-name", el): {
                     event.preventDefault()
                     if (!this.selectFolders) {
                         // Folders cannot be selected
@@ -290,7 +290,7 @@ export class FileSelector {
                     }
                     break
                 }
-                case findTarget(event, ".file-name", el): {
+                case findTarget(event, ".fw-file-name", el): {
                     event.preventDefault()
                     const entry = this.findEntry(el.target!)
                     if (this.selected.includes(entry)) {

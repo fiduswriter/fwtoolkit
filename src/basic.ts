@@ -43,12 +43,7 @@ export const dropdownSelect = (
         buttonDOM = document.createElement("div")
         buttonDOM.innerHTML =
             '<label></label>&nbsp;<span class="fa fa-caret-down"></span>'
-        buttonDOM.classList.add(
-            "fw-button",
-            "fw-light",
-            "fw-large",
-            "fw-dropdown"
-        )
+        buttonDOM.classList.add("fw-button", "fw-light", "fw-large", "fw-dropdown")
         if (width) {
             buttonDOM.style.width = Number.isInteger(width as number)
                 ? `${width}px`
@@ -124,7 +119,7 @@ export const dropdownSelect = (
 
         event.preventDefault()
         event.stopPropagation()
-        if (buttonDOM.classList.contains("disabled")) {
+        if (buttonDOM.classList.contains("fw-disabled")) {
             return
         }
         // Determine menu position
@@ -171,8 +166,8 @@ export const dropdownSelect = (
             value = newValue
         },
         getValue: () => value,
-        enable: () => buttonDOM.classList.remove("disabled"),
-        disable: () => buttonDOM.classList.add("disabled")
+        enable: () => buttonDOM.classList.remove("fw-disabled"),
+        disable: () => buttonDOM.classList.add("fw-disabled")
     }
 }
 
@@ -180,10 +175,10 @@ export const dropdownSelect = (
  * @param label The node who's parent has to be checked or unchecked.
  */
 export const setCheckableLabel = (labelEl: HTMLElement): void => {
-    if (labelEl.classList.contains("checked")) {
-        labelEl.classList.remove("checked")
+    if (labelEl.classList.contains("fw-checked")) {
+        labelEl.classList.remove("fw-checked")
     } else {
-        labelEl.classList.add("checked")
+        labelEl.classList.add("fw-checked")
     }
 }
 
@@ -192,12 +187,12 @@ let waitMessage = ""
 /** Cover the page signaling to the user to wait.
  */
 export const activateWait = (full = false, message = ""): void => {
-    const waitEl = document.getElementById("wait")
+    const waitEl = document.getElementById("fw-wait")
     if (!waitEl) {
         return
     }
     if (message) {
-        let messageEl = waitEl.querySelector("span.message")
+        let messageEl = waitEl.querySelector("span.fw-message")
         if (messageEl) {
             // Another message is already showing. We update directly.
             ;(messageEl as HTMLElement).innerText = message
@@ -206,7 +201,7 @@ export const activateWait = (full = false, message = ""): void => {
             if (!messageWaiter) {
                 messageWaiter = window.setTimeout(() => {
                     messageEl = document.createElement("span")
-                    messageEl.classList.add("message")
+                    messageEl.classList.add("fw-message")
                     ;(messageEl as HTMLElement).innerText = waitMessage
                     waitEl.appendChild(messageEl)
                     messageWaiter = false
@@ -214,22 +209,22 @@ export const activateWait = (full = false, message = ""): void => {
             }
         }
     }
-    waitEl.classList.add("active")
+    waitEl.classList.add("fw-active")
     if (full) {
-        waitEl.classList.add("full")
+        waitEl.classList.add("fw-full")
     }
 }
 
 /** Remove the wait cover.
  */
 export const deactivateWait = (): void => {
-    const waitEl = document.getElementById("wait")
+    const waitEl = document.getElementById("fw-wait")
     if (!waitEl) {
         return
     }
-    waitEl.classList.remove("active")
-    waitEl.classList.remove("full")
-    const messageEl = waitEl.querySelector("span.message")
+    waitEl.classList.remove("fw-active")
+    waitEl.classList.remove("fw-full")
+    const messageEl = waitEl.querySelector("span.fw-message")
     if (messageEl) {
         messageEl.parentElement?.removeChild(messageEl)
     }
@@ -256,28 +251,28 @@ export const addAlert = (
         info: "circle-info",
         success: "circle-check"
     }
-    if (!document.getElementById("#alerts-outer-wrapper")) {
+    if (!document.getElementById("fw-alerts-outer-wrapper")) {
         document.body.insertAdjacentHTML(
             "beforeend",
-            '<div id="alerts-outer-wrapper"><ul id="alerts-wrapper"></ul></div>'
+            '<div id="fw-alerts-outer-wrapper"><ul id="fw-alerts-wrapper"></ul></div>'
         )
     }
-    const alertsWrapper = document.getElementById("alerts-wrapper")
+    const alertsWrapper = document.getElementById("fw-alerts-wrapper")
     if (!alertsWrapper) {
         return
     }
     alertsWrapper.insertAdjacentHTML(
         "beforeend",
-        `<li class="alerts-${alertType} fa-before fa-${iconNames[alertType]}">${alertMsg}</li>`
+        `<li class="fa-before fa-${iconNames[alertType]}">${alertMsg}</li>`
     )
     const alertBox = alertsWrapper.lastElementChild
     if (!alertBox) {
         return
     }
     setTimeout(() => {
-        alertBox.classList.add("visible")
+        alertBox.classList.add("fw-visible")
         setTimeout(() => {
-            alertBox.classList.remove("visible")
+            alertBox.classList.remove("fw-visible")
             setTimeout(() => alertsWrapper.removeChild(alertBox), 2000)
         }, 4000)
     }, 1)

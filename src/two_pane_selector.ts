@@ -116,10 +116,10 @@ export class TwoPaneSelector<T> {
 
         if (!this.options.multiple && side === "left") {
             pane
-                .querySelectorAll(".fw-two-pane-item.selected")
-                .forEach(el => el.classList.remove("selected"))
+                .querySelectorAll(".fw-two-pane-item.fw-selected")
+                .forEach(el => el.classList.remove("fw-selected"))
         }
-        target.classList.toggle("selected")
+        target.classList.toggle("fw-selected")
     }
 
     private handleAdd(): void {
@@ -127,7 +127,7 @@ export class TwoPaneSelector<T> {
             '.fw-two-pane-list[data-pane="left"]'
         ) as HTMLElement
         const selectedIds = new Set(
-            Array.from(leftPane.querySelectorAll(".fw-two-pane-item.selected")).map(
+            Array.from(leftPane.querySelectorAll(".fw-two-pane-item.fw-selected")).map(
                 el => (el as HTMLElement).dataset.id as string
             )
         )
@@ -154,7 +154,7 @@ export class TwoPaneSelector<T> {
         ) as HTMLElement
         const selectedIds = new Set(
             Array.from(
-                rightPane.querySelectorAll(".fw-two-pane-item.selected")
+                rightPane.querySelectorAll(".fw-two-pane-item.fw-selected")
             ).map(el => (el as HTMLElement).dataset.id as string)
         )
         if (!selectedIds.size) {

@@ -39,15 +39,15 @@ textarea:focus {
     background-color: var(--input-focus-background-color);
 }
 
-.ui-dialog input[type="text"]:not(.fw-inline),
-.ui-dialog input[type="password"]:not(.fw-inline),
-.ui-dialog input[type="search"]:not(.fw-inline),
-.ui-dialog input[type="email"]:not(.fw-inline),
-.ui-dialog input[type="number"]:not(.fw-inline),
-.ui-dialog textarea,
-.ui-dialog div[contenteditable="true"],
-.ui-dialog select,
-.ui-dialog .entry-field select {
+.fw-dialog input[type="text"]:not(.fw-inline),
+.fw-dialog input[type="password"]:not(.fw-inline),
+.fw-dialog input[type="search"]:not(.fw-inline),
+.fw-dialog input[type="email"]:not(.fw-inline),
+.fw-dialog input[type="number"]:not(.fw-inline),
+.fw-dialog textarea,
+.fw-dialog div[contenteditable="true"],
+.fw-dialog select,
+.fw-dialog .fw-entry-field select {
     border: 1px solid var(--input-dialog-border-color);
 }
 

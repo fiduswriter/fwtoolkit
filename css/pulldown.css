@@ -29,7 +29,7 @@
     margin-top: 0;
 }
 
-.marginbox-options.fw-pulldown .fw-pulldown {
+.fw-marginbox-options.fw-pulldown .fw-pulldown {
     right: 100%;
     left: auto;
 }
@@ -63,19 +63,19 @@
     cursor: pointer;
 }
 
-.disabled .fw-pulldown-item,
-.fw-pulldown-item.disabled {
+.fw-disabled .fw-pulldown-item,
+.fw-pulldown-item.fw-disabled {
     color: var(--cs-disabled);
     cursor: not-allowed;
 }
 
-.fw-pulldown-item.selected {
+.fw-pulldown-item.fw-selected {
     color: var(--cs-white-selected);
     background-color: var(--cs-white-background-selected);
 }
 
 .fw-pulldown-item:hover,
-.fw-pulldown-item.selected:hover {
+.fw-pulldown-item.fw-selected:hover {
     color: var(--cs-white-hover);
     background-color: var(--cs-white-background-hover);
 }
@@ -101,7 +101,7 @@
     background-color: var(--pulldown-separator-color);
 }
 
-.fw-pulldown .delete-comment::after {
+.fw-pulldown .fw-delete-comment::after {
     font-family: "Font Awesome 7 Free", monospace;
     content: "\f2ed";
     opacity: 0.4;

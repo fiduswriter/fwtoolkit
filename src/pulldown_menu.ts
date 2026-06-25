@@ -80,7 +80,7 @@ export class PulldownMenu {
                 menu => `
                 <div class="fw-pulldown-menu-header" data-id="${menu.id}">
                     <span class="fw-pulldown-menu-title${
-                        resolve(menu.disabled, this.context) ? " disabled" : ""
+                        resolve(menu.disabled, this.context) ? " fw-disabled" : ""
                     }"
                           title="${
                               menu.tooltip
@@ -156,11 +156,9 @@ export class PulldownMenu {
         if (
             headerTitle &&
             this.container.contains(headerTitle) &&
-            !headerTitle.classList.contains("disabled")
+            !headerTitle.classList.contains("fw-disabled")
         ) {
-            const headerEl = headerTitle.closest(
-                ".fw-pulldown-menu-header"
-            ) as HTMLElement
+            const headerEl = headerTitle.closest(".fw-pulldown-menu-header") as HTMLElement
             const menu = this.options.menu.content.find(
                 item => item.id === headerEl.dataset.id
             )
@@ -512,9 +510,9 @@ export class PulldownMenu {
             ? resolve(menuItem.tooltip, this.context)
             : undefined
         return `<span class="fw-pulldown-menu-item fw-pulldown-item${
-            selected ? " selected" : ""
-        }${disabled ? " disabled" : ""}${
-            menuItem === this.cursorMenuItem ? " cursor" : ""
+            selected ? " fw-selected" : ""
+        }${disabled ? " fw-disabled" : ""}${
+            menuItem === this.cursorMenuItem ? " fw-cursor" : ""
         }"
         role="menuitem"
         tabindex="0"
@@ -534,9 +532,9 @@ export class PulldownMenu {
             ? resolve(menuItem.tooltip, this.context)
             : undefined
         return `<span class="fw-pulldown-menu-item fw-pulldown-item${
-            selected ? " selected" : ""
-        }${disabled ? " disabled" : ""}${
-            menuItem === this.cursorMenuItem ? " cursor" : ""
+            selected ? " fw-selected" : ""
+        }${disabled ? " fw-disabled" : ""}${
+            menuItem === this.cursorMenuItem ? " fw-cursor" : ""
         }"
               role="menuitem"
               tabindex="0"
@@ -558,6 +556,6 @@ export class PulldownMenu {
         if (index === -1) {
             return escapeText(title)
         }
-        return `${escapeText(title.substring(0, index))}<span class="access-key">${escapeText(title.charAt(index))}</span>${escapeText(title.substring(index + 1))}`
+        return `${escapeText(title.substring(0, index))}<span class="fw-access-key">${escapeText(title.charAt(index))}</span>${escapeText(title.substring(index + 1))}`
     }
 }

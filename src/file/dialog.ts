@@ -81,9 +81,7 @@ export class FileDialog {
     }
 
     updatePathDir(path: string): void {
-        const pathInput = this.dialog.dialogEl!.querySelector(
-            "#path"
-        ) as HTMLInputElement
+        const pathInput = this.dialog.dialogEl!.querySelector("#path") as HTMLInputElement
         const fileName = pathInput.value.split("/").pop() || ""
         pathInput.value = path + fileName
     }
@@ -118,9 +116,7 @@ export class FileDialog {
                     click: () => {
                         //apply the current state to server
                         let path =
-                            (this.dialog.dialogEl!.querySelector(
-                                "#path"
-                            ) as HTMLInputElement).value
+                            (this.dialog.dialogEl!.querySelector("#path") as HTMLInputElement).value
                         this.dialog.close()
 
                         if (path === this.path) {
@@ -149,7 +145,7 @@ export class FileDialog {
         this.dialog.open()
 
         this.fileSelector = new FileSelector({
-            dom: this.dialog.dialogEl!.querySelector(".file-selector") as HTMLElement,
+            dom: this.dialog.dialogEl!.querySelector(".fw-file-selector") as HTMLElement,
             files: this.allFiles,
             showFiles: false,
             selectDir: path => this.updatePathDir(path),

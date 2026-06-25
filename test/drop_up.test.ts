@@ -43,7 +43,7 @@ describe("DropUp", () => {
         container.appendChild(dropUp.render())
         dropUp.open()
         const options = container.querySelectorAll(".fw-drop-up-option")
-        expect(options[0].classList.contains("focused")).toBe(true)
+        expect(options[0].classList.contains("fw-focused")).toBe(true)
     })
 
     test("focusOption updates focused class", () => {
@@ -57,8 +57,8 @@ describe("DropUp", () => {
         dropUp.open()
         dropUp.focusOption(1)
         const options = container.querySelectorAll(".fw-drop-up-option")
-        expect(options[0].classList.contains("focused")).toBe(false)
-        expect(options[1].classList.contains("focused")).toBe(true)
+        expect(options[0].classList.contains("fw-focused")).toBe(false)
+        expect(options[1].classList.contains("fw-focused")).toBe(true)
     })
 
     test("clicking an option triggers its action", () => {
@@ -87,7 +87,7 @@ describe("DropUp", () => {
         const list = container.querySelector(".fw-drop-up-options") as HTMLElement
         list.dispatchEvent(new KeyboardEvent("keydown", {key: "ArrowDown"}))
         const options = container.querySelectorAll(".fw-drop-up-option")
-        expect(options[1].classList.contains("focused")).toBe(true)
+        expect(options[1].classList.contains("fw-focused")).toBe(true)
     })
 
     test("keyboard Enter activates focused option", () => {
@@ -135,7 +135,7 @@ describe("DropUp", () => {
         dropUp.close()
         const options = container.querySelectorAll(".fw-drop-up-option")
         options.forEach(option => {
-            expect(option.classList.contains("focused")).toBe(false)
+            expect(option.classList.contains("fw-focused")).toBe(false)
         })
     })
 

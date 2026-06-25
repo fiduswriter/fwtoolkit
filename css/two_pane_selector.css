@@ -37,7 +37,7 @@
     cursor: pointer;
 }
 
-.fw-two-pane-item.selected {
+.fw-two-pane-item.fw-selected {
     background-color: var(--cs-light-background-hover);
 }
 

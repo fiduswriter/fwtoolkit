@@ -16,7 +16,7 @@ export interface DialogTabsOptions {
 /**
  * Reusable tab switcher for dialog content.
  *
- * Renders a `.ui-tabs-nav` list plus `.tab-content.ui-tabs-panel` panels and
+ * Renders a `.fw-tabs-nav` list plus `.fw-tab-content.fw-tabs-panel` panels and
  * handles switching between them.
  */
 export class DialogTabs {
@@ -37,12 +37,12 @@ export class DialogTabs {
         const {containerId} = this.options
         const wrapperAttrs = containerId ? ` id="${containerId}"` : ""
         return `<div${wrapperAttrs}>
-            <ul class="ui-tabs-nav">
+            <ul class="fw-tabs-nav">
                 ${this.tabs
                     .map(
                         (tab, index) =>
-                            `<li class="tab-link ${index === 0 ? "current-tab" : ""}">
-                                <a href="#${this.tabId(index, tab)}" class="tab-link-inner" title="${escapeText(
+                            `<li class="fw-tab-link ${index === 0 ? "fw-current-tab" : ""}">
+                                <a href="#${this.tabId(index, tab)}" class="fw-tab-link-inner" title="${escapeText(
                                     tab.description || ""
                                 )}">
                                     ${escapeText(tab.title)}
@@ -54,7 +54,7 @@ export class DialogTabs {
             ${this.tabs
                 .map(
                     (tab, index) =>
-                        `<div class="tab-content ui-tabs-panel" id="${this.tabId(
+                        `<div class="fw-tab-content fw-tabs-panel" id="${this.tabId(
                             index,
                             tab
                         )}" title="${escapeText(tab.description || "")}">
@@ -72,7 +72,7 @@ export class DialogTabs {
      */
     bind(container: HTMLElement): void {
         const tabLinks = Array.from(
-            container.querySelectorAll(".ui-tabs-nav .tab-link a")
+            container.querySelectorAll(".fw-tabs-nav .fw-tab-link a")
         )
         tabLinks.forEach((linkEl, index) => {
             linkEl.addEventListener("click", event => {
@@ -97,16 +97,16 @@ export class DialogTabs {
         const targetId = this.tabId(index, this.tabs[index])
 
         tabContainer
-            .querySelectorAll(".ui-tabs-nav .tab-link")
+            .querySelectorAll(".fw-tabs-nav .fw-tab-link")
             .forEach((tabLink, tabIndex) => {
                 if (tabIndex === index) {
-                    tabLink.classList.add("current-tab")
+                    tabLink.classList.add("fw-current-tab")
                 } else {
-                    tabLink.classList.remove("current-tab")
+                    tabLink.classList.remove("fw-current-tab")
                 }
             })
 
-        tabContainer.querySelectorAll(".tab-content").forEach(contentEl => {
+        tabContainer.querySelectorAll(".fw-tab-content").forEach(contentEl => {
             if ((contentEl as HTMLElement).id === targetId) {
                 ;(contentEl as HTMLElement).style.display = ""
             } else {
@@ -128,6 +128,6 @@ export class DialogTabs {
         if (containerId) {
             return document.getElementById(containerId)
         }
-        return document.querySelector(".ui-tabs-nav")?.closest("div") || null
+        return document.querySelector(".fw-tabs-nav")?.closest("div") || null
     }
 }

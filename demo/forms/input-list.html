@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>fwtoolkit — InputList demo</title>
-    <link rel="stylesheet" href="./fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="./css/fwtoolkit.css">
-    <link rel="stylesheet" href="./demo.css">
+    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../css/fwtoolkit.css">
+    <link rel="stylesheet" href="../demo.css">
     <style>
         body { padding: 2rem; }
         #list-host { margin-top: 1rem; max-width: 500px; }
@@ -33,7 +33,7 @@
     <p class="demo-value">Values: <span id="list-value">[]</span></p>
 
     <script type="module">
-        import { InputList } from "./dist/index.js";
+        import { InputList } from "../dist/index.js";
 
         const valueEl = document.getElementById("list-value");
         const updateValue = values => { valueEl.textContent = JSON.stringify(values); };

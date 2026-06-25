@@ -87,18 +87,18 @@
     color: var(--cs-white-text);
 }
 
-.fw-button.fw-white.ui-state-active {
+.fw-button.fw-white.fw-state-active {
     background-color: var(--cs-white-background-selected);
     color: var(--cs-white-selected);
 }
 
-.fw-button.fw-white:not(.disabled):hover {
+.fw-button.fw-white:not(.fw-disabled):hover {
     background-color: var(--cs-white-background-hover);
     color: var(--cs-white-hover);
 }
 
-.fw-button.fw-light:not(.disabled):hover,
-.fw-button.fw-light.ui-state-active {
+.fw-button.fw-light:not(.fw-disabled):hover,
+.fw-button.fw-light.fw-state-active {
     background-color: var(--cs-light-background-hover);
     color: var(--cs-light-hover);
 }
@@ -109,7 +109,7 @@
     background-color: var(--cs-6-background);
 }
 
-.fw-button.fw-green:not(.disabled):hover {
+.fw-button.fw-green:not(.fw-disabled):hover {
     background-color: var(--cs-6-background-hover);
 }
 
@@ -123,7 +123,7 @@
     border-color: var(--cs-3-border);
 }
 
-.fw-button.fw-orange:not(.disabled):hover {
+.fw-button.fw-orange:not(.fw-disabled):hover {
     background: var(--cs-3-background-hover);
 }
 
@@ -138,7 +138,7 @@
     border-color: var(--cs-dark-border);
 }
 
-.fw-button.fw-dark:not(.disabled):hover {
+.fw-button.fw-dark:not(.fw-disabled):hover {
     background: var(--cs-dark-background-hover);
 }
 
@@ -213,7 +213,7 @@
     background-color: var(--cs-light-background-hover);
 }
 
-.fw-button.disabled {
+.fw-button.fw-disabled {
     color: var(--cs-disabled);
     cursor: default;
 }
@@ -368,6 +368,6 @@
     margin-left: 10px;
 }
 
-#comment-filter-dropdown {
+#fw-comment-filter-dropdown {
     width: 100px;
 }

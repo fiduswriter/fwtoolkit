@@ -285,7 +285,11 @@ export class Dialog {
             this.dialogEl.style.position = "fixed"
             this.dialogEl.style.top = "0px"
         } else {
-            this.centerDialog()
+            // Defer centering until the browser has calculated the dialog's
+            // intrinsic size. Otherwise clientWidth/clientHeight can be 0 for
+            // dialogs without an explicit width, placing the left edge in the
+            // middle of the viewport.
+            requestAnimationFrame(() => this.centerDialog())
         }
 
         // Set dialog attributes for accessibility
@@ -490,7 +494,10 @@ export class Dialog {
         document
             .querySelectorAll("div.fw-dialog")
             .forEach(
-                dialogEl => (zIndex = Math.max(zIndex, parseInt((dialogEl as HTMLElement).style.zIndex) || 100))
+                dialogEl => {
+                    const computedZIndex = parseInt(window.getComputedStyle(dialogEl as HTMLElement).zIndex)
+                    zIndex = Math.max(zIndex, Number.isNaN(computedZIndex) ? 100 : computedZIndex)
+                }
             )
         zIndex += 2
         document.body.style.setProperty("--highest-dialog-z-index", String(zIndex))

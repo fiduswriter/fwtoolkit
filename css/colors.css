@@ -2,29 +2,29 @@
 
     --main-text-color: #2c2723;
     --main-background-color: #f2f2f2;
-    --overlay-color: 170, 170, 170, 0.3;
+    --overlay-color: 170 170 170 / 0.3;
     --input-focus-background-color: #fbf9d2;
     --input-background-color: #f3f3f3;
     --input-dialog-border-color: #e0e0e0;
-    --wait-active-background-color: 240, 240, 240, 0.7;
-    --wait-active-full-background-color: 240, 240, 240, 1;
-    --alert-box-shadow-color: 240, 240, 240, 1;
-    --dropup-box-shadow-color: 0, 0, 0, 0.11;
-    --tooltip-background-color: 38, 38, 38, 0.6;
+    --wait-active-background-color: 240 240 240 / 0.7;
+    --wait-active-full-background-color: 240 240 240 / 1;
+    --alert-box-shadow-color: 240 240 240 / 1;
+    --dropup-box-shadow-color: 0 0 0 / 0.11;
+    --tooltip-background-color: 38 38 38 / 0.6;
     --info-text-color: #ffffff;
-    --info-background-color: 36, 113, 176, 0.8;
+    --info-background-color: 36 113 176 / 0.8;
     --success-text-color: #ffffff;
-    --success-background-color: 109, 164, 147, 0.8;
+    --success-background-color: 109 164 147 / 0.8;
     --warning-text-color: #ffffff;
-    --warning-background-color: 221, 208, 63, 0.8;
-    --warning-border-color: 200, 63, 27, 0.8;
+    --warning-background-color: 221 208 63 / 0.8;
+    --warning-border-color: 200 63 27 / 0.8;
     --error-border-color: #af3515;
     --error-background-color: #cc3f1a;
     --error-text-color: #ffffff;
     --pulldown-header-text-color: #ffffff;
     --pulldown-header-background-color: #2c2723;
     --pulldown-separator-color: #f2f2f2;
-    --pulldown-box-shadow-color: 0, 0, 0, 0.2;
+    --pulldown-box-shadow-color: 0 0 0 / 0.2;
     --menu-cursor-border-color: #63ab0d;
 
     /* tabs */
@@ -106,8 +106,8 @@
     --cs-disabled-background: #d3d3d3;
     --cs-disabled-border: #a9a9a9;
     --overview-checkbox-color: #000000;
-    --overview-checkbox-background-color-from: 255, 255, 255, 1;
-    --overview-checkbox-background-color-to: 255, 255, 255, 0;
+    --overview-checkbox-background-color-from: 255 255 255 / 1;
+    --overview-checkbox-background-color-to: 255 255 255 / 0;
     --overview-checkbox-border: #a9a9a9;
 
     /* template manager */

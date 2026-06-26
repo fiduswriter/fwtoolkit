@@ -198,7 +198,7 @@ export class DatatableBulk {
             event.stopImmediatePropagation()
             event.stopPropagation()
 
-            if (target.matches(".fw-dt-bulk-dropdown, .fw-dt-bulk-dropdown *")) {
+            if (target.matches(".dt-bulk-dropdown, .dt-bulk-dropdown *")) {
                 // Dropdown
                 const el = document.querySelector(`#${this.id}`)
                 if (el) {
@@ -244,10 +244,10 @@ export class DatatableBulk {
     }
 
     getHTML(): string {
-        return `<div id="${this.id}" class="fw-dt-bulk" role="group" aria-label="Bulk actions">
+        return `<div id="${this.id}" class="dt-bulk" role="group" aria-label="Bulk actions">
                         <input type="checkbox" id="${this.id}_check" class="fw-check" aria-label="Select all">
                         <label for="${this.id}_check"></label>
-                        <span class="fw-dt-bulk-dropdown" tabindex="0" role="button" aria-label="Open bulk actions menu">
+                        <span class="dt-bulk-dropdown" tabindex="0" role="button" aria-label="Open bulk actions menu">
                             <i class="fa fa-caret-down"></i>
                         </span>
                     </div>`

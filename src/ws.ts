@@ -133,6 +133,12 @@ export class WebSocketConnector {
         this.ws!.close()
     }
 
+    goOnline(): void {
+        this.online = true
+        this.connected = false
+        this.createWSConnection()
+    }
+
     close(): void {
         if (this.ws) {
             this.ws.onclose = () => {}

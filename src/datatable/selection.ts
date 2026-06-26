@@ -49,9 +49,14 @@ export class SelectionDataTable {
         this.options = options
         this.dom = options.dom
         this.selectedIds = new Set(options.selectedIds || [])
-        this.checkmarkColumn = Array.isArray(options.data[0])
-            ? (options.data[0] as unknown[]).length
-            : (options.data[0] as {cells: unknown[]}).cells.length
+        const firstRow = options.data[0]
+        if (firstRow === undefined) {
+            this.checkmarkColumn = 0
+        } else if (Array.isArray(firstRow)) {
+            this.checkmarkColumn = firstRow.length
+        } else {
+            this.checkmarkColumn = (firstRow as {cells: unknown[]}).cells.length
+        }
         this.id = `fw-selection-dt-${++idCounter}`
     }
 
@@ -149,14 +154,24 @@ export class SelectionDataTable {
     ): string {
         const rows = this.table
             ? this.table.data.data
-            : (initialData as {cells: {data: unknown; text?: string}[]}[])
-        const row = rows[rowIndex]
-        if (!row) {
+            : (initialData as unknown[])
+        const rawRow = rows[rowIndex]
+        if (!rawRow) {
             return ""
         }
         const idColumn = this.options.idColumn ?? 0
-        const cell = row.cells[idColumn]
-        const id = cell.text ?? cell.data
+        const cells = Array.isArray(rawRow)
+            ? rawRow
+            : (rawRow as {cells: {data: unknown; text?: string}[]}).cells
+        const cell = cells[idColumn]
+        if (cell === undefined || cell === null) {
+            return ""
+        }
+        const id =
+            typeof cell === "object" && cell !== null
+                ? (cell as {text?: unknown; data?: unknown}).text ??
+                  (cell as {text?: unknown; data?: unknown}).data
+                : cell
         const selected = this.selectedIds.has(id)
         return selected
             ? `<i class="${this.options.checkmarkClass || "fa fa-check"}"></i>`
@@ -213,6 +228,38 @@ export class SelectionDataTable {
 
     getSelected(): unknown[] {
         return Array.from(this.selectedIds)
+    }
+
+    /**
+     * Insert new rows at the end of the table.
+     * The checkmark column is appended automatically.
+     */
+    insert({data}: {data: unknown[][]}): void {
+        if (!this.table) {
+            return
+        }
+        const newRows = this.appendCheckmarkColumn(data).map(row => {
+            const cells = Array.isArray(row) ? row : (row as {cells: unknown[]}).cells
+            return {
+                cells: cells.map(cell => {
+                    if (
+                        cell &&
+                        typeof cell === "object" &&
+                        "data" in (cell as Record<string, unknown>)
+                    ) {
+                        return cell as {data: unknown; text?: string}
+                    }
+                    return {
+                        data: cell,
+                        text: typeof cell === "string" ? cell : String(cell)
+                    }
+                })
+            }
+        })
+        this.table.data.data.push(
+            ...(newRows as unknown as typeof this.table.data.data)
+        )
+        this.table.refresh()
     }
 
     selectAll(): void {

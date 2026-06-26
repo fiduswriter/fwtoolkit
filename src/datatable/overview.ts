@@ -234,12 +234,24 @@ export class OverviewDataTable {
         if (!this.options.columns) {
             return checkboxColumn
         }
+        const hiddenColumns = new Set<number>()
+        this.options.columns.forEach(col => {
+            if (!col.hidden) {
+                return
+            }
+            const select = col.select
+            if (typeof select === "number") {
+                hiddenColumns.add(select)
+            } else if (Array.isArray(select)) {
+                select.forEach(index => hiddenColumns.add(index as number))
+            }
+        })
         return this.options.columns.filter(col => {
             const select = col.select
             return (
                 typeof select === "number" &&
                 select < checkboxColumn &&
-                !col.hidden
+                !hiddenColumns.has(select)
             )
         }).length
     }
@@ -369,6 +381,53 @@ export class OverviewDataTable {
         this.table.data.data = data as unknown as typeof this.table.data.data
         this.table.refresh()
         this.applyLastSort()
+    }
+
+    /**
+     * Insert new rows at the end of the table.
+     * Accepts the same `{data: [...rows]}` shape as simple-datatables.
+     */
+    insert({data}: {data: unknown[][]}): void {
+        if (!this.table) {
+            return
+        }
+        const newRows = data.map(row => ({
+            cells: row.map(cell => {
+                if (
+                    cell &&
+                    typeof cell === "object" &&
+                    "data" in (cell as Record<string, unknown>)
+                ) {
+                    return cell as {data: unknown; text?: string}
+                }
+                return {
+                    data: cell,
+                    text: typeof cell === "string" ? cell : String(cell)
+                }
+            })
+        }))
+        this.table.data.data.push(
+            ...(newRows as unknown as typeof this.table.data.data)
+        )
+        this.table.refresh()
+        this.applyLastSort()
+    }
+
+    get rows(): {remove: (indices: number[]) => void} {
+        return {
+            remove: (indices: number[]) => {
+                const table = this.table
+                if (!table) {
+                    return
+                }
+                const sorted = [...indices].sort((a, b) => b - a)
+                sorted.forEach(index => {
+                    table.data.data.splice(index, 1)
+                })
+                table.refresh()
+                this.applyLastSort()
+            }
+        }
     }
 
     removeRows(ids: unknown[]): void {

@@ -5,8 +5,8 @@ export interface TypeSwitchOptions {
     dom: HTMLElement
     label1: string
     label2: string
-    render1: () => string | HTMLElement
-    render2: () => string | HTMLElement
+    render1?: () => string | HTMLElement
+    render2?: () => string | HTMLElement
     initialMode?: 1 | 2
     disabled?: boolean
     beforeChange?: (mode: 1 | 2) => void
@@ -85,13 +85,15 @@ export class TypeSwitch {
 
     private updateView(notify: boolean): void {
         this.switcher.classList.remove("fw-value1", "fw-value2")
-        this.switcher.classList.add(`value${this.currentMode}`)
+        this.switcher.classList.add(`fw-value${this.currentMode}`)
 
-        const content =
+        const render =
             this.currentMode === 1
-                ? this.options.render1()
-                : this.options.render2()
-        this.setContent(content)
+                ? this.options.render1
+                : this.options.render2
+        if (render) {
+            this.setContent(render())
+        }
 
         if (notify && this.options.onChange) {
             this.options.onChange(this.currentMode)

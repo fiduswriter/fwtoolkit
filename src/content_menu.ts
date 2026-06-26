@@ -91,7 +91,7 @@ const menuTemplate = ({
                     case "separator":
                         return '<li><hr class="fw-content-menu-item-divider"/></li>'
                     default:
-                        return `<li tabindex="0" data-index="${index}" class="fw-content-menu-item${
+                        return `<li tabindex="0" data-index="${index}" class="fw-content-menu-item content-menu-item${
                             menuItem.disabled && menuItem.disabled(page)
                                 ? " fw-disabled"
                                 : menuItem.selected
@@ -223,7 +223,7 @@ export class ContentMenu {
                             '<li><hr class="fw-content-menu-item-divider"/></li>'
                         break
                     default:
-                        html += `<li tabindex="0" data-index="${i}" class="fw-content-menu-item${
+                        html += `<li tabindex="0" data-index="${i}" class="fw-content-menu-item content-menu-item${
                             menuItem.disabled && menuItem.disabled(this.page)
                                 ? " fw-disabled"
                                 : menuItem.selected
@@ -304,7 +304,7 @@ export class ContentMenu {
                     case "separator":
                         return '<li><hr class="fw-content-menu-item-divider"/></li>'
                     default:
-                        return `<li tabindex="0" data-index="${index}" class="fw-content-menu-item${
+                        return `<li tabindex="0" data-index="${index}" class="fw-content-menu-item content-menu-item${
                             menuItem.disabled && menuItem.disabled(this.page)
                                 ? " fw-disabled"
                                 : menuItem.selected

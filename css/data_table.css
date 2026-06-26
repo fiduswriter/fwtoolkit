@@ -21,17 +21,68 @@ table.fw-data-table:focus {
 }
 
 table.fw-data-table thead,
-table.fw-datatable-table thead {
+table.datatable-table thead {
     font-weight: 900;
     font-size: 11px;
 }
 
-table.fw-datatable-table thead th a {
+/* simple-datatables wraps header text in a <button> - reset it to plain text */
+.datatable-table th button,
+.datatable-pagination-list button {
+    color: inherit;
+    border: 0;
+    background-color: inherit;
+    cursor: pointer;
+    text-align: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+}
+
+.datatable-sorter,
+.datatable-filter {
+    display: inline-block;
+    height: 100%;
+    position: relative;
+    width: 100%;
+}
+
+.datatable-sorter::before,
+.datatable-sorter::after {
+    content: "";
+    height: 0;
+    width: 0;
+    position: absolute;
+    right: 4px;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    opacity: 0.2;
+}
+
+.datatable-sorter::before {
+    border-top: 4px solid currentColor;
+    bottom: 0;
+}
+
+.datatable-sorter::after {
+    border-bottom: 4px solid currentColor;
+    border-top: 4px solid transparent;
+    top: 0;
+}
+
+.datatable-ascending .datatable-sorter::after,
+.datatable-descending .datatable-sorter::before,
+.datatable-ascending .datatable-filter::after,
+.datatable-descending .datatable-filter::before {
+    opacity: 0.6;
+}
+
+table.datatable-table thead th a {
     color: var(--cs-1-hover);
 }
 
 table.fw-data-table td,
-table.fw-datatable-table td {
+table.datatable-table td {
     padding: 15px 0;
     vertical-align: top;
     border-bottom: solid 1px var(--cs-white-border);
@@ -43,7 +94,7 @@ table.fw-data-table tbody td {
 }
 
 table.fw-data-table th,
-table.fw-datatable-table th {
+table.datatable-table th {
     padding: 15px 0;
     vertical-align: top;
     border-bottom: solid 1px var(--cs-white-header-border);
@@ -51,8 +102,9 @@ table.fw-datatable-table th {
 
 table.fw-data-table th:last-child,
 table.fw-data-table td:last-child,
-table.fw-datatable-table th:last-child,
-table.fw-datatable-table td:last-child {
+table.datatable-table th:last-child,
+table.datatable-table td:last-child,
+
     padding-right: 0;
 }
 
@@ -60,8 +112,10 @@ table.fw-data-table:focus tbody td {
     border-bottom-color: var(--menu-cursor-border-color);
 }
 
+table.fw-data-table .date,
 table.fw-data-table .fw-date,
-table.fw-datatable-table .fw-date {
+table.datatable-table .date,
+table.datatable-table .fw-date {
     white-space: nowrap;
 }
 
@@ -99,10 +153,12 @@ table.fw-data-table-title i.fas {
     margin-right: 10px;
 }
 
+table.fw-data-table .icon-trash,
 table.fw-data-table .fw-icon-trash {
     font-size: 15px;
 }
 
+.owned-by-user .icon-access-right,
 .fw-owned-by-user .fw-icon-access-right,
 table.fw-data-table .fa-clock,
 table.fw-data-table .fa-trash,
@@ -112,6 +168,7 @@ table.fw-data-table .fa-history {
     cursor: pointer;
 }
 
+.owned-by-user .icon-access-right:hover,
 .fw-owned-by-user .fw-icon-access-right:hover,
 table.fw-data-table .fa-clock:hover,
 table.fw-data-table .fa-trash:hover,
@@ -121,6 +178,7 @@ table.fw-data-table .fa-history:hover {
 }
 
 /* A deleted access rights row */
+.collaborator-tr[data-right="delete"],
 .fw-collaborator-tr[data-right="delete"] {
     display: none;
 }
@@ -138,6 +196,7 @@ table.fw-data-table > tbody > tr > td:first-child {
     padding-left: 2px;
 }
 
+table.fw-data-table:focus > tbody > tr.datatable-cursor,
 table.fw-data-table:focus > tbody > tr.fw-datatable-cursor {
     background-color: var(--cs-white-background-selected);
 }
@@ -173,6 +232,7 @@ table.fw-data-table tbody td.checkable {
     text-align: center;
 }
 
+table.fw-data-table tbody tr.checked td.checkable::after,
 table.fw-data-table tbody tr.fw-checked td.checkable::after {
     display: inline-block;
     font-family: "Font Awesome 7 Free", "Font Awesome 6 Free", "FontAwesome", monospace;
@@ -200,18 +260,18 @@ table.fw-data-table.fw-selection-table tbody tr {
 }
 
 /* Bulk action */
-.fw-dt-bulk {
+.dt-bulk {
     display: block;
     position: relative;
     min-width: 30px;
 }
 
-.fw-dt-bulk .fw-check + label {
+.dt-bulk .fw-check + label {
     display: inline-block;
     vertical-align: middle;
 }
 
-.fw-dt-bulk-dropdown {
+.dt-bulk-dropdown {
     display: inline-block;
     vertical-align: middle;
     padding-left: 3px;

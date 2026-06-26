@@ -263,7 +263,7 @@ export const addAlert = (
     }
     alertsWrapper.insertAdjacentHTML(
         "beforeend",
-        `<li class="fa-before fa-${iconNames[alertType]}">${alertMsg}</li>`
+        `<li class="fa-before fa-${iconNames[alertType]} alerts-${alertType}">${alertMsg}</li>`
     )
     const alertBox = alertsWrapper.lastElementChild
     if (!alertBox) {
@@ -416,8 +416,11 @@ export const cancelPromise = (): Promise<never> => new Promise(() => {})
 export const findTarget = (
     event: Event,
     selector: string,
-    el: {target?: Element | null}
+    el?: {target?: Element | null}
 ): boolean => {
+    if (!el) {
+        el = {}
+    }
     el.target = (event.target as Element).closest(selector)
     if (el.target) {
         event.stopPropagation()

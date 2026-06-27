@@ -1,6 +1,7 @@
 import {ensureCSS} from "./network.js"
 import {getFocusIndex, setFocusIndex} from "./focus.js"
 import {isActivationEvent} from "./events.js"
+import {gettext, staticUrl} from "./settings.js"
 
 export interface InputListItemRenderResult<T> {
     html: string

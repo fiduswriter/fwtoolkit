@@ -1,4 +1,5 @@
-import {escapeText} from "../index.js"
+import {escapeText} from "../basic.js"
+import {gettext} from "../settings.js"
 
 export const moveTemplate = ({path}: {path: string}): string =>
     `<div>

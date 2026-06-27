@@ -70,5 +70,11 @@ export {
 } from "./file/index.js"
 export {
     initSettings,
-    getSettings
+    getSettings,
+    gettext,
+    interpolate,
+    staticUrl
 } from "./settings.js"
+export {InlineInput, InlineInputOptions} from "./inline_input.js"
+export {InlineTools, InlineToolItem, icon} from "./inline_tools.js"
+export {InfoRow, InfoRowOptions} from "./info_row.js"

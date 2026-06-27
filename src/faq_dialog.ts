@@ -1,6 +1,7 @@
 import {escapeText} from "./basic.js"
 import {Dialog} from "./dialog.js"
 import {ensureCSS} from "./network.js"
+import {staticUrl} from "./settings.js"
 
 export interface FAQQuestion extends Array<string | {hasImage?: boolean}> {
     0: string

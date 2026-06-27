@@ -1,6 +1,7 @@
 import {keyName} from "w3c-keyname"
 
 import {findTarget} from "./basic.js"
+import {gettext} from "./settings.js"
 
 export interface DialogButtonSpec {
     type?: "close" | "cancel" | "ok"

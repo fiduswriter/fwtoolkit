@@ -1,5 +1,6 @@
 import {escapeText, findTarget} from "../basic.js"
 import {ensureCSS} from "../network.js"
+import {staticUrl} from "../settings.js"
 
 export interface FileDescriptor {
     id?: number

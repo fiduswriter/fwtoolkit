@@ -142,6 +142,19 @@ table .fw-inline {
     color: var(--cs-white-text-secondary);
 }
 
+.ProseMirror {
+    position: relative;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    white-space: break-spaces;
+    -webkit-font-variant-ligatures: none;
+    font-variant-ligatures: none;
+}
+
+.ProseMirror pre {
+    white-space: pre-wrap;
+}
+
 .ProseMirror span.fw-placeholder::before {
     color: var(--cs-white-placeholder-text);
     content: attr(data-placeholder);

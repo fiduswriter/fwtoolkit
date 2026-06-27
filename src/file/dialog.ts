@@ -1,4 +1,5 @@
 import {Dialog} from "../dialog.js"
+import {gettext} from "../settings.js"
 import {FileSelector} from "./selector.js"
 import {addAlert} from "../basic.js"
 import {NewFolderDialog} from "./new_folder_dialog.js"

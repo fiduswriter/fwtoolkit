@@ -1,5 +1,6 @@
 import {Dialog} from "../dialog.js"
 import {newFolderTemplate} from "./templates.js"
+import {gettext} from "../settings.js"
 
 export class NewFolderDialog {
     callback: (folderName: string) => void

@@ -2,6 +2,7 @@ import {keyName} from "w3c-keyname"
 import {DataTable} from "simple-datatables"
 
 import {whenReady} from "../basic.js"
+import {gettext} from "../settings.js"
 import {ContentMenuInit} from "../content_menu.js"
 import {DatatableBulk} from "../datatable_bulk.js"
 

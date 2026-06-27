@@ -1,4 +1,5 @@
 import {DataTable} from "simple-datatables"
+import {gettext} from "../settings.js"
 
 export interface SelectionDataTableOptions {
     /** Container element that will hold the table. */

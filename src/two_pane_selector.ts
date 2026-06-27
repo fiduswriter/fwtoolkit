@@ -1,5 +1,6 @@
 import {ensureCSS} from "./network.js"
 import {escapeText} from "./basic.js"
+import {gettext, staticUrl} from "./settings.js"
 
 export interface TwoPaneSelectorOptions<T> {
     dom: HTMLElement

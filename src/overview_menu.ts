@@ -2,6 +2,7 @@ import {DiffDOM} from "diff-dom"
 import {keyName} from "w3c-keyname"
 
 import {escapeText, whenReady} from "./basic.js"
+import {gettext} from "./settings.js"
 
 export interface OverviewMenuDropdownOption {
     title: string

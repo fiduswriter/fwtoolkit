@@ -3,6 +3,7 @@ import {keyName} from "w3c-keyname"
 import {ContentMenu, ContentMenuInit} from "./content_menu.js"
 import {Dialog} from "./dialog.js"
 import {isActivationEvent} from "./events.js"
+import {gettext} from "./settings.js"
 
 export interface DropdownSelectOptions {
     onChange?: (value: string | false) => void

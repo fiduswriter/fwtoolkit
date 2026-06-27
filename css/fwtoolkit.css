@@ -47,6 +47,7 @@
     --cs-2-background: #0d78be; /* flat */
     --cs-2-border: #0557a1;
     --cs-2-background-hover: #0d63ab;
+    --cs-2-background-selected: #63ab0d;
     --cs-2-box-shadow: #3c9fdf;
     --cs-2-text: #ffffff;
 
@@ -261,6 +262,19 @@ table .fw-inline {
     display: block;
     padding-top: 6px;
     color: var(--cs-white-text-secondary);
+}
+
+.ProseMirror {
+    position: relative;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    white-space: break-spaces;
+    -webkit-font-variant-ligatures: none;
+    font-variant-ligatures: none;
+}
+
+.ProseMirror pre {
+    white-space: pre-wrap;
 }
 
 .ProseMirror span.fw-placeholder::before {
@@ -1784,6 +1798,92 @@ textarea:focus {
  */
 .fw-button input[type="checkbox"] {
     margin-right: 3px;
+}
+
+/* === inline_tools.css === */
+.inline-tools {
+    position: absolute;
+    left: auto;
+    top: auto;
+    margin-top: 3px;
+    display: none;
+}
+
+.ProseMirror-focused + .inline-tools {
+    display: block;
+    z-index: 10;
+}
+
+.inline-tools .menuicon {
+    position: relative;
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    overflow: hidden;
+    text-indent: -999px;
+    background-color: var(--cs-2-background);
+    color: var(--cs-2-text);
+    cursor: pointer;
+}
+
+.inline-tools .menuicon:hover {
+    background-color: var(--cs-2-background-hover);
+}
+
+.inline-tools .menuicon.fw-active {
+    background-color: var(--cs-2-background-selected);
+}
+
+.inline-tools .menuicon + .menuicon {
+    margin-left: 2px;
+}
+
+.inline-tools .menuicon::before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-indent: 0;
+    text-align: center;
+    line-height: 25px;
+    font-size: 13px;
+}
+
+.menuicon.strong::before,
+.menuicon.em::before,
+.menuicon.sup::before,
+.menuicon.sub::before {
+    font-family: "Font Awesome 7 Free", monospace;
+    font-weight: 900;
+}
+
+.menuicon.strong::before {
+    content: "\f032";
+}
+
+.menuicon.em::before {
+    content: "\f033";
+}
+
+.menuicon.sup::before {
+    content: "\f12b";
+}
+
+.menuicon.sub::before {
+    content: "\f12c";
+}
+
+.menuicon.smallcaps::before {
+    content: "Tt";
+    font-weight: bold;
+    font-variant: small-caps;
+}
+
+.menuicon.nocase::before {
+    content: "cP";
+    font-weight: bold;
 }
 
 /* === input_list.css === */

@@ -1,5 +1,6 @@
 import {escapeText} from "../basic.js"
 import {postJson} from "../network.js"
+import {gettext} from "../settings.js"
 
 export const shortFileTitle = (title: string, path: string): string => {
     if (!path.length || path.endsWith("/")) {

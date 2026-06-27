@@ -1,3 +1,5 @@
+import {gettext} from "./settings.js"
+
 export interface WebSocketMessage {
     type?: string
     s?: number

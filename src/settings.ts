@@ -7,7 +7,24 @@ export interface Settings {
     [key: string]: unknown
 }
 
-let _settings: Settings | null = null
+const SETTINGS_KEY = "__fwtoolkit_settings__"
+
+function getGlobalSettings(): Settings | null {
+    if (typeof globalThis !== "undefined") {
+        return (globalThis as Record<string, unknown>)[
+            SETTINGS_KEY
+        ] as Settings | null
+    }
+    return null
+}
+
+function setGlobalSettings(settings: Settings): void {
+    if (typeof globalThis !== "undefined") {
+        ;(globalThis as Record<string, unknown>)[SETTINGS_KEY] = settings
+    }
+}
+
+let _settings: Settings | null = getGlobalSettings()
 
 export function initSettings(rawSettings: Settings): void {
     if (_settings) {
@@ -15,9 +32,13 @@ export function initSettings(rawSettings: Settings): void {
     }
     // Freeze to prevent accidental mutation at runtime
     _settings = Object.freeze({ ...rawSettings })
+    setGlobalSettings(_settings)
 }
 
 export function getSettings(): Settings {
+    if (!_settings) {
+        _settings = getGlobalSettings()
+    }
     if (!_settings) {
         throw new Error(
             "App settings not initialized. Call initSettings() first."

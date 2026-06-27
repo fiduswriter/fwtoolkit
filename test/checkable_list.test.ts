@@ -1,4 +1,4 @@
-import {CheckableList} from "../src/checkable_list.js"
+import { CheckableList } from "../src/checkable_list.js"
 
 describe("CheckableList", () => {
     beforeEach(() => {
@@ -10,8 +10,8 @@ describe("CheckableList", () => {
         const list = new CheckableList({
             dom,
             options: [
-                {id: 1, label: "One"},
-                {id: 2, label: "Two"}
+                { id: 1, label: "One" },
+                { id: 2, label: "Two" }
             ],
             initialValue: [1]
         })
@@ -27,8 +27,8 @@ describe("CheckableList", () => {
         const list = new CheckableList({
             dom,
             options: [
-                {id: 1, label: "One"},
-                {id: 2, label: "Two"}
+                { id: 1, label: "One" },
+                { id: 2, label: "Two" }
             ],
             initialValue: [1]
         })
@@ -43,8 +43,8 @@ describe("CheckableList", () => {
         const list = new CheckableList({
             dom,
             options: [
-                {id: 1, label: "One"},
-                {id: 2, label: "Two"}
+                { id: 1, label: "One" },
+                { id: 2, label: "Two" }
             ],
             multiple: true
         })

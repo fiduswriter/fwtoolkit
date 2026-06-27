@@ -14,7 +14,7 @@ export function initSettings(rawSettings: Settings): void {
         throw new Error("Settings already initialized")
     }
     // Freeze to prevent accidental mutation at runtime
-    _settings = Object.freeze({...rawSettings})
+    _settings = Object.freeze({ ...rawSettings })
 }
 
 export function getSettings(): Settings {

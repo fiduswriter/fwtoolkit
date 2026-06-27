@@ -14,6 +14,6 @@ export const setFocusIndex = (index: number): void => {
         document.querySelectorAll(FOCUSABLE_SELECTOR)
     )
     if (index >= 0 && index < focusableElements.length) {
-        (focusableElements[index] as HTMLElement).focus()
+        ;(focusableElements[index] as HTMLElement).focus()
     }
 }

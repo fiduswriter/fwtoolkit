@@ -1,6 +1,6 @@
-import {ensureCSS} from "./network.js"
-import {escapeText} from "./basic.js"
-import {staticUrl} from "./settings.js"
+import { ensureCSS } from "./network.js"
+import { escapeText } from "./basic.js"
+import { staticUrl } from "./settings.js"
 
 export interface CheckableListOption {
     id: string | number
@@ -41,9 +41,7 @@ export class CheckableList {
                 option =>
                     `<div class="fw-checkable fw-checkable-label${
                         this.selected.has(option.id) ? " fw-checked" : ""
-                    }" data-id="${option.id}">${escapeText(
-                        option.label
-                    )}</div>`
+                    }" data-id="${option.id}">${escapeText(option.label)}</div>`
             )
             .join("")
 

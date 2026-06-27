@@ -6,5 +6,5 @@ export function convertDataURIToBlob(dataURI: string): Blob {
     for (let i = 0; i < byteString.length; i++) {
         ia[i] = byteString.charCodeAt(i)
     }
-    return new Blob([ab], {type: mimeString})
+    return new Blob([ab], { type: mimeString })
 }

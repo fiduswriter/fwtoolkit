@@ -1,6 +1,6 @@
-import {ensureCSS} from "./network.js"
-import {escapeText} from "./basic.js"
-import {staticUrl} from "./settings.js"
+import { ensureCSS } from "./network.js"
+import { escapeText } from "./basic.js"
+import { staticUrl } from "./settings.js"
 
 export interface TypeSwitchOptions {
     dom: HTMLElement
@@ -31,7 +31,9 @@ export class TypeSwitch {
         ensureCSS(staticUrl("css/type_switch.css"))
         this.renderWrapper()
         this.switcher = this.dom.querySelector(".fw-type-switch") as HTMLElement
-        this.inner = this.dom.querySelector(".fw-type-switch-input-inner") as HTMLElement
+        this.inner = this.dom.querySelector(
+            ".fw-type-switch-input-inner"
+        ) as HTMLElement
         this.updateView(false)
 
         if (options.disabled) {
@@ -89,9 +91,7 @@ export class TypeSwitch {
         this.switcher.classList.add(`fw-value${this.currentMode}`)
 
         const render =
-            this.currentMode === 1
-                ? this.options.render1
-                : this.options.render2
+            this.currentMode === 1 ? this.options.render1 : this.options.render2
         if (render) {
             this.setContent(render())
         }

@@ -1,4 +1,4 @@
-import {getCookie} from "../src/network.js"
+import { getCookie } from "../src/network.js"
 
 describe("network helpers", () => {
     test("getCookie returns the value of an existing cookie", () => {

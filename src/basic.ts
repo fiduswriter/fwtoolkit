@@ -1,9 +1,7 @@
-import {keyName} from "w3c-keyname"
-
-import {ContentMenu, ContentMenuInit} from "./content_menu.js"
-import {Dialog} from "./dialog.js"
-import {isActivationEvent} from "./events.js"
-import {gettext} from "./settings.js"
+import { ContentMenu, ContentMenuInit } from "./content_menu.js"
+import { Dialog } from "./dialog.js"
+import { isActivationEvent } from "./events.js"
+import { gettext } from "./settings.js"
 
 export interface DropdownSelectOptions {
     onChange?: (value: string | false) => void
@@ -44,7 +42,12 @@ export const dropdownSelect = (
         buttonDOM = document.createElement("div")
         buttonDOM.innerHTML =
             '<label></label>&nbsp;<span class="fa fa-caret-down"></span>'
-        buttonDOM.classList.add("fw-button", "fw-light", "fw-large", "fw-dropdown")
+        buttonDOM.classList.add(
+            "fw-button",
+            "fw-light",
+            "fw-large",
+            "fw-dropdown"
+        )
         if (width) {
             buttonDOM.style.width = Number.isInteger(width as number)
                 ? `${width}px`
@@ -88,8 +91,9 @@ export const dropdownSelect = (
                 order,
                 action: () => {
                     if (!button) {
-                        ;(buttonDOM.firstElementChild as HTMLElement).innerText =
-                            optionEl.innerText
+                        ;(
+                            buttonDOM.firstElementChild as HTMLElement
+                        ).innerText = optionEl.innerText
                     }
                     value = optionEl.value || optionEl.dataset.value || false
                     onChange(value)
@@ -107,8 +111,9 @@ export const dropdownSelect = (
     }
 
     if (!button) {
-        ;(buttonDOM.firstElementChild as HTMLElement).innerText =
-            selected ? selected.innerText : ""
+        ;(buttonDOM.firstElementChild as HTMLElement).innerText = selected
+            ? selected.innerText
+            : ""
     }
 
     value = selected ? selected.value : false
@@ -124,10 +129,10 @@ export const dropdownSelect = (
             return
         }
         // Determine menu position
-        let menuPos: {X: number; Y: number}
+        let menuPos: { X: number; Y: number }
         if (event.type === "click") {
             const mouseEvent = event as MouseEvent
-            menuPos = {X: mouseEvent.pageX, Y: mouseEvent.pageY}
+            menuPos = { X: mouseEvent.pageX, Y: mouseEvent.pageY }
         } else {
             // Keyboard event
             const rect = buttonDOM.getBoundingClientRect()
@@ -291,7 +296,7 @@ export interface DialogButtonSpec {
 // Used for system messages
 export const showSystemMessage = (
     message: string,
-    buttons: DialogButtonSpec[] = [{type: "close"}]
+    buttons: DialogButtonSpec[] = [{ type: "close" }]
 ): Dialog => {
     const dialog = new Dialog({
         title: gettext("System message"),
@@ -368,7 +373,8 @@ export const noSpaceTmp = (
         }
         if (values.length > 0) {
             const value = values.shift()
-            combined += value !== undefined && value !== null ? String(value) : ""
+            combined +=
+                value !== undefined && value !== null ? String(value) : ""
         }
     }
 
@@ -386,7 +392,11 @@ export const escapeText = (text: string): string => {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
 
-        .replace(/[^\x09\x0A\x0D\x20-\uD7FF\uE000-\uFFFD\u10000-\u10FFFF]/g, "") // invalid in XML chars
+        .replace(
+            // eslint-disable-next-line no-control-regex
+            /[^\x09\x0A\x0D\x20-\uD7FF\uE000-\uFFFD\u10000-\u10FFFF]/g,
+            ""
+        ) // invalid in XML chars
 }
 
 /**
@@ -417,7 +427,7 @@ export const cancelPromise = (): Promise<never> => new Promise(() => {})
 export const findTarget = (
     event: Event,
     selector: string,
-    el?: {target?: Element | null}
+    el?: { target?: Element | null }
 ): boolean => {
     if (!el) {
         el = {}
@@ -445,7 +455,7 @@ export const whenReady = (): Promise<void> => {
     }
 }
 
-export const setDocTitle = (title: string, app: {name: string}): void => {
+export const setDocTitle = (title: string, app: { name: string }): void => {
     const titleText = `${title} - ${app.name}`
     if (document.title !== titleText) {
         document.title = titleText

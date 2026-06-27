@@ -1,7 +1,7 @@
-import {DiffDOM} from "diff-dom"
-import {keyName} from "w3c-keyname"
+import { DiffDOM } from "diff-dom"
+import { keyName } from "w3c-keyname"
 
-import {escapeText} from "./basic.js"
+import { escapeText } from "./basic.js"
 
 export interface PulldownMenuItem {
     id?: string
@@ -53,7 +53,7 @@ export class PulldownMenu {
     constructor(options: PulldownMenuOptions) {
         this.options = options
         this.context = options.context ?? null
-        this.dd = new DiffDOM({valueDiffing: false})
+        this.dd = new DiffDOM({ valueDiffing: false })
         this.container = null
         this.barEl = null
         this.listeners = {}
@@ -80,19 +80,25 @@ export class PulldownMenu {
                 menu => `
                 <div class="fw-pulldown-menu-header" data-id="${menu.id}">
                     <span class="fw-pulldown-menu-title${
-                        resolve(menu.disabled, this.context) ? " fw-disabled" : ""
+                        resolve(menu.disabled, this.context)
+                            ? " fw-disabled"
+                            : ""
                     }"
                           title="${
                               menu.tooltip
                                   ? escapeText(
-                                        String(resolve(menu.tooltip, this.context))
+                                        String(
+                                            resolve(menu.tooltip, this.context)
+                                        )
                                     )
                                   : ""
                           }"
                           aria-label="${
                               menu.tooltip
                                   ? escapeText(
-                                        String(resolve(menu.tooltip, this.context))
+                                        String(
+                                            resolve(menu.tooltip, this.context)
+                                        )
                                     )
                                   : ""
                           }"
@@ -120,7 +126,8 @@ export class PulldownMenu {
     private bindEvents(): void {
         this.listeners.onclick = event => this.onclick(event as MouseEvent)
         document.body.addEventListener("click", this.listeners.onclick)
-        this.listeners.onKeydown = event => this.onKeydown(event as KeyboardEvent)
+        this.listeners.onKeydown = event =>
+            this.onKeydown(event as KeyboardEvent)
         document.body.addEventListener("keydown", this.listeners.onKeydown)
     }
 
@@ -129,7 +136,10 @@ export class PulldownMenu {
             document.body.removeEventListener("click", this.listeners.onclick)
         }
         if (this.listeners.onKeydown) {
-            document.body.removeEventListener("keydown", this.listeners.onKeydown)
+            document.body.removeEventListener(
+                "keydown",
+                this.listeners.onKeydown
+            )
         }
         this.listeners = {}
         this.openMenu = null
@@ -144,7 +154,9 @@ export class PulldownMenu {
         }
 
         if (target.closest(".fw-pulldown-menu-item")) {
-            const itemEl = target.closest(".fw-pulldown-menu-item") as HTMLElement
+            const itemEl = target.closest(
+                ".fw-pulldown-menu-item"
+            ) as HTMLElement
             const menuItem = this.findMenuItemByElement(itemEl)
             if (menuItem) {
                 this.executeMenuItem(menuItem)
@@ -158,7 +170,9 @@ export class PulldownMenu {
             this.container.contains(headerTitle) &&
             !headerTitle.classList.contains("fw-disabled")
         ) {
-            const headerEl = headerTitle.closest(".fw-pulldown-menu-header") as HTMLElement
+            const headerEl = headerTitle.closest(
+                ".fw-pulldown-menu-header"
+            ) as HTMLElement
             const menu = this.options.menu.content.find(
                 item => item.id === headerEl.dataset.id
             )
@@ -185,7 +199,9 @@ export class PulldownMenu {
         }
     }
 
-    private findMenuItemByElement(element: HTMLElement): PulldownMenuItem | null {
+    private findMenuItemByElement(
+        element: HTMLElement
+    ): PulldownMenuItem | null {
         if (!this.container) {
             return null
         }
@@ -287,7 +303,10 @@ export class PulldownMenu {
                     if (removals > 0) {
                         this.parentChain.splice(index + 1, removals)
                     }
-                    this.closeOtherMenus(ancestor as PulldownMenuContainer, menuItem)
+                    this.closeOtherMenus(
+                        ancestor as PulldownMenuContainer,
+                        menuItem
+                    )
                     this.parentChain.push(menuItem)
                     foundAncestor = true
                     break
@@ -302,7 +321,9 @@ export class PulldownMenu {
         this.openMenu = menuItem
     }
 
-    private closeAllMenus(menu: PulldownMenuContainer = this.options.menu): void {
+    private closeAllMenus(
+        menu: PulldownMenuContainer = this.options.menu
+    ): void {
         menu.content.forEach(item => {
             if (item.type === "menu" && item.open) {
                 item.open = false
@@ -326,7 +347,10 @@ export class PulldownMenu {
                     item.open = false
                 }
                 if (item.content) {
-                    this.closeOtherMenus(item as PulldownMenuContainer, currentMenuItem)
+                    this.closeOtherMenus(
+                        item as PulldownMenuContainer,
+                        currentMenuItem
+                    )
                 }
             }
         })
@@ -349,7 +373,9 @@ export class PulldownMenu {
 
         if (this.openMenu) {
             if (
-                ["ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight"].includes(name)
+                ["ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight"].includes(
+                    name
+                )
             ) {
                 event.preventDefault()
                 event.stopPropagation()
@@ -392,8 +418,7 @@ export class PulldownMenu {
         } else if (["ArrowDown", "ArrowUp"].includes(name)) {
             let index = parent.content.indexOf(this.cursorMenuItem)
             if (name === "ArrowDown") {
-                index =
-                    index < parent.content.length - 1 ? index + 1 : 0
+                index = index < parent.content.length - 1 ? index + 1 : 0
             } else {
                 index = index > 0 ? index - 1 : parent.content.length - 1
             }
@@ -403,11 +428,14 @@ export class PulldownMenu {
                 this.cursorMenuItem = parent
                 this.parentChain.pop()
                 this.closeAllMenus(
-                    this.parentChain[this.parentChain.length - 1] as PulldownMenuContainer
+                    this.parentChain[
+                        this.parentChain.length - 1
+                    ] as PulldownMenuContainer
                 )
             } else {
-                const currentMenuIndex =
-                    this.options.menu.content.findIndex(menu => menu.open)
+                const currentMenuIndex = this.options.menu.content.findIndex(
+                    menu => menu.open
+                )
                 const newMenuIndex = currentMenuIndex
                     ? currentMenuIndex - 1
                     : this.options.menu.content.length - 1
@@ -426,8 +454,9 @@ export class PulldownMenu {
                 this.executeMenuItem(menuItem)
                 return
             } else {
-                const currentMenuIndex =
-                    this.options.menu.content.findIndex(menu => menu.open)
+                const currentMenuIndex = this.options.menu.content.findIndex(
+                    menu => menu.open
+                )
                 const newMenuIndex =
                     currentMenuIndex === this.options.menu.content.length - 1
                         ? 0
@@ -455,7 +484,11 @@ export class PulldownMenu {
                 event.stopPropagation()
                 this.executeMenuItem(menuItem)
             } else if (menuItem.content) {
-                this.checkKeys(event, menuItem as PulldownMenuContainer, nameKey)
+                this.checkKeys(
+                    event,
+                    menuItem as PulldownMenuContainer,
+                    nameKey
+                )
             }
         })
     }
@@ -548,7 +581,10 @@ export class PulldownMenu {
         ${menuItem.open ? this.getMenuHTML(menuItem) : ""}`
     }
 
-    private getAccessKeyHTML(title: string, accessKey: string | undefined): string {
+    private getAccessKeyHTML(
+        title: string,
+        accessKey: string | undefined
+    ): string {
         if (!accessKey) {
             return escapeText(title)
         }

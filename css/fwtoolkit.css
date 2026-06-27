@@ -1,6 +1,5 @@
 /* === colors.css === */
 :root {
-
     --main-text-color: #2c2723;
     --main-background-color: #f2f2f2;
     --overlay-color: 170 170 170 / 0.3;
@@ -374,7 +373,8 @@ div.fw-input {
     top: 20px;
     font-size: 20px;
     display: inline-block;
-    font-family: "Font Awesome 7 Free", "Font Awesome 6 Free", "FontAwesome", monospace;
+    font-family:
+        "Font Awesome 7 Free", "Font Awesome 6 Free", "FontAwesome", monospace;
     font-weight: 900;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
@@ -807,7 +807,8 @@ div.fw-warning {
 
 .fw-checkable-label.fw-checked::after {
     display: inline-block;
-    font-family: "Font Awesome 7 Free", "Font Awesome 6 Free", "FontAwesome", monospace;
+    font-family:
+        "Font Awesome 7 Free", "Font Awesome 6 Free", "FontAwesome", monospace;
     font-weight: 900;
     font-size: inherit;
     text-rendering: auto;
@@ -1033,8 +1034,7 @@ table.datatable-table th {
 table.fw-data-table th:last-child,
 table.fw-data-table td:last-child,
 table.datatable-table th:last-child,
-table.datatable-table td:last-child,
-
+table.datatable-table td:last-child {
     padding-right: 0;
 }
 
@@ -1165,7 +1165,8 @@ table.fw-data-table tbody td.checkable {
 table.fw-data-table tbody tr.checked td.checkable::after,
 table.fw-data-table tbody tr.fw-checked td.checkable::after {
     display: inline-block;
-    font-family: "Font Awesome 7 Free", "Font Awesome 6 Free", "FontAwesome", monospace;
+    font-family:
+        "Font Awesome 7 Free", "Font Awesome 6 Free", "FontAwesome", monospace;
     font-weight: 900;
     font-size: inherit;
     text-rendering: auto;
@@ -1512,7 +1513,8 @@ table.fw-data-table.fw-selection-table tbody tr {
 
 .fw-dialog-button-icon-only .fw-icon::before {
     display: inline-block;
-    font-family: "Font Awesome 7 Free", "Font Awesome 6 Free", "FontAwesome", monospace;
+    font-family:
+        "Font Awesome 7 Free", "Font Awesome 6 Free", "FontAwesome", monospace;
     font-weight: 900;
     font-size: inherit;
     text-rendering: auto;
@@ -2481,7 +2483,9 @@ span.select-action-dropdown {
     color: var(--tabs-text-inactive);
     border-bottom: 3px solid transparent;
     margin-bottom: -2px;
-    transition: color 0.15s, border-color 0.15s;
+    transition:
+        color 0.15s,
+        border-color 0.15s;
     float: none;
     margin-right: 0;
 }

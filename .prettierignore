@@ -1,0 +1,6 @@
+.venv/
+node_modules/
+dist/
+.pages-build/
+css/fwtoolkit.css
+package-lock.json

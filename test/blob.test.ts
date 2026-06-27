@@ -1,4 +1,4 @@
-import {convertDataURIToBlob} from "../src/blob.js"
+import { convertDataURIToBlob } from "../src/blob.js"
 
 describe("blob helpers", () => {
     test("convertDataURIToBlob converts a data URI to a Blob", () => {

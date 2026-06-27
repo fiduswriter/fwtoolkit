@@ -1,4 +1,4 @@
-import {DialogTabs} from "../src/dialog_tabs.js"
+import { DialogTabs } from "../src/dialog_tabs.js"
 
 describe("DialogTabs", () => {
     beforeEach(() => {
@@ -7,8 +7,8 @@ describe("DialogTabs", () => {
 
     test("render returns nav and panels", () => {
         const tabs = new DialogTabs([
-            {title: "First", template: () => "<p>first body</p>"},
-            {title: "Second", template: () => "<p>second body</p>"}
+            { title: "First", template: () => "<p>first body</p>" },
+            { title: "Second", template: () => "<p>second body</p>" }
         ])
         const html = tabs.render()
         expect(html).toContain("First")
@@ -20,14 +20,14 @@ describe("DialogTabs", () => {
     test("bind shows first tab and switches on click", () => {
         const container = document.createElement("div")
         container.innerHTML = new DialogTabs([
-            {title: "A", template: () => "<p>a</p>"},
-            {title: "B", template: () => "<p>b</p>"}
+            { title: "A", template: () => "<p>a</p>" },
+            { title: "B", template: () => "<p>b</p>" }
         ]).render()
         document.body.appendChild(container)
 
         const tabs = new DialogTabs([
-            {title: "A", template: () => "<p>a</p>"},
-            {title: "B", template: () => "<p>b</p>"}
+            { title: "A", template: () => "<p>a</p>" },
+            { title: "B", template: () => "<p>b</p>" }
         ])
         tabs.bind(container)
 
@@ -36,7 +36,7 @@ describe("DialogTabs", () => {
         expect((panels[1] as HTMLElement).style.display).toBe("none")
 
         const secondLink = container.querySelectorAll(".fw-tab-link a")[1]
-        secondLink.dispatchEvent(new MouseEvent("click", {bubbles: true}))
+        secondLink.dispatchEvent(new MouseEvent("click", { bubbles: true }))
 
         expect((panels[0] as HTMLElement).style.display).toBe("none")
         expect((panels[1] as HTMLElement).style.display).not.toBe("none")

@@ -3,8 +3,10 @@ export const isActivationEvent = (event: Event): boolean => {
         return true
     }
     if (event.type === "keydown") {
-        return (event as KeyboardEvent).key === "Enter" ||
+        return (
+            (event as KeyboardEvent).key === "Enter" ||
             (event as KeyboardEvent).key === " "
+        )
     }
     return false
 }

@@ -1,101 +1,146 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fwtoolkit — Buttons demo</title>
-    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="../css/fwtoolkit.css">
-    <link rel="stylesheet" href="../demo.css">
-    <style>
-        body { padding: 2rem; }
-        .demo-section { margin: 2rem 0; padding: 1rem; border: 1px solid var(--cs-light-border); border-radius: 4px; }
-        .demo-section h2 { margin-top: 0; }
-        .demo-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; align-items: center; }
-        pre, code { background: #f4f4f4; }
-        pre { padding: 1rem; overflow: auto; }
-    </style>
-    <link rel="icon" type="image/png" href="../favicon.png">
-</head>
-<body>
-    <main class="demo-container">
-        <p><a href="../index.html">&larr; Back to demos</a></p>
-        <h1>Buttons</h1>
-        <p>All button styles below are provided by <code>fwtoolkit/css/buttons.css</code>. No JavaScript is required.</p>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>fwtoolkit — Buttons demo</title>
+        <link rel="stylesheet" href="../fontawesome/css/all.min.css" />
+        <link rel="stylesheet" href="../css/fwtoolkit.css" />
+        <link rel="stylesheet" href="../demo.css" />
+        <style>
+            body {
+                padding: 2rem;
+            }
+            .demo-section {
+                margin: 2rem 0;
+                padding: 1rem;
+                border: 1px solid var(--cs-light-border);
+                border-radius: 4px;
+            }
+            .demo-section h2 {
+                margin-top: 0;
+            }
+            .demo-actions {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                margin: 1rem 0;
+                align-items: center;
+            }
+            pre,
+            code {
+                background: #f4f4f4;
+            }
+            pre {
+                padding: 1rem;
+                overflow: auto;
+            }
+        </style>
+        <link rel="icon" type="image/png" href="../favicon.png" />
+    </head>
+    <body>
+        <main class="demo-container">
+            <p><a href="../index.html">&larr; Back to demos</a></p>
+            <h1>Buttons</h1>
+            <p>
+                All button styles below are provided by
+                <code>fwtoolkit/css/buttons.css</code>. No JavaScript is
+                required.
+            </p>
 
-        <div class="demo-section">
-            <h2>Base button</h2>
-            <div class="demo-actions">
-                <button class="fw-button">Default</button>
-                <button class="fw-button" disabled>Disabled attribute</button>
-                <span class="fw-button fw-disabled">Disabled class</span>
-            </div>
-            <pre><code>&lt;button class="fw-button"&gt;Default&lt;/button&gt;
+            <div class="demo-section">
+                <h2>Base button</h2>
+                <div class="demo-actions">
+                    <button class="fw-button">Default</button>
+                    <button class="fw-button" disabled>
+                        Disabled attribute
+                    </button>
+                    <span class="fw-button fw-disabled">Disabled class</span>
+                </div>
+                <pre><code>&lt;button class="fw-button"&gt;Default&lt;/button&gt;
 &lt;button class="fw-button" disabled&gt;Disabled attribute&lt;/button&gt;
 &lt;span class="fw-button fw-disabled"&gt;Disabled class&lt;/span&gt;</code></pre>
-        </div>
-
-        <div class="demo-section">
-            <h2>Colours</h2>
-            <div class="demo-actions">
-                <button class="fw-button fw-light">Light</button>
-                <button class="fw-button fw-dark">Dark</button>
-                <button class="fw-button fw-orange">Orange</button>
-                <button class="fw-button fw-green">Green</button>
-                <button class="fw-button fw-white">White</button>
             </div>
-            <pre><code>&lt;button class="fw-button fw-light"&gt;Light&lt;/button&gt;
+
+            <div class="demo-section">
+                <h2>Colours</h2>
+                <div class="demo-actions">
+                    <button class="fw-button fw-light">Light</button>
+                    <button class="fw-button fw-dark">Dark</button>
+                    <button class="fw-button fw-orange">Orange</button>
+                    <button class="fw-button fw-green">Green</button>
+                    <button class="fw-button fw-white">White</button>
+                </div>
+                <pre><code>&lt;button class="fw-button fw-light"&gt;Light&lt;/button&gt;
 &lt;button class="fw-button fw-dark"&gt;Dark&lt;/button&gt;
 &lt;button class="fw-button fw-orange"&gt;Orange&lt;/button&gt;
 &lt;button class="fw-button fw-green"&gt;Green&lt;/button&gt;
 &lt;button class="fw-button fw-white"&gt;White&lt;/button&gt;</code></pre>
-        </div>
-
-        <div class="demo-section">
-            <h2>Sizes</h2>
-            <div class="demo-actions">
-                <button class="fw-button fw-large fw-dark">Large</button>
-                <button class="fw-button fw-dark">Default</button>
-                <button class="fw-button fw-small fw-dark">Small</button>
             </div>
-            <pre><code>&lt;button class="fw-button fw-large fw-dark"&gt;Large&lt;/button&gt;
+
+            <div class="demo-section">
+                <h2>Sizes</h2>
+                <div class="demo-actions">
+                    <button class="fw-button fw-large fw-dark">Large</button>
+                    <button class="fw-button fw-dark">Default</button>
+                    <button class="fw-button fw-small fw-dark">Small</button>
+                </div>
+                <pre><code>&lt;button class="fw-button fw-large fw-dark"&gt;Large&lt;/button&gt;
 &lt;button class="fw-button fw-dark"&gt;Default&lt;/button&gt;
 &lt;button class="fw-button fw-small fw-dark"&gt;Small&lt;/button&gt;</code></pre>
-        </div>
-
-        <div class="demo-section">
-            <h2>Modifiers</h2>
-            <div class="demo-actions">
-                <button class="fw-button fw-dark fw-uppercase">Uppercase</button>
-                <button class="fw-button fw-dark fw-smallcaps">Smallcaps</button>
-                <button class="fw-button fw-dark fw-square"><i class="fa fa-check"></i></button>
-                <button class="fw-button fw-dark fw-left">Floated left</button>
             </div>
-            <pre><code>&lt;button class="fw-button fw-dark fw-uppercase"&gt;Uppercase&lt;/button&gt;
+
+            <div class="demo-section">
+                <h2>Modifiers</h2>
+                <div class="demo-actions">
+                    <button class="fw-button fw-dark fw-uppercase">
+                        Uppercase
+                    </button>
+                    <button class="fw-button fw-dark fw-smallcaps">
+                        Smallcaps
+                    </button>
+                    <button class="fw-button fw-dark fw-square">
+                        <i class="fa fa-check"></i>
+                    </button>
+                    <button class="fw-button fw-dark fw-left">
+                        Floated left
+                    </button>
+                </div>
+                <pre><code>&lt;button class="fw-button fw-dark fw-uppercase"&gt;Uppercase&lt;/button&gt;
 &lt;button class="fw-button fw-dark fw-smallcaps"&gt;Smallcaps&lt;/button&gt;
 &lt;button class="fw-button fw-dark fw-square"&gt;&lt;i class="fa fa-check"&gt;&lt;/i&gt;&lt;/button&gt;</code></pre>
-        </div>
-
-        <div class="demo-section">
-            <h2>Dropdown</h2>
-            <div class="demo-actions">
-                <button class="fw-button fw-large fw-light fw-dropdown">Dropdown</button>
             </div>
-            <pre><code>&lt;button class="fw-button fw-large fw-light fw-dropdown"&gt;Dropdown&lt;/button&gt;</code></pre>
-        </div>
 
-        <div class="demo-section">
-            <h2>Social accounts</h2>
-            <div class="demo-actions">
-                <button class="fw-button fw-socialaccount fw-facebook"><span><i class="fab fa-facebook-f"></i></span> Facebook</button>
-                <button class="fw-button fw-socialaccount fw-twitter"><span><i class="fab fa-twitter"></i></span> Twitter</button>
-                <button class="fw-button fw-socialaccount fw-google"><span><i class="fab fa-google"></i></span> Google</button>
-                <button class="fw-button fw-socialaccount fw-github"><span><i class="fab fa-github"></i></span> GitHub</button>
+            <div class="demo-section">
+                <h2>Dropdown</h2>
+                <div class="demo-actions">
+                    <button class="fw-button fw-large fw-light fw-dropdown">
+                        Dropdown
+                    </button>
+                </div>
+                <pre><code>&lt;button class="fw-button fw-large fw-light fw-dropdown"&gt;Dropdown&lt;/button&gt;</code></pre>
             </div>
-            <pre><code>&lt;button class="fw-button fw-socialaccount fw-facebook"&gt;
+
+            <div class="demo-section">
+                <h2>Social accounts</h2>
+                <div class="demo-actions">
+                    <button class="fw-button fw-socialaccount fw-facebook">
+                        <span><i class="fab fa-facebook-f"></i></span> Facebook
+                    </button>
+                    <button class="fw-button fw-socialaccount fw-twitter">
+                        <span><i class="fab fa-twitter"></i></span> Twitter
+                    </button>
+                    <button class="fw-button fw-socialaccount fw-google">
+                        <span><i class="fab fa-google"></i></span> Google
+                    </button>
+                    <button class="fw-button fw-socialaccount fw-github">
+                        <span><i class="fab fa-github"></i></span> GitHub
+                    </button>
+                </div>
+                <pre><code>&lt;button class="fw-button fw-socialaccount fw-facebook"&gt;
   &lt;span&gt;&lt;i class="fab fa-facebook-f"&gt;&lt;/i&gt;&lt;/span&gt; Facebook
 &lt;/button&gt;</code></pre>
-        </div>
-    </main>
-</body>
+            </div>
+        </main>
+    </body>
 </html>

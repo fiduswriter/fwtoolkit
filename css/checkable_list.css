@@ -19,7 +19,8 @@
 
 .fw-checkable-label.fw-checked::after {
     display: inline-block;
-    font-family: "Font Awesome 7 Free", "Font Awesome 6 Free", "FontAwesome", monospace;
+    font-family:
+        "Font Awesome 7 Free", "Font Awesome 6 Free", "FontAwesome", monospace;
     font-weight: 900;
     font-size: inherit;
     text-rendering: auto;

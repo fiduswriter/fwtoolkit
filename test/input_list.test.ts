@@ -1,4 +1,4 @@
-import {InputList} from "../src/input_list.js"
+import { InputList } from "../src/input_list.js"
 
 describe("InputList", () => {
     beforeEach(() => {
@@ -10,8 +10,9 @@ describe("InputList", () => {
         new InputList<string>({
             dom,
             emptyValue: "",
-            renderItem: value => ({html: `<input value="${value}">`}),
-            getValue: el => (el.querySelector("input") as HTMLInputElement).value
+            renderItem: value => ({ html: `<input value="${value}">` }),
+            getValue: el =>
+                (el.querySelector("input") as HTMLInputElement).value
         })
         const inputs = dom.querySelectorAll("input")
         expect(inputs.length).toBe(1)
@@ -24,8 +25,9 @@ describe("InputList", () => {
             dom,
             initialValues: ["a", "b"],
             emptyValue: "",
-            renderItem: value => ({html: `<input value="${value}">`}),
-            getValue: el => (el.querySelector("input") as HTMLInputElement).value
+            renderItem: value => ({ html: `<input value="${value}">` }),
+            getValue: el =>
+                (el.querySelector("input") as HTMLInputElement).value
         })
         const inputs = dom.querySelectorAll("input")
         expect(inputs.length).toBe(2)
@@ -39,8 +41,9 @@ describe("InputList", () => {
             dom,
             initialValues: ["a"],
             emptyValue: "",
-            renderItem: value => ({html: `<input value="${value}">`}),
-            getValue: el => (el.querySelector("input") as HTMLInputElement).value
+            renderItem: value => ({ html: `<input value="${value}">` }),
+            getValue: el =>
+                (el.querySelector("input") as HTMLInputElement).value
         })
         const plus = dom.querySelector(".fa-plus-circle") as HTMLElement
         plus.click()
@@ -53,8 +56,9 @@ describe("InputList", () => {
             dom,
             initialValues: ["a", "b"],
             emptyValue: "",
-            renderItem: value => ({html: `<input value="${value}">`}),
-            getValue: el => (el.querySelector("input") as HTMLInputElement).value
+            renderItem: value => ({ html: `<input value="${value}">` }),
+            getValue: el =>
+                (el.querySelector("input") as HTMLInputElement).value
         })
         const minusButtons = dom.querySelectorAll(".fa-minus-circle")
         ;(minusButtons[1] as HTMLElement).click()
@@ -67,8 +71,9 @@ describe("InputList", () => {
             dom,
             initialValues: ["a", ""],
             emptyValue: "",
-            renderItem: value => ({html: `<input value="${value}">`}),
-            getValue: el => (el.querySelector("input") as HTMLInputElement).value,
+            renderItem: value => ({ html: `<input value="${value}">` }),
+            getValue: el =>
+                (el.querySelector("input") as HTMLInputElement).value,
             validate: value => value.length > 0
         })
         expect(list.check()).toBe(false)

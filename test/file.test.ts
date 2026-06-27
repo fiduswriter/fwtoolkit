@@ -1,8 +1,10 @@
-import {shortFileTitle, longFilePath} from "../src/file/tools.js"
+import { shortFileTitle, longFilePath } from "../src/file/tools.js"
 
 describe("file path helpers", () => {
     test("shortFileTitle returns the title when path ends with /", () => {
-        expect(shortFileTitle("document.txt", "/home/user/")).toBe("document.txt")
+        expect(shortFileTitle("document.txt", "/home/user/")).toBe(
+            "document.txt"
+        )
     })
 
     test("shortFileTitle returns the last path segment otherwise", () => {

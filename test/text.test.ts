@@ -1,4 +1,4 @@
-import {escapeText, unescapeText, noSpaceTmp} from "../src/basic.js"
+import { escapeText, unescapeText, noSpaceTmp } from "../src/basic.js"
 
 describe("text helpers", () => {
     test("escapeText escapes HTML entities", () => {

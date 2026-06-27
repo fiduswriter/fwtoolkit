@@ -1,5 +1,5 @@
-import {OverviewDataTable} from "../src/datatable/overview.js"
-import {SelectionDataTable} from "../src/datatable/selection.js"
+import { OverviewDataTable } from "../src/datatable/overview.js"
+import { SelectionDataTable } from "../src/datatable/selection.js"
 
 describe("OverviewDataTable", () => {
     beforeEach(() => {
@@ -12,15 +12,23 @@ describe("OverviewDataTable", () => {
         const dt = new OverviewDataTable({
             dom,
             columns: [
-                {select: 0, hidden: true},
-                {select: 1, sortable: false},
-                {select: 2, title: "Name"},
-                {select: 3, title: "Email"},
-                {select: 4, title: "Date"}
+                { select: 0, hidden: true },
+                { select: 1, sortable: false },
+                { select: 2, title: "Name" },
+                { select: 3, title: "Email" },
+                { select: 4, title: "Date" }
             ],
             data: [
-                {cells: [1, false, "Alice", "alice@example.com", "2024-01-15"]},
-                {cells: [2, false, "Bob", "bob@example.com", "2024-02-20"]}
+                {
+                    cells: [
+                        1,
+                        false,
+                        "Alice",
+                        "alice@example.com",
+                        "2024-01-15"
+                    ]
+                },
+                { cells: [2, false, "Bob", "bob@example.com", "2024-02-20"] }
             ]
         })
         dt.init()
@@ -37,14 +45,11 @@ describe("OverviewDataTable", () => {
         const dt = new OverviewDataTable({
             dom,
             columns: [
-                {select: 0, hidden: true},
-                {select: 1, sortable: false},
-                {select: 2, title: "Name"}
+                { select: 0, hidden: true },
+                { select: 1, sortable: false },
+                { select: 2, title: "Name" }
             ],
-            data: [
-                {cells: [1, false, "Alice"]},
-                {cells: [2, false, "Bob"]}
-            ]
+            data: [{ cells: [1, false, "Alice"] }, { cells: [2, false, "Bob"] }]
         })
         dt.init()
         dt.removeRows([1])
@@ -64,13 +69,10 @@ describe("SelectionDataTable", () => {
         const dt = new SelectionDataTable({
             dom,
             columns: [
-                {select: 0, hidden: true, name: "id"},
-                {select: 1, name: "Name"}
+                { select: 0, hidden: true, name: "id" },
+                { select: 1, name: "Name" }
             ],
-            data: [
-                {cells: ["a", "Apple"]},
-                {cells: ["b", "Banana"]}
-            ],
+            data: [{ cells: ["a", "Apple"] }, { cells: ["b", "Banana"] }],
             multiple: true
         })
         dt.init()

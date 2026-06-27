@@ -1,135 +1,175 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fwtoolkit — Content menu demo</title>
-    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="../css/fwtoolkit.css">
-    <link rel="stylesheet" href="../demo.css">
-    <style>
-        body { padding: 2rem; }
-        .demo-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1.5rem 0; }
-        .demo-select { margin: 1rem 0; }
-        pre { background: #f4f4f4; padding: 1rem; overflow: auto; }
-    </style>
-        <script type="importmap">
-        {
-            "imports": {
-                "fwtoolkit": "../dist/index.js",
-                "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
-                "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
-                "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
-                "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
-                "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
-                "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
-                "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
-                "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
-                "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
-                "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>fwtoolkit — Content menu demo</title>
+        <link rel="stylesheet" href="../fontawesome/css/all.min.css" />
+        <link rel="stylesheet" href="../css/fwtoolkit.css" />
+        <link rel="stylesheet" href="../demo.css" />
+        <style>
+            body {
+                padding: 2rem;
             }
-        }
+            .demo-actions {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                margin: 1.5rem 0;
+            }
+            .demo-select {
+                margin: 1rem 0;
+            }
+            pre {
+                background: #f4f4f4;
+                padding: 1rem;
+                overflow: auto;
+            }
+        </style>
+        <script type="importmap">
+            {
+                "imports": {
+                    "fwtoolkit": "../dist/index.js",
+                    "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
+                    "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
+                    "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
+                    "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
+                    "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
+                    "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
+                    "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+                    "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+                }
+            }
         </script>
-    
-    <link rel="icon" type="image/png" href="../favicon.png">
-</head>
-<body>
-    <h1>Content menu &amp; dropdown select</h1>
 
-    <h2>Short content menu</h2>
-    <p>Click the button to open a small, keyboard-accessible context menu.</p>
-    <div class="demo-actions">
-        <button id="open-menu" class="fw-button fw-dark">Open short menu</button>
-    </div>
+        <link rel="icon" type="image/png" href="../favicon.png" />
+    </head>
+    <body>
+        <h1>Content menu &amp; dropdown select</h1>
 
-    <h2>Long content menu</h2>
-    <p>A long menu is automatically split into columns (and scrolls if needed).</p>
-    <div class="demo-actions">
-        <button id="open-long-menu" class="fw-button fw-dark">Open long menu</button>
-    </div>
+        <h2>Short content menu</h2>
+        <p>
+            Click the button to open a small, keyboard-accessible context menu.
+        </p>
+        <div class="demo-actions">
+            <button id="open-menu" class="fw-button fw-dark">
+                Open short menu
+            </button>
+        </div>
 
-    <h2>Short dropdown select</h2>
-    <div class="demo-select">
-        <select id="fruit-select" class="fw-button fw-light fw-dropdown">
-            <option value="apple">Apple</option>
-            <option value="banana">Banana</option>
-            <option value="cherry">Cherry</option>
-        </select>
-    </div>
+        <h2>Long content menu</h2>
+        <p>
+            A long menu is automatically split into columns (and scrolls if
+            needed).
+        </p>
+        <div class="demo-actions">
+            <button id="open-long-menu" class="fw-button fw-dark">
+                Open long menu
+            </button>
+        </div>
 
-    <h2>Long dropdown select</h2>
-    <div class="demo-select">
-        <select id="country-select" class="fw-button fw-light fw-dropdown">
-            <option value="de">Germany</option>
-            <option value="dk">Denmark</option>
-            <option value="es">Spain</option>
-            <option value="fi">Finland</option>
-            <option value="fr">France</option>
-            <option value="it">Italy</option>
-            <option value="nl">Netherlands</option>
-            <option value="no">Norway</option>
-            <option value="pl">Poland</option>
-            <option value="se">Sweden</option>
-            <option value="uk">United Kingdom</option>
-            <option value="us">United States</option>
-        </select>
-    </div>
+        <h2>Short dropdown select</h2>
+        <div class="demo-select">
+            <select id="fruit-select" class="fw-button fw-light fw-dropdown">
+                <option value="apple">Apple</option>
+                <option value="banana">Banana</option>
+                <option value="cherry">Cherry</option>
+            </select>
+        </div>
 
-    <pre id="log">Events will be logged here…</pre>
+        <h2>Long dropdown select</h2>
+        <div class="demo-select">
+            <select id="country-select" class="fw-button fw-light fw-dropdown">
+                <option value="de">Germany</option>
+                <option value="dk">Denmark</option>
+                <option value="es">Spain</option>
+                <option value="fi">Finland</option>
+                <option value="fr">France</option>
+                <option value="it">Italy</option>
+                <option value="nl">Netherlands</option>
+                <option value="no">Norway</option>
+                <option value="pl">Poland</option>
+                <option value="se">Sweden</option>
+                <option value="uk">United Kingdom</option>
+                <option value="us">United States</option>
+            </select>
+        </div>
 
-    <script type="module">
-        import {initSettings} from "fwtoolkit";
-        import { ContentMenu, dropdownSelect } from "../dist/index.js";
+        <pre id="log">Events will be logged here…</pre>
 
-        initSettings({
-            apiUrl: url => url,
-            getCsrfToken: () => "",
-            gettext: s => s,
-            staticUrl: s => "../" + s,
-            interpolate: (fmt, arr) => fmt.replace(/%s/g, () => arr.shift())
-        });
+        <script type="module">
+            import { initSettings } from "fwtoolkit"
+            import { ContentMenu, dropdownSelect } from "../dist/index.js"
 
-        const log = msg => {
-            const el = document.getElementById("log");
-            el.textContent = `${new Date().toLocaleTimeString()} — ${msg}\n` + el.textContent;
-        };
+            initSettings({
+                apiUrl: url => url,
+                getCsrfToken: () => "",
+                gettext: s => s,
+                staticUrl: s => "../" + s,
+                interpolate: (fmt, arr) => fmt.replace(/%s/g, () => arr.shift())
+            })
 
-        document.getElementById("open-menu").addEventListener("click", event => {
-            const menu = new ContentMenu({
-                menu: {
-                    content: [
-                        { title: "Edit", action: () => log("Edit selected"), order: 1 },
-                        { title: "Duplicate", action: () => log("Duplicate selected"), order: 2 },
-                        { title: "Delete", action: () => log("Delete selected"), order: 3 }
-                    ]
-                },
-                menuPos: { X: event.pageX, Y: event.pageY },
-                onClose: () => log("Short content menu closed")
-            });
-            menu.open();
-        });
+            const log = msg => {
+                const el = document.getElementById("log")
+                el.textContent =
+                    `${new Date().toLocaleTimeString()} — ${msg}\n` +
+                    el.textContent
+            }
 
-        document.getElementById("open-long-menu").addEventListener("click", event => {
-            const content = Array.from({ length: 30 }, (_, i) => ({
-                title: `Action ${i + 1}`,
-                action: () => log(`Action ${i + 1} selected`),
-                order: i + 1
-            }));
-            const menu = new ContentMenu({
-                menu: { content },
-                menuPos: { X: event.pageX, Y: event.pageY },
-                onClose: () => log("Long content menu closed")
-            });
-            menu.open();
-        });
+            document
+                .getElementById("open-menu")
+                .addEventListener("click", event => {
+                    const menu = new ContentMenu({
+                        menu: {
+                            content: [
+                                {
+                                    title: "Edit",
+                                    action: () => log("Edit selected"),
+                                    order: 1
+                                },
+                                {
+                                    title: "Duplicate",
+                                    action: () => log("Duplicate selected"),
+                                    order: 2
+                                },
+                                {
+                                    title: "Delete",
+                                    action: () => log("Delete selected"),
+                                    order: 3
+                                }
+                            ]
+                        },
+                        menuPos: { X: event.pageX, Y: event.pageY },
+                        onClose: () => log("Short content menu closed")
+                    })
+                    menu.open()
+                })
 
-        dropdownSelect(document.getElementById("fruit-select"), {
-            onChange: value => log(`Fruit dropdown changed to: ${value}`)
-        });
+            document
+                .getElementById("open-long-menu")
+                .addEventListener("click", event => {
+                    const content = Array.from({ length: 30 }, (_, i) => ({
+                        title: `Action ${i + 1}`,
+                        action: () => log(`Action ${i + 1} selected`),
+                        order: i + 1
+                    }))
+                    const menu = new ContentMenu({
+                        menu: { content },
+                        menuPos: { X: event.pageX, Y: event.pageY },
+                        onClose: () => log("Long content menu closed")
+                    })
+                    menu.open()
+                })
 
-        dropdownSelect(document.getElementById("country-select"), {
-            onChange: value => log(`Country dropdown changed to: ${value}`)
-        });
-    </script>
-</body>
+            dropdownSelect(document.getElementById("fruit-select"), {
+                onChange: value => log(`Fruit dropdown changed to: ${value}`)
+            })
+
+            dropdownSelect(document.getElementById("country-select"), {
+                onChange: value => log(`Country dropdown changed to: ${value}`)
+            })
+        </script>
+    </body>
 </html>

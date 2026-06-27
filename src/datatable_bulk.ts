@@ -1,7 +1,7 @@
-import {keyName} from "w3c-keyname"
+import { keyName } from "w3c-keyname"
 
-import {whenReady} from "./basic.js"
-import {ContentMenu, ContentMenuInit} from "./content_menu.js"
+import { whenReady } from "./basic.js"
+import { ContentMenu, ContentMenuInit } from "./content_menu.js"
 
 export interface DataTableCell {
     data: unknown
@@ -107,7 +107,7 @@ export class DatatableBulk {
         // Clear any references to help garbage collection
         this.page = null as unknown as DatatableBulkPage
         this.table = undefined
-        this.model = {content: []}
+        this.model = { content: [] }
     }
 
     onKeyDown(event: KeyboardEvent): void {
@@ -129,8 +129,12 @@ export class DatatableBulk {
                 width: 280,
                 page: this.page,
                 menuPos: {
-                    X: Number.parseInt(el.getBoundingClientRect().left as unknown as string),
-                    Y: Number.parseInt(el.getBoundingClientRect().bottom as unknown as string)
+                    X: Number.parseInt(
+                        el.getBoundingClientRect().left as unknown as string
+                    ),
+                    Y: Number.parseInt(
+                        el.getBoundingClientRect().bottom as unknown as string
+                    )
                 }
             })
             contentMenu.open()
@@ -180,14 +184,20 @@ export class DatatableBulk {
         }
 
         const allChecked = this.isAllChecked()
-        ;(el.querySelector("input[type=checkbox]") as HTMLInputElement).checked = allChecked
+        ;(
+            el.querySelector("input[type=checkbox]") as HTMLInputElement
+        ).checked = allChecked
     }
 
     isAllChecked(): boolean {
         const checkboxes = Array.from(
-            this.table!.dom.querySelectorAll("input.entry-select[type=checkbox]")
+            this.table!.dom.querySelectorAll(
+                "input.entry-select[type=checkbox]"
+            )
         )
-        const unchecked = checkboxes.filter(box => !(box as HTMLInputElement).checked)
+        const unchecked = checkboxes.filter(
+            box => !(box as HTMLInputElement).checked
+        )
         return !unchecked.length && checkboxes.length > 0
     }
 
@@ -207,7 +217,9 @@ export class DatatableBulk {
                         width: 280,
                         page: this.page,
                         menuPos: {
-                            X: Number.parseInt(event.pageX as unknown as string),
+                            X: Number.parseInt(
+                                event.pageX as unknown as string
+                            ),
                             Y: Number.parseInt(event.pageY as unknown as string)
                         }
                     })
@@ -219,9 +231,13 @@ export class DatatableBulk {
                 // Click on bulk checkbox
                 const isChecked = this.isAllChecked()
                 this.toggleSelectAll(!isChecked)
-                ;(target
-                    .closest("div.datatable-wrapper")!
-                    .querySelector("input[type=checkbox]") as HTMLInputElement).checked = !isChecked
+                ;(
+                    target
+                        .closest("div.datatable-wrapper")!
+                        .querySelector(
+                            "input[type=checkbox]"
+                        ) as HTMLInputElement
+                ).checked = !isChecked
                 this.onTableCheckChange()
             }
         } else if (target.matches(".fw-data-table .entry-select + label")) {

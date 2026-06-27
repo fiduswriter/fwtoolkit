@@ -1,6 +1,6 @@
-import {ensureCSS} from "./network.js"
-import {escapeText} from "./basic.js"
-import {staticUrl} from "./settings.js"
+import { ensureCSS } from "./network.js"
+import { escapeText } from "./basic.js"
+import { staticUrl } from "./settings.js"
 
 export interface DialogTab {
     id?: string
@@ -35,7 +35,7 @@ export class DialogTabs {
      * container element if needed.
      */
     render(): string {
-        const {containerId} = this.options
+        const { containerId } = this.options
         const wrapperAttrs = containerId ? ` id="${containerId}"` : ""
         return `<div${wrapperAttrs}>
             <ul class="fw-tabs-nav">
@@ -125,7 +125,7 @@ export class DialogTabs {
     }
 
     private findContainer(): HTMLElement | null {
-        const {containerId} = this.options
+        const { containerId } = this.options
         if (containerId) {
             return document.getElementById(containerId)
         }

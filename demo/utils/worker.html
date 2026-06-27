@@ -1,91 +1,117 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fwtoolkit — Web worker demo</title>
-    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="../css/fwtoolkit.css">
-    <link rel="stylesheet" href="../demo.css">
-    <style>
-        body { padding: 2rem; }
-        .demo-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; }
-        pre { background: #f4f4f4; padding: 1rem; overflow: auto; }
-    </style>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>fwtoolkit — Web worker demo</title>
+        <link rel="stylesheet" href="../fontawesome/css/all.min.css" />
+        <link rel="stylesheet" href="../css/fwtoolkit.css" />
+        <link rel="stylesheet" href="../demo.css" />
+        <style>
+            body {
+                padding: 2rem;
+            }
+            .demo-actions {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                margin: 1rem 0;
+            }
+            pre {
+                background: #f4f4f4;
+                padding: 1rem;
+                overflow: auto;
+            }
+        </style>
         <script type="importmap">
-        {
-            "imports": {
-                "fwtoolkit": "../dist/index.js",
-                "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
-                "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
-                "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
-                "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
-                "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
-                "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
-                "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
-                "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
-                "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
-                "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+            {
+                "imports": {
+                    "fwtoolkit": "../dist/index.js",
+                    "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
+                    "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
+                    "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
+                    "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
+                    "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
+                    "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
+                    "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+                    "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+                }
             }
-        }
         </script>
-    
-    <link rel="icon" type="image/png" href="../favicon.png">
-</head>
-<body>
-    <main class="demo-container">
-        <p><a href="../index.html">&larr; Back to demos</a></p>
-        <h1>makeWorker</h1>
-        <p><code>makeWorker</code> creates a same-origin Web Worker from a remote script by loading it via a blob <code>importScripts</code>. This is useful when the worker file lives on a CDN or another origin.</p>
-        <div class="demo-actions">
-            <button id="start-worker" class="fw-button fw-dark">Send work to worker</button>
-            <button id="terminate-worker" class="fw-button fw-light">Terminate worker</button>
-        </div>
-        <pre id="log">Results will be logged here…</pre>
-    </main>
 
-    <script type="module">
-        import {initSettings} from "fwtoolkit";
-        import { makeWorker } from "../dist/index.js";
+        <link rel="icon" type="image/png" href="../favicon.png" />
+    </head>
+    <body>
+        <main class="demo-container">
+            <p><a href="../index.html">&larr; Back to demos</a></p>
+            <h1>makeWorker</h1>
+            <p>
+                <code>makeWorker</code> creates a same-origin Web Worker from a
+                remote script by loading it via a blob
+                <code>importScripts</code>. This is useful when the worker file
+                lives on a CDN or another origin.
+            </p>
+            <div class="demo-actions">
+                <button id="start-worker" class="fw-button fw-dark">
+                    Send work to worker
+                </button>
+                <button id="terminate-worker" class="fw-button fw-light">
+                    Terminate worker
+                </button>
+            </div>
+            <pre id="log">Results will be logged here…</pre>
+        </main>
 
-        initSettings({
-            apiUrl: url => url,
-            getCsrfToken: () => "",
-            gettext: s => s,
-            staticUrl: s => "../" + s,
-            interpolate: (fmt, arr) => fmt.replace(/%s/g, () => arr.shift())
-        });
+        <script type="module">
+            import { initSettings } from "fwtoolkit"
+            import { makeWorker } from "../dist/index.js"
 
-        const log = msg => {
-            const el = document.getElementById("log");
-            el.textContent = `${new Date().toLocaleTimeString()} — ${msg}\n` + el.textContent;
-        };
+            initSettings({
+                apiUrl: url => url,
+                getCsrfToken: () => "",
+                gettext: s => s,
+                staticUrl: s => "../" + s,
+                interpolate: (fmt, arr) => fmt.replace(/%s/g, () => arr.shift())
+            })
 
-        let worker = null;
-
-        document.getElementById("start-worker").addEventListener("click", () => {
-            if (!worker) {
-                worker = makeWorker("../demo-worker.js");
-                worker.addEventListener("message", event => {
-                    log(`Worker result: ${event.data.result}`);
-                });
-                worker.addEventListener("error", err => {
-                    log(`Worker error: ${err.message}`);
-                });
+            const log = msg => {
+                const el = document.getElementById("log")
+                el.textContent =
+                    `${new Date().toLocaleTimeString()} — ${msg}\n` +
+                    el.textContent
             }
-            const a = Math.floor(Math.random() * 100);
-            const b = Math.floor(Math.random() * 100);
-            log(`Sending ${a} + ${b}`);
-            worker.postMessage({ a, b });
-        });
 
-        document.getElementById("terminate-worker").addEventListener("click", () => {
-            if (worker) {
-                worker.terminate();
-                worker = null;
-                log("Worker terminated");
-            }
-        });
-    </script>
-</body>
+            let worker = null
+
+            document
+                .getElementById("start-worker")
+                .addEventListener("click", () => {
+                    if (!worker) {
+                        worker = makeWorker("../demo-worker.js")
+                        worker.addEventListener("message", event => {
+                            log(`Worker result: ${event.data.result}`)
+                        })
+                        worker.addEventListener("error", err => {
+                            log(`Worker error: ${err.message}`)
+                        })
+                    }
+                    const a = Math.floor(Math.random() * 100)
+                    const b = Math.floor(Math.random() * 100)
+                    log(`Sending ${a} + ${b}`)
+                    worker.postMessage({ a, b })
+                })
+
+            document
+                .getElementById("terminate-worker")
+                .addEventListener("click", () => {
+                    if (worker) {
+                        worker.terminate()
+                        worker = null
+                        log("Worker terminated")
+                    }
+                })
+        </script>
+    </body>
 </html>

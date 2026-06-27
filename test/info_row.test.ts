@@ -1,8 +1,8 @@
-import {InfoRow} from "../src/info_row.js"
+import { InfoRow } from "../src/info_row.js"
 
 describe("InfoRow", () => {
     test("returns a compact table row without help text", () => {
-        const row = new InfoRow({label: "Title", fieldClass: "title"})
+        const row = new InfoRow({ label: "Title", fieldClass: "title" })
         const html = row.html()
         expect(html).toContain("fw-tablerow-title")
         expect(html).toContain("Title")

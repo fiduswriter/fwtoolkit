@@ -1,108 +1,153 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fwtoolkit — Dialog demo</title>
-    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="../css/fwtoolkit.css">
-    <link rel="stylesheet" href="../demo.css">
-    <style>
-        body { padding: 2rem; }
-        .demo-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
-        pre { background: #f4f4f4; padding: 1rem; overflow: auto; }
-    </style>
-        <script type="importmap">
-        {
-            "imports": {
-                "fwtoolkit": "../dist/index.js",
-                "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
-                "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
-                "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
-                "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
-                "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
-                "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
-                "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
-                "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
-                "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
-                "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>fwtoolkit — Dialog demo</title>
+        <link rel="stylesheet" href="../fontawesome/css/all.min.css" />
+        <link rel="stylesheet" href="../css/fwtoolkit.css" />
+        <link rel="stylesheet" href="../demo.css" />
+        <style>
+            body {
+                padding: 2rem;
             }
-        }
+            .demo-actions {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                margin-top: 1rem;
+            }
+            pre {
+                background: #f4f4f4;
+                padding: 1rem;
+                overflow: auto;
+            }
+        </style>
+        <script type="importmap">
+            {
+                "imports": {
+                    "fwtoolkit": "../dist/index.js",
+                    "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
+                    "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
+                    "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
+                    "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
+                    "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
+                    "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
+                    "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+                    "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+                }
+            }
         </script>
-    
-    <link rel="icon" type="image/png" href="../favicon.png">
-</head>
-<body>
-    <h1>Dialog demo</h1>
-    <p>Open a few different modal dialogs built with <code>fwtoolkit/dialog</code>.</p>
-    <div class="demo-actions">
-        <button id="open-simple" class="fw-button fw-dark">Simple dialog</button>
-        <button id="open-alert" class="fw-button fw-dark">Alert dialog</button>
-        <button id="open-form" class="fw-button fw-dark">Dialog with form</button>
-        <button id="open-wait" class="fw-button fw-dark">Show wait indicator</button>
-    </div>
-    <pre id="log">Events will be logged here…</pre>
 
-    <div id="fw-wait"><i class="fa fa-spinner fa-spin"></i></div>
+        <link rel="icon" type="image/png" href="../favicon.png" />
+    </head>
+    <body>
+        <h1>Dialog demo</h1>
+        <p>
+            Open a few different modal dialogs built with
+            <code>fwtoolkit/dialog</code>.
+        </p>
+        <div class="demo-actions">
+            <button id="open-simple" class="fw-button fw-dark">
+                Simple dialog
+            </button>
+            <button id="open-alert" class="fw-button fw-dark">
+                Alert dialog
+            </button>
+            <button id="open-form" class="fw-button fw-dark">
+                Dialog with form
+            </button>
+            <button id="open-wait" class="fw-button fw-dark">
+                Show wait indicator
+            </button>
+        </div>
+        <pre id="log">Events will be logged here…</pre>
 
-    <script type="module">
-        import {initSettings} from "fwtoolkit";
-        import { Dialog, addAlert, activateWait, deactivateWait } from "../dist/index.js";
+        <div id="fw-wait"><i class="fa fa-spinner fa-spin"></i></div>
 
-        initSettings({
-            apiUrl: url => url,
-            getCsrfToken: () => "",
-            gettext: s => s,
-            staticUrl: s => "../" + s,
-            interpolate: (fmt, arr) => fmt.replace(/%s/g, () => arr.shift())
-        });
+        <script type="module">
+            import { initSettings } from "fwtoolkit"
+            import {
+                Dialog,
+                addAlert,
+                activateWait,
+                deactivateWait
+            } from "../dist/index.js"
 
-        const log = msg => {
-            const el = document.getElementById("log");
-            el.textContent = `${new Date().toLocaleTimeString()} — ${msg}\n` + el.textContent;
-        };
+            initSettings({
+                apiUrl: url => url,
+                getCsrfToken: () => "",
+                gettext: s => s,
+                staticUrl: s => "../" + s,
+                interpolate: (fmt, arr) => fmt.replace(/%s/g, () => arr.shift())
+            })
 
-        document.getElementById("open-simple").addEventListener("click", () => {
-            const dialog = new Dialog({
-                title: "A simple dialog",
-                body: "<p>This dialog demonstrates the basic <code>Dialog</code> API.</p>",
-                buttons: [
-                    { type: "close" },
-                    {
-                        text: "Say hello",
-                        classes: "fw-dark",
-                        click: () => {
-                            log("Hello from the simple dialog!");
-                            dialog.close();
-                        }
-                    }
-                ]
-            });
-            dialog.open();
-        });
+            const log = msg => {
+                const el = document.getElementById("log")
+                el.textContent =
+                    `${new Date().toLocaleTimeString()} — ${msg}\n` +
+                    el.textContent
+            }
 
-        document.getElementById("open-alert").addEventListener("click", () => {
-            addAlert("info", "An info alert shown from outside a dialog.");
-            const dialog = new Dialog({
-                title: "Alert example",
-                body: "<p>This dialog has a warning note and an alert button.</p>",
-                note: { text: "This is a note attached to the dialog.", display: true },
-                buttons: [
-                    { type: "cancel" },
-                    {
-                        text: "Trigger alert",
-                        classes: "fw-dark",
-                        click: () => addAlert("success", "Success alert from inside the dialog!")
-                    }
-                ]
-            });
-            dialog.open();
-        });
+            document
+                .getElementById("open-simple")
+                .addEventListener("click", () => {
+                    const dialog = new Dialog({
+                        title: "A simple dialog",
+                        body: "<p>This dialog demonstrates the basic <code>Dialog</code> API.</p>",
+                        buttons: [
+                            { type: "close" },
+                            {
+                                text: "Say hello",
+                                classes: "fw-dark",
+                                click: () => {
+                                    log("Hello from the simple dialog!")
+                                    dialog.close()
+                                }
+                            }
+                        ]
+                    })
+                    dialog.open()
+                })
 
-        document.getElementById("open-form").addEventListener("click", () => {
-            const dialog = new Dialog({
-                title: "Dialog with a form",
-                body: `
+            document
+                .getElementById("open-alert")
+                .addEventListener("click", () => {
+                    addAlert(
+                        "info",
+                        "An info alert shown from outside a dialog."
+                    )
+                    const dialog = new Dialog({
+                        title: "Alert example",
+                        body: "<p>This dialog has a warning note and an alert button.</p>",
+                        note: {
+                            text: "This is a note attached to the dialog.",
+                            display: true
+                        },
+                        buttons: [
+                            { type: "cancel" },
+                            {
+                                text: "Trigger alert",
+                                classes: "fw-dark",
+                                click: () =>
+                                    addAlert(
+                                        "success",
+                                        "Success alert from inside the dialog!"
+                                    )
+                            }
+                        ]
+                    })
+                    dialog.open()
+                })
+
+            document
+                .getElementById("open-form")
+                .addEventListener("click", () => {
+                    const dialog = new Dialog({
+                        title: "Dialog with a form",
+                        body: `
                     <p>
                         <label>Name<br><input type="text" id="demo-name" class="fw-media-title" style="width:100%"></label>
                     </p>
@@ -110,32 +155,40 @@
                         <label>Email<br><input type="email" id="demo-email" class="fw-media-title" style="width:100%"></label>
                     </p>
                 `,
-                width: 400,
-                buttons: [
-                    { type: "cancel" },
-                    {
-                        text: "Submit",
-                        classes: "fw-dark",
-                        click: () => {
-                            const name = document.getElementById("demo-name").value;
-                            const email = document.getElementById("demo-email").value;
-                            log(`Submitted: ${name} <${email}>`);
-                            dialog.close();
-                        }
-                    }
-                ]
-            });
-            dialog.open();
-        });
+                        width: 400,
+                        buttons: [
+                            { type: "cancel" },
+                            {
+                                text: "Submit",
+                                classes: "fw-dark",
+                                click: () => {
+                                    const name =
+                                        document.getElementById(
+                                            "demo-name"
+                                        ).value
+                                    const email =
+                                        document.getElementById(
+                                            "demo-email"
+                                        ).value
+                                    log(`Submitted: ${name} <${email}>`)
+                                    dialog.close()
+                                }
+                            }
+                        ]
+                    })
+                    dialog.open()
+                })
 
-        document.getElementById("open-wait").addEventListener("click", () => {
-            activateWait(true, "Loading something…");
-            log("Wait indicator activated");
-            setTimeout(() => {
-                deactivateWait();
-                log("Wait indicator deactivated");
-            }, 2000);
-        });
-    </script>
-</body>
+            document
+                .getElementById("open-wait")
+                .addEventListener("click", () => {
+                    activateWait(true, "Loading something…")
+                    log("Wait indicator activated")
+                    setTimeout(() => {
+                        deactivateWait()
+                        log("Wait indicator deactivated")
+                    }, 2000)
+                })
+        </script>
+    </body>
 </html>

@@ -137,7 +137,7 @@ export class ContentMenu {
         id = false,
         page = false,
         classes = false,
-        menu = {content: []},
+        menu = { content: [] },
         height = false,
         width = false,
         onClose = false,
@@ -183,8 +183,7 @@ export class ContentMenu {
             })
         )
         this.backdropEl = document.body.lastElementChild as HTMLElement
-        this.dialogEl = this.backdropEl
-            .previousElementSibling as HTMLElement
+        this.dialogEl = this.backdropEl.previousElementSibling as HTMLElement
         if (this.menuPos && this.menuPos.X && this.menuPos.Y) {
             this.positionDialog()
         } else {
@@ -256,12 +255,18 @@ export class ContentMenu {
         const maxWidth = viewportWidth * 0.95
 
         if (dialogRect.height >= maxHeight) {
-            const contentEl = this.dialogEl.querySelector(".fw-content-menu-content") as HTMLElement
-            const contentDiv = contentEl.querySelector(":scope > div") as HTMLElement
+            const contentEl = this.dialogEl.querySelector(
+                ".fw-content-menu-content"
+            ) as HTMLElement
+            const contentDiv = contentEl.querySelector(
+                ":scope > div"
+            ) as HTMLElement
             let columns = 2
             while (columns <= 6) {
                 contentDiv.innerHTML = this.renderColumnsHtml(columns)
-                const columnsDiv = contentDiv.querySelector(".fw-content-menu-columns")
+                const columnsDiv = contentDiv.querySelector(
+                    ".fw-content-menu-columns"
+                )
                 if (columnsDiv) {
                     const naturalWidth = columnsDiv.scrollWidth + 20
                     contentEl.style.width = `${naturalWidth}px`
@@ -380,12 +385,20 @@ export class ContentMenu {
         document
             .querySelectorAll("div.fw-content-menu")
             .forEach(
-                dialogEl => (zIndex = Math.max(zIndex, parseInt((dialogEl as HTMLElement).style.zIndex) || 100))
+                dialogEl =>
+                    (zIndex = Math.max(
+                        zIndex,
+                        parseInt((dialogEl as HTMLElement).style.zIndex) || 100
+                    ))
             )
         document
             .querySelectorAll("div.fw-dialog")
             .forEach(
-                dialogEl => (zIndex = Math.max(zIndex, parseInt((dialogEl as HTMLElement).style.zIndex) || 100))
+                dialogEl =>
+                    (zIndex = Math.max(
+                        zIndex,
+                        parseInt((dialogEl as HTMLElement).style.zIndex) || 100
+                    ))
             )
         return zIndex
     }
@@ -402,7 +415,7 @@ export class ContentMenu {
             this.previouslyFocusedElement &&
             (this.previouslyFocusedElement as HTMLElement).focus
         ) {
-            (this.previouslyFocusedElement as HTMLElement).focus()
+            ;(this.previouslyFocusedElement as HTMLElement).focus()
         }
 
         if (this.onClose) {
@@ -413,13 +426,17 @@ export class ContentMenu {
     onclick(event: MouseEvent): void {
         event.preventDefault()
         event.stopImmediatePropagation()
-        const target = (event.target as Element).closest("li.fw-content-menu-item") as HTMLElement
+        const target = (event.target as Element).closest(
+            "li.fw-content-menu-item"
+        ) as HTMLElement
         if (target) {
             const menuNumber = target.dataset.index
             if (menuNumber === undefined) {
                 return
             }
-            const menuItem = this.menu.content[parseInt(menuNumber)] as ContentMenuActionItem
+            const menuItem = this.menu.content[
+                parseInt(menuNumber)
+            ] as ContentMenuActionItem
             if (menuItem.disabled?.(this.page)) {
                 return
             }
@@ -429,10 +446,14 @@ export class ContentMenu {
     }
 
     onKeyDown(event: KeyboardEvent): void {
-        const {key} = event
-        const menuItems = this.dialogEl.querySelectorAll("li.fw-content-menu-item:not(.fw-disabled)")
+        const { key } = event
+        const menuItems = this.dialogEl.querySelectorAll(
+            "li.fw-content-menu-item:not(.fw-disabled)"
+        )
 
-        const columnsDiv = this.dialogEl.querySelector(".fw-content-menu-columns")
+        const columnsDiv = this.dialogEl.querySelector(
+            ".fw-content-menu-columns"
+        )
         const totalColumns = columnsDiv
             ? columnsDiv.querySelectorAll(".fw-content-menu-list").length
             : 1
@@ -522,7 +543,9 @@ export class ContentMenu {
             case "Enter":
             case " ": {
                 event.preventDefault()
-                const menuItem = this.menu.content[this.focusedIndex] as ContentMenuActionItem
+                const menuItem = this.menu.content[
+                    this.focusedIndex
+                ] as ContentMenuActionItem
                 if (!menuItem.disabled?.(this.page)) {
                     menuItem.action(this.page)
                     this.close()
@@ -533,7 +556,9 @@ export class ContentMenu {
     }
 
     focusFirstMenuItem(): void {
-        const menuItems = this.dialogEl.querySelectorAll("li.fw-content-menu-item:not(.fw-disabled)")
+        const menuItems = this.dialogEl.querySelectorAll(
+            "li.fw-content-menu-item:not(.fw-disabled)"
+        )
         if (menuItems.length > 0) {
             this.focusedIndex = 0
             this.focusMenuItem(this.focusedIndex)
@@ -541,9 +566,11 @@ export class ContentMenu {
     }
 
     focusMenuItem(index: number): void {
-        const menuItems = this.dialogEl.querySelectorAll("li.fw-content-menu-item:not(.fw-disabled)")
+        const menuItems = this.dialogEl.querySelectorAll(
+            "li.fw-content-menu-item:not(.fw-disabled)"
+        )
         if (menuItems[index]) {
-            (menuItems[index] as HTMLElement).focus()
+            ;(menuItems[index] as HTMLElement).focus()
         }
     }
 }

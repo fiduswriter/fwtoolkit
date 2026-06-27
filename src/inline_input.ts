@@ -1,15 +1,15 @@
-import {baseKeymap, toggleMark} from "prosemirror-commands"
-import {history, redo, undo} from "prosemirror-history"
-import {keymap} from "prosemirror-keymap"
-import type {Schema} from "prosemirror-model"
-import {Plugin} from "prosemirror-state"
-import {EditorState} from "prosemirror-state"
-import type {Transaction} from "prosemirror-state"
-import {Decoration, DecorationSet} from "prosemirror-view"
-import {EditorView} from "prosemirror-view"
+import { baseKeymap, toggleMark } from "prosemirror-commands"
+import { history, redo, undo } from "prosemirror-history"
+import { keymap } from "prosemirror-keymap"
+import type { Schema } from "prosemirror-model"
+import { Plugin } from "prosemirror-state"
+import { EditorState } from "prosemirror-state"
+import type { Transaction } from "prosemirror-state"
+import { Decoration, DecorationSet } from "prosemirror-view"
+import { EditorView } from "prosemirror-view"
 
-import type {InlineToolItem} from "./inline_tools.js"
-import {InlineTools} from "./inline_tools.js"
+import type { InlineToolItem } from "./inline_tools.js"
+import { InlineTools } from "./inline_tools.js"
 
 export interface InlineInputOptions {
     schema: Schema
@@ -55,7 +55,9 @@ export class InlineInput {
                         return false
                     }
                     const command = toggleMark(sMark)
-                    return command(this.view.state, tr => this.view.dispatch(tr))
+                    return command(this.view.state, tr =>
+                        this.view.dispatch(tr)
+                    )
                 },
                 "Mod-i": () => {
                     const sMark = this.view.state.schema.marks["em"]
@@ -63,7 +65,9 @@ export class InlineInput {
                         return false
                     }
                     const command = toggleMark(sMark)
-                    return command(this.view.state, tr => this.view.dispatch(tr))
+                    return command(this.view.state, tr =>
+                        this.view.dispatch(tr)
+                    )
                 }
             })
         ]

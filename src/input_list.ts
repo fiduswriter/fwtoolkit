@@ -1,7 +1,7 @@
-import {ensureCSS} from "./network.js"
-import {getFocusIndex, setFocusIndex} from "./focus.js"
-import {isActivationEvent} from "./events.js"
-import {gettext, staticUrl} from "./settings.js"
+import { ensureCSS } from "./network.js"
+import { getFocusIndex, setFocusIndex } from "./focus.js"
+import { isActivationEvent } from "./events.js"
+import { gettext, staticUrl } from "./settings.js"
 
 export interface InputListItemRenderResult<T> {
     html: string
@@ -47,7 +47,7 @@ export class InputList<T> {
      * Validate all current values and highlight invalid items.
      */
     check(): boolean {
-        const {validate} = this.options
+        const { validate } = this.options
         if (!validate) {
             return true
         }
@@ -77,7 +77,7 @@ export class InputList<T> {
     }
 
     private addRow(tbody: HTMLElement, value: T, index: number): void {
-        const {html, bind} = this.options.renderItem(value, index)
+        const { html, bind } = this.options.renderItem(value, index)
         tbody.insertAdjacentHTML(
             "beforeend",
             `<tr>
@@ -86,21 +86,27 @@ export class InputList<T> {
                     <span class="fa fa-minus-circle" tabindex="0" role="button" aria-label="${gettext(
                         "Remove"
                     )}"></span>&nbsp;<span class="fa fa-plus-circle" tabindex="0" role="button" aria-label="${gettext(
-                "Add"
-            )}"></span>
+                        "Add"
+                    )}"></span>
                 </td>
             </tr>`
         )
         const row = tbody.lastElementChild as HTMLElement
-        const itemCell = row.querySelector(".fw-input-list-item-cell") as HTMLElement
+        const itemCell = row.querySelector(
+            ".fw-input-list-item-cell"
+        ) as HTMLElement
         if (bind) {
             bind(itemCell, value, index)
         }
 
         const addItemEl = row.querySelector(".fa-plus-circle") as HTMLElement
-        const removeItemEl = row.querySelector(".fa-minus-circle") as HTMLElement
+        const removeItemEl = row.querySelector(
+            ".fa-minus-circle"
+        ) as HTMLElement
 
-        addItemEl.addEventListener("click", event => this.handlePlus(event, index))
+        addItemEl.addEventListener("click", event =>
+            this.handlePlus(event, index)
+        )
         addItemEl.addEventListener("keydown", event =>
             this.handlePlus(event, index)
         )
@@ -145,7 +151,9 @@ export class InputList<T> {
 
     private readValues(): T[] {
         return this.listRows().map(row => {
-            const itemCell = row.querySelector(".fw-input-list-item-cell") as HTMLElement
+            const itemCell = row.querySelector(
+                ".fw-input-list-item-cell"
+            ) as HTMLElement
             return this.options.getValue(itemCell)
         })
     }

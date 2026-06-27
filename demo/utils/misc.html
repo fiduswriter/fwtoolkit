@@ -1,218 +1,351 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fwtoolkit — Misc utilities demo</title>
-    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="../css/fwtoolkit.css">
-    <link rel="stylesheet" href="../demo.css">
-    <style>
-        body { padding: 2rem; }
-        .demo-section { margin: 2rem 0; padding: 1rem; border: 1px solid var(--cs-light-border); border-radius: 4px; }
-        .demo-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; }
-        pre, code { background: #f4f4f4; }
-        pre { padding: 1rem; overflow: auto; }
-        .focusable-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.5rem; margin: 1rem 0; }
-        .focusable-grid button, .focusable-grid input { padding: 0.5rem; }
-        .date-field { position: relative; display: inline-block; }
-        .date-field input { padding: 0.5rem; }
-    </style>
-        <script type="importmap">
-        {
-            "imports": {
-                "fwtoolkit": "../dist/index.js",
-                "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
-                "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
-                "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
-                "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
-                "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
-                "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
-                "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
-                "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
-                "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
-                "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>fwtoolkit — Misc utilities demo</title>
+        <link rel="stylesheet" href="../fontawesome/css/all.min.css" />
+        <link rel="stylesheet" href="../css/fwtoolkit.css" />
+        <link rel="stylesheet" href="../demo.css" />
+        <style>
+            body {
+                padding: 2rem;
             }
-        }
+            .demo-section {
+                margin: 2rem 0;
+                padding: 1rem;
+                border: 1px solid var(--cs-light-border);
+                border-radius: 4px;
+            }
+            .demo-actions {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                margin: 1rem 0;
+            }
+            pre,
+            code {
+                background: #f4f4f4;
+            }
+            pre {
+                padding: 1rem;
+                overflow: auto;
+            }
+            .focusable-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 0.5rem;
+                margin: 1rem 0;
+            }
+            .focusable-grid button,
+            .focusable-grid input {
+                padding: 0.5rem;
+            }
+            .date-field {
+                position: relative;
+                display: inline-block;
+            }
+            .date-field input {
+                padding: 0.5rem;
+            }
+        </style>
+        <script type="importmap">
+            {
+                "imports": {
+                    "fwtoolkit": "../dist/index.js",
+                    "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
+                    "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
+                    "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
+                    "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
+                    "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
+                    "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
+                    "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+                    "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+                }
+            }
         </script>
 
-    <link rel="icon" type="image/png" href="../favicon.png">
-</head>
-<body>
-    <main class="demo-container">
-        <p><a href="../index.html">&larr; Back to demos</a></p>
-        <h1>Miscellaneous utilities</h1>
+        <link rel="icon" type="image/png" href="../favicon.png" />
+    </head>
+    <body>
+        <main class="demo-container">
+            <p><a href="../index.html">&larr; Back to demos</a></p>
+            <h1>Miscellaneous utilities</h1>
 
-        <div class="demo-section">
-            <h2>Settings</h2>
-            <p><code>initSettings</code> stores app configuration; <code>getSettings</code> retrieves it.</p>
-            <div class="demo-actions">
-                <button id="init-settings" class="fw-button fw-dark">Initialize settings</button>
-                <button id="show-settings" class="fw-button fw-light">Show settings</button>
+            <div class="demo-section">
+                <h2>Settings</h2>
+                <p>
+                    <code>initSettings</code> stores app configuration;
+                    <code>getSettings</code> retrieves it.
+                </p>
+                <div class="demo-actions">
+                    <button id="init-settings" class="fw-button fw-dark">
+                        Initialize settings
+                    </button>
+                    <button id="show-settings" class="fw-button fw-light">
+                        Show settings
+                    </button>
+                </div>
+                <pre id="settings-output">Settings not initialized yet.</pre>
             </div>
-            <pre id="settings-output">Settings not initialized yet.</pre>
-        </div>
 
-        <div class="demo-section">
-            <h2>System message</h2>
-            <p><code>showSystemMessage</code> wraps a message in a modal dialog.</p>
-            <div class="demo-actions">
-                <button id="system-message" class="fw-button fw-dark">Show system message</button>
+            <div class="demo-section">
+                <h2>System message</h2>
+                <p>
+                    <code>showSystemMessage</code> wraps a message in a modal
+                    dialog.
+                </p>
+                <div class="demo-actions">
+                    <button id="system-message" class="fw-button fw-dark">
+                        Show system message
+                    </button>
+                </div>
             </div>
-        </div>
 
-        <div class="demo-section">
-            <h2>Text helpers</h2>
-            <div class="demo-actions">
-                <button id="escape-text" class="fw-button fw-dark">escapeText</button>
-                <button id="no-space" class="fw-button fw-dark">noSpaceTmp</button>
-                <button id="lang-name" class="fw-button fw-dark">langName</button>
+            <div class="demo-section">
+                <h2>Text helpers</h2>
+                <div class="demo-actions">
+                    <button id="escape-text" class="fw-button fw-dark">
+                        escapeText
+                    </button>
+                    <button id="no-space" class="fw-button fw-dark">
+                        noSpaceTmp
+                    </button>
+                    <button id="lang-name" class="fw-button fw-dark">
+                        langName
+                    </button>
+                </div>
+                <pre id="text-output">Output will appear here…</pre>
             </div>
-            <pre id="text-output">Output will appear here…</pre>
-        </div>
 
-        <div class="demo-section">
-            <h2>Dates</h2>
-            <div class="demo-actions">
-                <button id="localize-now" class="fw-button fw-dark">localizeDate (now)</button>
-                <button id="localize-minutes" class="fw-button fw-dark">localizeDate (minutes)</button>
-                <button id="localize-sortable" class="fw-button fw-dark">localizeDate (sortable)</button>
+            <div class="demo-section">
+                <h2>Dates</h2>
+                <div class="demo-actions">
+                    <button id="localize-now" class="fw-button fw-dark">
+                        localizeDate (now)
+                    </button>
+                    <button id="localize-minutes" class="fw-button fw-dark">
+                        localizeDate (minutes)
+                    </button>
+                    <button id="localize-sortable" class="fw-button fw-dark">
+                        localizeDate (sortable)
+                    </button>
+                </div>
+                <p>
+                    <span class="date-field">
+                        <input
+                            type="text"
+                            id="date-input"
+                            placeholder="YYYY-MM-DD"
+                            class="fw-media-title"
+                        />
+                    </span>
+                    <button id="enable-datepicker" class="fw-button fw-light">
+                        enableDatePicker
+                    </button>
+                </p>
+                <pre id="date-output">Output will appear here…</pre>
             </div>
-            <p>
-                <span class="date-field">
-                    <input type="text" id="date-input" placeholder="YYYY-MM-DD" class="fw-media-title">
-                </span>
-                <button id="enable-datepicker" class="fw-button fw-light">enableDatePicker</button>
-            </p>
-            <pre id="date-output">Output will appear here…</pre>
-        </div>
 
-        <div class="demo-section">
-            <h2>Blob helper</h2>
-            <p><code>convertDataURIToBlob</code> turns a data URI into a <code>Blob</code>.</p>
-            <div class="demo-actions">
-                <button id="data-uri-to-blob" class="fw-button fw-dark">Convert sample data URI</button>
+            <div class="demo-section">
+                <h2>Blob helper</h2>
+                <p>
+                    <code>convertDataURIToBlob</code> turns a data URI into a
+                    <code>Blob</code>.
+                </p>
+                <div class="demo-actions">
+                    <button id="data-uri-to-blob" class="fw-button fw-dark">
+                        Convert sample data URI
+                    </button>
+                </div>
+                <pre id="blob-output">Output will appear here…</pre>
             </div>
-            <pre id="blob-output">Output will appear here…</pre>
-        </div>
 
-        <div class="demo-section">
-            <h2>Info tooltip</h2>
-            <p><code>infoTooltip</code> returns HTML for an inline info icon with hover tooltip.</p>
-            <div id="info-tooltip-host"></div>
-        </div>
-
-        <div class="demo-section">
-            <h2>Focus helpers</h2>
-            <p>Focus one of the inputs below, then save and restore the focus index.</p>
-            <div class="focusable-grid">
-                <input type="text" placeholder="Field 1">
-                <input type="text" placeholder="Field 2">
-                <button class="fw-button fw-light">Button A</button>
-                <button class="fw-button fw-light">Button B</button>
-                <input type="text" placeholder="Field 3">
+            <div class="demo-section">
+                <h2>Info tooltip</h2>
+                <p>
+                    <code>infoTooltip</code> returns HTML for an inline info
+                    icon with hover tooltip.
+                </p>
+                <div id="info-tooltip-host"></div>
             </div>
-            <div class="demo-actions">
-                <button id="save-focus" class="fw-button fw-dark">getFocusIndex</button>
-                <button id="restore-focus" class="fw-button fw-dark">setFocusIndex</button>
+
+            <div class="demo-section">
+                <h2>Focus helpers</h2>
+                <p>
+                    Focus one of the inputs below, then save and restore the
+                    focus index.
+                </p>
+                <div class="focusable-grid">
+                    <input type="text" placeholder="Field 1" />
+                    <input type="text" placeholder="Field 2" />
+                    <button class="fw-button fw-light">Button A</button>
+                    <button class="fw-button fw-light">Button B</button>
+                    <input type="text" placeholder="Field 3" />
+                </div>
+                <div class="demo-actions">
+                    <button id="save-focus" class="fw-button fw-dark">
+                        getFocusIndex
+                    </button>
+                    <button id="restore-focus" class="fw-button fw-dark">
+                        setFocusIndex
+                    </button>
+                </div>
+                <pre id="focus-output">Saved focus index: none</pre>
             </div>
-            <pre id="focus-output">Saved focus index: none</pre>
-        </div>
 
-        <div id="fw-wait"><i class="fa fa-spinner fa-spin"></i></div>
-    </main>
+            <div id="fw-wait"><i class="fa fa-spinner fa-spin"></i></div>
+        </main>
 
-    <script type="module">
-        import {
-            initSettings, getSettings,
-            showSystemMessage,
-            escapeText, noSpaceTmp, langName,
-            localizeDate, enableDatePicker,
-            convertDataURIToBlob,
-            infoTooltip,
-            getFocusIndex, setFocusIndex
-        } from "../dist/index.js";
+        <script type="module">
+            import {
+                initSettings,
+                getSettings,
+                showSystemMessage,
+                escapeText,
+                noSpaceTmp,
+                langName,
+                localizeDate,
+                enableDatePicker,
+                convertDataURIToBlob,
+                infoTooltip,
+                getFocusIndex,
+                setFocusIndex
+            } from "../dist/index.js"
 
-        const log = (id, msg) => {
-            const el = document.getElementById(id);
-            const text = typeof msg === "object" ? JSON.stringify(msg, null, 2) : String(msg);
-            el.textContent = `${new Date().toLocaleTimeString()} — ${text}`;
-        };
-
-        document.getElementById("init-settings").addEventListener("click", () => {
-            initSettings({
-                appName: "fwtoolkit demo",
-                apiUrl: url => `https://example.com/api/${url}`,
-                language: "en"
-            });
-            log("settings-output", "Settings initialized");
-        });
-
-        document.getElementById("show-settings").addEventListener("click", () => {
-            try {
-                log("settings-output", getSettings());
-            } catch (err) {
-                log("settings-output", err.message);
+            const log = (id, msg) => {
+                const el = document.getElementById(id)
+                const text =
+                    typeof msg === "object"
+                        ? JSON.stringify(msg, null, 2)
+                        : String(msg)
+                el.textContent = `${new Date().toLocaleTimeString()} — ${text}`
             }
-        });
 
-        document.getElementById("system-message").addEventListener("click", () => {
-            showSystemMessage("This is a system message from fwtoolkit.", [
-                { type: "close" },
-                {
-                    text: "Acknowledge",
-                    classes: "fw-dark",
-                    click: () => log("text-output", "Acknowledged")
-                }
-            ]);
-        });
+            document
+                .getElementById("init-settings")
+                .addEventListener("click", () => {
+                    initSettings({
+                        appName: "fwtoolkit demo",
+                        apiUrl: url => `https://example.com/api/${url}`,
+                        language: "en"
+                    })
+                    log("settings-output", "Settings initialized")
+                })
 
-        document.getElementById("escape-text").addEventListener("click", () => {
-            const raw = '<script>alert("xss")<\/script>';
-            log("text-output", escapeText(raw));
-        });
+            document
+                .getElementById("show-settings")
+                .addEventListener("click", () => {
+                    try {
+                        log("settings-output", getSettings())
+                    } catch (err) {
+                        log("settings-output", err.message)
+                    }
+                })
 
-        document.getElementById("no-space").addEventListener("click", () => {
-            const value = "world";
-            const result = noSpaceTmp`
+            document
+                .getElementById("system-message")
+                .addEventListener("click", () => {
+                    showSystemMessage(
+                        "This is a system message from fwtoolkit.",
+                        [
+                            { type: "close" },
+                            {
+                                text: "Acknowledge",
+                                classes: "fw-dark",
+                                click: () => log("text-output", "Acknowledged")
+                            }
+                        ]
+                    )
+                })
+
+            document
+                .getElementById("escape-text")
+                .addEventListener("click", () => {
+                    const raw = '<script>alert("xss")<\/script>'
+                    log("text-output", escapeText(raw))
+                })
+
+            document
+                .getElementById("no-space")
+                .addEventListener("click", () => {
+                    const value = "world"
+                    const result = noSpaceTmp`
                 <div>
                     <p>Hello, ${value}!</p>
                 </div>
-            `;
-            log("text-output", result);
-        });
+            `
+                    log("text-output", result)
+                })
 
-        document.getElementById("lang-name").addEventListener("click", () => {
-            log("text-output", `de → ${langName("de")}, pt-br → ${langName("pt-br")}, xx → ${langName("xx")}`);
-        });
+            document
+                .getElementById("lang-name")
+                .addEventListener("click", () => {
+                    log(
+                        "text-output",
+                        `de → ${langName("de")}, pt-br → ${langName("pt-br")}, xx → ${langName("xx")}`
+                    )
+                })
 
-        const nowMs = Date.now();
-        document.getElementById("localize-now").addEventListener("click", () => log("date-output", localizeDate(nowMs)));
-        document.getElementById("localize-minutes").addEventListener("click", () => log("date-output", localizeDate(nowMs, "minutes")));
-        document.getElementById("localize-sortable").addEventListener("click", () => log("date-output", localizeDate(nowMs, "sortable-date")));
+            const nowMs = Date.now()
+            document
+                .getElementById("localize-now")
+                .addEventListener("click", () =>
+                    log("date-output", localizeDate(nowMs))
+                )
+            document
+                .getElementById("localize-minutes")
+                .addEventListener("click", () =>
+                    log("date-output", localizeDate(nowMs, "minutes"))
+                )
+            document
+                .getElementById("localize-sortable")
+                .addEventListener("click", () =>
+                    log("date-output", localizeDate(nowMs, "sortable-date"))
+                )
 
-        document.getElementById("enable-datepicker").addEventListener("click", () => {
-            enableDatePicker(document.getElementById("date-input"), false);
-            log("date-output", "Date picker enabled (click the input)");
-        });
+            document
+                .getElementById("enable-datepicker")
+                .addEventListener("click", () => {
+                    enableDatePicker(
+                        document.getElementById("date-input"),
+                        false
+                    )
+                    log("date-output", "Date picker enabled (click the input)")
+                })
 
-        document.getElementById("data-uri-to-blob").addEventListener("click", () => {
-            const dataUri = "data:text/plain;base64," + btoa("Hello from fwtoolkit");
-            const blob = convertDataURIToBlob(dataUri);
-            log("blob-output", { type: blob.type, size: blob.size });
-        });
+            document
+                .getElementById("data-uri-to-blob")
+                .addEventListener("click", () => {
+                    const dataUri =
+                        "data:text/plain;base64," + btoa("Hello from fwtoolkit")
+                    const blob = convertDataURIToBlob(dataUri)
+                    log("blob-output", { type: blob.type, size: blob.size })
+                })
 
-        document.getElementById("info-tooltip-host").innerHTML = infoTooltip("This tooltip HTML is <strong>trusted</strong> content.");
+            document.getElementById("info-tooltip-host").innerHTML =
+                infoTooltip(
+                    "This tooltip HTML is <strong>trusted</strong> content."
+                )
 
-        let savedFocusIndex = -1;
-        document.getElementById("save-focus").addEventListener("click", () => {
-            savedFocusIndex = getFocusIndex();
-            log("focus-output", `Saved focus index: ${savedFocusIndex}`);
-        });
-        document.getElementById("restore-focus").addEventListener("click", () => {
-            setFocusIndex(savedFocusIndex);
-            log("focus-output", `Restored focus index: ${savedFocusIndex}`);
-        });
-    </script>
-</body>
+            let savedFocusIndex = -1
+            document
+                .getElementById("save-focus")
+                .addEventListener("click", () => {
+                    savedFocusIndex = getFocusIndex()
+                    log("focus-output", `Saved focus index: ${savedFocusIndex}`)
+                })
+            document
+                .getElementById("restore-focus")
+                .addEventListener("click", () => {
+                    setFocusIndex(savedFocusIndex)
+                    log(
+                        "focus-output",
+                        `Restored focus index: ${savedFocusIndex}`
+                    )
+                })
+        </script>
+    </body>
 </html>

@@ -9,8 +9,8 @@ browser project.
 ## JavaScript usage
 
 ```javascript
-import {escapeText, addAlert} from "fwtoolkit"
-import {convertDataURIToBlob} from "fwtoolkit/blob.js"
+import { escapeText, addAlert } from "fwtoolkit"
+import { convertDataURIToBlob } from "fwtoolkit/blob.js"
 ```
 
 ## TypeScript
@@ -18,7 +18,7 @@ import {convertDataURIToBlob} from "fwtoolkit/blob.js"
 The source is written in TypeScript and ships with declaration files:
 
 ```typescript
-import {Dialog} from "fwtoolkit/dialog.js"
+import { Dialog } from "fwtoolkit/dialog.js"
 ```
 
 ## CSS
@@ -27,9 +27,9 @@ The package ships the styles for its UI components under `fwtoolkit/css/`.
 Load at least `colors.css` and the component styles you need:
 
 ```html
-<link rel="stylesheet" href="node_modules/fwtoolkit/css/colors.css">
-<link rel="stylesheet" href="node_modules/fwtoolkit/css/dialog.css">
-<link rel="stylesheet" href="node_modules/fwtoolkit/css/buttons.css">
+<link rel="stylesheet" href="node_modules/fwtoolkit/css/colors.css" />
+<link rel="stylesheet" href="node_modules/fwtoolkit/css/dialog.css" />
+<link rel="stylesheet" href="node_modules/fwtoolkit/css/buttons.css" />
 ```
 
 In Fidus Writer the CSS is copied automatically to the static files directory

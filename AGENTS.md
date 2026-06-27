@@ -72,6 +72,10 @@ npm run build:css
 # Run the Jest test suite
 npm test
 
+# Run linting and formatting checks
+npm run lint
+npm run format:check
+
 # Prepublish hook: build + test
 npm run prepublishOnly
 ```
@@ -81,6 +85,21 @@ npm run prepublishOnly
 `.css` file in `css/` except `fwtoolkit.css`, places `colors.css` and
 `common.css` first, and writes a concatenated `css/fwtoolkit.css`.
 
+## Pre-commit hooks
+
+[Husky](https://typicode.github.io/husky/) and
+[lint-staged](https://github.com/lint-staged/lint-staged) are configured to run
+on every commit. The pre-commit hook:
+
+1. Formats staged files with Prettier.
+2. Auto-fixes staged TypeScript/JavaScript files with ESLint.
+3. Runs the full Jest test suite.
+
+If any step fails, the commit is blocked until the issue is resolved. The hook
+is installed automatically when running `npm install` via the `prepare` script.
+To bypass it in exceptional cases, use `git commit --no-verify` (not
+recommended for routine work).
+
 ## Code style guidelines
 
 - Use **ES modules** and ES2020 syntax.
@@ -88,6 +107,9 @@ npm run prepublishOnly
   `.ts`, e.g. `import {Dialog} from "./dialog.js"`. This is required by the
   `NodeNext` module resolution.
 - Keep TypeScript **strict** (`strict: true`). Avoid `any` unless necessary.
+- Omit semicolons at the end of statements unless they are required for
+  disambiguation (ASI). Prettier is configured with `semi: false` and ESLint
+  does not enforce semicolons.
 - Component classes are exported from `src/index.ts`. Re-export related types
   alongside the implementation.
 - Pure utility functions live in `src/basic.ts`, `src/blob.ts`, `src/events.ts`,
@@ -100,7 +122,7 @@ npm run prepublishOnly
   `getSettings()`. Settings are frozen to prevent accidental mutation.
 - The settings object may include the host-page/localization helpers
   `gettext(msgid: string)`, `interpolate(fmt: string, args: unknown[],
-  named?: boolean)` and `staticUrl(path: string)`. Library code should import
+named?: boolean)` and `staticUrl(path: string)`. Library code should import
   these helpers from `src/settings.js` (re-exported from `src/index.js`) rather
   than relying on globals. If settings have not been initialized or the
   corresponding function is not present in settings, each helper uses a safe
@@ -127,7 +149,7 @@ environment.
 Example test pattern:
 
 ```typescript
-import {addAlert} from "../src/basic.js"
+import { addAlert } from "../src/basic.js"
 
 describe("basic UI helpers", () => {
     beforeEach(() => {

@@ -1,10 +1,10 @@
-import {Dialog} from "../dialog.js"
-import {gettext} from "../settings.js"
-import {FileSelector} from "./selector.js"
-import {addAlert} from "../basic.js"
-import {NewFolderDialog} from "./new_folder_dialog.js"
-import {moveTemplate} from "./templates.js"
-import {moveFile, shortFileTitle} from "./tools.js"
+import { Dialog } from "../dialog.js"
+import { gettext } from "../settings.js"
+import { FileSelector } from "./selector.js"
+import { addAlert } from "../basic.js"
+import { NewFolderDialog } from "./new_folder_dialog.js"
+import { moveTemplate } from "./templates.js"
+import { moveFile, shortFileTitle } from "./tools.js"
 
 export interface MovingFile {
     id: number
@@ -63,7 +63,7 @@ export class FileDialog {
 
         this.path = this.getPath()
         this.fileSelector = false
-        this.dialog = new Dialog({body: ""}) // placeholder, replaced in init()
+        this.dialog = new Dialog({ body: "" }) // placeholder, replaced in init()
     }
 
     getPath(): string {
@@ -82,7 +82,9 @@ export class FileDialog {
     }
 
     updatePathDir(path: string): void {
-        const pathInput = this.dialog.dialogEl!.querySelector("#path") as HTMLInputElement
+        const pathInput = this.dialog.dialogEl!.querySelector(
+            "#path"
+        ) as HTMLInputElement
         const fileName = pathInput.value.split("/").pop() || ""
         pathInput.value = path + fileName
     }
@@ -110,14 +112,17 @@ export class FileDialog {
                         dialog.open()
                     }
                 },
-                {type: "cancel"},
+                { type: "cancel" },
                 {
                     text: gettext("Submit"),
                     classes: "fw-dark",
                     click: () => {
                         //apply the current state to server
-                        let path =
-                            (this.dialog.dialogEl!.querySelector("#path") as HTMLInputElement).value
+                        let path = (
+                            this.dialog.dialogEl!.querySelector(
+                                "#path"
+                            ) as HTMLInputElement
+                        ).value
                         this.dialog.close()
 
                         if (path === this.path) {
@@ -146,7 +151,9 @@ export class FileDialog {
         this.dialog.open()
 
         this.fileSelector = new FileSelector({
-            dom: this.dialog.dialogEl!.querySelector(".fw-file-selector") as HTMLElement,
+            dom: this.dialog.dialogEl!.querySelector(
+                ".fw-file-selector"
+            ) as HTMLElement,
             files: this.allFiles,
             showFiles: false,
             selectDir: path => this.updatePathDir(path),

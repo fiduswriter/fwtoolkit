@@ -1,4 +1,4 @@
-import {TwoPaneSelector} from "../src/two_pane_selector.js"
+import { TwoPaneSelector } from "../src/two_pane_selector.js"
 
 describe("TwoPaneSelector", () => {
     beforeEach(() => {
@@ -34,7 +34,7 @@ describe("TwoPaneSelector", () => {
         )
         ;(leftItems[0] as HTMLElement).click()
         dom.querySelector(".fw-two-pane-add")?.dispatchEvent(
-            new MouseEvent("click", {bubbles: true})
+            new MouseEvent("click", { bubbles: true })
         )
         expect(selector.selectedItems).toEqual(["a"])
         expect(
@@ -59,7 +59,7 @@ describe("TwoPaneSelector", () => {
         )
         ;(rightItems[0] as HTMLElement).click()
         dom.querySelector(".fw-two-pane-remove")?.dispatchEvent(
-            new MouseEvent("click", {bubbles: true})
+            new MouseEvent("click", { bubbles: true })
         )
         expect(selector.selectedItems).toEqual([])
         expect(

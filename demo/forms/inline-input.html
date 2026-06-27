@@ -1,136 +1,179 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fwtoolkit — InlineInput demo</title>
-    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="../css/fwtoolkit.css">
-    <link rel="stylesheet" href="../demo.css">
-    <style>
-        body {
-            padding: 2rem;
-            box-sizing: border-box;
-            min-width: auto;
-        }
-        .demo-field { margin: 1.5rem 0; }
-        .demo-field label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
-        .inline-input {
-            position: relative;
-            box-sizing: border-box;
-            width: 100%;
-            border: 1px solid var(--cs-gray, #ccc);
-            border-radius: 4px;
-            min-height: 2.5rem;
-            padding: 0.25rem;
-            overflow-wrap: break-word;
-        }
-        .demo-value {
-            margin-top: 1rem;
-            font-family: monospace;
-            white-space: pre-wrap;
-            background: #f5f5f5;
-            padding: 1rem;
-        }
-    </style>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>fwtoolkit — InlineInput demo</title>
+        <link rel="stylesheet" href="../fontawesome/css/all.min.css" />
+        <link rel="stylesheet" href="../css/fwtoolkit.css" />
+        <link rel="stylesheet" href="../demo.css" />
+        <style>
+            body {
+                padding: 2rem;
+                box-sizing: border-box;
+                min-width: auto;
+            }
+            .demo-field {
+                margin: 1.5rem 0;
+            }
+            .demo-field label {
+                display: block;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+            }
+            .inline-input {
+                position: relative;
+                box-sizing: border-box;
+                width: 100%;
+                border: 1px solid var(--cs-gray, #ccc);
+                border-radius: 4px;
+                min-height: 2.5rem;
+                padding: 0.25rem;
+                overflow-wrap: break-word;
+            }
+            .demo-value {
+                margin-top: 1rem;
+                font-family: monospace;
+                white-space: pre-wrap;
+                background: #f5f5f5;
+                padding: 1rem;
+            }
+        </style>
         <script type="importmap">
-        {
-            "imports": {
-                "fwtoolkit": "../dist/index.js",
-                "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
-                "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
-                "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
-                "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
-                "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
-                "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
-                "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
-                "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
-                "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
-                "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+            {
+                "imports": {
+                    "fwtoolkit": "../dist/index.js",
+                    "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
+                    "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
+                    "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
+                    "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
+                    "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
+                    "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
+                    "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+                    "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+                }
             }
-        }
         </script>
-    
-    <link rel="icon" type="image/png" href="../favicon.png">
-</head>
-<body>
-    <h1>InlineInput demo</h1>
-    <p>A single-line ProseMirror-based input with an inline formatting toolbar.</p>
 
-    <div class="demo-field">
-        <label for="title-input">Title of publication</label>
-        <div id="title-input" class="inline-input"></div>
-    </div>
+        <link rel="icon" type="image/png" href="../favicon.png" />
+    </head>
+    <body>
+        <h1>InlineInput demo</h1>
+        <p>
+            A single-line ProseMirror-based input with an inline formatting
+            toolbar.
+        </p>
 
-    <button id="get-value" class="fw-button fw-light">Get JSON value</button>
-    <pre class="demo-value" id="output">Click the button to see the current value.</pre>
+        <div class="demo-field">
+            <label for="title-input">Title of publication</label>
+            <div id="title-input" class="inline-input"></div>
+        </div>
 
-    <script type="module">
-        import {InlineInput, icon, initSettings, gettext} from "fwtoolkit";
-        import {toggleMark} from "prosemirror-commands";
-        import {Schema} from "prosemirror-model";
+        <button id="get-value" class="fw-button fw-light">
+            Get JSON value
+        </button>
+        <pre class="demo-value" id="output">
+Click the button to see the current value.</pre
+        >
 
-        initSettings({
-            apiUrl: url => url,
-            getCsrfToken: () => "",
-            gettext: s => s,
-            staticUrl: s => "../" + s,
-            interpolate: (fmt, arr) => fmt.replace(/%s/g, () => arr.shift())
-        });
+        <script type="module">
+            import { InlineInput, icon, initSettings, gettext } from "fwtoolkit"
+            import { toggleMark } from "prosemirror-commands"
+            import { Schema } from "prosemirror-model"
 
-        const schema = new Schema({
-            nodes: {
-                doc: {content: "field"},
-                field: {content: "inline*", parseDOM: [{tag: "p"}], toDOM: () => ["p", 0]},
-                text: {group: "inline"},
-                hard_break: {
-                    inline: true,
-                    group: "inline",
-                    selectable: false,
-                    parseDOM: [{tag: "br"}],
-                    toDOM: () => ["br"]
+            initSettings({
+                apiUrl: url => url,
+                getCsrfToken: () => "",
+                gettext: s => s,
+                staticUrl: s => "../" + s,
+                interpolate: (fmt, arr) => fmt.replace(/%s/g, () => arr.shift())
+            })
+
+            const schema = new Schema({
+                nodes: {
+                    doc: { content: "field" },
+                    field: {
+                        content: "inline*",
+                        parseDOM: [{ tag: "p" }],
+                        toDOM: () => ["p", 0]
+                    },
+                    text: { group: "inline" },
+                    hard_break: {
+                        inline: true,
+                        group: "inline",
+                        selectable: false,
+                        parseDOM: [{ tag: "br" }],
+                        toDOM: () => ["br"]
+                    }
+                },
+                marks: {
+                    strong: {
+                        parseDOM: [{ tag: "strong" }, { tag: "b" }],
+                        toDOM: () => ["strong", 0]
+                    },
+                    em: {
+                        parseDOM: [{ tag: "em" }, { tag: "i" }],
+                        toDOM: () => ["em", 0]
+                    },
+                    smallcaps: {
+                        parseDOM: [{ style: "font-variant=small-caps" }],
+                        toDOM: () => [
+                            "span",
+                            { style: "font-variant: small-caps" },
+                            0
+                        ]
+                    },
+                    sub: {
+                        parseDOM: [{ tag: "sub" }],
+                        toDOM: () => ["sub", 0]
+                    },
+                    sup: {
+                        parseDOM: [{ tag: "sup" }],
+                        toDOM: () => ["sup", 0]
+                    }
                 }
-            },
-            marks: {
-                strong: {
-                    parseDOM: [{tag: "strong"}, {tag: "b"}],
-                    toDOM: () => ["strong", 0]
-                },
-                em: {
-                    parseDOM: [{tag: "em"}, {tag: "i"}],
-                    toDOM: () => ["em", 0]
-                },
-                smallcaps: {
-                    parseDOM: [{style: "font-variant=small-caps"}],
-                    toDOM: () => ["span", {style: "font-variant: small-caps"}, 0]
-                },
-                sub: {
-                    parseDOM: [{tag: "sub"}],
-                    toDOM: () => ["sub", 0]
-                },
-                sup: {
-                    parseDOM: [{tag: "sup"}],
-                    toDOM: () => ["sup", 0]
+            })
+
+            const input = new InlineInput(
+                document.getElementById("title-input"),
+                {
+                    schema,
+                    nodeType: "field",
+                    placeholder:
+                        "Type a title and use the toolbar for styling…",
+                    tools: [
+                        {
+                            command: toggleMark(schema.marks.strong),
+                            dom: icon("strong", gettext("Strong"))
+                        },
+                        {
+                            command: toggleMark(schema.marks.em),
+                            dom: icon("em", gettext("Emphasis"))
+                        },
+                        {
+                            command: toggleMark(schema.marks.smallcaps),
+                            dom: icon("smallcaps", gettext("Small caps"))
+                        },
+                        {
+                            command: toggleMark(schema.marks.sub),
+                            dom: icon("sub", gettext("Subscript"))
+                        },
+                        {
+                            command: toggleMark(schema.marks.sup),
+                            dom: icon("sup", gettext("Superscript"))
+                        }
+                    ]
                 }
-            }
-        });
+            )
 
-        const input = new InlineInput(document.getElementById("title-input"), {
-            schema,
-            nodeType: "field",
-            placeholder: "Type a title and use the toolbar for styling…",
-            tools: [
-                {command: toggleMark(schema.marks.strong), dom: icon("strong", gettext("Strong"))},
-                {command: toggleMark(schema.marks.em), dom: icon("em", gettext("Emphasis"))},
-                {command: toggleMark(schema.marks.smallcaps), dom: icon("smallcaps", gettext("Small caps"))},
-                {command: toggleMark(schema.marks.sub), dom: icon("sub", gettext("Subscript"))},
-                {command: toggleMark(schema.marks.sup), dom: icon("sup", gettext("Superscript"))}
-            ]
-        });
-
-        document.getElementById("get-value").addEventListener("click", () => {
-            document.getElementById("output").textContent = JSON.stringify(input.value, null, 2);
-        });
-    </script>
-</body>
+            document
+                .getElementById("get-value")
+                .addEventListener("click", () => {
+                    document.getElementById("output").textContent =
+                        JSON.stringify(input.value, null, 2)
+                })
+        </script>
+    </body>
 </html>

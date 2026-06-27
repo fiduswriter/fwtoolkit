@@ -1,4 +1,4 @@
-import {escapeText} from "./basic.js"
+import { escapeText } from "./basic.js"
 
 export interface DropUpOption {
     title: string
@@ -24,7 +24,9 @@ export class DropUp {
         this.focusedIndex = -1
         this.isOpen = false
         this.element = this.buildElement()
-        this.listElement = this.element.querySelector(".fw-drop-up-options") as HTMLElement
+        this.listElement = this.element.querySelector(
+            ".fw-drop-up-options"
+        ) as HTMLElement
         this.bindEvents()
     }
 
@@ -162,10 +164,7 @@ export class DropUp {
             this.listElement.querySelectorAll(".fw-drop-up-option")
         )
         options.forEach(option => option.classList.remove("fw-focused"))
-        if (
-            this.focusedIndex >= 0 &&
-            this.focusedIndex < options.length
-        ) {
+        if (this.focusedIndex >= 0 && this.focusedIndex < options.length) {
             options[this.focusedIndex].classList.add("fw-focused")
         }
     }
@@ -187,8 +186,7 @@ export class DropUp {
             case "ArrowDown":
                 event.preventDefault()
                 event.stopPropagation()
-                this.focusedIndex =
-                    (this.focusedIndex + 1) % optionCount
+                this.focusedIndex = (this.focusedIndex + 1) % optionCount
                 this.focusOption(this.focusedIndex)
                 break
             case "ArrowUp":

@@ -1,5 +1,5 @@
-import {readdirSync, readFileSync, writeFileSync} from "node:fs"
-import {join} from "node:path"
+import { readdirSync, readFileSync, writeFileSync } from "node:fs"
+import { join } from "node:path"
 
 const cssDir = new URL("../css", import.meta.url).pathname
 const outputFile = join(cssDir, "fwtoolkit.css")

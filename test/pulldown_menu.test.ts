@@ -1,4 +1,4 @@
-import {PulldownMenu, PulldownMenuItem} from "../src/pulldown_menu.js"
+import { PulldownMenu, PulldownMenuItem } from "../src/pulldown_menu.js"
 
 describe("PulldownMenu", () => {
     let container: HTMLElement
@@ -13,7 +13,9 @@ describe("PulldownMenu", () => {
         container.remove()
     })
 
-    function makeMenu(actions: string[] = []): {menu: {content: PulldownMenuItem[]}} {
+    function makeMenu(actions: string[] = []): {
+        menu: { content: PulldownMenuItem[] }
+    } {
         return {
             menu: {
                 content: [
@@ -101,16 +103,14 @@ describe("PulldownMenu", () => {
 
     test("clicking an action item executes and closes the menu", () => {
         const actions: string[] = []
-        const pulldown = new PulldownMenu({...makeMenu(actions)})
+        const pulldown = new PulldownMenu({ ...makeMenu(actions) })
         pulldown.bind(container)
         ;(
             container.querySelector(
                 '[data-id="file"] .fw-pulldown-menu-title'
             ) as HTMLElement
         ).click()
-        ;(
-            container.querySelector('[data-id="new"]') as HTMLElement
-        ).click()
+        ;(container.querySelector('[data-id="new"]') as HTMLElement).click()
         expect(actions).toEqual(["new"])
         expect(container.querySelector(".fw-pulldown.fw-open")).toBeNull()
     })
@@ -123,9 +123,7 @@ describe("PulldownMenu", () => {
                 '[data-id="file"] .fw-pulldown-menu-title'
             ) as HTMLElement
         ).click()
-        ;(
-            container.querySelector('[data-id="recent"]') as HTMLElement
-        ).click()
+        ;(container.querySelector('[data-id="recent"]') as HTMLElement).click()
         const openMenus = container.querySelectorAll(".fw-pulldown.fw-open")
         expect(openMenus.length).toBe(2)
         expect(openMenus[1].textContent).toContain("Doc 1")
@@ -146,9 +144,9 @@ describe("PulldownMenu", () => {
 
     test("keyboard shortcut executes action", () => {
         const actions: string[] = []
-        const pulldown = new PulldownMenu({...makeMenu(actions)})
+        const pulldown = new PulldownMenu({ ...makeMenu(actions) })
         pulldown.bind(container)
-        const event = new KeyboardEvent("keydown", {key: "z", ctrlKey: true})
+        const event = new KeyboardEvent("keydown", { key: "z", ctrlKey: true })
         document.body.dispatchEvent(event)
         expect(actions).toEqual(["undo"])
     })
@@ -164,9 +162,7 @@ describe("PulldownMenu", () => {
                 '[data-id="file"] .fw-pulldown-menu-title'
             ) as HTMLElement
         ).click()
-        ;(
-            container.querySelector('[data-id="new"]') as HTMLElement
-        ).click()
+        ;(container.querySelector('[data-id="new"]') as HTMLElement).click()
         expect(actions).toEqual([])
     })
 
@@ -176,17 +172,20 @@ describe("PulldownMenu", () => {
                 content: [
                     {
                         id: "greet",
-                        title: (ctx: {name: string}) => `Hello ${ctx.name}`,
+                        title: (ctx: { name: string }) => `Hello ${ctx.name}`,
                         type: "action",
                         action: () => {}
                     } as PulldownMenuItem
                 ]
             }
         }
-        const pulldown = new PulldownMenu({menu: model.menu, context: {name: "World"}})
+        const pulldown = new PulldownMenu({
+            menu: model.menu,
+            context: { name: "World" }
+        })
         pulldown.bind(container)
         expect(container.textContent).toContain("Hello World")
-        pulldown.update({name: "Fidus"})
+        pulldown.update({ name: "Fidus" })
         expect(container.textContent).toContain("Hello Fidus")
     })
 

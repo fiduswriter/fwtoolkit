@@ -1,6 +1,6 @@
-import {ensureCSS} from "./network.js"
-import {escapeText} from "./basic.js"
-import {gettext, staticUrl} from "./settings.js"
+import { ensureCSS } from "./network.js"
+import { escapeText } from "./basic.js"
+import { gettext, staticUrl } from "./settings.js"
 
 export interface TwoPaneSelectorOptions<T> {
     dom: HTMLElement
@@ -52,7 +52,7 @@ export class TwoPaneSelector<T> {
     }
 
     private render(): void {
-        const {leftTitle, rightTitle, addButtonTitle, removeButtonTitle} =
+        const { leftTitle, rightTitle, addButtonTitle, removeButtonTitle } =
             this.options
         this.dom.innerHTML = `<div class="fw-two-pane-selector">
             <div class="fw-ar-container fw-two-pane-left">
@@ -63,9 +63,13 @@ export class TwoPaneSelector<T> {
                 <button class="fw-button fw-large fw-square fw-light fw-ar-button fw-two-pane-add" title="${escapeText(addButtonTitle || gettext("Add"))}">
                     <i class="fa-solid fa-caret-right"></i>
                 </button>
-                ${removeButtonTitle ? `<button class="fw-button fw-large fw-square fw-light fw-ar-button fw-two-pane-remove" title="${escapeText(removeButtonTitle)}">
+                ${
+                    removeButtonTitle
+                        ? `<button class="fw-button fw-large fw-square fw-light fw-ar-button fw-two-pane-remove" title="${escapeText(removeButtonTitle)}">
                     <i class="fa-solid fa-caret-left"></i>
-                </button>` : ""}
+                </button>`
+                        : ""
+                }
             </div>
             <div class="fw-ar-container fw-two-pane-right">
                 ${rightTitle ? `<h3 class="fw-green-title">${escapeText(rightTitle)}</h3>` : ""}
@@ -116,9 +120,9 @@ export class TwoPaneSelector<T> {
         }
 
         if (!this.options.multiple && side === "left") {
-            pane
-                .querySelectorAll(".fw-two-pane-item.fw-selected")
-                .forEach(el => el.classList.remove("fw-selected"))
+            pane.querySelectorAll(".fw-two-pane-item.fw-selected").forEach(el =>
+                el.classList.remove("fw-selected")
+            )
         }
         target.classList.toggle("fw-selected")
     }
@@ -128,9 +132,9 @@ export class TwoPaneSelector<T> {
             '.fw-two-pane-list[data-pane="left"]'
         ) as HTMLElement
         const selectedIds = new Set(
-            Array.from(leftPane.querySelectorAll(".fw-two-pane-item.fw-selected")).map(
-                el => (el as HTMLElement).dataset.id as string
-            )
+            Array.from(
+                leftPane.querySelectorAll(".fw-two-pane-item.fw-selected")
+            ).map(el => (el as HTMLElement).dataset.id as string)
         )
         if (!selectedIds.size) {
             return

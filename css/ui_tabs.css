@@ -16,7 +16,9 @@
     color: var(--tabs-text-inactive);
     border-bottom: 3px solid transparent;
     margin-bottom: -2px;
-    transition: color 0.15s, border-color 0.15s;
+    transition:
+        color 0.15s,
+        border-color 0.15s;
     float: none;
     margin-right: 0;
 }

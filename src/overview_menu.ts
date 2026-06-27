@@ -1,8 +1,8 @@
-import {DiffDOM} from "diff-dom"
-import {keyName} from "w3c-keyname"
+import { DiffDOM } from "diff-dom"
+import { keyName } from "w3c-keyname"
 
-import {escapeText, whenReady} from "./basic.js"
-import {gettext} from "./settings.js"
+import { escapeText, whenReady } from "./basic.js"
+import { gettext } from "./settings.js"
 
 export interface OverviewMenuDropdownOption {
     title: string
@@ -92,14 +92,24 @@ export class OverviewMenuView {
         })
     }
 
-    addMissingIds(menu: {content: Array<{id?: string; type?: string; content?: unknown[]}>}): void {
+    addMissingIds(menu: {
+        content: Array<{ id?: string; type?: string; content?: unknown[] }>
+    }): void {
         // Add missing ids to menu items that don't have an ID.
         menu.content.forEach(item => {
             if (!item.id) {
                 item.id = Math.random().toString(36).substring(2)
             }
             if (item.type === "dropdown") {
-                this.addMissingIds(item as {content: Array<{id?: string; type?: string; content?: unknown[]}>})
+                this.addMissingIds(
+                    item as {
+                        content: Array<{
+                            id?: string
+                            type?: string
+                            content?: unknown[]
+                        }>
+                    }
+                )
             }
         })
     }
@@ -110,7 +120,8 @@ export class OverviewMenuView {
         document.body.addEventListener("click", this.listeners.onclick)
         this.listeners.oninput = event => this.oninput(event as InputEvent)
         document.body.addEventListener("input", this.listeners.oninput)
-        this.listeners.onKeydown = event => this.onKeydown(event as KeyboardEvent)
+        this.listeners.onKeydown = event =>
+            this.onKeydown(event as KeyboardEvent)
         document.body.addEventListener("keydown", this.listeners.onKeydown)
         this.listeners.onFocus = event => this.onFocus(event as FocusEvent)
         document.body.addEventListener("focus", this.listeners.onFocus, true)
@@ -157,7 +168,11 @@ export class OverviewMenuView {
                         this.update()
                     } else {
                         if (this.openedMenu !== false) {
-                            ;(this.model.content[this.openedMenu] as OverviewMenuDropdownItem).open = false
+                            ;(
+                                this.model.content[
+                                    this.openedMenu
+                                ] as OverviewMenuDropdownItem
+                            ).open = false
                         }
                         ;(menuItem as OverviewMenuDropdownItem).open = true
                         this.openedMenu = this.model.content.indexOf(menuItem)
@@ -166,7 +181,7 @@ export class OverviewMenuView {
                             `.fw-pulldown-item.selected`
                         )
                         if (firstDropdownItem) {
-                            (firstDropdownItem as HTMLElement).focus()
+                            ;(firstDropdownItem as HTMLElement).focus()
                         }
                     }
                 } else if (menuItem.action) {
@@ -201,9 +216,11 @@ export class OverviewMenuView {
                             : 0
                 }
 
-                const nextMenuItem = menuItems[newIndex].querySelector(".fw-dropdown-menu, .fw-text-menu, button, input")
+                const nextMenuItem = menuItems[newIndex].querySelector(
+                    ".fw-dropdown-menu, .fw-text-menu, button, input"
+                )
                 if (nextMenuItem) {
-                    (nextMenuItem as HTMLElement).focus()
+                    ;(nextMenuItem as HTMLElement).focus()
                 }
             }
             return
@@ -217,7 +234,11 @@ export class OverviewMenuView {
                 const menuItem = this.findMenuItemFromElement(focusedElement)
                 if (menuItem && menuItem.type === "dropdown") {
                     if (this.openedMenu !== false) {
-                        ;(this.model.content[this.openedMenu] as OverviewMenuDropdownItem).open = false
+                        ;(
+                            this.model.content[
+                                this.openedMenu
+                            ] as OverviewMenuDropdownItem
+                        ).open = false
                     }
                     ;(menuItem as OverviewMenuDropdownItem).open = true
                     this.openedMenu = this.model.content.indexOf(menuItem)
@@ -228,7 +249,7 @@ export class OverviewMenuView {
                         `.fw-pulldown-item.selected`
                     )
                     if (firstDropdownItem) {
-                        (firstDropdownItem as HTMLElement).focus()
+                        ;(firstDropdownItem as HTMLElement).focus()
                     }
                 }
                 return
@@ -268,7 +289,7 @@ export class OverviewMenuView {
                                 `#${menuItem.id}-button`
                             )
                             if (dropdownButton) {
-                                (dropdownButton as HTMLElement).focus()
+                                ;(dropdownButton as HTMLElement).focus()
                             }
                         }
                     }
@@ -279,7 +300,7 @@ export class OverviewMenuView {
                         `.fw-pulldown-item.selected`
                     )
                     if (selectedEl) {
-                        (selectedEl as HTMLElement).focus()
+                        ;(selectedEl as HTMLElement).focus()
                     }
                 } else if (name === "Enter" || name === " ") {
                     event.preventDefault()
@@ -331,7 +352,8 @@ export class OverviewMenuView {
                     const itemNumber = Array.from(
                         target.parentElement!.parentElement!.children
                     ).indexOf(target.parentElement as Element)
-                    ;(menuItem as OverviewMenuDropdownItem).selectedIndex = itemNumber
+                    ;(menuItem as OverviewMenuDropdownItem).selectedIndex =
+                        itemNumber
                     this.update()
                 }
             } else {
@@ -365,7 +387,7 @@ export class OverviewMenuView {
     focusMenuItem(menuItem: OverviewMenuItem): void {
         const menuEl = this.menuEl!.querySelector(`#${menuItem.id}`)
         if (menuEl) {
-            (menuEl as HTMLElement).focus()
+            ;(menuEl as HTMLElement).focus()
         }
     }
 
@@ -381,7 +403,10 @@ export class OverviewMenuView {
             }
             const menuItem = this.model.content[menuNumber]
             if (menuItem.type === "search" && menuItem.input) {
-                menuItem.input(this.overview, (target as HTMLInputElement).value)
+                menuItem.input(
+                    this.overview,
+                    (target as HTMLInputElement).value
+                )
                 ;(target as HTMLElement).focus()
             }
         }
@@ -411,15 +436,16 @@ export class OverviewMenuView {
                 menuItem.open = false
 
                 if (menuItem.type === "dropdown") {
-                    menuItem.title =
-                        menuItem.content[itemNumber].title
+                    menuItem.title = menuItem.content[itemNumber].title
                     this.openedMenu = false
                     this.update()
                 }
             }
             return false
         } else if (
-            target.matches("#fw-overview-menu li .fw-select-action input[type=checkbox]")
+            target.matches(
+                "#fw-overview-menu li .fw-select-action input[type=checkbox]"
+            )
         ) {
             event.preventDefault()
             event.stopImmediatePropagation()
@@ -432,7 +458,9 @@ export class OverviewMenuView {
                 menuNumber++
                 seekItem = seekItem.previousElementSibling
             }
-            const menuItem = this.model.content[menuNumber] as OverviewMenuSelectActionDropdownItem
+            const menuItem = this.model.content[
+                menuNumber
+            ] as OverviewMenuSelectActionDropdownItem
 
             if (menuItem.checked === true) {
                 menuItem.checked = false
@@ -461,15 +489,25 @@ export class OverviewMenuView {
             // if it is a dropdown menu, open it. Otherwise execute an
             // associated action.
             if (
-                ["dropdown", "select-action-dropdown"].includes(menuItem.type || "")
+                ["dropdown", "select-action-dropdown"].includes(
+                    menuItem.type || ""
+                )
             ) {
                 event.preventDefault()
                 if (this.openedMenu === menuNumber) {
-                    ;(this.model.content[this.openedMenu] as OverviewMenuDropdownItem).open = false
+                    ;(
+                        this.model.content[
+                            this.openedMenu
+                        ] as OverviewMenuDropdownItem
+                    ).open = false
                     this.openedMenu = false
                 } else {
                     if (this.openedMenu !== false) {
-                        ;(this.model.content[this.openedMenu] as OverviewMenuDropdownItem).open = false
+                        ;(
+                            this.model.content[
+                                this.openedMenu
+                            ] as OverviewMenuDropdownItem
+                        ).open = false
                     }
                     ;(menuItem as OverviewMenuDropdownItem).open = true
                     this.openedMenu = menuNumber
@@ -480,14 +518,20 @@ export class OverviewMenuView {
                 menuItem.action(this.overview)
                 this.announceForScreenReader(gettext("Action completed"))
                 if (this.openedMenu !== false) {
-                    ;(this.model.content[this.openedMenu] as OverviewMenuDropdownItem).open = false
+                    ;(
+                        this.model.content[
+                            this.openedMenu
+                        ] as OverviewMenuDropdownItem
+                    ).open = false
                     this.openedMenu = false
                 }
                 this.update()
             }
             return false
         } else if (this.openedMenu !== false) {
-            ;(this.model.content[this.openedMenu] as OverviewMenuDropdownItem).open = false
+            ;(
+                this.model.content[this.openedMenu] as OverviewMenuDropdownItem
+            ).open = false
             this.openedMenu = false
             this.update()
         }
@@ -552,7 +596,9 @@ export class OverviewMenuView {
         return returnValue
     }
 
-    getSelectionActionDropdownHTML(menuItem: OverviewMenuSelectActionDropdownItem): string {
+    getSelectionActionDropdownHTML(
+        menuItem: OverviewMenuSelectActionDropdownItem
+    ): string {
         return `
         <div class="fw-select-action fw-button fw-light fw-large">
             <input type="checkbox" ${menuItem.checked ? "checked" : ""}>
@@ -589,7 +635,11 @@ export class OverviewMenuView {
         `
     }
 
-    getDropdownListHTML(menuItem: OverviewMenuDropdownItem | OverviewMenuSelectActionDropdownItem): string {
+    getDropdownListHTML(
+        menuItem:
+            | OverviewMenuDropdownItem
+            | OverviewMenuSelectActionDropdownItem
+    ): string {
         if (menuItem.open) {
             return `<div class="fw-pulldown fw-left"
                         role="menu"
@@ -606,8 +656,13 @@ export class OverviewMenuView {
         }
     }
 
-    getDropdownOptionHTML(menuOption: OverviewMenuDropdownOption, index: number): string {
-        const menuItem = this.model.content[this.openedMenu as number] as OverviewMenuDropdownItem
+    getDropdownOptionHTML(
+        menuOption: OverviewMenuDropdownOption,
+        index: number
+    ): string {
+        const menuItem = this.model.content[
+            this.openedMenu as number
+        ] as OverviewMenuDropdownItem
         const isSelected = menuItem.selectedIndex === index
         return `
       <li role="none">

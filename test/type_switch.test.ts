@@ -1,4 +1,4 @@
-import {TypeSwitch} from "../src/type_switch.js"
+import { TypeSwitch } from "../src/type_switch.js"
 
 describe("TypeSwitch", () => {
     beforeEach(() => {

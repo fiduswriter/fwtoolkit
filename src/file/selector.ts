@@ -1,6 +1,6 @@
-import {escapeText, findTarget} from "../basic.js"
-import {ensureCSS} from "../network.js"
-import {staticUrl} from "../settings.js"
+import { escapeText, findTarget } from "../basic.js"
+import { ensureCSS } from "../network.js"
+import { staticUrl } from "../settings.js"
 
 export interface FileDescriptor {
     id?: number
@@ -253,7 +253,7 @@ export class FileSelector {
 
     bind(): void {
         this.dom.addEventListener("click", event => {
-            const el: {target?: Element | null} = {}
+            const el: { target?: Element | null } = {}
             switch (true) {
                 case findTarget(event, ".fa-plus-square", el): {
                     event.preventDefault()

@@ -103,8 +103,7 @@ table.datatable-table th {
 table.fw-data-table th:last-child,
 table.fw-data-table td:last-child,
 table.datatable-table th:last-child,
-table.datatable-table td:last-child,
-
+table.datatable-table td:last-child {
     padding-right: 0;
 }
 
@@ -235,7 +234,8 @@ table.fw-data-table tbody td.checkable {
 table.fw-data-table tbody tr.checked td.checkable::after,
 table.fw-data-table tbody tr.fw-checked td.checkable::after {
     display: inline-block;
-    font-family: "Font Awesome 7 Free", "Font Awesome 6 Free", "FontAwesome", monospace;
+    font-family:
+        "Font Awesome 7 Free", "Font Awesome 6 Free", "FontAwesome", monospace;
     font-weight: 900;
     font-size: inherit;
     text-rendering: auto;

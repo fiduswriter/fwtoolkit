@@ -1,91 +1,116 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fwtoolkit — SelectionDataTable demo</title>
-    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="../css/fwtoolkit.css">
-    <link rel="stylesheet" href="../demo.css">
-    <style>
-        body { padding: 2rem; margin: 0; box-sizing: border-box; }
-        #selection-host { margin-top: 1rem; max-width: 100%; overflow-x: auto; }
-        .demo-value { margin-top: 1rem; font-family: monospace; }
-        .demo-actions { margin-top: 1rem; }
-    </style>
-        <script type="importmap">
-        {
-            "imports": {
-                "fwtoolkit": "../dist/index.js",
-                "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
-                "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
-                "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
-                "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
-                "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
-                "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
-                "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
-                "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
-                "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
-                "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>fwtoolkit — SelectionDataTable demo</title>
+        <link rel="stylesheet" href="../fontawesome/css/all.min.css" />
+        <link rel="stylesheet" href="../css/fwtoolkit.css" />
+        <link rel="stylesheet" href="../demo.css" />
+        <style>
+            body {
+                padding: 2rem;
+                margin: 0;
+                box-sizing: border-box;
             }
-        }
+            #selection-host {
+                margin-top: 1rem;
+                max-width: 100%;
+                overflow-x: auto;
+            }
+            .demo-value {
+                margin-top: 1rem;
+                font-family: monospace;
+            }
+            .demo-actions {
+                margin-top: 1rem;
+            }
+        </style>
+        <script type="importmap">
+            {
+                "imports": {
+                    "fwtoolkit": "../dist/index.js",
+                    "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
+                    "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
+                    "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
+                    "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
+                    "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
+                    "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
+                    "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+                    "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+                }
+            }
         </script>
-    
-    <link rel="icon" type="image/png" href="../favicon.png">
-</head>
-<body>
-    <h1>SelectionDataTable demo</h1>
-    <p>Click a row to select it. Useful for dialogs and pickers.</p>
-    <div id="selection-host"></div>
-    <p class="demo-value">Selected ids: <span id="selection-value">[]</span></p>
-    <div class="demo-actions">
-        <button id="select-all" class="fw-button fw-light">Select all</button>
-        <button id="deselect-all" class="fw-button fw-light">Deselect all</button>
-    </div>
 
-    <script type="module">
-        import {initSettings} from "fwtoolkit";
-        import { SelectionDataTable } from "../dist/index.js";
+        <link rel="icon" type="image/png" href="../favicon.png" />
+    </head>
+    <body>
+        <h1>SelectionDataTable demo</h1>
+        <p>Click a row to select it. Useful for dialogs and pickers.</p>
+        <div id="selection-host"></div>
+        <p class="demo-value">
+            Selected ids: <span id="selection-value">[]</span>
+        </p>
+        <div class="demo-actions">
+            <button id="select-all" class="fw-button fw-light">
+                Select all
+            </button>
+            <button id="deselect-all" class="fw-button fw-light">
+                Deselect all
+            </button>
+        </div>
 
-        initSettings({
-            apiUrl: url => url,
-            getCsrfToken: () => "",
-            gettext: s => s,
-            staticUrl: s => "../" + s,
-            interpolate: (fmt, arr) => fmt.replace(/%s/g, () => arr.shift())
-        });
+        <script type="module">
+            import { initSettings } from "fwtoolkit"
+            import { SelectionDataTable } from "../dist/index.js"
 
-        const valueEl = document.getElementById("selection-value");
-        const updateValue = selected => { valueEl.textContent = JSON.stringify(selected); };
+            initSettings({
+                apiUrl: url => url,
+                getCsrfToken: () => "",
+                gettext: s => s,
+                staticUrl: s => "../" + s,
+                interpolate: (fmt, arr) => fmt.replace(/%s/g, () => arr.shift())
+            })
 
-        const rows = [
-            { cells: ["a", "Apple", "A round fruit"] },
-            { cells: ["b", "Banana", "A yellow fruit"] },
-            { cells: ["c", "Cherry", "A small stone fruit"] },
-            { cells: ["d", "Date", "A sweet brown fruit"] }
-        ];
+            const valueEl = document.getElementById("selection-value")
+            const updateValue = selected => {
+                valueEl.textContent = JSON.stringify(selected)
+            }
 
-        const dt = new SelectionDataTable({
-            dom: document.getElementById("selection-host"),
-            columns: [
-                { select: 0, hidden: true, name: "id" },
-                { select: 1, name: "Name" },
-                { select: 2, name: "Description" }
-            ],
-            data: rows,
-            scrollY: "250px",
-            multiple: true,
-            onChange: selected => updateValue(selected)
-        });
-        dt.init();
+            const rows = [
+                { cells: ["a", "Apple", "A round fruit"] },
+                { cells: ["b", "Banana", "A yellow fruit"] },
+                { cells: ["c", "Cherry", "A small stone fruit"] },
+                { cells: ["d", "Date", "A sweet brown fruit"] }
+            ]
 
-        document.getElementById("select-all").addEventListener("click", () => {
-            dt.selectAll();
-        });
+            const dt = new SelectionDataTable({
+                dom: document.getElementById("selection-host"),
+                columns: [
+                    { select: 0, hidden: true, name: "id" },
+                    { select: 1, name: "Name" },
+                    { select: 2, name: "Description" }
+                ],
+                data: rows,
+                scrollY: "250px",
+                multiple: true,
+                onChange: selected => updateValue(selected)
+            })
+            dt.init()
 
-        document.getElementById("deselect-all").addEventListener("click", () => {
-            dt.deselectAll();
-        });
-    </script>
-</body>
+            document
+                .getElementById("select-all")
+                .addEventListener("click", () => {
+                    dt.selectAll()
+                })
+
+            document
+                .getElementById("deselect-all")
+                .addEventListener("click", () => {
+                    dt.deselectAll()
+                })
+        </script>
+    </body>
 </html>

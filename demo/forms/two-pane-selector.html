@@ -1,71 +1,85 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fwtoolkit — TwoPaneSelector demo</title>
-    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="../css/fwtoolkit.css">
-    <link rel="stylesheet" href="../demo.css">
-    <style>
-        body { padding: 2rem; }
-        #selector-host { margin-top: 1rem; }
-        .demo-value { margin-top: 1rem; font-family: monospace; }
-    </style>
-        <script type="importmap">
-        {
-            "imports": {
-                "fwtoolkit": "../dist/index.js",
-                "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
-                "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
-                "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
-                "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
-                "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
-                "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
-                "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
-                "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
-                "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
-                "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>fwtoolkit — TwoPaneSelector demo</title>
+        <link rel="stylesheet" href="../fontawesome/css/all.min.css" />
+        <link rel="stylesheet" href="../css/fwtoolkit.css" />
+        <link rel="stylesheet" href="../demo.css" />
+        <style>
+            body {
+                padding: 2rem;
             }
-        }
+            #selector-host {
+                margin-top: 1rem;
+            }
+            .demo-value {
+                margin-top: 1rem;
+                font-family: monospace;
+            }
+        </style>
+        <script type="importmap">
+            {
+                "imports": {
+                    "fwtoolkit": "../dist/index.js",
+                    "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
+                    "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
+                    "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
+                    "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
+                    "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
+                    "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
+                    "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+                    "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+                }
+            }
         </script>
-    
-    <link rel="icon" type="image/png" href="../favicon.png">
-</head>
-<body>
-    <h1>TwoPaneSelector demo</h1>
-    <p>Two-pane add/remove selector rendered by <code>fwtoolkit/TwoPaneSelector</code>.</p>
-    <div id="selector-host"></div>
-    <p class="demo-value">Selected: <span id="selector-value">[]</span></p>
 
-    <script type="module">
-        import {initSettings} from "fwtoolkit";
-        import { TwoPaneSelector } from "../dist/index.js";
+        <link rel="icon" type="image/png" href="../favicon.png" />
+    </head>
+    <body>
+        <h1>TwoPaneSelector demo</h1>
+        <p>
+            Two-pane add/remove selector rendered by
+            <code>fwtoolkit/TwoPaneSelector</code>.
+        </p>
+        <div id="selector-host"></div>
+        <p class="demo-value">Selected: <span id="selector-value">[]</span></p>
 
-        initSettings({
-            apiUrl: url => url,
-            getCsrfToken: () => "",
-            gettext: s => s,
-            staticUrl: s => "../" + s,
-            interpolate: (fmt, arr) => fmt.replace(/%s/g, () => arr.shift())
-        });
+        <script type="module">
+            import { initSettings } from "fwtoolkit"
+            import { TwoPaneSelector } from "../dist/index.js"
 
-        const valueEl = document.getElementById("selector-value");
-        new TwoPaneSelector({
-            dom: document.getElementById("selector-host"),
-            availableItems: [
-                { id: 1, name: "Alice" },
-                { id: 2, name: "Bob" },
-                { id: 3, name: "Carol" }
-            ],
-            selectedItems: [],
-            renderItem: item => `<span>${item.name}</span>`,
-            getItemId: item => String(item.id),
-            leftTitle: "Available",
-            rightTitle: "Selected",
-            removeButtonTitle: "Remove",
-            onChange: selected => { valueEl.textContent = JSON.stringify(selected.map(i => i.name)); }
-        });
-    </script>
-</body>
+            initSettings({
+                apiUrl: url => url,
+                getCsrfToken: () => "",
+                gettext: s => s,
+                staticUrl: s => "../" + s,
+                interpolate: (fmt, arr) => fmt.replace(/%s/g, () => arr.shift())
+            })
+
+            const valueEl = document.getElementById("selector-value")
+            new TwoPaneSelector({
+                dom: document.getElementById("selector-host"),
+                availableItems: [
+                    { id: 1, name: "Alice" },
+                    { id: 2, name: "Bob" },
+                    { id: 3, name: "Carol" }
+                ],
+                selectedItems: [],
+                renderItem: item => `<span>${item.name}</span>`,
+                getItemId: item => String(item.id),
+                leftTitle: "Available",
+                rightTitle: "Selected",
+                removeButtonTitle: "Remove",
+                onChange: selected => {
+                    valueEl.textContent = JSON.stringify(
+                        selected.map(i => i.name)
+                    )
+                }
+            })
+        </script>
+    </body>
 </html>

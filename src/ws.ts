@@ -1,4 +1,4 @@
-import {gettext} from "./settings.js"
+import { gettext } from "./settings.js"
 
 export interface WebSocketMessage {
     type?: string
@@ -70,9 +70,9 @@ export class WebSocketConnector {
         appLoaded = () => false, // required argument
         anythingToSend = () => false, // required argument
         messagesElement = () => false, // element in which to show connection messages
-        initialMessage = () => ({type: "subscribe"}),
+        initialMessage = () => ({ type: "subscribe" }),
         resubScribed = () => {}, // Cleanup when the client connects a second or subsequent time
-        restartMessage = () => ({type: "restart"}), // Too many messages have been lost and we need to restart
+        restartMessage = () => ({ type: "restart" }), // Too many messages have been lost and we need to restart
         warningNotAllSent = gettext("Warning! Some data is unsaved"), // Info to show while disconnected WITH unsaved data
         infoDisconnected = gettext("Disconnected. Attempting to reconnect..."), // Info to show while disconnected WITHOUT unsaved data
         receiveData = () => {},
@@ -242,7 +242,8 @@ export class WebSocketConnector {
                 // have been sent simultaneously.
                 // The server wins over the client in this case.
                 this.waitForWS().then(() => {
-                    const clientDifference = this.messages.client - (data.c as number)
+                    const clientDifference =
+                        this.messages.client - (data.c as number)
                     this.messages.client = data.c as number
                     if (clientDifference > this.messages.lastTen.length) {
                         // We cannot fix the situation

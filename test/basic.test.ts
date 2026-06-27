@@ -1,4 +1,4 @@
-import {addAlert, deactivateWait} from "../src/basic.js"
+import { addAlert, deactivateWait } from "../src/basic.js"
 
 describe("basic UI helpers", () => {
     beforeEach(() => {

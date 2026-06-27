@@ -1,4 +1,4 @@
-import {initSettings} from "../src/settings.js"
+import { initSettings } from "../src/settings.js"
 
 // Initialize app settings so tests can run outside Fidus Writer.
 initSettings({

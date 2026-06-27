@@ -1,7 +1,7 @@
-import {escapeText} from "../basic.js"
-import {gettext} from "../settings.js"
+import { escapeText } from "../basic.js"
+import { gettext } from "../settings.js"
 
-export const moveTemplate = ({path}: {path: string}): string =>
+export const moveTemplate = ({ path }: { path: string }): string =>
     `<div>
     <span>${gettext("Path")}:</span>
     <input type="text" value="${escapeText(path)}" id="path" placeholder="${gettext("Insert path")}">

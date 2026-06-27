@@ -1,6 +1,6 @@
-import type {EditorState, Transaction} from "prosemirror-state"
-import {Plugin} from "prosemirror-state"
-import type {EditorView} from "prosemirror-view"
+import type { EditorState, Transaction } from "prosemirror-state"
+import { Plugin } from "prosemirror-state"
+import type { EditorView } from "prosemirror-view"
 
 type Command = (
     state: EditorState,
@@ -33,12 +33,12 @@ class MenuView {
 
         this.dom = document.createElement("div")
         this.dom.className = "inline-tools"
-        items.forEach(({dom}) => this.dom.appendChild(dom))
+        items.forEach(({ dom }) => this.dom.appendChild(dom))
 
         this.dom.addEventListener("mousedown", e => {
             e.preventDefault()
             view.focus()
-            items.forEach(({command, dom}) => {
+            items.forEach(({ command, dom }) => {
                 if (dom.contains(e.target as Node)) {
                     command(view.state, view.dispatch, view)
                 }
@@ -59,7 +59,7 @@ class MenuView {
             }
         }
 
-        this.items.forEach(({dom}) => {
+        this.items.forEach(({ dom }) => {
             if (activeMarks[dom.getAttribute("data-type") as string]) {
                 dom.classList.add("fw-active")
             } else {

@@ -1,79 +1,86 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fwtoolkit — File Selector</title>
-    <link rel="stylesheet" href="../fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="../css/fwtoolkit.css">
-    <link rel="stylesheet" href="../demo.css">
-    <style>
-        #selector { min-height: 300px; border: 1px solid var(--cs-light-border); margin-top: 20px; padding: 10px; }
-    </style>
-    <script type="importmap">
-    {
-        "imports": {
-            "fwtoolkit": "../dist/index.js",
-            "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
-            "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
-            "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
-            "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
-            "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
-            "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
-            "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
-            "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
-            "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
-            "diff-dom": "https://esm.sh/diff-dom@5.2.1"
-        }
-    }
-    </script>
-
-    <link rel="icon" type="image/png" href="../favicon.png">
-</head>
-<body>
-    <main class="demo-container">
-        <p><a href="../index.html">&larr; Back to demos</a></p>
-        <h1>File Selector</h1>
-        <div class="demo-actions">
-            <button class="fw-button" id="render">Render file selector</button>
-        </div>
-        <div id="selector"></div>
-        <p id="selection"></p>
-    </main>
-    <script type="module">
-        import {initSettings, FileSelector} from "fwtoolkit"
-
-        initSettings({
-            apiUrl: url => url,
-            getCsrfToken: () => "",
-            gettext: s => s,
-            staticUrl: s => "../" + s,
-            interpolate: (fmt, arr) => fmt.replace(/%s/g, () => arr.shift())
-        })
-
-        const files = [
-            {title: "Readme.md", path: "/"},
-            {title: "Chapter 1.md", path: "/book/"},
-            {title: "Chapter 2.md", path: "/book/"},
-            {title: "Notes.txt", path: "/misc/"}
-        ]
-
-        document.getElementById("render").addEventListener("click", () => {
-            const dom = document.getElementById("selector")
-            dom.innerHTML = ""
-            const selector = new FileSelector({
-                dom,
-                files,
-                showFiles: true,
-                selectFolders: true,
-                multiSelect: false,
-                selectFile: path => {
-                    document.getElementById("selection").textContent =
-                        `Selected: ${path}`
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>fwtoolkit — File Selector</title>
+        <link rel="stylesheet" href="../fontawesome/css/all.min.css" />
+        <link rel="stylesheet" href="../css/fwtoolkit.css" />
+        <link rel="stylesheet" href="../demo.css" />
+        <style>
+            #selector {
+                min-height: 300px;
+                border: 1px solid var(--cs-light-border);
+                margin-top: 20px;
+                padding: 10px;
+            }
+        </style>
+        <script type="importmap">
+            {
+                "imports": {
+                    "fwtoolkit": "../dist/index.js",
+                    "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
+                    "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
+                    "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
+                    "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
+                    "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
+                    "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
+                    "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+                    "diff-dom": "https://esm.sh/diff-dom@5.2.1"
                 }
+            }
+        </script>
+
+        <link rel="icon" type="image/png" href="../favicon.png" />
+    </head>
+    <body>
+        <main class="demo-container">
+            <p><a href="../index.html">&larr; Back to demos</a></p>
+            <h1>File Selector</h1>
+            <div class="demo-actions">
+                <button class="fw-button" id="render">
+                    Render file selector
+                </button>
+            </div>
+            <div id="selector"></div>
+            <p id="selection"></p>
+        </main>
+        <script type="module">
+            import { initSettings, FileSelector } from "fwtoolkit"
+
+            initSettings({
+                apiUrl: url => url,
+                getCsrfToken: () => "",
+                gettext: s => s,
+                staticUrl: s => "../" + s,
+                interpolate: (fmt, arr) => fmt.replace(/%s/g, () => arr.shift())
             })
-            selector.init()
-        })
-    </script>
-</body>
+
+            const files = [
+                { title: "Readme.md", path: "/" },
+                { title: "Chapter 1.md", path: "/book/" },
+                { title: "Chapter 2.md", path: "/book/" },
+                { title: "Notes.txt", path: "/misc/" }
+            ]
+
+            document.getElementById("render").addEventListener("click", () => {
+                const dom = document.getElementById("selector")
+                dom.innerHTML = ""
+                const selector = new FileSelector({
+                    dom,
+                    files,
+                    showFiles: true,
+                    selectFolders: true,
+                    multiSelect: false,
+                    selectFile: path => {
+                        document.getElementById("selection").textContent =
+                            `Selected: ${path}`
+                    }
+                })
+                selector.init()
+            })
+        </script>
+    </body>
 </html>

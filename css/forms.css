@@ -28,6 +28,7 @@ textarea {
     color: var(--cs-white-text);
     background-color: var(--input-background-color);
     border: 0 none;
+    border-bottom: 1px solid var(--input-border-color);
 }
 
 input[type="text"]:focus,

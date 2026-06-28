@@ -5,6 +5,7 @@
     --overlay-color: 170 170 170 / 0.3;
     --input-focus-background-color: #fbf9d2;
     --input-background-color: #f3f3f3;
+    --input-border-color: #c8c8c8;
     --input-dialog-border-color: #e0e0e0;
     --wait-active-background-color: 240 240 240 / 0.7;
     --wait-active-full-background-color: 240 240 240 / 1;
@@ -1719,6 +1720,7 @@ textarea {
     color: var(--cs-white-text);
     background-color: var(--input-background-color);
     border: 0 none;
+    border-bottom: 1px solid var(--input-border-color);
 }
 
 input[type="text"]:focus,

@@ -1,6 +1,6 @@
 # fwtoolkit
 
-<p align="center"><img src="demo/logo.svg" alt="fwtoolkit logo" width="100" height="100"></p>
+<p align="center"><img src="https://codeberg.org/fiduswriter/fwtoolkit/raw/branch/main/demo/logo.svg" alt="fwtoolkit logo" width="100" height="100"></p>
 
 Fidus Writer Toolkit — reusable TypeScript utilities, UI helpers and styles
 originally written for [Fidus Writer](https://fiduswriter.org) but usable in any

@@ -1,0 +1,1 @@
+{"version":3,"file":"new_folder_dialog.d.ts","sourceRoot":"","sources":["../../src/file/new_folder_dialog.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,cAAc,CAAA;AAIrC,qBAAa,eAAe;IACxB,QAAQ,EAAE,CAAC,UAAU,EAAE,MAAM,KAAK,IAAI,CAAA;IACtC,MAAM,EAAE,MAAM,CAAA;gBAEF,QAAQ,GAAE,CAAC,UAAU,EAAE,MAAM,KAAK,IAAe;IA8B7D,IAAI,IAAI,IAAI;CAGf"}

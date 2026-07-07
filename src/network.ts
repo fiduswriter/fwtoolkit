@@ -13,6 +13,7 @@ export type PostFiles = Record<
 export interface PostOptions {
     csrfToken?: string
     keepalive?: boolean
+    signal?: AbortSignal
 }
 
 /** Get cookie to set as part of the request header of all AJAX requests to the server.
@@ -49,7 +50,8 @@ const handleFetchErrors = (response: Response): Response => {
 export const get = (
     url: string,
     params: Record<string, string> = {},
-    csrfToken: string | false = false
+    csrfToken: string | false = false,
+    signal?: AbortSignal
 ): Promise<Response> => {
     const settings = getSettings()
     const token = csrfToken || settings.getCsrfToken() // Won't work in web worker.
@@ -69,16 +71,18 @@ export const get = (
             Accept: "application/json",
             "X-Requested-With": "XMLHttpRequest"
         },
-        credentials: "include"
+        credentials: "include",
+        signal
     }).then(handleFetchErrors)
 }
 
 export const getJson = (
     url: string,
     params: Record<string, string> = {},
-    csrfToken: string | false = false
+    csrfToken: string | false = false,
+    signal?: AbortSignal
 ): Promise<unknown> =>
-    get(url, params, csrfToken).then(response => response.json())
+    get(url, params, csrfToken, signal).then(response => response.json())
 
 export const postBare = (
     url: string,
@@ -88,7 +92,7 @@ export const postBare = (
 ): Promise<Response> => {
     const settings = getSettings()
 
-    const { csrfToken: csrfTokenOpt, keepalive = false } = options
+    const { csrfToken: csrfTokenOpt, keepalive = false, signal } = options
     const csrfToken = csrfTokenOpt || settings.getCsrfToken() // Won't work in web worker.
 
     const fetchOptions: RequestInit = {
@@ -100,6 +104,10 @@ export const postBare = (
         },
         credentials: "include",
         keepalive
+    }
+
+    if (signal) {
+        fetchOptions.signal = signal
     }
 
     if (Object.keys(files).length) {

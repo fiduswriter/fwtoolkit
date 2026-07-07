@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>fwtoolkit — Progress task</title>
+        <link rel="stylesheet" href="../fontawesome/css/all.min.css" />
+        <link rel="stylesheet" href="../css/fwtoolkit.css" />
+        <link rel="stylesheet" href="../demo.css" />
+        <script type="importmap">
+            {
+                "imports": {
+                    "fwtoolkit": "../dist/index.js",
+                    "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
+                    "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
+                    "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
+                    "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
+                    "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
+                    "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
+                    "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+                    "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+                }
+            }
+        </script>
+
+        <link rel="icon" type="image/png" href="../favicon.png" />
+    </head>
+    <body>
+        <main class="demo-container">
+            <p><a href="../index.html">&larr; Back to demos</a></p>
+            <h1>Progress task</h1>
+            <p>
+                Persistent progress cards for long-running operations. They
+                appear at the bottom-left so they do not overlap the alerts at
+                the bottom-right.
+            </p>
+            <div class="demo-actions">
+                <button class="fw-button" id="indeterminate">
+                    Indeterminate task
+                </button>
+                <button class="fw-button" id="determinate">
+                    Determinate task
+                </button>
+                <button class="fw-button" id="cancelable">
+                    Cancelable task
+                </button>
+                <button class="fw-button" id="success">Success at 100%</button>
+                <button class="fw-button" id="sticky">Sticky 100% task</button>
+                <button class="fw-button" id="error">Error task</button>
+                <button class="fw-button" id="alert">Also fire an alert</button>
+            </div>
+        </main>
+        <script type="module">
+            import { initSettings, addAlert } from "fwtoolkit"
+            import { addProgress } from "../dist/index.js"
+
+            initSettings({
+                apiUrl: url => url,
+                getCsrfToken: () => "",
+                gettext: s => s,
+                staticUrl: s => "../" + s,
+                interpolate: (fmt, arr) => fmt.replace(/%s/g, () => arr.shift())
+            })
+
+            document
+                .getElementById("indeterminate")
+                .addEventListener("click", () => {
+                    const task = addProgress("info", "Uploading file", {
+                        message: "Waiting for server..."
+                    })
+                    window.setTimeout(() => task.close(), 8000)
+                })
+
+            document
+                .getElementById("determinate")
+                .addEventListener("click", () => {
+                    const task = addProgress("info", "Exporting book", {
+                        message: "Preparing...",
+                        percentage: 0
+                    })
+                    let percentage = 0
+                    const interval = window.setInterval(() => {
+                        percentage += 10
+                        task.update(
+                            percentage,
+                            `Exported chapter ${percentage / 10} of 10...`
+                        )
+                        if (percentage >= 100) {
+                            window.clearInterval(interval)
+                        }
+                    }, 600)
+                })
+
+            document.getElementById("sticky").addEventListener("click", () => {
+                addProgress("info", "Sticky task", {
+                    message: "This one stays until you dismiss it.",
+                    percentage: 100,
+                    autoClose: false
+                })
+            })
+
+            document
+                .getElementById("cancelable")
+                .addEventListener("click", () => {
+                    let cancelled = false
+                    const task = addProgress("warning", "Querying LLM", {
+                        message: "Sending request...",
+                        percentage: 10,
+                        cancelable: true,
+                        onCancel: () => {
+                            cancelled = true
+                        }
+                    })
+                    const interval = window.setInterval(() => {
+                        if (cancelled || task.isClosed()) {
+                            window.clearInterval(interval)
+                            return
+                        }
+                        task.update(
+                            Math.round(Math.random() * 90),
+                            "Receiving response..."
+                        )
+                    }, 800)
+                })
+
+            document.getElementById("success").addEventListener("click", () => {
+                addProgress("success", "Operation complete", {
+                    percentage: 100,
+                    message: "All done"
+                })
+            })
+
+            document.getElementById("error").addEventListener("click", () => {
+                addProgress("error", "Export failed", {
+                    message: "Could not connect to server.",
+                    percentage: null
+                })
+            })
+
+            document.getElementById("alert").addEventListener("click", () => {
+                addAlert("info", "This is a temporary alert message.")
+            })
+        </script>
+    </body>
+</html>

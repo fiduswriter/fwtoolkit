@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>fwtoolkit — InfoRow demo</title>
+        <link rel="stylesheet" href="../fontawesome/css/all.min.css" />
+        <link rel="stylesheet" href="../css/fwtoolkit.css" />
+        <link rel="stylesheet" href="../demo.css" />
+        <style>
+            body {
+                padding: 2rem;
+                box-sizing: border-box;
+                min-width: auto;
+            }
+            .demo-table {
+                width: 100%;
+                box-sizing: border-box;
+                border-collapse: collapse;
+                margin-top: 1rem;
+            }
+            .demo-table th,
+            .demo-table td {
+                border: 1px solid var(--cs-gray, #ccc);
+                padding: 0.75rem;
+                text-align: left;
+                vertical-align: top;
+            }
+            .demo-table input[type="text"],
+            .demo-table input[type="number"],
+            .demo-table textarea {
+                margin: 0;
+            }
+        </style>
+        <script type="importmap">
+            {
+                "imports": {
+                    "fwtoolkit": "../dist/index.js",
+                    "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
+                    "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
+                    "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
+                    "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
+                    "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
+                    "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
+                    "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+                    "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+                }
+            }
+        </script>
+
+        <link rel="icon" type="image/png" href="../favicon.png" />
+    </head>
+    <body>
+        <h1>InfoRow demo</h1>
+        <p>
+            Labelled form rows with an optional info-icon tooltip, as used in
+            the bibliography editor.
+        </p>
+
+        <table class="fw-dialog-table demo-table">
+            <tbody id="rows"></tbody>
+        </table>
+
+        <script type="module">
+            import {
+                InfoRow,
+                InlineInput,
+                TypeSwitch,
+                icon,
+                initSettings,
+                gettext
+            } from "fwtoolkit"
+            import { toggleMark } from "prosemirror-commands"
+            import { Schema } from "prosemirror-model"
+
+            initSettings({
+                apiUrl: url => url,
+                getCsrfToken: () => "",
+                gettext: s => s,
+                staticUrl: s => "../" + s,
+                interpolate: (fmt, arr) => fmt.replace(/%s/g, () => arr.shift())
+            })
+
+            const container = document.getElementById("rows")
+
+            container.insertAdjacentHTML(
+                "beforeend",
+                new InfoRow({
+                    label: "Plain label",
+                    fieldClass: "plain-field"
+                }).html()
+            )
+
+            container.insertAdjacentHTML(
+                "beforeend",
+                new InfoRow({
+                    label: "Title of publication",
+                    helpText:
+                        "The main title of the work. Rich formatting is allowed.",
+                    fieldClass: "title-field"
+                }).html()
+            )
+
+            container.insertAdjacentHTML(
+                "beforeend",
+                new InfoRow({
+                    label: "Publication year",
+                    helpText: "A numeric year, for example 2024.",
+                    fieldClass: "year-field"
+                }).html()
+            )
+
+            container.insertAdjacentHTML(
+                "beforeend",
+                new InfoRow({
+                    label: "Abstract",
+                    helpText:
+                        "Switch between a single-line input and a multi-line textarea.",
+                    fieldClass: "abstract-field"
+                }).html()
+            )
+
+            // Plain text input.
+            const plainField = container.querySelector(
+                ".fw-entry-field.plain-field"
+            )
+            if (plainField) {
+                plainField.innerHTML = `<input type="text" placeholder="Enter a value…">`
+            }
+
+            // Rich-text InlineInput with a small formatting toolbar.
+            const titleField = container.querySelector(
+                ".fw-entry-field.title-field"
+            )
+            if (titleField) {
+                const schema = new Schema({
+                    nodes: {
+                        doc: { content: "field" },
+                        field: {
+                            content: "inline*",
+                            parseDOM: [{ tag: "p" }],
+                            toDOM: () => ["p", 0]
+                        },
+                        text: { group: "inline" },
+                        hard_break: {
+                            inline: true,
+                            group: "inline",
+                            selectable: false,
+                            parseDOM: [{ tag: "br" }],
+                            toDOM: () => ["br"]
+                        }
+                    },
+                    marks: {
+                        strong: {
+                            parseDOM: [{ tag: "strong" }, { tag: "b" }],
+                            toDOM: () => ["strong", 0]
+                        },
+                        em: {
+                            parseDOM: [{ tag: "em" }, { tag: "i" }],
+                            toDOM: () => ["em", 0]
+                        }
+                    }
+                })
+                new InlineInput(titleField, {
+                    schema,
+                    nodeType: "field",
+                    placeholder: "Type the title and use the toolbar…",
+                    tools: [
+                        {
+                            command: toggleMark(schema.marks.strong),
+                            dom: icon("strong", gettext("Strong"))
+                        },
+                        {
+                            command: toggleMark(schema.marks.em),
+                            dom: icon("em", gettext("Emphasis"))
+                        }
+                    ]
+                })
+            }
+
+            // Numbers-only input.
+            const yearField = container.querySelector(
+                ".fw-entry-field.year-field"
+            )
+            if (yearField) {
+                yearField.innerHTML = `<input type="number" inputmode="numeric" pattern="[0-9]*" placeholder="2024">`
+            }
+
+            // TypeSwitch between a single-line input and a textarea.
+            const abstractField = container.querySelector(
+                ".fw-entry-field.abstract-field"
+            )
+            if (abstractField) {
+                new TypeSwitch({
+                    dom: abstractField,
+                    label1: "Single line",
+                    label2: "Multi line",
+                    render1: () =>
+                        `<input type="text" placeholder="Short abstract…">`,
+                    render2: () =>
+                        `<textarea rows="4" placeholder="Longer abstract…"></textarea>`
+                })
+            }
+        </script>
+    </body>
+</html>

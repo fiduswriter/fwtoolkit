@@ -290,10 +290,14 @@ export class Dialog {
             this.dialogEl.style.top = "0px"
         } else {
             // Defer centering until the browser has calculated the dialog's
-            // intrinsic size. Otherwise clientWidth/clientHeight can be 0 for
-            // dialogs without an explicit width, placing the left edge in the
-            // middle of the viewport.
-            requestAnimationFrame(() => this.centerDialog())
+            // intrinsic size. requestAnimationFrame is preferred, but it can be
+            // throttled in hidden/headless contexts, so fall back to a timeout.
+            if (typeof requestAnimationFrame !== "undefined") {
+                requestAnimationFrame(() => this.centerDialog())
+                setTimeout(() => this.centerDialog(), 0)
+            } else {
+                this.centerDialog()
+            }
         }
 
         // Set dialog attributes for accessibility

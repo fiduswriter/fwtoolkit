@@ -2203,6 +2203,7 @@ span.select-action-dropdown {
 .fw-progress-task.fw-closing {
     opacity: 0;
     transform: translateY(10px);
+    pointer-events: none;
 }
 
 .fw-progress-task.fw-progress-info {

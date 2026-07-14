@@ -3,6 +3,7 @@
     left: 22px;
     bottom: 10px;
     z-index: calc(var(--highest-dialog-z-index, 100) + 3);
+    pointer-events: none;
 }
 
 #fw-progress-wrapper {
@@ -27,6 +28,7 @@
     transition:
         opacity 0.3s ease,
         transform 0.3s ease;
+    pointer-events: auto;
 }
 
 .fw-progress-task.fw-closing {

@@ -45,9 +45,15 @@ export class faqDialog {
             let answer: string
             q[1] = escapeText(q[1])
             if ((q[q.length - 1] as { hasImage?: boolean }).hasImage) {
-                // TODO: the original runtime spreads the tail of the question
-                // array into interpolate; keep this behavior but type loosely.
-                answer = (interpolate as any)(...q.slice(1, q.length), true)
+                // The tail of the question array (between the template and the
+                // hasImage marker) holds the positional arguments for the answer
+                // template. Pass them to interpolate with named substitution
+                // enabled.
+                answer = interpolate(
+                    q[1],
+                    q.slice(2, q.length - 1) as unknown[],
+                    true
+                )
             } else {
                 answer = q[1]
             }

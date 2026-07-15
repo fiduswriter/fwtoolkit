@@ -1,5 +1,6 @@
-import {convertDataURIToBlob as convertDataURIToBlobFn} from "../blob.js"
-import {get} from "../network.js"
+import { convertDataURIToBlob as convertDataURIToBlobFn } from "../blob.js"
+import { get } from "../network.js"
+import type JSZip from "jszip"
 
 function blobToArrayBuffer(blob: Blob): Promise<ArrayBuffer> {
     if (typeof blob.arrayBuffer === "function") {
@@ -39,7 +40,7 @@ export class ZipFileCreator {
     zipFiles: ZipIncludeFile[]
     mimeType: string
     date: Date
-    zipFs: any
+    zipFs!: JSZip
 
     constructor(
         textFiles: ZipTextFile[] = [],
@@ -56,8 +57,11 @@ export class ZipFileCreator {
     }
 
     init() {
-        return import("jszip").then(({default: JSZip}) => {
-            ;(JSZip as any).defaults.date = this.date
+        return import("jszip").then(({ default: JSZip }) => {
+            const JSZipWithDefaults = JSZip as typeof JSZip & {
+                defaults: { date: Date }
+            }
+            JSZipWithDefaults.defaults.date = this.date
             this.zipFs = new JSZip()
             if (this.mimeType !== "application/zip") {
                 this.zipFs.file("mimetype", this.mimeType, {
@@ -72,7 +76,9 @@ export class ZipFileCreator {
     includeZips() {
         const getZipBlobs = this.zipFiles.map(zipFile => {
             if (zipFile.blob) {
-                return blobToArrayBuffer(zipFile.blob).then(ab => (zipFile.blob = new Blob([ab])))
+                return blobToArrayBuffer(zipFile.blob).then(
+                    ab => (zipFile.blob = new Blob([ab]))
+                )
             }
             return get(zipFile.url)
                 .then(response => response.blob())
@@ -85,8 +91,23 @@ export class ZipFileCreator {
                         zipFile.directory === ""
                             ? this.zipFs
                             : this.zipFs.folder(zipFile.directory)
-                    if (zipFile.blob && typeof zipFile.blob.arrayBuffer === "function") {
-                        return zipFile.blob.arrayBuffer().then(ab => zipDir.loadAsync(ab))
+                    if (!zipDir) {
+                        throw new Error(
+                            `Could not open zip folder "${zipFile.directory}".`
+                        )
+                    }
+                    if (
+                        zipFile.blob &&
+                        typeof zipFile.blob.arrayBuffer === "function"
+                    ) {
+                        return zipFile.blob
+                            .arrayBuffer()
+                            .then(ab => zipDir.loadAsync(ab))
+                    }
+                    if (!zipFile.blob) {
+                        throw new Error(
+                            `No blob available for zip file "${zipFile.directory}".`
+                        )
                     }
                     return zipDir.loadAsync(zipFile.blob)
                 })
@@ -103,13 +124,13 @@ export class ZipFileCreator {
         const blobPromises = this.binaryFiles.map(binaryFile => {
             if (binaryFile.blob) {
                 return blobToArrayBuffer(binaryFile.blob).then(ab =>
-                    Promise.resolve({data: ab, filename: binaryFile.filename})
+                    Promise.resolve({ data: ab, filename: binaryFile.filename })
                 )
             }
             return get(binaryFile.url)
                 .then(response => response.blob())
                 .then(blob =>
-                    Promise.resolve({blob, filename: binaryFile.filename})
+                    Promise.resolve({ blob, filename: binaryFile.filename })
                 )
         })
         return Promise.all(blobPromises).then(promises => {

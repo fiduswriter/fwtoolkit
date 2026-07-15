@@ -6,6 +6,6 @@ initSettings({
     getCsrfToken: () => "",
     gettext: (msgid: string) => msgid,
     staticUrl: (path: string) => path,
-    interpolate: (fmt: string, args: any[]) =>
-        fmt.replace(/%s/g, () => args.shift())
+    interpolate: (fmt: string, args: unknown[]) =>
+        fmt.replace(/%s/g, () => String(args.shift()))
 })

@@ -56,7 +56,7 @@ export class ZipFileCreator {
         this.date = date
     }
 
-    init() {
+    init(): Promise<Blob> {
         return import("jszip").then(({ default: JSZip }) => {
             const JSZipWithDefaults = JSZip as typeof JSZip & {
                 defaults: { date: Date }
@@ -73,7 +73,7 @@ export class ZipFileCreator {
         })
     }
 
-    includeZips() {
+    includeZips(): Promise<Blob> {
         const getZipBlobs = this.zipFiles.map(zipFile => {
             if (zipFile.blob) {
                 return blobToArrayBuffer(zipFile.blob).then(
@@ -115,7 +115,7 @@ export class ZipFileCreator {
             .then(() => this.createZip())
     }
 
-    createZip() {
+    createZip(): Promise<Blob> {
         this.textFiles.forEach(textFile => {
             this.zipFs.file(textFile.filename, textFile.contents, {
                 compression: "DEFLATE"

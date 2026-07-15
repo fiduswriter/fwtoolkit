@@ -10,19 +10,49 @@
  * - DEK sharing: encrypt DEK with recipient's public key
  */
 
-import {getJson, post, postJson} from "../network.js"
-import {E2EEKeyManager} from "./key-manager.js"
-import {PassphraseCrypto} from "./passphrase-crypto.js"
+import { getJson, post, postJson } from "../network.js"
+import { E2EEKeyManager } from "./key-manager.js"
+import { PassphraseCrypto } from "./passphrase-crypto.js"
+
+interface EncryptionKeyData {
+    has_key: boolean
+    user_salt?: string
+    user_iterations?: number
+    encrypted_master_key?: string
+    encrypted_private_key?: string
+    public_key?: string
+    encrypted_master_key_backup?: string
+}
+
+interface DocumentKeyData {
+    has_key: boolean
+    encrypted_with_master_key?: boolean
+    encrypted_key?: string
+    id?: number
+}
+
+interface PublicKeyData {
+    has_key: boolean
+    public_key?: string
+}
+
+interface PreferencesData {
+    preferences?: {
+        has_dismissed_passphrase_offer?: boolean
+    }
+}
 
 export class PassphraseManager {
     /**
      * Check if the user has set up encryption keys on the server.
      */
-    static async hasEncryptionKeys() {
+    static async hasEncryptionKeys(): Promise<boolean> {
         try {
-            const data = await getJson("/api/user/encryption_key/")
+            const data = (await getJson(
+                "/api/user/encryption_key/"
+            )) as EncryptionKeyData
             return data.has_key === true
-        } catch (_e) {
+        } catch {
             return false
         }
     }
@@ -30,7 +60,7 @@ export class PassphraseManager {
     /**
      * Check if the master key and private key are in sessionStorage.
      */
-    static hasKeysInSession() {
+    static hasKeysInSession(): boolean {
         return PassphraseCrypto.hasKeysInSession()
     }
 
@@ -38,24 +68,29 @@ export class PassphraseManager {
      * Get keys from sessionStorage.
      * Returns {masterKey, privateKey} or {masterKey: null, privateKey: null}
      */
-    static getKeysFromSession() {
+    static getKeysFromSession(): Promise<{
+        masterKey: CryptoKey | null
+        privateKey: CryptoKey | null
+    }> {
         return PassphraseCrypto.getKeysFromSession()
     }
 
     /**
      * Clear keys from sessionStorage (e.g., on sign-out).
      */
-    static clearKeysFromSession() {
+    static clearKeysFromSession(): void {
         PassphraseCrypto.clearKeysFromSession()
     }
 
     /**
      * Set up encryption keys for the first time.
      *
-     * @param {string} passphrase - The user's chosen passphrase
-     * @returns {Promise<Object>} {recoveryKey: string} - The recovery key to display
+     * @param passphrase - The user's chosen passphrase
+     * @returns {recoveryKey: string} - The recovery key to display
      */
-    static async setupEncryption(passphrase) {
+    static async setupEncryption(
+        passphrase: string
+    ): Promise<{ recoveryKey: string }> {
         // 1. Generate keys
         const masterKey = await PassphraseCrypto.generateMasterKey()
         const keyPair = await PassphraseCrypto.generateKeyPair()
@@ -79,8 +114,8 @@ export class PassphraseManager {
         const recoveryKeyRaw = PassphraseCrypto._hexToBytes(recoveryKey)
         const recoveryKeyCryptoKey = await crypto.subtle.importKey(
             "raw",
-            recoveryKeyRaw,
-            {name: "AES-GCM", length: 256},
+            recoveryKeyRaw as Uint8Array<ArrayBuffer>,
+            { name: "AES-GCM", length: 256 },
             false,
             ["encrypt", "decrypt"]
         )
@@ -105,7 +140,7 @@ export class PassphraseManager {
                 encrypted_master_key_backup: encryptedMasterKeyBackup
             })
         }
-        const {status} = await postJson(
+        const { status } = await postJson(
             "/api/user/encryption_key/save/",
             saveData
         )
@@ -116,37 +151,39 @@ export class PassphraseManager {
         // 7. Store in sessionStorage
         await PassphraseCrypto.storeKeysInSession(masterKey, keyPair.privateKey)
 
-        return {recoveryKey}
+        return { recoveryKey }
     }
 
     /**
      * Unlock encryption keys using the passphrase.
      *
-     * @param {string} passphrase - The user's passphrase
-     * @returns {Promise<boolean>} true if successful
+     * @param passphrase - The user's passphrase
+     * @returns true if successful
      */
-    static async unlockWithPassphrase(passphrase) {
+    static async unlockWithPassphrase(passphrase: string): Promise<boolean> {
         // 1. Fetch encrypted keys from server
-        const data = await getJson("/api/user/encryption_key/")
+        const data = (await getJson(
+            "/api/user/encryption_key/"
+        )) as EncryptionKeyData
         if (!data.has_key) {
             throw new Error("No encryption keys found")
         }
 
         // 2. Derive KWK
-        const salt = PassphraseCrypto._base64ToBytes(data.user_salt)
+        const salt = PassphraseCrypto._base64ToBytes(data.user_salt!)
         const kwk = await PassphraseCrypto.deriveKWK(
             passphrase,
             salt,
-            data.user_iterations
+            data.user_iterations!
         )
 
         // 3. Decrypt master key and private key
         const masterKey = await PassphraseCrypto.decryptKey(
-            data.encrypted_master_key,
+            data.encrypted_master_key!,
             kwk
         )
         const privateKey = await PassphraseCrypto.decryptPrivateKey(
-            data.encrypted_private_key,
+            data.encrypted_private_key!,
             kwk
         )
 
@@ -159,30 +196,35 @@ export class PassphraseManager {
     /**
      * Change the passphrase without rotating keys.
      *
-     * @param {string} oldPassphrase - Current passphrase
-     * @param {string} newPassphrase - New passphrase
-     * @returns {Promise<boolean>} true if successful
+     * @param oldPassphrase - Current passphrase
+     * @param newPassphrase - New passphrase
+     * @returns true if successful
      */
-    static async changePassphrase(oldPassphrase, newPassphrase) {
+    static async changePassphrase(
+        oldPassphrase: string,
+        newPassphrase: string
+    ): Promise<boolean> {
         // 1. Fetch encrypted keys from server
-        const data = await getJson("/api/user/encryption_key/")
+        const data = (await getJson(
+            "/api/user/encryption_key/"
+        )) as EncryptionKeyData
         if (!data.has_key) {
             throw new Error("No encryption keys found")
         }
 
         // 2. Derive old KWK and decrypt keys
-        const oldSalt = PassphraseCrypto._base64ToBytes(data.user_salt)
+        const oldSalt = PassphraseCrypto._base64ToBytes(data.user_salt!)
         const oldKwk = await PassphraseCrypto.deriveKWK(
             oldPassphrase,
             oldSalt,
-            data.user_iterations
+            data.user_iterations!
         )
         const masterKey = await PassphraseCrypto.decryptKey(
-            data.encrypted_master_key,
+            data.encrypted_master_key!,
             oldKwk
         )
         const privateKey = await PassphraseCrypto.decryptPrivateKey(
-            data.encrypted_private_key,
+            data.encrypted_private_key!,
             oldKwk
         )
 
@@ -204,7 +246,7 @@ export class PassphraseManager {
         // (We keep the same recovery key so the user doesn't need to update
         // their stored backup. The backup is encrypted with the recovery key,
         // not the passphrase, so it remains valid.)
-        const encryptedMasterKeyBackup = data.encrypted_master_key_backup
+        const encryptedMasterKeyBackup = data.encrypted_master_key_backup!
 
         // 6. Send updated keys to server
         const saveData = {
@@ -217,7 +259,7 @@ export class PassphraseManager {
                 encrypted_master_key_backup: encryptedMasterKeyBackup
             })
         }
-        const {status} = await postJson(
+        const { status } = await postJson(
             "/api/user/encryption_key/save/",
             saveData
         )
@@ -234,13 +276,18 @@ export class PassphraseManager {
     /**
      * Recover encryption keys using the recovery key.
      *
-     * @param {string} recoveryKey - The recovery key (hex string)
-     * @param {string} newPassphrase - The new passphrase to set
-     * @returns {Promise<Object>} {newRecoveryKey: string}
+     * @param recoveryKey - The recovery key (hex string)
+     * @param newPassphrase - The new passphrase to set
+     * @returns {newRecoveryKey: string}
      */
-    static async recoverWithRecoveryKey(recoveryKey, newPassphrase) {
+    static async recoverWithRecoveryKey(
+        recoveryKey: string,
+        newPassphrase: string
+    ): Promise<{ newRecoveryKey: string }> {
         // 1. Fetch encrypted keys from server
-        const data = await getJson("/api/user/encryption_key/")
+        const data = (await getJson(
+            "/api/user/encryption_key/"
+        )) as EncryptionKeyData
         if (!data.has_key) {
             throw new Error("No encryption keys found")
         }
@@ -249,13 +296,13 @@ export class PassphraseManager {
         const recoveryKeyRaw = PassphraseCrypto._hexToBytes(recoveryKey)
         const recoveryKeyCryptoKey = await crypto.subtle.importKey(
             "raw",
-            recoveryKeyRaw,
-            {name: "AES-GCM", length: 256},
+            recoveryKeyRaw as Uint8Array<ArrayBuffer>,
+            { name: "AES-GCM", length: 256 },
             false,
             ["encrypt", "decrypt"]
         )
         const masterKey = await PassphraseCrypto.decryptKey(
-            data.encrypted_master_key_backup,
+            data.encrypted_master_key_backup!,
             recoveryKeyCryptoKey
         )
 
@@ -281,8 +328,8 @@ export class PassphraseManager {
         const newRecoveryKeyRaw = PassphraseCrypto._hexToBytes(newRecoveryKey)
         const newRecoveryKeyCryptoKey = await crypto.subtle.importKey(
             "raw",
-            newRecoveryKeyRaw,
-            {name: "AES-GCM", length: 256},
+            newRecoveryKeyRaw as Uint8Array<ArrayBuffer>,
+            { name: "AES-GCM", length: 256 },
             false,
             ["encrypt", "decrypt"]
         )
@@ -307,7 +354,7 @@ export class PassphraseManager {
                 encrypted_master_key_backup: encryptedMasterKeyBackup
             })
         }
-        const {status} = await postJson(
+        const { status } = await postJson(
             "/api/user/encryption_key/save/",
             saveData
         )
@@ -321,7 +368,7 @@ export class PassphraseManager {
             newKeyPair.privateKey
         )
 
-        return {newRecoveryKey}
+        return { newRecoveryKey }
     }
 
     /**
@@ -331,31 +378,34 @@ export class PassphraseManager {
      * If encrypted with the user's public key, decrypts with private key and
      * upgrades to master-key encryption.
      *
-     * @param {number} documentId - The document ID
-     * @returns {Promise<string|null>} The document password, or null if not available
+     * @param documentId - The document ID
+     * @returns The document password, or null if not available
      */
-    static async getDocumentPassword(documentId) {
-        const {masterKey, privateKey} =
+    static async getDocumentPassword(
+        documentId: number
+    ): Promise<string | null> {
+        const { masterKey, privateKey } =
             await PassphraseCrypto.getKeysFromSession()
         if (!masterKey || !privateKey) {
             return null
         }
 
-        const {json} = await postJson("/api/document/encryption_key/get/", {
+        const { json } = await postJson("/api/document/encryption_key/get/", {
             document_id: documentId
         })
-        if (!json.has_key) {
+        const documentKeyData = json as DocumentKeyData
+        if (!documentKeyData.has_key) {
             return null
         }
 
-        let password
-        if (json.encrypted_with_master_key) {
+        let password: string
+        if (documentKeyData.encrypted_with_master_key) {
             password = await PassphraseCrypto.decryptString(
-                json.encrypted_key,
+                documentKeyData.encrypted_key!,
                 masterKey
             )
         } else {
-            const parts = json.encrypted_key.split(":")
+            const parts = documentKeyData.encrypted_key!.split(":")
             if (parts.length !== 2) {
                 return null
             }
@@ -368,7 +418,7 @@ export class PassphraseManager {
             const upgradedEncryptedPassword =
                 await PassphraseCrypto.encryptString(password, masterKey)
             await postJson("/api/document/encryption_key/update/", {
-                id: json.id,
+                id: documentKeyData.id,
                 encrypted_key: upgradedEncryptedPassword,
                 encrypted_with_master_key: true
             })
@@ -384,23 +434,23 @@ export class PassphraseManager {
      * - Creating a new encrypted document (owner's password encrypted with MK)
      * - Sharing with another passphrase user (password encrypted with their public key)
      *
-     * @param {number} documentId - The document ID
-     * @param {string} password - The document password
-     * @param {number} holderId - The user ID to store the password for (default: current user)
-     * @param {string} holderType - "user" or "userinvite"
-     * @param {boolean} encryptedWithMasterKey - Whether to encrypt with MK or public key
-     * @returns {Promise<Object>} Server response
+     * @param documentId - The document ID
+     * @param password - The document password
+     * @param holderId - The user ID to store the password for (default: current user)
+     * @param _holderType - "user" or "userinvite"
+     * @param encryptedWithMasterKey - Whether to encrypt with MK or public key
+     * @returns Server response
      */
     static async saveDocumentPassword(
-        documentId,
-        password,
-        holderId = null,
-        _holderType = "user",
-        encryptedWithMasterKey = true
-    ) {
-        let encryptedKey
+        documentId: number,
+        password: string,
+        holderId: number | null = null,
+        _holderType: string = "user",
+        encryptedWithMasterKey: boolean = true
+    ): Promise<unknown> {
+        let encryptedKey: string
         if (encryptedWithMasterKey) {
-            const {masterKey} = await PassphraseCrypto.getKeysFromSession()
+            const { masterKey } = await PassphraseCrypto.getKeysFromSession()
             if (!masterKey) {
                 throw new Error("Master key not available in session")
             }
@@ -409,14 +459,14 @@ export class PassphraseManager {
                 masterKey
             )
         } else {
-            const pkJson = await getJson(
+            const pkJson = (await getJson(
                 `/api/user/encryption_public_key/${holderId}/`
-            )
+            )) as PublicKeyData
             if (!pkJson.has_key) {
                 throw new Error("Recipient has not set up encryption")
             }
             const recipientPublicKey = await PassphraseCrypto.importPublicKey(
-                pkJson.public_key
+                pkJson.public_key!
             )
             const encryptedData =
                 await PassphraseCrypto.encryptStringWithPublicKey(
@@ -426,7 +476,7 @@ export class PassphraseManager {
             encryptedKey = `${encryptedData.ephemeralPublicKeyJwk}:${encryptedData.encryptedData}`
         }
 
-        const saveData = {
+        const saveData: Record<string, unknown> = {
             document_id: documentId,
             encrypted_key: encryptedKey,
             encrypted_with_master_key: encryptedWithMasterKey
@@ -434,7 +484,7 @@ export class PassphraseManager {
         if (holderId) {
             saveData.holder_id = holderId
         }
-        const {json, status} = await postJson(
+        const { json, status } = await postJson(
             "/api/document/encryption_key/save/",
             saveData
         )
@@ -448,7 +498,7 @@ export class PassphraseManager {
      * Generate a new random document password that is itself a valid raw DEK.
      * Returns a 44-character base64-encoded 32-byte AES key.
      */
-    static generateDocumentPassword() {
+    static generateDocumentPassword(): Promise<string> {
         return PassphraseCrypto.generateDocumentPassword()
     }
 
@@ -457,20 +507,24 @@ export class PassphraseManager {
      * If the password is a raw DEK (43/44 char base64), use it directly.
      * Otherwise, derive the key via PBKDF2.
      */
-    static resolvePasswordToKey(password, salt, iterations) {
+    static resolvePasswordToKey(
+        password: string,
+        salt: Uint8Array,
+        iterations: number
+    ): Promise<CryptoKey> {
         return E2EEKeyManager.resolvePasswordToKey(password, salt, iterations)
     }
 
     /**
      * Check if a user has set up encryption keys (for sharing).
      */
-    static async userHasEncryptionKeys(userId) {
+    static async userHasEncryptionKeys(userId: number): Promise<boolean> {
         try {
-            const data = await getJson(
+            const data = (await getJson(
                 `/api/user/encryption_public_key/${userId}/`
-            )
+            )) as PublicKeyData
             return data.has_key === true
-        } catch (_e) {
+        } catch {
             return false
         }
     }
@@ -478,11 +532,13 @@ export class PassphraseManager {
     /**
      * Check if user has dismissed the passphrase setup offer.
      */
-    static async hasUserDismissedPassphraseOffer() {
+    static async hasUserDismissedPassphraseOffer(): Promise<boolean> {
         try {
-            const data = await getJson("/api/user/preferences/get/")
+            const data = (await getJson(
+                "/api/user/preferences/get/"
+            )) as PreferencesData
             return data.preferences?.has_dismissed_passphrase_offer === true
-        } catch (_e) {
+        } catch {
             return false
         }
     }
@@ -490,12 +546,12 @@ export class PassphraseManager {
     /**
      * Mark that user has dismissed the passphrase setup offer.
      */
-    static async markPassphraseDismissed() {
+    static async markPassphraseDismissed(): Promise<void> {
         try {
             await post("/api/user/preferences/update/", {
                 has_dismissed_passphrase_offer: true
             })
-        } catch (_e) {
+        } catch {
             // Silently fail - preference saving is best-effort
         }
     }

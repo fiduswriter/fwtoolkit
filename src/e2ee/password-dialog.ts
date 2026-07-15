@@ -13,23 +13,46 @@
  * the user is shown a degree of weakness and is therefore encouraged to use a stronger password.
  */
 
-import {Dialog} from "../dialog.js"
-import {escapeText} from "../basic.js"
+import { Dialog, DialogButtonSpec } from "../dialog.js"
+import { escapeText } from "../basic.js"
+
+export interface PasswordValidationResult {
+    valid: boolean
+    message: string
+}
+
+export interface PasswordStrengthInfo {
+    cssClass: string
+    label: string
+}
+
+export interface PasswordChangeResult {
+    currentPassword: string
+    newPassword: string
+}
+
+export interface ChangePasswordOptions {
+    currentPassword?: string
+    suggestedNewPassword?: string
+    hideCurrentPassword?: boolean
+    showNewPasswordPlaintext?: boolean
+    infoText?: string
+}
 
 /**
  * Validate a password against the minimum requirements.
  *
- * @param {string} password - The password to validate
- * @returns {{valid: boolean, message: string}} Validation result
+ * @param password - The password to validate
+ * @returns Validation result
  */
-export function validatePassword(password) {
+export function validatePassword(password: string): PasswordValidationResult {
     if (!password || password.length < 5) {
         return {
             valid: false,
             message: gettext("Password must be at least 5 characters long.")
         }
     }
-    return {valid: true, message: ""}
+    return { valid: true, message: "" }
 }
 
 /**
@@ -40,10 +63,10 @@ export function validatePassword(password) {
  * password strength estimator like zxcvbn, but sufficient for
  * a basic strength meter.
  *
- * @param {string} password - The password to evaluate
- * @returns {number} Strength score from 0 (very weak) to 4 (very strong)
+ * @param password - The password to evaluate
+ * @returns Strength score from 0 (very weak) to 4 (very strong)
  */
-export function passwordStrength(password) {
+export function passwordStrength(password: string): number {
     if (!password) {
         return 0
     }
@@ -96,16 +119,16 @@ export function passwordStrength(password) {
 /**
  * Get a CSS class and label for a password strength score.
  *
- * @param {number} score - Strength score from passwordStrength()
- * @returns {{cssClass: string, label: string}}
+ * @param score - Strength score from passwordStrength()
+ * @returns CSS class and label
  */
-export function strengthInfo(score) {
-    const levels = [
-        {cssClass: "very-weak", label: gettext("Very weak")},
-        {cssClass: "weak", label: gettext("Weak")},
-        {cssClass: "fair", label: gettext("Fair")},
-        {cssClass: "strong", label: gettext("Strong")},
-        {cssClass: "very-strong", label: gettext("Very strong")}
+export function strengthInfo(score: number): PasswordStrengthInfo {
+    const levels: PasswordStrengthInfo[] = [
+        { cssClass: "very-weak", label: gettext("Very weak") },
+        { cssClass: "weak", label: gettext("Weak") },
+        { cssClass: "fair", label: gettext("Fair") },
+        { cssClass: "strong", label: gettext("Strong") },
+        { cssClass: "very-strong", label: gettext("Very strong") }
     ]
     return levels[score] || levels[0]
 }
@@ -119,15 +142,16 @@ export function strengthInfo(score) {
  * If the URL contains a fragment (e.g., #PASSWORD from a share link),
  * the password field is pre-filled and the dialog can be auto-submitted.
  *
- * @param {Function} onPassword - Callback called with the entered password string
- * @param {string} [urlFragment] - Password from URL fragment (share link), if available
- * @returns {Promise<void>}
+ * @param onPassword - Callback called with the entered password string
+ * @param urlFragment - Password from URL fragment (share link), if available
+ * @param onCancel - Callback when user cancels
+ * @returns Promise that resolves when the dialog closes
  */
 export function enterPasswordDialog(
-    onPassword,
-    urlFragment = "",
-    onCancel = null
-) {
+    onPassword: (password: string) => void,
+    urlFragment: string = "",
+    onCancel: (() => void) | null = null
+): Promise<void> {
     return new Promise(resolve => {
         const dialogId = "e2ee-enter-password"
 
@@ -155,15 +179,18 @@ export function enterPasswordDialog(
 
         // Declare dialogInstance before buttons so the click handler
         // can call dialogInstance.close().
-        let dialogInstance
+        // eslint-disable-next-line prefer-const
+        let dialogInstance: Dialog
 
-        const buttons = [
+        const buttons: DialogButtonSpec[] = [
             {
                 text: gettext("Decrypt"),
                 classes: "fw-button fw-dark",
                 click: () => {
                     const input = document.getElementById("e2ee-password-input")
-                    const password = input ? input.value : ""
+                    const password = input
+                        ? (input as HTMLInputElement).value
+                        : ""
                     if (password.length === 0) {
                         const errorEl = document.getElementById(
                             "e2ee-password-error"
@@ -212,16 +239,19 @@ export function enterPasswordDialog(
             )
             const input = document.getElementById("e2ee-password-input")
             if (toggleBtn && input) {
-                toggleBtn.addEventListener("click", () => {
-                    if (input.type === "password") {
-                        input.type = "text"
-                        toggleBtn.innerHTML =
+                const toggleBtnEl = toggleBtn as HTMLElement
+                toggleBtnEl.addEventListener("click", () => {
+                    const inputEl = input as HTMLInputElement
+                    if (inputEl.type === "password") {
+                        inputEl.type = "text"
+                        toggleBtnEl.innerHTML =
                             '<i class="fa-solid fa-eye-slash"></i>'
-                        toggleBtn.title = gettext("Hide password")
+                        toggleBtnEl.title = gettext("Hide password")
                     } else {
-                        input.type = "password"
-                        toggleBtn.innerHTML = '<i class="fa-solid fa-eye"></i>'
-                        toggleBtn.title = gettext("Show password")
+                        inputEl.type = "password"
+                        toggleBtnEl.innerHTML =
+                            '<i class="fa-solid fa-eye"></i>'
+                        toggleBtnEl.title = gettext("Show password")
                     }
                 })
             }
@@ -231,10 +261,10 @@ export function enterPasswordDialog(
                 input.addEventListener("keypress", event => {
                     if (event.key === "Enter") {
                         event.preventDefault()
-                        buttons[0].click()
+                        buttons[0].click?.()
                     }
                 })
-                input.focus()
+                ;(input as HTMLInputElement).focus()
             }
         }, 100)
     })
@@ -248,10 +278,12 @@ export function enterPasswordDialog(
  * the minimum requirements (12+ characters, at least one letter and
  * one number).
  *
- * @param {Function} onPassword - Callback called with the entered password string
- * @returns {Promise<void>}
+ * @param onPassword - Callback called with the entered password string
+ * @returns Promise that resolves when the dialog closes
  */
-export function createPasswordDialog(onPassword) {
+export function createPasswordDialog(
+    onPassword: (password: string) => void
+): Promise<void> {
     return new Promise(resolve => {
         const dialogId = "e2ee-create-password"
 
@@ -280,7 +312,10 @@ export function createPasswordDialog(onPassword) {
             </div>
         `
 
-        const buttons = [
+        // eslint-disable-next-line prefer-const
+        let dialogInstance: Dialog
+
+        const buttons: DialogButtonSpec[] = [
             {
                 text: gettext("Create Encrypted Document"),
                 classes: "fw-button fw-dark",
@@ -294,9 +329,11 @@ export function createPasswordDialog(onPassword) {
                     const errorEl = document.getElementById(
                         "e2ee-password-error"
                     )
-                    const password = input ? input.value : ""
+                    const password = input
+                        ? (input as HTMLInputElement).value
+                        : ""
                     const confirmPassword = confirmInput
-                        ? confirmInput.value
+                        ? (confirmInput as HTMLInputElement).value
                         : ""
 
                     // Validate password
@@ -333,7 +370,7 @@ export function createPasswordDialog(onPassword) {
             canClose: true
         }
 
-        const dialogInstance = new Dialog(dialog)
+        dialogInstance = new Dialog(dialog)
         dialogInstance.open()
 
         setTimeout(() => {
@@ -343,14 +380,15 @@ export function createPasswordDialog(onPassword) {
             )
             toggleBtns.forEach(btn => {
                 btn.addEventListener("click", () => {
-                    const input = btn.parentElement.querySelector("input")
+                    const input = btn.parentElement?.querySelector("input")
                     if (input) {
-                        if (input.type === "password") {
-                            input.type = "text"
+                        const inputEl = input as HTMLInputElement
+                        if (inputEl.type === "password") {
+                            inputEl.type = "text"
                             btn.innerHTML =
                                 '<i class="fa-solid fa-eye-slash"></i>'
                         } else {
-                            input.type = "password"
+                            inputEl.type = "password"
                             btn.innerHTML = '<i class="fa-solid fa-eye"></i>'
                         }
                     }
@@ -363,7 +401,9 @@ export function createPasswordDialog(onPassword) {
             )
             if (passwordInput) {
                 passwordInput.addEventListener("input", () => {
-                    const score = passwordStrength(passwordInput.value)
+                    const score = passwordStrength(
+                        (passwordInput as HTMLInputElement).value
+                    )
                     const info = strengthInfo(score)
                     const bar = document.getElementById("e2ee-strength-bar")
                     const label = document.getElementById("e2ee-strength-label")
@@ -378,7 +418,7 @@ export function createPasswordDialog(onPassword) {
                 })
                 // Initialize strength meter
                 passwordInput.dispatchEvent(new Event("input"))
-                passwordInput.focus()
+                ;(passwordInput as HTMLInputElement).focus()
             }
 
             // Submit on Enter key in confirm field
@@ -389,7 +429,7 @@ export function createPasswordDialog(onPassword) {
                 confirmInput.addEventListener("keypress", event => {
                     if (event.key === "Enter") {
                         event.preventDefault()
-                        buttons[0].click()
+                        buttons[0].click?.()
                     }
                 })
             }
@@ -403,17 +443,15 @@ export function createPasswordDialog(onPassword) {
  * The user must enter their current password (to verify identity),
  * then enter and confirm a new password.
  *
- * @param {Function} onPasswordChange - Callback called with
+ * @param onPasswordChange - Callback called with
  *   {currentPassword: string, newPassword: string}
- * @param {Object} [options] - Optional settings
- * @param {string} [options.currentPassword] - Prefill current password field
- * @param {string} [options.suggestedNewPassword] - Prefill new password field
- * @param {boolean} [options.hideCurrentPassword] - Hide the current password field
- * @param {boolean} [options.showNewPasswordPlaintext] - Show new password as plain text
- * @param {string} [options.infoText] - Additional explanatory HTML paragraph
- * @returns {Promise<void>}
+ * @param options - Optional settings
+ * @returns Promise that resolves when the dialog closes
  */
-export function changePasswordDialog(onPasswordChange, options = {}) {
+export function changePasswordDialog(
+    onPasswordChange: (result: PasswordChangeResult) => void,
+    options: ChangePasswordOptions = {}
+): Promise<void> {
     return new Promise(resolve => {
         const dialogId = "e2ee-change-password"
         const currentPassword = options.currentPassword || ""
@@ -471,7 +509,10 @@ export function changePasswordDialog(onPasswordChange, options = {}) {
 
         let newPasswordChanged = !hasPrefilledNew
 
-        const buttons = [
+        // eslint-disable-next-line prefer-const
+        let dialogInstance: Dialog
+
+        const buttons: DialogButtonSpec[] = [
             {
                 text: gettext("Change Password"),
                 classes: "fw-button fw-dark",
@@ -490,11 +531,13 @@ export function changePasswordDialog(onPasswordChange, options = {}) {
                     )
 
                     const currentPasswordValue = currentInput
-                        ? currentInput.value
+                        ? (currentInput as HTMLInputElement).value
                         : ""
-                    const newPassword = newInput ? newInput.value : ""
+                    const newPassword = newInput
+                        ? (newInput as HTMLInputElement).value
+                        : ""
                     const confirmPassword = confirmInput
-                        ? confirmInput.value
+                        ? (confirmInput as HTMLInputElement).value
                         : ""
 
                     // Validate current password
@@ -554,7 +597,7 @@ export function changePasswordDialog(onPasswordChange, options = {}) {
             canClose: true
         }
 
-        const dialogInstance = new Dialog(dialog)
+        dialogInstance = new Dialog(dialog)
         dialogInstance.open()
 
         setTimeout(() => {
@@ -565,14 +608,15 @@ export function changePasswordDialog(onPasswordChange, options = {}) {
                 )
                 toggleBtns.forEach(btn => {
                     btn.addEventListener("click", () => {
-                        const input = btn.parentElement.querySelector("input")
+                        const input = btn.parentElement?.querySelector("input")
                         if (input) {
-                            if (input.type === "password") {
-                                input.type = "text"
+                            const inputEl = input as HTMLInputElement
+                            if (inputEl.type === "password") {
+                                inputEl.type = "text"
                                 btn.innerHTML =
                                     '<i class="fa-solid fa-eye-slash"></i>'
                             } else {
-                                input.type = "password"
+                                inputEl.type = "password"
                                 btn.innerHTML =
                                     '<i class="fa-solid fa-eye"></i>'
                             }
@@ -590,7 +634,9 @@ export function changePasswordDialog(onPasswordChange, options = {}) {
                 !(showNewPasswordPlaintext && hasPrefilledNew)
             ) {
                 passwordInput.addEventListener("input", () => {
-                    const score = passwordStrength(passwordInput.value)
+                    const score = passwordStrength(
+                        (passwordInput as HTMLInputElement).value
+                    )
                     const info = strengthInfo(score)
                     const bar = document.getElementById("e2ee-strength-bar")
                     const label = document.getElementById("e2ee-strength-label")
@@ -609,7 +655,10 @@ export function changePasswordDialog(onPasswordChange, options = {}) {
             // Track changes to new password field
             if (passwordInput && hasPrefilledNew) {
                 passwordInput.addEventListener("input", () => {
-                    if (passwordInput.value !== suggestedNewPassword) {
+                    if (
+                        (passwordInput as HTMLInputElement).value !==
+                        suggestedNewPassword
+                    ) {
                         newPasswordChanged = true
                         const confirmField =
                             document.getElementById("e2ee-confirm-field")
@@ -621,7 +670,7 @@ export function changePasswordDialog(onPasswordChange, options = {}) {
                             `#${dialogId} .e2ee-strength-meter`
                         )
                         if (strengthMeter) {
-                            strengthMeter.style.display = ""
+                            ;(strengthMeter as HTMLElement).style.display = ""
                         }
                     }
                 })
@@ -635,7 +684,7 @@ export function changePasswordDialog(onPasswordChange, options = {}) {
                 confirmInput.addEventListener("keypress", event => {
                     if (event.key === "Enter") {
                         event.preventDefault()
-                        buttons[0].click()
+                        buttons[0].click?.()
                     }
                 })
             }
@@ -644,9 +693,9 @@ export function changePasswordDialog(onPasswordChange, options = {}) {
                 "e2ee-current-password-input"
             )
             if (currentInput && !hideCurrentPassword) {
-                currentInput.focus()
+                ;(currentInput as HTMLInputElement).focus()
             } else if (passwordInput) {
-                passwordInput.focus()
+                ;(passwordInput as HTMLInputElement).focus()
             }
         }, 100)
     })

@@ -8,17 +8,33 @@
  * 4. Recover with key - use recovery key to reset passphrase
  */
 
-import {Dialog} from "../dialog.js"
-import {escapeText} from "../basic.js"
-import {passwordStrength, strengthInfo} from "./password-dialog.js"
+import { Dialog, DialogButtonSpec } from "../dialog.js"
+import { escapeText } from "../basic.js"
+import { passwordStrength, strengthInfo } from "./password-dialog.js"
+
+export interface EnterPassphraseOptions {
+    errorMessage?: string
+}
+
+export interface RecoverResult {
+    recoveryKey: string
+    newPassphrase: string
+}
+
+export interface ChangePassphraseResult {
+    oldPassphrase: string
+    newPassphrase: string
+}
 
 /**
  * Show a dialog to set up the personal passphrase for the first time.
  *
- * @param {Function} onSetup - Callback called with the passphrase string
- * @returns {Promise<void>}
+ * @param onSetup - Callback called with the passphrase string
+ * @returns Promise that resolves when the dialog closes
  */
-export function setupPassphraseDialog(onSetup) {
+export function setupPassphraseDialog(
+    onSetup: (passphrase: string) => void
+): Promise<void> {
     return new Promise(resolve => {
         const dialogId = "e2ee-setup-passphrase"
 
@@ -47,7 +63,10 @@ export function setupPassphraseDialog(onSetup) {
             </div>
         `
 
-        const buttons = [
+        // eslint-disable-next-line prefer-const
+        let dialogInstance: Dialog
+
+        const buttons: DialogButtonSpec[] = [
             {
                 text: gettext("Set Up Encryption"),
                 classes: "fw-button fw-dark",
@@ -61,9 +80,11 @@ export function setupPassphraseDialog(onSetup) {
                     const errorEl = document.getElementById(
                         "e2ee-passphrase-error"
                     )
-                    const passphrase = input ? input.value : ""
+                    const passphrase = input
+                        ? (input as HTMLInputElement).value
+                        : ""
                     const confirmPassphrase = confirmInput
-                        ? confirmInput.value
+                        ? (confirmInput as HTMLInputElement).value
                         : ""
 
                     if (passphrase.length < 8) {
@@ -100,7 +121,7 @@ export function setupPassphraseDialog(onSetup) {
             width: 450
         }
 
-        const dialogInstance = new Dialog(dialog)
+        dialogInstance = new Dialog(dialog)
         dialogInstance.open()
 
         // The dialog content is short and should not scroll. Ensure it starts
@@ -118,14 +139,15 @@ export function setupPassphraseDialog(onSetup) {
             )
             toggleBtns.forEach(btn => {
                 btn.addEventListener("click", () => {
-                    const input = btn.parentElement.querySelector("input")
+                    const input = btn.parentElement?.querySelector("input")
                     if (input) {
-                        if (input.type === "password") {
-                            input.type = "text"
+                        const inputEl = input as HTMLInputElement
+                        if (inputEl.type === "password") {
+                            inputEl.type = "text"
                             btn.innerHTML =
                                 '<i class="fa-solid fa-eye-slash"></i>'
                         } else {
-                            input.type = "password"
+                            inputEl.type = "password"
                             btn.innerHTML = '<i class="fa-solid fa-eye"></i>'
                         }
                     }
@@ -137,7 +159,9 @@ export function setupPassphraseDialog(onSetup) {
             )
             if (passphraseInput) {
                 passphraseInput.addEventListener("input", () => {
-                    const score = passwordStrength(passphraseInput.value)
+                    const score = passwordStrength(
+                        (passphraseInput as HTMLInputElement).value
+                    )
                     const info = strengthInfo(score)
                     const bar = document.getElementById("e2ee-strength-bar")
                     const label = document.getElementById("e2ee-strength-label")
@@ -151,7 +175,7 @@ export function setupPassphraseDialog(onSetup) {
                     }
                 })
                 passphraseInput.dispatchEvent(new Event("input"))
-                passphraseInput.focus()
+                ;(passphraseInput as HTMLInputElement).focus()
             }
 
             const confirmInput = document.getElementById(
@@ -161,7 +185,7 @@ export function setupPassphraseDialog(onSetup) {
                 confirmInput.addEventListener("keypress", event => {
                     if (event.key === "Enter") {
                         event.preventDefault()
-                        buttons[0].click()
+                        buttons[0].click?.()
                     }
                 })
             }
@@ -172,17 +196,16 @@ export function setupPassphraseDialog(onSetup) {
 /**
  * Show a dialog to enter the personal passphrase to unlock encryption keys.
  *
- * @param {Function} onUnlock - Callback called with the passphrase string
- * @param {Function} onRecover - Callback when user clicks "Recover with key"
- * @param {Object} [options] - Optional settings
- * @param {string} [options.errorMessage] - Inline error to display
- * @returns {Promise<void>}
+ * @param onUnlock - Callback called with the passphrase string
+ * @param onRecover - Callback when user clicks "Recover with key"
+ * @param options - Optional settings
+ * @returns Promise that resolves when the dialog closes
  */
 export function enterPassphraseDialog(
-    onUnlock,
-    onRecover = null,
-    options = {}
-) {
+    onUnlock: (passphrase: string) => void,
+    onRecover: (() => void) | null = null,
+    options: EnterPassphraseOptions = {}
+): Promise<void> {
     return new Promise(resolve => {
         const dialogId = "e2ee-enter-passphrase"
         const errorMessage = options.errorMessage || ""
@@ -202,7 +225,10 @@ export function enterPassphraseDialog(
             </div>
         `
 
-        const buttons = [
+        // eslint-disable-next-line prefer-const
+        let dialogInstance: Dialog
+
+        const buttons: DialogButtonSpec[] = [
             {
                 text: gettext("Unlock"),
                 classes: "fw-button fw-dark",
@@ -210,7 +236,9 @@ export function enterPassphraseDialog(
                     const input = document.getElementById(
                         "e2ee-passphrase-input"
                     )
-                    const passphrase = input ? input.value : ""
+                    const passphrase = input
+                        ? (input as HTMLInputElement).value
+                        : ""
                     if (passphrase.length === 0) {
                         const errorEl = document.getElementById(
                             "e2ee-passphrase-error"
@@ -257,7 +285,7 @@ export function enterPassphraseDialog(
             canClose: true
         }
 
-        const dialogInstance = new Dialog(dialog)
+        dialogInstance = new Dialog(dialog)
         dialogInstance.open()
 
         setTimeout(() => {
@@ -266,16 +294,19 @@ export function enterPassphraseDialog(
             )
             const input = document.getElementById("e2ee-passphrase-input")
             if (toggleBtn && input) {
-                toggleBtn.addEventListener("click", () => {
-                    if (input.type === "password") {
-                        input.type = "text"
-                        toggleBtn.innerHTML =
+                const toggleBtnEl = toggleBtn as HTMLElement
+                toggleBtnEl.addEventListener("click", () => {
+                    const inputEl = input as HTMLInputElement
+                    if (inputEl.type === "password") {
+                        inputEl.type = "text"
+                        toggleBtnEl.innerHTML =
                             '<i class="fa-solid fa-eye-slash"></i>'
-                        toggleBtn.title = gettext("Hide passphrase")
+                        toggleBtnEl.title = gettext("Hide passphrase")
                     } else {
-                        input.type = "password"
-                        toggleBtn.innerHTML = '<i class="fa-solid fa-eye"></i>'
-                        toggleBtn.title = gettext("Show passphrase")
+                        inputEl.type = "password"
+                        toggleBtnEl.innerHTML =
+                            '<i class="fa-solid fa-eye"></i>'
+                        toggleBtnEl.title = gettext("Show passphrase")
                     }
                 })
             }
@@ -284,10 +315,10 @@ export function enterPassphraseDialog(
                 input.addEventListener("keypress", event => {
                     if (event.key === "Enter") {
                         event.preventDefault()
-                        buttons[0].click()
+                        buttons[0].click?.()
                     }
                 })
-                input.focus()
+                ;(input as HTMLInputElement).focus()
             }
         }, 100)
     })
@@ -296,11 +327,14 @@ export function enterPassphraseDialog(
 /**
  * Show a dialog displaying the recovery key to the user.
  *
- * @param {string} recoveryKey - The recovery key to display
- * @param {Function} onContinue - Callback when user clicks Continue
- * @returns {Promise<void>}
+ * @param recoveryKey - The recovery key to display
+ * @param onContinue - Callback when user clicks Continue
+ * @returns Promise that resolves when the dialog closes
  */
-export function showRecoveryKeyDialog(recoveryKey, onContinue) {
+export function showRecoveryKeyDialog(
+    recoveryKey: string,
+    onContinue: () => void
+): Promise<void> {
     return new Promise(resolve => {
         const dialogId = "e2ee-recovery-key"
 
@@ -318,15 +352,16 @@ export function showRecoveryKeyDialog(recoveryKey, onContinue) {
             </div>
         `
 
-        const buttons = [
+        // eslint-disable-next-line prefer-const
+        let dialogInstance: Dialog
+
+        const buttons: DialogButtonSpec[] = [
             {
                 text: gettext("I have saved it"),
                 classes: "fw-button fw-dark",
                 click: () => {
                     dialogInstance.close()
-                    if (typeof onContinue === "function") {
-                        onContinue()
-                    }
+                    onContinue()
                     resolve()
                 }
             }
@@ -340,7 +375,7 @@ export function showRecoveryKeyDialog(recoveryKey, onContinue) {
             canClose: false
         }
 
-        const dialogInstance = new Dialog(dialog)
+        dialogInstance = new Dialog(dialog)
         dialogInstance.open()
 
         setTimeout(() => {
@@ -362,10 +397,12 @@ export function showRecoveryKeyDialog(recoveryKey, onContinue) {
 /**
  * Show a dialog to recover encryption keys using the recovery key.
  *
- * @param {Function} onRecover - Callback called with {recoveryKey: string, newPassphrase: string}
- * @returns {Promise<void>}
+ * @param onRecover - Callback called with {recoveryKey: string, newPassphrase: string}
+ * @returns Promise that resolves when the dialog closes
  */
-export function recoverWithKeyDialog(onRecover) {
+export function recoverWithKeyDialog(
+    onRecover: (result: RecoverResult) => void
+): Promise<void> {
     return new Promise(resolve => {
         const dialogId = "e2ee-recover-with-key"
 
@@ -394,7 +431,10 @@ export function recoverWithKeyDialog(onRecover) {
             </div>
         `
 
-        const buttons = [
+        // eslint-disable-next-line prefer-const
+        let dialogInstance: Dialog
+
+        const buttons: DialogButtonSpec[] = [
             {
                 text: gettext("Recover"),
                 classes: "fw-button fw-dark",
@@ -412,11 +452,13 @@ export function recoverWithKeyDialog(onRecover) {
                         document.getElementById("e2ee-recover-error")
 
                     const recoveryKey = recoveryInput
-                        ? recoveryInput.value.trim()
+                        ? (recoveryInput as HTMLInputElement).value.trim()
                         : ""
-                    const newPassphrase = newInput ? newInput.value : ""
+                    const newPassphrase = newInput
+                        ? (newInput as HTMLInputElement).value
+                        : ""
                     const confirmPassphrase = confirmInput
-                        ? confirmInput.value
+                        ? (confirmInput as HTMLInputElement).value
                         : ""
 
                     if (recoveryKey.length === 0) {
@@ -447,7 +489,7 @@ export function recoverWithKeyDialog(onRecover) {
                     }
 
                     dialogInstance.close()
-                    onRecover({recoveryKey, newPassphrase})
+                    onRecover({ recoveryKey, newPassphrase })
                     resolve()
                 }
             },
@@ -469,7 +511,7 @@ export function recoverWithKeyDialog(onRecover) {
             canClose: true
         }
 
-        const dialogInstance = new Dialog(dialog)
+        dialogInstance = new Dialog(dialog)
         dialogInstance.open()
 
         setTimeout(() => {
@@ -478,14 +520,15 @@ export function recoverWithKeyDialog(onRecover) {
             )
             toggleBtns.forEach(btn => {
                 btn.addEventListener("click", () => {
-                    const input = btn.parentElement.querySelector("input")
+                    const input = btn.parentElement?.querySelector("input")
                     if (input) {
-                        if (input.type === "password") {
-                            input.type = "text"
+                        const inputEl = input as HTMLInputElement
+                        if (inputEl.type === "password") {
+                            inputEl.type = "text"
                             btn.innerHTML =
                                 '<i class="fa-solid fa-eye-slash"></i>'
                         } else {
-                            input.type = "password"
+                            inputEl.type = "password"
                             btn.innerHTML = '<i class="fa-solid fa-eye"></i>'
                         }
                     }
@@ -499,7 +542,7 @@ export function recoverWithKeyDialog(onRecover) {
                 confirmInput.addEventListener("keypress", event => {
                     if (event.key === "Enter") {
                         event.preventDefault()
-                        buttons[0].click()
+                        buttons[0].click?.()
                     }
                 })
             }
@@ -510,10 +553,12 @@ export function recoverWithKeyDialog(onRecover) {
 /**
  * Show a dialog to change the encryption passphrase.
  *
- * @param {Function} onChange - Callback called with {oldPassphrase: string, newPassphrase: string}
- * @returns {Promise<void>}
+ * @param onChange - Callback called with {oldPassphrase: string, newPassphrase: string}
+ * @returns Promise that resolves when the dialog closes
  */
-export function changePassphraseDialog(onChange) {
+export function changePassphraseDialog(
+    onChange: (result: ChangePassphraseResult) => void
+): Promise<void> {
     return new Promise(resolve => {
         const dialogId = "e2ee-change-passphrase"
 
@@ -545,7 +590,10 @@ export function changePassphraseDialog(onChange) {
             </div>
         `
 
-        const buttons = [
+        // eslint-disable-next-line prefer-const
+        let dialogInstance: Dialog
+
+        const buttons: DialogButtonSpec[] = [
             {
                 text: gettext("Change Passphrase"),
                 classes: "fw-button fw-dark",
@@ -561,10 +609,14 @@ export function changePassphraseDialog(onChange) {
                     )
                     const errorEl = document.getElementById("e2ee-change-error")
 
-                    const oldPassphrase = oldInput ? oldInput.value : ""
-                    const newPassphrase = newInput ? newInput.value : ""
+                    const oldPassphrase = oldInput
+                        ? (oldInput as HTMLInputElement).value
+                        : ""
+                    const newPassphrase = newInput
+                        ? (newInput as HTMLInputElement).value
+                        : ""
                     const confirmPassphrase = confirmInput
-                        ? confirmInput.value
+                        ? (confirmInput as HTMLInputElement).value
                         : ""
 
                     if (oldPassphrase.length === 0) {
@@ -595,7 +647,7 @@ export function changePassphraseDialog(onChange) {
                     }
 
                     dialogInstance.close()
-                    onChange({oldPassphrase, newPassphrase})
+                    onChange({ oldPassphrase, newPassphrase })
                     resolve()
                 }
             },
@@ -617,7 +669,7 @@ export function changePassphraseDialog(onChange) {
             canClose: true
         }
 
-        const dialogInstance = new Dialog(dialog)
+        dialogInstance = new Dialog(dialog)
         dialogInstance.open()
 
         setTimeout(() => {
@@ -626,14 +678,15 @@ export function changePassphraseDialog(onChange) {
             )
             toggleBtns.forEach(btn => {
                 btn.addEventListener("click", () => {
-                    const input = btn.parentElement.querySelector("input")
+                    const input = btn.parentElement?.querySelector("input")
                     if (input) {
-                        if (input.type === "password") {
-                            input.type = "text"
+                        const inputEl = input as HTMLInputElement
+                        if (inputEl.type === "password") {
+                            inputEl.type = "text"
                             btn.innerHTML =
                                 '<i class="fa-solid fa-eye-slash"></i>'
                         } else {
-                            input.type = "password"
+                            inputEl.type = "password"
                             btn.innerHTML = '<i class="fa-solid fa-eye"></i>'
                         }
                     }
@@ -647,7 +700,7 @@ export function changePassphraseDialog(onChange) {
                 confirmInput.addEventListener("keypress", event => {
                     if (event.key === "Enter") {
                         event.preventDefault()
-                        buttons[0].click()
+                        buttons[0].click?.()
                     }
                 })
             }

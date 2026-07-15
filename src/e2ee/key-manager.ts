@@ -15,14 +15,18 @@ export class E2EEKeyManager {
     /**
      * Derive an AES-GCM key from a password and salt using PBKDF2.
      *
-     * @param {string} password - The user-supplied password
-     * @param {Uint8Array} salt - The salt (16 bytes), fetched from the server
+     * @param password - The user-supplied password
+     * @param salt - The salt (16 bytes), fetched from the server
      *   as part of the document data (get_doc_data or subscribe)
-     * @param {number} [iterations=600000] - PBKDF2 iteration count
+     * @param iterations - PBKDF2 iteration count
      *   (OWASP 2023 recommendation for PBKDF2-SHA256)
-     * @returns {Promise<CryptoKey>} A non-extractable AES-GCM 256-bit key
+     * @returns A non-extractable AES-GCM 256-bit key
      */
-    static async deriveKey(password, salt, iterations = 600000) {
+    static async deriveKey(
+        password: string,
+        salt: Uint8Array,
+        iterations: number = 600000
+    ): Promise<CryptoKey> {
         const encoder = new TextEncoder()
         const keyMaterial = await crypto.subtle.importKey(
             "raw",
@@ -35,12 +39,12 @@ export class E2EEKeyManager {
         const key = await crypto.subtle.deriveKey(
             {
                 name: "PBKDF2",
-                salt: salt,
+                salt: salt as Uint8Array<ArrayBuffer>,
                 iterations: iterations,
                 hash: "SHA-256"
             },
             keyMaterial,
-            {name: "AES-GCM", length: 256},
+            { name: "AES-GCM", length: 256 },
             true, // extractable — required for sessionStorage caching
             ["encrypt", "decrypt"]
         )
@@ -52,10 +56,13 @@ export class E2EEKeyManager {
      * Store an AES-GCM key in sessionStorage for the current browser session.
      * The key is exported as raw bytes and Base64-encoded before storage.
      *
-     * @param {number} documentId - The document ID
-     * @param {CryptoKey} key - The AES-GCM key to store
+     * @param documentId - The document ID
+     * @param key - The AES-GCM key to store
      */
-    static async storeKeyInSession(documentId, key) {
+    static async storeKeyInSession(
+        documentId: number,
+        key: CryptoKey
+    ): Promise<void> {
         const raw = await crypto.subtle.exportKey("raw", key)
         const base64 = btoa(String.fromCharCode(...new Uint8Array(raw)))
         sessionStorage.setItem(`e2ee_key_${documentId}`, base64)
@@ -64,10 +71,10 @@ export class E2EEKeyManager {
     /**
      * Retrieve an AES-GCM key from sessionStorage.
      *
-     * @param {number} documentId - The document ID
-     * @returns {Promise<CryptoKey|null>} The imported key, or null if not found
+     * @param documentId - The document ID
+     * @returns The imported key, or null if not found
      */
-    static getKeyFromSession(documentId) {
+    static getKeyFromSession(documentId: number): Promise<CryptoKey> | null {
         const base64 = sessionStorage.getItem(`e2ee_key_${documentId}`)
         if (!base64) {
             return null
@@ -80,7 +87,7 @@ export class E2EEKeyManager {
         return crypto.subtle.importKey(
             "raw",
             raw,
-            {name: "AES-GCM", length: 256},
+            { name: "AES-GCM", length: 256 },
             true,
             ["encrypt", "decrypt"]
         )
@@ -89,9 +96,9 @@ export class E2EEKeyManager {
     /**
      * Remove a cached key from sessionStorage.
      *
-     * @param {number} documentId - The document ID
+     * @param documentId - The document ID
      */
-    static clearKeyFromSession(documentId) {
+    static clearKeyFromSession(documentId: number): void {
         sessionStorage.removeItem(`e2ee_key_${documentId}`)
     }
 
@@ -99,7 +106,7 @@ export class E2EEKeyManager {
      * Clear all cached E2EE keys from sessionStorage.
      * Should be called on sign-out or session expiration.
      */
-    static clearAllKeysFromSession() {
+    static clearAllKeysFromSession(): void {
         for (let i = sessionStorage.length - 1; i >= 0; i--) {
             const key = sessionStorage.key(i)
             if (key && key.startsWith("e2ee_key_")) {
@@ -117,9 +124,9 @@ export class E2EEKeyManager {
      * is to ensure that two documents with the same password produce
      * different derived keys (preventing rainbow table attacks).
      *
-     * @returns {Uint8Array} A 16-byte random salt
+     * @returns A 16-byte random salt
      */
-    static generateSalt() {
+    static generateSalt(): Uint8Array {
         return crypto.getRandomValues(new Uint8Array(16))
     }
 
@@ -130,18 +137,22 @@ export class E2EEKeyManager {
      * (43 or 44 characters), it is treated as a raw DEK and imported
      * directly without PBKDF2. Otherwise, the key is derived via PBKDF2.
      *
-     * @param {string} password - The document password
-     * @param {Uint8Array} salt - The salt (16 bytes)
-     * @param {number} [iterations=600000] - PBKDF2 iteration count
-     * @returns {Promise<CryptoKey>} The AES-GCM key
+     * @param password - The document password
+     * @param salt - The salt (16 bytes)
+     * @param iterations - PBKDF2 iteration count
+     * @returns The AES-GCM key
      */
-    static resolvePasswordToKey(password, salt, iterations = 600000) {
+    static resolvePasswordToKey(
+        password: string,
+        salt: Uint8Array,
+        iterations: number = 600000
+    ): Promise<CryptoKey> {
         // Try to interpret as raw base64/base64url DEK first
         if (password.length === 44 || password.length === 43) {
-            let decoded = null
+            let decoded: string | null = null
             try {
                 decoded = atob(password)
-            } catch (_e) {
+            } catch {
                 // Try base64url with padding conversion
                 try {
                     let base64 = password.replace(/-/g, "+").replace(/_/g, "/")
@@ -149,7 +160,7 @@ export class E2EEKeyManager {
                         base64 += "="
                     }
                     decoded = atob(base64)
-                } catch (_e2) {
+                } catch {
                     // Not valid base64url either
                 }
             }
@@ -161,7 +172,7 @@ export class E2EEKeyManager {
                 return crypto.subtle.importKey(
                     "raw",
                     raw,
-                    {name: "AES-GCM", length: 256},
+                    { name: "AES-GCM", length: 256 },
                     true,
                     ["encrypt", "decrypt"]
                 )
@@ -174,29 +185,29 @@ export class E2EEKeyManager {
     /**
      * Store the document password in sessionStorage.
      *
-     * @param {number} documentId - The document ID
-     * @param {string} password - The document password
+     * @param documentId - The document ID
+     * @param password - The document password
      */
-    static storePasswordInSession(documentId, password) {
+    static storePasswordInSession(documentId: number, password: string): void {
         sessionStorage.setItem(`e2ee_password_${documentId}`, password)
     }
 
     /**
      * Retrieve the document password from sessionStorage.
      *
-     * @param {number} documentId - The document ID
-     * @returns {string|null} The password, or null if not found
+     * @param documentId - The document ID
+     * @returns The password, or null if not found
      */
-    static getPasswordFromSession(documentId) {
+    static getPasswordFromSession(documentId: number): string | null {
         return sessionStorage.getItem(`e2ee_password_${documentId}`)
     }
 
     /**
      * Remove a cached password from sessionStorage.
      *
-     * @param {number} documentId - The document ID
+     * @param documentId - The document ID
      */
-    static clearPasswordFromSession(documentId) {
+    static clearPasswordFromSession(documentId: number): void {
         sessionStorage.removeItem(`e2ee_password_${documentId}`)
     }
 }

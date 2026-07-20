@@ -4,7 +4,7 @@ import { FileSelector } from "./selector.js"
 import { addAlert } from "../basic.js"
 import { NewFolderDialog } from "./new_folder_dialog.js"
 import { moveTemplate } from "./templates.js"
-import { moveFile, shortFileTitle } from "./tools.js"
+import { moveFile, moveFileWithFunction, shortFileTitle } from "./tools.js"
 
 export interface MovingFile {
     id: number
@@ -18,6 +18,7 @@ export interface FileDialogOptions {
     movingFiles?: MovingFile[]
     allFiles?: import("./selector.js").FileDescriptor[]
     moveUrl?: string
+    moveFunction?: (id: number, title: string, path: string) => Promise<unknown>
     successMessage?: string
     errorMessage?: string
     succcessCallback?: (file: MovingFile, path: string) => void
@@ -33,6 +34,7 @@ export class FileDialog {
     movingFiles: MovingFile[]
     allFiles: import("./selector.js").FileDescriptor[]
     moveUrl: string
+    moveFunction?: (id: number, title: string, path: string) => Promise<unknown>
     successMessage: string
     errorMessage: string
     succcessCallback: (file: MovingFile, path: string) => void
@@ -47,6 +49,7 @@ export class FileDialog {
         movingFiles = [], // Array of all files that are to be moved.
         allFiles = [], // Array of all existing files.
         moveUrl = "", // URL to use for moving files
+        moveFunction = undefined, // Function to use for moving files
         successMessage = "", // Message for success
         errorMessage = "", // Message for failure
         succcessCallback = () => {}, // Callback on success
@@ -56,6 +59,7 @@ export class FileDialog {
         this.movingFiles = movingFiles
         this.allFiles = allFiles
         this.moveUrl = moveUrl
+        this.moveFunction = moveFunction
         this.successMessage = successMessage
         this.errorMessage = errorMessage
         this.succcessCallback = succcessCallback
@@ -163,7 +167,15 @@ export class FileDialog {
     }
 
     moveFile(file: MovingFile, requestedPath: string): Promise<void> {
-        return moveFile(file.id, file.title, requestedPath, this.moveUrl)
+        const promise = this.moveFunction
+            ? moveFileWithFunction(
+                  file.id,
+                  file.title,
+                  requestedPath,
+                  this.moveFunction
+              )
+            : moveFile(file.id, file.title, requestedPath, this.moveUrl)
+        return promise
             .then(path => {
                 addAlert(
                     "success",

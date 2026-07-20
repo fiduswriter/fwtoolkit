@@ -63,3 +63,13 @@ export const moveFile = (
         })
     })
 }
+
+export const moveFileWithFunction = (
+    fileId: number,
+    title: string,
+    path: string,
+    moveFunction: (id: number, title: string, path: string) => Promise<unknown>
+): Promise<string> => {
+    path = cleanPath(title, path)
+    return moveFunction(fileId, title, path).then(() => path)
+}

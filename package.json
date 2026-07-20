@@ -46,7 +46,8 @@
             "prettier --write"
         ],
         "*.{ts,js,mjs}": [
-            "eslint --fix"
+            "eslint --fix",
+            "sh -c 'npm run typecheck'"
         ]
     },
     "dependencies": {

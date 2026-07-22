@@ -224,8 +224,7 @@ export class PulldownMenu {
         }
 
         const headerEl = seekItem?.closest(".fw-pulldown-menu-header") as
-            | HTMLElement
-            | undefined
+            HTMLElement | undefined
         if (!headerEl) {
             return null
         }

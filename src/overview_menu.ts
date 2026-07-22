@@ -637,8 +637,7 @@ export class OverviewMenuView {
 
     getDropdownListHTML(
         menuItem:
-            | OverviewMenuDropdownItem
-            | OverviewMenuSelectActionDropdownItem
+            OverviewMenuDropdownItem | OverviewMenuSelectActionDropdownItem
     ): string {
         if (menuItem.open) {
             return `<div class="fw-pulldown fw-left"

@@ -27,9 +27,7 @@ export interface ContentMenuActionItem extends ContentMenuBaseItem {
 }
 
 export type ContentMenuItem =
-    | ContentMenuHeaderItem
-    | ContentMenuSeparatorItem
-    | ContentMenuActionItem
+    ContentMenuHeaderItem | ContentMenuSeparatorItem | ContentMenuActionItem
 
 export interface ContentMenuInit {
     content: ContentMenuItem[]

@@ -83,7 +83,8 @@ export {
     getSettings,
     gettext,
     interpolate,
-    staticUrl
+    staticUrl,
+    apiUrl
 } from "./settings.js"
 export { InlineInput, InlineInputOptions } from "./inline_input.js"
 export { InlineTools, InlineToolItem, icon } from "./inline_tools.js"

@@ -1,10 +1,11 @@
 import { post } from "./network.js"
+import { apiUrl } from "./settings.js"
 
 export const setLanguage = (
     _config: unknown,
     language: string
 ): Promise<unknown> =>
-    post("/api/i18n/setlang/", { language }).then(() => {
+    post(apiUrl("i18n.setLang"), { language }).then(() => {
         // We delete the network cache as this contains the JS
         // translations.
         caches.keys().then(names => {

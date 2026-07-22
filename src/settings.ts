@@ -1,5 +1,6 @@
 export interface Settings {
-    apiUrl: (url: string) => string
+    apiUrl: (url: string, params?: Record<string, string>) => string
+    apiUrlMap?: Record<string, string>
     getCsrfToken: () => string
     gettext?: (msgid: string) => string
     interpolate?: (fmt: string, args: unknown[], named?: boolean) => string
@@ -71,6 +72,35 @@ export function interpolate(
         return _settings.interpolate(fmt, args, named)
     }
     return fmt.replace(/%s/g, () => String(args.shift()))
+}
+
+/**
+ * Resolve a logical API endpoint name to a concrete URL.
+ *
+ * If an `apiUrlMap` is configured and contains the name, the mapped template is
+ * returned. Templates may contain `{paramName}` placeholders, which are filled
+ * from the optional `params` object.
+ *
+ * If the name is not in the map, the configured `settings.apiUrl` function is
+ * called unchanged, so literal paths and absolute URLs continue to work.
+ */
+export function apiUrl(name: string, params?: Record<string, string>): string {
+    const settings = getSettings()
+    const mapped = settings.apiUrlMap?.[name]
+    if (mapped !== undefined) {
+        const resolved = mapped.replace(/\{(\w+)\}/g, (_, key) => {
+            if (!params) {
+                throw new Error(`Missing apiUrl param "${key}" for "${name}"`)
+            }
+            const value = params[key]
+            if (value === undefined) {
+                throw new Error(`Missing apiUrl param "${key}" for "${name}"`)
+            }
+            return encodeURIComponent(value)
+        })
+        return resolved
+    }
+    return settings.apiUrl(name, params)
 }
 
 /**

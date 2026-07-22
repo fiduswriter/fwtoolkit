@@ -11,6 +11,7 @@
  */
 
 import { getJson, post, postJson } from "../network.js"
+import { apiUrl } from "../settings.js"
 import { E2EEKeyManager } from "./key-manager.js"
 import { PassphraseCrypto } from "./passphrase-crypto.js"
 
@@ -49,7 +50,7 @@ export class PassphraseManager {
     static async hasEncryptionKeys(): Promise<boolean> {
         try {
             const data = (await getJson(
-                "/api/user/encryption_key/"
+                apiUrl("e2ee.user_encryption_key")
             )) as EncryptionKeyData
             return data.has_key === true
         } catch {
@@ -141,7 +142,7 @@ export class PassphraseManager {
             })
         }
         const { status } = await postJson(
-            "/api/user/encryption_key/save/",
+            apiUrl("e2ee.user_encryption_key_save"),
             saveData
         )
         if (status >= 400) {
@@ -163,7 +164,7 @@ export class PassphraseManager {
     static async unlockWithPassphrase(passphrase: string): Promise<boolean> {
         // 1. Fetch encrypted keys from server
         const data = (await getJson(
-            "/api/user/encryption_key/"
+            apiUrl("e2ee.user_encryption_key")
         )) as EncryptionKeyData
         if (!data.has_key) {
             throw new Error("No encryption keys found")
@@ -206,7 +207,7 @@ export class PassphraseManager {
     ): Promise<boolean> {
         // 1. Fetch encrypted keys from server
         const data = (await getJson(
-            "/api/user/encryption_key/"
+            apiUrl("e2ee.user_encryption_key")
         )) as EncryptionKeyData
         if (!data.has_key) {
             throw new Error("No encryption keys found")
@@ -260,7 +261,7 @@ export class PassphraseManager {
             })
         }
         const { status } = await postJson(
-            "/api/user/encryption_key/save/",
+            apiUrl("e2ee.user_encryption_key_save"),
             saveData
         )
         if (status >= 400) {
@@ -286,7 +287,7 @@ export class PassphraseManager {
     ): Promise<{ newRecoveryKey: string }> {
         // 1. Fetch encrypted keys from server
         const data = (await getJson(
-            "/api/user/encryption_key/"
+            apiUrl("e2ee.user_encryption_key")
         )) as EncryptionKeyData
         if (!data.has_key) {
             throw new Error("No encryption keys found")
@@ -355,7 +356,7 @@ export class PassphraseManager {
             })
         }
         const { status } = await postJson(
-            "/api/user/encryption_key/save/",
+            apiUrl("e2ee.user_encryption_key_save"),
             saveData
         )
         if (status >= 400) {
@@ -390,9 +391,12 @@ export class PassphraseManager {
             return null
         }
 
-        const { json } = await postJson("/api/document/encryption_key/get/", {
-            document_id: documentId
-        })
+        const { json } = await postJson(
+            apiUrl("e2ee.document_encryption_key_get"),
+            {
+                document_id: documentId
+            }
+        )
         const documentKeyData = json as DocumentKeyData
         if (!documentKeyData.has_key) {
             return null
@@ -417,7 +421,7 @@ export class PassphraseManager {
             // Upgrade to master-key encryption for next time
             const upgradedEncryptedPassword =
                 await PassphraseCrypto.encryptString(password, masterKey)
-            await postJson("/api/document/encryption_key/update/", {
+            await postJson(apiUrl("e2ee.document_encryption_key_update"), {
                 id: documentKeyData.id,
                 encrypted_key: upgradedEncryptedPassword,
                 encrypted_with_master_key: true
@@ -459,8 +463,13 @@ export class PassphraseManager {
                 masterKey
             )
         } else {
+            if (holderId === null) {
+                throw new Error(
+                    "holderId is required for public-key encryption"
+                )
+            }
             const pkJson = (await getJson(
-                `/api/user/encryption_public_key/${holderId}/`
+                apiUrl("e2ee.user_public_key", { userId: String(holderId) })
             )) as PublicKeyData
             if (!pkJson.has_key) {
                 throw new Error("Recipient has not set up encryption")
@@ -485,7 +494,7 @@ export class PassphraseManager {
             saveData.holder_id = holderId
         }
         const { json, status } = await postJson(
-            "/api/document/encryption_key/save/",
+            apiUrl("e2ee.document_encryption_key_save"),
             saveData
         )
         if (status >= 400) {
@@ -517,11 +526,13 @@ export class PassphraseManager {
 
     /**
      * Check if a user has set up encryption keys (for sharing).
+     *
+     * @param userId - The user ID to check
      */
     static async userHasEncryptionKeys(userId: number): Promise<boolean> {
         try {
             const data = (await getJson(
-                `/api/user/encryption_public_key/${userId}/`
+                apiUrl("e2ee.user_public_key", { userId: String(userId) })
             )) as PublicKeyData
             return data.has_key === true
         } catch {
@@ -535,7 +546,7 @@ export class PassphraseManager {
     static async hasUserDismissedPassphraseOffer(): Promise<boolean> {
         try {
             const data = (await getJson(
-                "/api/user/preferences/get/"
+                apiUrl("user.preferences")
             )) as PreferencesData
             return data.preferences?.has_dismissed_passphrase_offer === true
         } catch {
@@ -548,7 +559,7 @@ export class PassphraseManager {
      */
     static async markPassphraseDismissed(): Promise<void> {
         try {
-            await post("/api/user/preferences/update/", {
+            await post(apiUrl("user.preferences_update"), {
                 has_dismissed_passphrase_offer: true
             })
         } catch {

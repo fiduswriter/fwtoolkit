@@ -1,7 +1,7 @@
 {
     "name": "fwtoolkit",
-    "version": "0.2.0",
-    "description": "Fidus Writer Toolkit \u2014 reusable TypeScript utilities, UI helpers and styles for Fidus Writer and other applications",
+    "version": "0.2.1",
+    "description": "Fidus Writer Toolkit — reusable TypeScript utilities, UI helpers and styles for Fidus Writer and other applications",
     "type": "module",
     "license": "LGPL-3.0-or-later",
     "repository": {

@@ -42,7 +42,7 @@ export {
     getCookie
 } from "./network.js"
 export { setLanguage, avatarTemplate } from "./user.js"
-export { Dialog } from "./dialog.js"
+export { Dialog, type DialogButtonSpec, type DialogOptions } from "./dialog.js"
 export { ContentMenu } from "./content_menu.js"
 export { makeWorker } from "./worker.js"
 export { WebSocketConnector } from "./ws.js"

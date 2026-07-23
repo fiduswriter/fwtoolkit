@@ -1,6 +1,6 @@
 {
     "name": "fwtoolkit",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "Fidus Writer Toolkit — reusable TypeScript utilities, UI helpers and styles for Fidus Writer and other applications",
     "type": "module",
     "license": "LGPL-3.0-or-later",
@@ -17,7 +17,8 @@
         "css/",
         "css/fwtoolkit.css",
         "README.md",
-        "LICENSE"
+        "LICENSE",
+        "locale/"
     ],
     "exports": {
         ".": {
@@ -39,7 +40,9 @@
         "lint:fix": "eslint src test scripts --fix",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
-        "install-hooks": "husky"
+        "install-hooks": "husky",
+        "compile-i18n": "node scripts/compile-i18n.js",
+        "extract-i18n": "echo \"gettext extraction requires the fiduswriter-frontend-js package scripts. Run: node ../../fiduswriter-frontend-js/scripts/extract-fwtoolkit-i18n.js <django-locale> .\""
     },
     "lint-staged": {
         "*.{ts,js,mjs,css,md,json,html}": [
@@ -69,6 +72,8 @@
         "@fortawesome/fontawesome-free": "^7.2.0",
         "@types/jest": "^29.5.14",
         "eslint": "^10.6.0",
+        "gettext-parser": "^9.1.1",
+        "globals": "^17.7.0",
         "husky": "^9.1.7",
         "jest": "^29.7.0",
         "jest-environment-jsdom": "^29.7.0",

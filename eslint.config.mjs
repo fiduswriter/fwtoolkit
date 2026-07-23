@@ -1,4 +1,5 @@
 import eslint from "@eslint/js"
+import globals from "globals"
 import tseslint from "typescript-eslint"
 
 export default tseslint.config(
@@ -26,6 +27,7 @@ export default tseslint.config(
             ecmaVersion: 2020,
             sourceType: "module",
             globals: {
+                ...globals.node,
                 console: "readonly",
                 URL: "readonly"
             }

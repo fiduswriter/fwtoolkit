@@ -509,14 +509,16 @@ export class Dialog {
     }
 
     nextDialogZIndex(): number {
-        let zIndex = 100
+        // Start at the CSS-defined base (1000) so dialogs stay well above
+        // other positioned UI elements (menus, overlays, alerts, etc.).
+        let zIndex = 1000
         document.querySelectorAll("div.fw-dialog").forEach(dialogEl => {
             const computedZIndex = parseInt(
                 window.getComputedStyle(dialogEl as HTMLElement).zIndex
             )
             zIndex = Math.max(
                 zIndex,
-                Number.isNaN(computedZIndex) ? 100 : computedZIndex
+                Number.isNaN(computedZIndex) ? 1000 : computedZIndex
             )
         })
         zIndex += 2

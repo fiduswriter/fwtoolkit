@@ -18,7 +18,7 @@
         "css/fwtoolkit.css",
         "README.md",
         "LICENSE",
-        "locale/"
+        "locale/*/messages.json"
     ],
     "exports": {
         ".": {

@@ -8,7 +8,12 @@ const outputFile = join(cssDir, "fwtoolkit.css")
 const firstFiles = ["colors.css", "common.css"]
 
 const files = readdirSync(cssDir)
-    .filter(name => name.endsWith(".css") && name !== "fwtoolkit.css")
+    .filter(
+        name =>
+            name.endsWith(".css") &&
+            name !== "fwtoolkit.css" &&
+            name !== "reset.css"
+    )
     .sort((a, b) => {
         const indexA = firstFiles.indexOf(a)
         const indexB = firstFiles.indexOf(b)

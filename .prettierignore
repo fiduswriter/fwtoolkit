@@ -4,3 +4,4 @@ dist/
 .pages-build/
 css/fwtoolkit.css
 package-lock.json
+pnpm-lock.yaml

@@ -24,9 +24,12 @@ import { Dialog } from "fwtoolkit/dialog.js"
 ## CSS
 
 The package ships the styles for its UI components under `fwtoolkit/css/`.
-Load at least `colors.css` and the component styles you need:
+Load at least `colors.css` and the component styles you need. If the host page
+has not already applied a CSS reset, also load `reset.css` before the component
+styles:
 
 ```html
+<link rel="stylesheet" href="node_modules/fwtoolkit/css/reset.css" />
 <link rel="stylesheet" href="node_modules/fwtoolkit/css/colors.css" />
 <link rel="stylesheet" href="node_modules/fwtoolkit/css/dialog.css" />
 <link rel="stylesheet" href="node_modules/fwtoolkit/css/buttons.css" />

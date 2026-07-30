@@ -15,8 +15,8 @@ importers:
         specifier: ^3.10.1
         version: 3.10.1
       simple-datatables:
-        specifier: ^10.2.0
-        version: 10.2.0
+        specifier: ^10.3.0
+        version: 10.3.0
       w3c-keyname:
         specifier: ^2.2.8
         version: 2.2.8
@@ -1636,8 +1636,8 @@ packages:
   signal-exit@3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
 
-  simple-datatables@10.2.0:
-    resolution: {integrity: sha512-Lq3k5JZ4WXT0G0dhIAUfYc3M+GRs9y8U15wfbF7i67/rPm8wa43Iyrac+yP+lXQVTy1MPCPvxvZ44P9N4k0OhQ==}
+  simple-datatables@10.3.0:
+    resolution: {integrity: sha512-/9XcZ/AzZWYNMTTwUcUqsNhZXD1KIHg4tWCUhRx5qPDOnRVG2gNdRDR1euNTCbQxfAypu78ucgWc/BOMFfuxAQ==}
 
   sisteransi@1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
@@ -3827,7 +3827,7 @@ snapshots:
 
   signal-exit@3.0.7: {}
 
-  simple-datatables@10.2.0:
+  simple-datatables@10.3.0:
     dependencies:
       dayjs: 1.11.21
       diff-dom: 5.2.1

@@ -56,7 +56,7 @@
     "dependencies": {
         "diff-dom": "^5.2.1",
         "jszip": "^3.10.1",
-        "simple-datatables": "^10.2.0",
+        "simple-datatables": "^10.3.0",
         "w3c-keyname": "^2.2.8"
     },
     "peerDependencies": {

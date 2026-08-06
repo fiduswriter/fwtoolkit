@@ -33,7 +33,7 @@ export interface ChangePassphraseResult {
  * @returns Promise that resolves when the dialog closes
  */
 export function setupPassphraseDialog(
-    onSetup: (passphrase: string) => void
+    onSetup: (passphrase: string) => Promise<void> | void
 ): Promise<void> {
     return new Promise(resolve => {
         const dialogId = "e2ee-setup-passphrase"
@@ -70,7 +70,7 @@ export function setupPassphraseDialog(
             {
                 text: gettext("Set Up Encryption"),
                 classes: "fw-button fw-dark",
-                click: () => {
+                click: async () => {
                     const input = document.getElementById(
                         "e2ee-passphrase-input"
                     )
@@ -106,7 +106,7 @@ export function setupPassphraseDialog(
                     }
 
                     dialogInstance.close()
-                    onSetup(passphrase)
+                    await onSetup(passphrase)
                     resolve()
                 }
             }
@@ -557,7 +557,7 @@ export function recoverWithKeyDialog(
  * @returns Promise that resolves when the dialog closes
  */
 export function changePassphraseDialog(
-    onChange: (result: ChangePassphraseResult) => void
+    onChange: (result: ChangePassphraseResult) => Promise<void> | void
 ): Promise<void> {
     return new Promise(resolve => {
         const dialogId = "e2ee-change-passphrase"
@@ -597,7 +597,7 @@ export function changePassphraseDialog(
             {
                 text: gettext("Change Passphrase"),
                 classes: "fw-button fw-dark",
-                click: () => {
+                click: async () => {
                     const oldInput = document.getElementById(
                         "e2ee-old-passphrase-input"
                     )
@@ -647,7 +647,7 @@ export function changePassphraseDialog(
                     }
 
                     dialogInstance.close()
-                    onChange({ oldPassphrase, newPassphrase })
+                    await onChange({ oldPassphrase, newPassphrase })
                     resolve()
                 }
             },

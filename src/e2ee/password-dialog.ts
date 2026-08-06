@@ -449,7 +449,7 @@ export function createPasswordDialog(
  * @returns Promise that resolves when the dialog closes
  */
 export function changePasswordDialog(
-    onPasswordChange: (result: PasswordChangeResult) => void,
+    onPasswordChange: (result: PasswordChangeResult) => Promise<void> | void,
     options: ChangePasswordOptions = {}
 ): Promise<void> {
     return new Promise(resolve => {
@@ -516,7 +516,7 @@ export function changePasswordDialog(
             {
                 text: gettext("Change Password"),
                 classes: "fw-button fw-dark",
-                click: () => {
+                click: async () => {
                     const currentInput = document.getElementById(
                         "e2ee-current-password-input"
                     )
@@ -580,7 +580,7 @@ export function changePasswordDialog(
                     }
 
                     dialogInstance.close()
-                    onPasswordChange({
+                    await onPasswordChange({
                         currentPassword: currentPasswordValue,
                         newPassword
                     })

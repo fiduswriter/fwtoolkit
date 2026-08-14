@@ -42,7 +42,7 @@
         "format:check": "prettier --check .",
         "install-hooks": "husky",
         "compile-i18n": "node scripts/compile-i18n.js",
-        "extract-i18n": "echo \"gettext extraction requires the fiduswriter-frontend-js package scripts. Run: node ../../fiduswriter-frontend-js/scripts/extract-fwtoolkit-i18n.js <django-locale> .\""
+        "extract-i18n": "echo \"gettext extraction requires the fiduswriter-frontend-ts package scripts. Run: node ../../fiduswriter-frontend-ts/scripts/extract-fwtoolkit-i18n.js <django-locale> .\""
     },
     "lint-staged": {
         "*.{ts,js,mjs,css,md,json,html}": [

@@ -12,7 +12,7 @@ package and can be used in any browser project.
 
 - Package name: `fwtoolkit`
 - License: `LGPL-3.0-or-later`
-- Repository: `https://codeberg.org/fiduswriter/fwtoolkit.git`
+- Repository: `https://git.fiduswriter.org/fiduswriter/fwtoolkit.git`
 - Author: Johannes Wilm
 
 The package exports TypeScript source, compiled JavaScript and declaration files
@@ -48,10 +48,10 @@ in `dist/`, and component CSS in `css/`.
 │   ├── common.css    # Base / global styles
 │   └── fwtoolkit.css # Concatenated bundle (generated)
 ├── test/             # Jest tests and `setup.ts`
-├── demo/             # Codeberg Pages demo site
+├── demo/             # git-pages demo site
 ├── scripts/          # Build / deploy helpers
 │   ├── build-css.js  # Concatenates css/ into css/fwtoolkit.css
-│   └── deploy-pages.sh # Deploys demo/ to Codeberg Pages
+│   └── deploy-pages.sh # Deploys demo/ to git-pages
 ├── package.json      # Scripts, dependencies and package exports
 ├── tsconfig.json     # TypeScript compiler options
 └── jest.config.js    # Jest configuration
@@ -179,8 +179,8 @@ describe("basic UI helpers", () => {
 
 ## Deployment
 
-The demo site in `demo/` is published to Codeberg Pages at
-`https://fiduswriter.codeberg.page/fwtoolkit/`.
+The demo site in `demo/` is published to git-pages at
+`https://fiduswriter.pages.fiduswriter.org/fwtoolkit/`.
 
 To deploy manually:
 
@@ -198,8 +198,8 @@ The deploy script:
 4. Initializes a git repo, commits everything on a `pages` branch and force
    pushes to `origin`.
 
-The production Codeberg Pages setup also uses a Forgejo webhook targeting
-`https://fiduswriter.codeberg.page/fwtoolkit` with a branch filter of `pages`.
+The production git-pages setup also uses a Forgejo push webhook targeting
+`https://fiduswriter.pages.fiduswriter.org/fwtoolkit` (git-pages only processes pushes to the `pages` branch).
 
 ## Security considerations
 

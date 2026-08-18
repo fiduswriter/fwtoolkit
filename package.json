@@ -6,7 +6,7 @@
     "license": "LGPL-3.0-or-later",
     "repository": {
         "type": "git",
-        "url": "https://codeberg.org/fiduswriter/fwtoolkit.git"
+        "url": "https://git.fiduswriter.org/fiduswriter/fwtoolkit.git"
     },
     "author": "Johannes Wilm",
     "main": "./dist/index.js",

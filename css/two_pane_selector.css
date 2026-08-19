@@ -17,12 +17,6 @@
     cursor: pointer;
 }
 
-.fw-green-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--cs-4-text);
-}
-
 .fw-two-pane-selector {
     display: flex;
     align-items: center;

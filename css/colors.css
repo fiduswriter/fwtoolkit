@@ -58,9 +58,13 @@
     --cs-3-border: #7d331f;
 
     /* light green text */
+    --cs-4-text: #4c6860;
 
     /* white on light green */
     --cs-5-background: #4c6860;
+    --cs-5-text: #ffffff;
+    --cs-5-border: #f2f2f2;
+    --cs-5-background-hover: #97cdbe;
 
     /* white on dark green */
     --cs-6-text: #ffffff;

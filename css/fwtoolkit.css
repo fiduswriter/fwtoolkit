@@ -59,9 +59,13 @@
     --cs-3-border: #7d331f;
 
     /* light green text */
+    --cs-4-text: #4c6860;
 
     /* white on light green */
     --cs-5-background: #4c6860;
+    --cs-5-text: #ffffff;
+    --cs-5-border: #f2f2f2;
+    --cs-5-background-hover: #97cdbe;
 
     /* white on dark green */
     --cs-6-text: #ffffff;
@@ -1811,6 +1815,308 @@ textarea:focus {
     margin-right: 3px;
 }
 
+/*
+ * SPA-wide form overrides — migrated from @fiduswriter/frontend/css/forms.css.
+ * Loaded after the base form rules above so the overrides win by source order.
+ */
+
+/* -----------------------------------------------------------------
+ * Override: remove the default border-bottom on form inputs
+ * ----------------------------------------------------------------- */
+input[type="text"]:not(.fw-inline),
+input[type="password"]:not(.fw-inline),
+input[type="search"]:not(.fw-inline),
+input[type="email"]:not(.fw-inline),
+input[type="number"]:not(.fw-inline),
+textarea {
+    border-bottom: 0 none;
+}
+
+/* -----------------------------------------------------------------
+ * Category form — narrow inline input next to an add button
+ * ----------------------------------------------------------------- */
+input[type="text"].category-form {
+    width: calc(100% - 38px);
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* -----------------------------------------------------------------
+ * Focus states — extend the base rules with :focus-within support
+ * ----------------------------------------------------------------- */
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+input[type="email"]:focus,
+div.fw-input:focus-within,
+textarea:focus {
+    background-color: var(--input-focus-background-color);
+}
+
+/* -----------------------------------------------------------------
+ * Select containers
+ * ----------------------------------------------------------------- */
+.fw-select-container select {
+    display: inline-block;
+    width: calc(100% - 22px);
+    appearance: none;
+    cursor: pointer;
+}
+
+.fw-select-container select option.fw-placeholder {
+    display: none;
+}
+
+.fw-select-container {
+    margin-bottom: 18px;
+    position: relative;
+}
+
+.fw-select-container .fw-select-arrow {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    pointer-events: none;
+}
+
+/* -----------------------------------------------------------------
+ * Entry field widths (ProseMirror inputs, selects)
+ * ----------------------------------------------------------------- */
+.fw-entry-field .ProseMirror,
+.fw-entry-field input[type="text"],
+.fw-entry-field input[type="number"] {
+    width: 686px;
+    max-width: 80vw;
+}
+
+.fw-entry-field select {
+    padding: 0 3px 0 13px;
+    border: 0 none;
+    color: var(--cs-light-text);
+    background-color: var(--input-background-color);
+    height: 38px;
+    width: 561px;
+    appearance: none;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.fw-entry-field select.fw-large {
+    width: 664px;
+}
+
+/* -----------------------------------------------------------------
+ * Form label
+ * ----------------------------------------------------------------- */
+.form-label {
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* -----------------------------------------------------------------
+ * Name input fields (first name / last name pairs)
+ * ----------------------------------------------------------------- */
+.fw-name-input {
+    width: 226px;
+}
+
+.fw-name-input.fw-first {
+    margin-right: 23px;
+}
+
+/* -----------------------------------------------------------------
+ * Checkable table rows (app-specific positioning; base styles in
+ * fwtoolkit/css/checkable_list.css)
+ * ----------------------------------------------------------------- */
+.fw-checkable-td,
+.fw-checkable > td {
+    position: relative;
+}
+
+.fw-checkable-td.fw-checked::after,
+tr.fw-checkable.fw-checked > td:last-child::after {
+    top: 17px;
+}
+
+/* -----------------------------------------------------------------
+ * Addable input list
+ * ----------------------------------------------------------------- */
+.fw-add-input {
+    cursor: pointer;
+    margin-left: 14px;
+}
+
+.fw-add-input::before {
+    width: 0.7em;
+}
+
+.fw-list-input {
+    margin-top: 7px;
+}
+
+.fw-list-input:first-child {
+    margin-top: 0;
+}
+
+/* -----------------------------------------------------------------
+ * Form error
+ * ----------------------------------------------------------------- */
+.fw-fomt-error {
+    color: #ff0000;
+}
+
+/* -----------------------------------------------------------------
+ * AJAX file uploader
+ * ----------------------------------------------------------------- */
+.ajax-upload input[type="file"] {
+    display: none;
+}
+
+.ajax-upload-label {
+    margin-left: 10px;
+}
+
+/* -----------------------------------------------------------------
+ * Radio buttons
+ * ----------------------------------------------------------------- */
+.fw-radio input[type="radio"] {
+    display: inline-block;
+    width: 40px;
+    margin-bottom: 20px;
+}
+
+/* -----------------------------------------------------------------
+ * Type-switch field-part sizing overrides
+ * (Base type-switch styles are in fwtoolkit/css/type_switch.css)
+ * ----------------------------------------------------------------- */
+.fw-type-switch-input-inner .field-part {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.fw-type-switch-input-inner .field-part:last-child {
+    margin-right: 0;
+}
+
+.field-part-short .ProseMirror {
+    width: 64px;
+}
+
+.fw-type-switch-input-inner .field-part-huge input,
+.fw-type-switch-input-inner .field-part-huge .ProseMirror {
+    width: 250px;
+}
+
+.fw-type-switch-input-inner .field-part-long input,
+.fw-type-switch-input-inner .field-part-long .ProseMirror {
+    width: 130px;
+}
+
+.fw-type-switch-input-inner .field-part-single {
+    width: 100% !important;
+}
+
+.fw-type-switch-input-inner .field-part-single .ProseMirror {
+    width: 100%;
+}
+
+/* -----------------------------------------------------------------
+ * Dialog table header cell sizing
+ * ----------------------------------------------------------------- */
+.fw-dialog-table th {
+    vertical-align: top;
+    padding: 0 6px 0 8px;
+    width: 164px;
+}
+
+/* -----------------------------------------------------------------
+ * List input wrapper — add/remove buttons
+ * ----------------------------------------------------------------- */
+.list-input-wrapper .add-remove-list {
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 14px;
+}
+
+.list-input-wrapper .add-remove-list::before {
+    content: "\2796";
+    width: 0.7em;
+}
+
+.list-input-wrapper:last-child .add-remove-list::before {
+    content: "\2795";
+}
+
+/* -----------------------------------------------------------------
+ * Responsive breakpoints
+ * ----------------------------------------------------------------- */
+@media screen and (width <= 740px) {
+    .fw-entry-field .ProseMirror,
+    .fw-entry-field input[type="text"],
+    .fw-entry-field input[type="number"] {
+        max-width: 70vw;
+    }
+
+    .fw-type-switch-input-wrapper {
+        max-width: 70vw;
+    }
+
+    .tokenfield {
+        max-width: 70vw;
+    }
+}
+
+@media screen and (width <= 560px) {
+    .fw-entry-field .ProseMirror,
+    .fw-entry-field input[type="text"],
+    .fw-entry-field input[type="number"] {
+        max-width: 50vw;
+    }
+
+    .fw-type-switch-input-wrapper {
+        max-width: 50vw;
+    }
+
+    .tokenfield {
+        max-width: 50vw;
+    }
+
+    .fw-type-switch {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .fw-type-switch-input-inner {
+        width: auto;
+    }
+}
+
+@media screen and (width <= 460px) {
+    .fw-entry-field .ProseMirror,
+    .fw-entry-field input[type="text"],
+    .fw-entry-field input[type="number"] {
+        max-width: 40vw;
+    }
+
+    .fw-type-switch-input-wrapper {
+        max-width: 40vw;
+    }
+
+    .tokenfield {
+        max-width: 40vw;
+    }
+
+    .fw-dialog-table th {
+        width: 140px;
+    }
+
+    .fw-tabs-panel {
+        overflow-x: hidden;
+    }
+}
+
 /* === inline_tools.css === */
 .inline-tools {
     position: absolute;
@@ -2479,6 +2785,46 @@ span.select-action-dropdown {
     display: none;
 }
 
+/* === text.css === */
+.fw-basic-text {
+    font-family: Lato, sans-serif;
+    font-size: 13px;
+    line-height: 1.33em;
+    color: var(--cs-1-hover);
+    font-weight: 400;
+}
+
+a,
+.fw-link-text {
+    cursor: pointer;
+    color: var(--cs-1-text);
+}
+
+a:hover,
+.fw-link-text:hover {
+    cursor: pointer;
+    color: var(--cs-1-hover);
+}
+
+.fw-header-text {
+    color: var(--cs-5-text);
+    font-size: 14px;
+}
+
+.fw-header-navigation-text {
+    color: var(--cs-5-text);
+    font-weight: 400;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    font-size: 15px;
+}
+
+.fw-green-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--cs-4-text);
+}
+
 /* === two_pane_selector.css === */
 .fw-ar-container {
     display: inline-block;
@@ -2497,12 +2843,6 @@ span.select-action-dropdown {
     margin: 0 16px;
     vertical-align: middle;
     cursor: pointer;
-}
-
-.fw-green-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--cs-4-text);
 }
 
 .fw-two-pane-selector {

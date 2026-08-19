@@ -4,9 +4,10 @@
     --main-background-color: #f2f2f2;
     --overlay-color: 170 170 170 / 0.3;
     --input-focus-background-color: #fbf9d2;
-    --input-background-color: #f3f3f3;
+    --input-background-color: #ffffff;
     --input-border-color: #c8c8c8;
     --input-dialog-border-color: #e0e0e0;
+    --select-background-color: #f3f3f3;
     --wait-active-background-color: 240 240 240 / 0.7;
     --wait-active-full-background-color: 240 240 240 / 1;
     --alert-box-shadow-color: 240 240 240 / 1;
@@ -1748,11 +1749,11 @@ textarea:focus {
     border: 1px solid var(--input-dialog-border-color);
 }
 .fw-entry-field .ProseMirror {
-    border: 1px solid var(--cs-gray, #ccc);
+    border: 1px solid var(--input-border-color);
     border-radius: 4px;
     min-height: 2.5rem;
     padding: 0.25rem;
-    background: var(--cs-white-background, #fff);
+    background: var(--input-background-color);
 }
 
 /**
@@ -1889,7 +1890,7 @@ textarea:focus {
     padding: 0 3px 0 13px;
     border: 0 none;
     color: var(--cs-light-text);
-    background-color: var(--input-background-color);
+    background-color: var(--select-background-color);
     height: 38px;
     width: 561px;
     appearance: none;

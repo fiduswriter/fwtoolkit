@@ -1,18 +1,17 @@
 /** @type {import('jest').Config} */
 export default {
-    preset: "ts-jest/presets/default-esm",
     testEnvironment: "jsdom",
     extensionsToTreatAsEsm: [".ts"],
     setupFilesAfterEnv: ["<rootDir>/test/setup.ts"],
     transform: {
         "^.+\\.ts$": [
-            "ts-jest",
+            "@swc/jest",
             {
-                useESM: true,
-                tsconfig: {
-                    module: "NodeNext",
-                    moduleResolution: "NodeNext",
-                    isolatedModules: true
+                jsc: {
+                    parser: {
+                        syntax: "typescript"
+                    },
+                    target: "es2020"
                 }
             }
         ]

@@ -1815,11 +1815,6 @@ textarea:focus {
     margin-right: 3px;
 }
 
-/*
- * SPA-wide form overrides — migrated from @fiduswriter/frontend/css/forms.css.
- * Loaded after the base form rules above so the overrides win by source order.
- */
-
 /* -----------------------------------------------------------------
  * Override: remove the default border-bottom on form inputs
  * ----------------------------------------------------------------- */

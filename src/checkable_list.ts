@@ -27,7 +27,7 @@ export class CheckableList {
         this.options = options
         this.dom = options.dom
         this.selected = new Set(options.initialValue || [])
-        ensureCSS(staticUrl("css/checkable_list.css"))
+        ensureCSS(staticUrl("css/fwtoolkit/checkable_list.css"))
         this.render()
     }
 

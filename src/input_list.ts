@@ -35,7 +35,7 @@ export class InputList<T> {
         this.values_ = options.initialValues?.length
             ? options.initialValues.slice()
             : [options.emptyValue]
-        ensureCSS(staticUrl("css/input_list.css"))
+        ensureCSS(staticUrl("css/fwtoolkit/input_list.css"))
         this.render()
     }
 

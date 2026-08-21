@@ -87,7 +87,7 @@ export class FileSelector {
     init(): void {
         this.readDirStructure()
         this.sortDirStructure()
-        ensureCSS(staticUrl("css/file_selector.css"))
+        ensureCSS(staticUrl("css/fwtoolkit/file_selector.css"))
         this.dom.classList.add("fw-file-selector")
         this.render()
         this.bind()

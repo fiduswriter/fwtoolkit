@@ -27,7 +27,7 @@ export class DialogTabs {
     constructor(tabs: DialogTab[], options: DialogTabsOptions = {}) {
         this.tabs = tabs
         this.options = options
-        ensureCSS(staticUrl("css/ui_tabs.css"))
+        ensureCSS(staticUrl("css/fwtoolkit/ui_tabs.css"))
     }
 
     /**

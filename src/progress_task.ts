@@ -90,7 +90,7 @@ export class ProgressTask {
         if (this.closed || !document.body) {
             return
         }
-        ensureCSS(staticUrl("css/progress_task.css"))
+        ensureCSS(staticUrl("css/fwtoolkit/progress_task.css"))
         const container = getContainer()
         const wrapper = container.querySelector(
             "#fw-progress-wrapper"

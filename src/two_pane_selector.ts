@@ -35,7 +35,7 @@ export class TwoPaneSelector<T> {
         this.dom = options.dom
         this.available = options.availableItems.slice()
         this.selected = options.selectedItems?.slice() || []
-        ensureCSS(staticUrl("css/two_pane_selector.css"))
+        ensureCSS(staticUrl("css/fwtoolkit/two_pane_selector.css"))
         this.render()
     }
 

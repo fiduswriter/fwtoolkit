@@ -28,7 +28,7 @@ export class TypeSwitch {
         this.options = options
         this.dom = options.dom
         this.currentMode = options.initialMode || 1
-        ensureCSS(staticUrl("css/type_switch.css"))
+        ensureCSS(staticUrl("css/fwtoolkit/type_switch.css"))
         this.renderWrapper()
         this.switcher = this.dom.querySelector(".fw-type-switch") as HTMLElement
         this.inner = this.dom.querySelector(

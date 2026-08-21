@@ -37,7 +37,7 @@ export class faqDialog {
     faqDialog: Dialog
 
     constructor({ title = "", questions = [] }: FAQDialogOptions = {}) {
-        ensureCSS(staticUrl("css/faq_dialog.css"))
+        ensureCSS(staticUrl("css/fwtoolkit/faq_dialog.css"))
         const escapedQuestions: [string, string][] = []
 
         questions.forEach(q => {

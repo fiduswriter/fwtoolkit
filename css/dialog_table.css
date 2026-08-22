@@ -39,11 +39,10 @@
     padding-top: 2px;
 }
 
-.fw-tablerow-title .fw-tooltip {
-    position: absolute;
+/* Shared tooltip box styling. Standalone selectors so the styles also apply
+   when the tooltip is portal-rendered in document.body (see src/tooltip.ts). */
+.fw-tooltip {
     min-width: 260px;
-    top: calc(100% + 2px);
-    left: calc(100% - 13px);
     background-color: var(--cs-dark-background);
     color: var(--cs-dark-text);
     border-radius: 6px;
@@ -54,6 +53,15 @@
     opacity: 0;
     transition: opacity 1s;
     z-index: 1;
+}
+
+/* In-place positioning only (no-JS fallback). Portal-rendered tooltips are
+   positioned by src/tooltip.ts instead, so this rule stays scoped to the
+   trigger. */
+.fw-tablerow-title .fw-tooltip {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: calc(100% - 13px);
 }
 
 /* These rules are the no-JS fallback. When src/tooltip.ts is active it adds
@@ -103,11 +111,8 @@
     color: var(--cs-link-color, var(--cs-2-background));
 }
 
-.fw-info-tooltip .fw-info-tooltip-text {
-    position: absolute;
-    bottom: calc(100% + 6px);
-    left: 50%;
-    transform: translateX(-50%);
+/* Shared tooltip box styling (applies in-place and portal-rendered). */
+.fw-info-tooltip-text {
     min-width: 280px;
     max-width: 360px;
     background-color: var(--cs-dark-background);
@@ -127,13 +132,21 @@
     white-space: normal;
 }
 
+/* In-place positioning only (no-JS fallback). */
+.fw-info-tooltip .fw-info-tooltip-text {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .fw-info-tooltip:not(.fw-tooltip-active):hover .fw-info-tooltip-text,
 .fw-info-tooltip:not(.fw-tooltip-active):focus-within .fw-info-tooltip-text {
     visibility: visible;
     opacity: 1;
 }
 
-.fw-info-tooltip .fw-info-tooltip-text::after {
+.fw-info-tooltip-text::after {
     content: "";
     position: absolute;
     top: 100%;
@@ -152,12 +165,12 @@
     border-color: transparent transparent var(--cs-dark-background) transparent;
 }
 
-.fw-info-tooltip .fw-info-tooltip-text ul {
+.fw-info-tooltip-text ul {
     margin: 6px 0 0 16px;
     padding: 0;
     list-style-type: disc;
 }
 
-.fw-info-tooltip .fw-info-tooltip-text li {
+.fw-info-tooltip-text li {
     margin-bottom: 4px;
 }

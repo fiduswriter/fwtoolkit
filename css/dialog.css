@@ -2,7 +2,7 @@
     position: absolute;
     background-color: var(--cs-light-background);
     font-size: 14px;
-    overflow: hidden;
+    overflow: visible;
     outline: 0;
     padding: 0 19px 19px;
     box-shadow: none;
@@ -72,7 +72,7 @@
 .fw-dialog-content {
     position: relative;
     margin-top: 24px;
-    overflow: hidden auto;
+    overflow: visible auto;
     padding: 6px;
     max-height: calc(100vh - 133px);
     min-height: 20px;

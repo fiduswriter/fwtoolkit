@@ -28,4 +28,18 @@ describe("InfoRow", () => {
         const id = /aria-describedby="([^"]+)"/.exec(html)![1]
         expect(html).toContain(`id="${id}"`)
     })
+
+    test("places optional field HTML inside the entry-field cell", () => {
+        const row = new InfoRow({
+            label: "Copyright holder",
+            helpText: "Who holds the copyright.",
+            field: '<input type="text" class="holder">'
+        })
+        const html = row.html()
+        expect(html).toContain(
+            '<td class="fw-entry-field "><input type="text" class="holder"></td>'
+        )
+        expect(html).toContain("fw-wtooltip")
+        expect(html).toContain('tabindex="0"')
+    })
 })

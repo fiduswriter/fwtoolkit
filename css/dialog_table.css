@@ -56,14 +56,18 @@
     z-index: 1;
 }
 
-.fw-tablerow-title:hover .fw-tooltip {
+/* These rules are the no-JS fallback. When src/tooltip.ts is active it adds
+   `fw-tooltip-active` to the trigger and renders the tooltip in
+   document.body, so it no longer matches these descendant selectors. */
+.fw-tablerow-title.fw-wtooltip:not(.fw-tooltip-active):hover .fw-tooltip {
     visibility: visible;
     opacity: 1;
 }
 
 /* Show the table-row tooltip on keyboard focus as well as hover. */
-.fw-tablerow-title:focus .fw-tooltip,
-.fw-tablerow-title:focus-within .fw-tooltip {
+.fw-tablerow-title.fw-wtooltip:not(.fw-tooltip-active):focus .fw-tooltip,
+.fw-tablerow-title.fw-wtooltip:not(.fw-tooltip-active):focus-within
+    .fw-tooltip {
     visibility: visible;
     opacity: 1;
 }
@@ -123,8 +127,8 @@
     white-space: normal;
 }
 
-.fw-info-tooltip:hover .fw-info-tooltip-text,
-.fw-info-tooltip:focus-within .fw-info-tooltip-text {
+.fw-info-tooltip:not(.fw-tooltip-active):hover .fw-info-tooltip-text,
+.fw-info-tooltip:not(.fw-tooltip-active):focus-within .fw-info-tooltip-text {
     visibility: visible;
     opacity: 1;
 }
@@ -138,6 +142,14 @@
     border-width: 5px;
     border-style: solid;
     border-color: var(--cs-dark-background) transparent transparent transparent;
+}
+
+/* When the portal tooltip is flipped below its trigger because there was no
+   room above, point the arrow up instead of down. */
+.fw-info-tooltip-text.fw-tooltip-flipped::after {
+    top: auto;
+    bottom: 100%;
+    border-color: transparent transparent var(--cs-dark-background) transparent;
 }
 
 .fw-info-tooltip .fw-info-tooltip-text ul {

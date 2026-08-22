@@ -70,7 +70,8 @@
                 TypeSwitch,
                 icon,
                 initSettings,
-                gettext
+                gettext,
+                initTooltips
             } from "fwtoolkit"
             import { toggleMark } from "prosemirror-commands"
             import { Schema } from "prosemirror-model"
@@ -203,6 +204,9 @@
                         `<textarea rows="4" placeholder="Longer abstract…"></textarea>`
                 })
             }
+
+            // Portal-render the info tooltips so they are never clipped.
+            initTooltips()
         </script>
     </body>
 </html>

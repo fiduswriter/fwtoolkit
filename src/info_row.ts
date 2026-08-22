@@ -2,6 +2,8 @@ export interface InfoRowOptions {
     label: string
     helpText?: string
     fieldClass?: string
+    /** Optional HTML placed inside the entry-field cell. */
+    field?: string
 }
 
 let infoRowId = 0
@@ -10,11 +12,13 @@ export class InfoRow {
     label: string
     helpText?: string
     fieldClass?: string
+    field?: string
 
     constructor(options: InfoRowOptions) {
         this.label = options.label
         this.helpText = options.helpText
         this.fieldClass = options.fieldClass
+        this.field = options.field
     }
 
     /**
@@ -29,6 +33,6 @@ export class InfoRow {
         const fieldTitle = this.helpText
             ? `<h4 class="fw-tablerow-title fw-wtooltip" tabindex="0" aria-describedby="${id}">${this.label}<span class="fw-tooltip" id="${id}" role="tooltip">${this.helpText}</span></h4>`
             : `<h4 class="fw-tablerow-title">${this.label}</h4>`
-        return `<tr><th>${fieldTitle}</th><td class="fw-entry-field ${fieldClass}"></td></tr>`
+        return `<tr><th>${fieldTitle}</th><td class="fw-entry-field ${fieldClass}">${this.field || ""}</td></tr>`
     }
 }

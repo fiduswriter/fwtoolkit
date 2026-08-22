@@ -72,7 +72,12 @@
 .fw-dialog-content {
     position: relative;
     margin-top: 24px;
-    overflow: visible auto;
+    /* Tooltips escape the scroll container because they are portal-rendered
+       in document.body (see src/tooltip.ts). `visible auto` would be coerced
+       by browsers to `auto auto` (visible + auto is not representable), so
+       hidden on the x-axis avoids a horizontal scrollbar while the y-axis
+       scrolls when the content grows too tall. */
+    overflow: hidden auto;
     padding: 6px;
     max-height: calc(100vh - 133px);
     min-height: 20px;

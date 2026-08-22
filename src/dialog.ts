@@ -2,6 +2,7 @@ import { keyName } from "w3c-keyname"
 
 import { findTarget } from "./basic.js"
 import { gettext } from "./settings.js"
+import { initTooltips } from "./tooltip.js"
 
 export interface DialogButtonSpec {
     type?: "close" | "cancel" | "ok"
@@ -328,6 +329,9 @@ export class Dialog {
         }
 
         this.bind()
+        // Make sure tooltips inside the dialog are portal-rendered so they are
+        // not clipped by the dialog's scrollable content.
+        initTooltips()
     }
 
     refreshButtons(): void {

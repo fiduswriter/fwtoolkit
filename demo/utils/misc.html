@@ -211,6 +211,7 @@
                 enableDatePicker,
                 convertDataURIToBlob,
                 infoTooltip,
+                initTooltips,
                 getFocusIndex,
                 setFocusIndex
             } from "../dist/index.js"
@@ -329,6 +330,7 @@
                 infoTooltip(
                     "This tooltip HTML is <strong>trusted</strong> content."
                 )
+            initTooltips()
 
             let savedFocusIndex = -1
             document

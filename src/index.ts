@@ -42,6 +42,8 @@ export {
     getCookie
 } from "./network.js"
 export { setLanguage, avatarTemplate } from "./user.js"
+import { initTooltips } from "./tooltip.js"
+export { initTooltips } from "./tooltip.js"
 export { Dialog, type DialogButtonSpec, type DialogOptions } from "./dialog.js"
 export { ContentMenu } from "./content_menu.js"
 export { makeWorker } from "./worker.js"
@@ -95,3 +97,11 @@ export {
     ProgressTaskType,
     addProgress
 } from "./progress_task.js"
+
+// Initialize the delegated tooltip listeners as soon as the library is loaded
+// so tooltips are portal-rendered (and never clipped by scroll containers)
+// wherever they appear — inside dialogs or not. Idempotent, and harmless in
+// non-browser environments where `document` does not exist.
+if (typeof document !== "undefined") {
+    initTooltips()
+}

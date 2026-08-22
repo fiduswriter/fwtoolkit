@@ -10,7 +10,7 @@ describe("InfoRow", () => {
         expect(html).not.toContain("fw-wtooltip")
     })
 
-    test("includes an info-icon tooltip when helpText is provided", () => {
+    test("includes an accessible info-icon tooltip when helpText is provided", () => {
         const row = new InfoRow({
             label: "Title",
             helpText: "The title of the work.",
@@ -20,5 +20,12 @@ describe("InfoRow", () => {
         expect(html).toContain("fw-wtooltip")
         expect(html).toContain("fw-tooltip")
         expect(html).toContain("The title of the work.")
+        // Accessibility: the header is keyboard focusable and describes the
+        // tooltip, and the tooltip text carries role="tooltip".
+        expect(html).toContain('tabindex="0"')
+        expect(html).toContain('aria-describedby="')
+        expect(html).toContain('role="tooltip"')
+        const id = /aria-describedby="([^"]+)"/.exec(html)![1]
+        expect(html).toContain(`id="${id}"`)
     })
 })

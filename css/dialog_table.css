@@ -61,6 +61,13 @@
     opacity: 1;
 }
 
+/* Show the table-row tooltip on keyboard focus as well as hover. */
+.fw-tablerow-title:focus .fw-tooltip,
+.fw-tablerow-title:focus-within .fw-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
 .fw-tooltip em {
     font-style: italic;
 }
@@ -72,6 +79,24 @@
     margin-left: 4px;
     color: var(--cs-2-background);
     cursor: help;
+}
+
+/* The trigger is a real button so it is keyboard focusable. */
+.fw-info-tooltip-trigger {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    line-height: inherit;
+    color: inherit;
+    cursor: help;
+    border-radius: 4px;
+}
+
+.fw-info-tooltip-trigger:hover,
+.fw-info-tooltip-trigger:focus-visible {
+    color: var(--cs-link-color, var(--cs-2-background));
 }
 
 .fw-info-tooltip .fw-info-tooltip-text {
@@ -98,7 +123,8 @@
     white-space: normal;
 }
 
-.fw-info-tooltip:hover .fw-info-tooltip-text {
+.fw-info-tooltip:hover .fw-info-tooltip-text,
+.fw-info-tooltip:focus-within .fw-info-tooltip-text {
     visibility: visible;
     opacity: 1;
 }

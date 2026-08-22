@@ -399,15 +399,31 @@ export const escapeText = (text: string): string => {
         ) // invalid in XML chars
 }
 
+let infoTooltipId = 0
+
 /**
- * Return an inline info-icon with a hover tooltip containing the given HTML.
+ * Return an inline info-icon button whose tooltip contains the given HTML.
  * Use only with trusted HTML content.
  *
+ * The tooltip is shown on hover and on keyboard focus, and is exposed to
+ * assistive technology through `role="tooltip"` on the text plus
+ * `aria-describedby` on the trigger.
+ *
  * @param html - The tooltip content (HTML string)
+ * @param id - Optional element id for the tooltip text; auto-generated when omitted
  * @returns HTML for the info tooltip
  */
-export const infoTooltip = (html: string): string =>
-    `<span class="fw-info-tooltip"><i class="fa-solid fa-info-circle"></i><span class="fw-info-tooltip-text">${html}</span></span>`
+export const infoTooltip = (
+    html: string,
+    id = `fw-info-tooltip-${++infoTooltipId}`
+): string =>
+    `<span class="fw-info-tooltip">` +
+    `<button type="button" class="fw-info-tooltip-trigger" ` +
+    `aria-label="${gettext("More information")}" aria-describedby="${id}">` +
+    `<i class="fa-solid fa-info-circle" aria-hidden="true"></i>` +
+    `</button>` +
+    `<span id="${id}" role="tooltip" class="fw-info-tooltip-text">${html}</span>` +
+    `</span>`
 
 export const unescapeText = (text: string): string =>
     text

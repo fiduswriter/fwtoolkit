@@ -87,6 +87,17 @@ describe("scopeCss", () => {
         ).toBe(norm("#my-host { overflow: hidden }"))
     })
 
+    it("drops page-context html selectors without leaving a stray comma", () => {
+        expect(
+            norm(
+                scopeCss("html, body, div { margin: 0 }", {
+                    prefix: PREFIX,
+                    elements: true
+                })
+            )
+        ).toBe(norm(":where(#my-host), :where(#my-host) div { margin: 0 }"))
+    })
+
     it("scopes inside @media while preserving the media query", () => {
         expect(
             norm(

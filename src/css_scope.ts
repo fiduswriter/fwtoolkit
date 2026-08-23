@@ -183,9 +183,17 @@ function scopeSelectors(
     elementPrefix: string,
     scopeElements: boolean
 ): string {
-    return splitTopLevel(text, ",")
-        .map(sel => scopeSelector(sel, prefix, elementPrefix, scopeElements))
-        .join(",")
+    return (
+        splitTopLevel(text, ",")
+            .map(sel =>
+                scopeSelector(sel, prefix, elementPrefix, scopeElements)
+            )
+            // Dropped selectors (e.g. page-context `html` rules) return "" —
+            // filter them out so the selector list never gets a stray leading
+            // comma, which would make the whole rule a parse error.
+            .filter(sel => sel.trim() !== "")
+            .join(",")
+    )
 }
 
 function scopeSelector(

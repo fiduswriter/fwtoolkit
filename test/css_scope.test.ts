@@ -60,8 +60,31 @@ describe("scopeCss", () => {
             norm("a, .fw-link-text { color: red }")
         )
         expect(norm(scopeCss(css, { prefix: PREFIX, elements: true }))).toBe(
-            norm("#my-host a, .fw-link-text { color: red }")
+            norm(":where(#my-host) a, .fw-link-text { color: red }")
         )
+    })
+
+    it("uses :where() for element scoping so resets keep zero specificity", () => {
+        const css = "div, span, h1 { margin: 0; padding: 0 }"
+        expect(norm(scopeCss(css, { prefix: PREFIX, elements: true }))).toBe(
+            norm(
+                ":where(#my-host) div, :where(#my-host) span, :where(#my-host) h1 { margin: 0; padding: 0 }"
+            )
+        )
+    })
+
+    it("maps body to :where() when element scoping is enabled", () => {
+        expect(
+            norm(
+                scopeCss("body { margin: 0 }", {
+                    prefix: PREFIX,
+                    elements: true
+                })
+            )
+        ).toBe(norm(":where(#my-host) { margin: 0 }"))
+        expect(
+            norm(scopeCss("body { overflow: hidden }", { prefix: PREFIX }))
+        ).toBe(norm("#my-host { overflow: hidden }"))
     })
 
     it("scopes inside @media while preserving the media query", () => {
@@ -96,7 +119,7 @@ describe("scopeCss", () => {
         expect(norm(scopeCss(css, { prefix: PREFIX }))).toBe(norm(css))
         expect(norm(scopeCss(css, { prefix: PREFIX, elements: true }))).toBe(
             norm(
-                "#my-host input, #my-host textarea, #my-host button { font-family: Lato }"
+                ":where(#my-host) input, :where(#my-host) textarea, :where(#my-host) button { font-family: Lato }"
             )
         )
     })

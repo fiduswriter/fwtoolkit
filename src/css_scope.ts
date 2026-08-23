@@ -47,6 +47,18 @@ export interface CssScopeOptions {
 export function scopeCss(css: string, options: CssScopeOptions): string {
     const prefix = options.prefix
     const scopeElements = options.elements ?? false
+    /**
+     * Selector used to scope rules to the host container.
+     *
+     * When `elements` is enabled (resets, content styles), the container is
+     * wrapped in `:where(...)` so the scoping contributes *no* specificity.
+     * Otherwise an ID-based container selector would inflate the reset's
+     * specificity and make it outrank the UI's own class rules (e.g.
+     * `#app div { padding: 0 }` beats `.editor-toolbar { padding-left: 110px }`).
+     * With `:where()`, element rules keep element-level specificity and the
+     * normal cascade applies — exactly like the full-page reset does.
+     */
+    const elementPrefix = scopeElements ? `:where(${prefix})` : prefix
     let out = ""
     let seg = ""
     let inComment = false
@@ -93,7 +105,7 @@ export function scopeCss(css: string, options: CssScopeOptions): string {
             return text
         }
         blocks.push("declarations")
-        return scopeSelectors(text, prefix, scopeElements)
+        return scopeSelectors(text, prefix, elementPrefix, scopeElements)
     }
 
     while (i < n) {
@@ -168,16 +180,18 @@ export function scopeCss(css: string, options: CssScopeOptions): string {
 function scopeSelectors(
     text: string,
     prefix: string,
+    elementPrefix: string,
     scopeElements: boolean
 ): string {
     return splitTopLevel(text, ",")
-        .map(sel => scopeSelector(sel, prefix, scopeElements))
+        .map(sel => scopeSelector(sel, prefix, elementPrefix, scopeElements))
         .join(",")
 }
 
 function scopeSelector(
     selector: string,
     prefix: string,
+    elementPrefix: string,
     scopeElements: boolean
 ): string {
     const s = selector.trim()
@@ -190,14 +204,14 @@ function scopeSelector(
     }
     // body -> the host container.
     if (s === "body") {
-        return prefix
+        return elementPrefix
     }
     if (/^body[\s]*[.#:([]/.test(s)) {
-        return prefix + s.slice("body".length)
+        return elementPrefix + s.slice("body".length)
     }
     if (/\bbody\b/.test(s)) {
         // body in a descendant/combinator position, e.g. "p body" or "body p".
-        const withPrefix = s.replace(/\bbody\b/g, prefix)
+        const withPrefix = s.replace(/\bbody\b/g, elementPrefix)
         return withPrefix.replace(
             new RegExp(`^${escapeRegex(prefix)}\\s+`),
             prefix
@@ -209,7 +223,7 @@ function scopeSelector(
         /^[a-zA-Z]/.test(s) &&
         !/^[a-zA-Z][a-zA-Z0-9]*:/.test(s)
     ) {
-        return `${prefix} ${s}`
+        return `${elementPrefix} ${s}`
     }
     return s
 }

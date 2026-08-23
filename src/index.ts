@@ -88,6 +88,7 @@ export {
     staticUrl,
     apiUrl
 } from "./settings.js"
+export { scopeCss, type CssScopeOptions } from "./css_scope.js"
 export { InlineInput, InlineInputOptions } from "./inline_input.js"
 export { InlineTools, InlineToolItem, icon } from "./inline_tools.js"
 export { InfoRow, InfoRowOptions } from "./info_row.js"

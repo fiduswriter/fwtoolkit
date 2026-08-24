@@ -122,7 +122,9 @@
     /* editor */
 
     /* feedback tab */
-} /* === common.css === */
+}
+
+/* === common.css === */
 #app-root {
     width: 100%;
     height: 100%;
@@ -290,7 +292,9 @@ div.fw-input {
     text-decoration: underline;
     text-underline-offset: 2px; /* Adjust for better visibility */
     pointer-events: none;
-} /* === add_remove_dialog.css === */
+}
+
+/* === add_remove_dialog.css === */
 .fw-ar-container {
     display: inline-block;
     width: 338px;
@@ -307,7 +311,9 @@ div.fw-input {
     margin: 0 16px;
     vertical-align: middle;
     cursor: pointer;
-} /* === alerts.css === */
+}
+
+/* === alerts.css === */
 #fw-alerts-outer-wrapper {
     position: fixed;
     right: 22px;
@@ -364,13 +370,17 @@ div.fw-input {
 #fw-alerts-wrapper .alerts-success {
     color: var(--success-text-color);
     background-color: rgb(var(--success-background-color));
-} /* A form wasn't filled out correctly and the warning was added to the form. */
+}
+
+/* A form wasn't filled out correctly and the warning was added to the form. */
 div.fw-warning {
     margin: 0 0 5px;
     border: 1px solid rgb(var(--warning-border-color));
     background-color: rgb(var(--warning-background-color));
     padding: 6px;
-} /* === buttons.css === */
+}
+
+/* === buttons.css === */
 .fw-button {
     display: inline-block;
     width: auto;
@@ -555,8 +565,9 @@ div.fw-warning {
 .fw-button.fw-disabled {
     color: var(--cs-disabled);
     cursor: default;
-} /* The remainder of this file uses application specific colors */
+}
 
+/* The remainder of this file uses application specific colors */
 .fw-button.fw-facebook {
     background: linear-gradient(to bottom left, #0d78be, #0d63ab);
     box-shadow: 0 0 1px 1px #3c9fdf inset;
@@ -679,7 +690,9 @@ div.fw-warning {
 }
 #fw-comment-filter-dropdown {
     width: 100px;
-} /* === checkable_list.css === */
+}
+
+/* === checkable_list.css === */
 .fw-checkable {
     cursor: pointer;
 }
@@ -710,7 +723,9 @@ div.fw-warning {
     right: 12px;
     top: 50%;
     transform: translateY(-50%);
-} /* === content_menu.css === */
+}
+
+/* === content_menu.css === */
 .fw-content-menu {
     position: absolute;
     color: var(--cs-white-text);
@@ -800,11 +815,15 @@ div.fw-warning {
     flex: 1 0 200px;
     min-width: 200px;
     padding: 0 0 5px;
-} /* === data_table.css === */
+}
+
+/* === data_table.css === */
 table.fw-data-table {
     font-size: 13px;
     line-height: 1.25;
-} /* Prevent the search/top bar from overflowing a padded parent */
+}
+
+/* Prevent the search/top bar from overflowing a padded parent */
 .datatable-top,
 .datatable-container,
 .datatable-search,
@@ -822,7 +841,9 @@ table.fw-data-table thead,
 table.datatable-table thead {
     font-weight: 900;
     font-size: 11px;
-} /* simple-datatables wraps header text in a <button> - reset it to plain text */
+}
+
+/* simple-datatables wraps header text in a <button> - reset it to plain text */
 .datatable-table th button,
 .datatable-pagination-list button {
     color: inherit;
@@ -875,7 +896,9 @@ table.datatable-table td {
     padding: 15px 0;
     vertical-align: top;
     border-bottom: solid 1px var(--cs-white-border);
-} /* Align text with top of images */
+}
+
+/* Align text with top of images */
 table.fw-data-table tbody td {
     vertical-align: top;
 }
@@ -947,7 +970,9 @@ table.fw-data-table .fa-trash:hover,
 table.fw-data-table .fa-download:hover,
 table.fw-data-table .fa-history:hover {
     color: var(--cs-1-hover);
-} /* A deleted access rights row */
+}
+
+/* A deleted access rights row */
 .collaborator-tr[data-right="delete"],
 .fw-collaborator-tr[data-right="delete"] {
     display: none;
@@ -966,7 +991,9 @@ table.fw-data-table > tbody > tr > td:first-child {
 table.fw-data-table:focus > tbody > tr.datatable-cursor,
 table.fw-data-table:focus > tbody > tr.fw-datatable-cursor {
     background-color: var(--cs-white-background-selected);
-} /* the usermedia table */
+}
+
+/* the usermedia table */
 .fw-usermedia-title {
     display: inline-block;
     height: auto;
@@ -1008,13 +1035,19 @@ table.fw-data-table tbody tr.fw-checked td.checkable::after {
     position: absolute;
     right: 12px;
     top: 12px;
-} /* Selection tables (e.g. dialog pickers) */
+}
+
+/* Selection tables (e.g. dialog pickers) */
 table.fw-data-table.fw-selection-table tbody tr {
     cursor: pointer;
-} /* Word counter dialog table */
+}
+
+/* Word counter dialog table */
 .fw-word-counter-tbody {
     line-height: 38px;
-} /* Bulk action */
+}
+
+/* Bulk action */
 .dt-bulk {
     display: block;
     position: relative;
@@ -1029,7 +1062,9 @@ table.fw-data-table.fw-selection-table tbody tr {
     vertical-align: middle;
     padding-left: 3px;
     cursor: pointer;
-} /* === dialog_table.css === */
+}
+
+/* === dialog_table.css === */
 .fw-dialog-table td {
     padding-bottom: 7px;
     position: relative;
@@ -1064,8 +1099,10 @@ table.fw-data-table.fw-selection-table tbody tr {
     margin-left: 5px;
     text-align: center;
     padding-top: 2px;
-} /* Shared tooltip box styling. Standalone selectors so the styles also apply
-   when the tooltip is portal-rendered in document.#app-root (see src/tooltip.ts). */
+}
+
+/* Shared tooltip box styling. Standalone selectors so the styles also apply
+   when the tooltip is portal-rendered in document.body (see src/tooltip.ts). */
 .fw-tooltip {
     min-width: 260px;
     background-color: var(--cs-dark-background);
@@ -1078,20 +1115,26 @@ table.fw-data-table.fw-selection-table tbody tr {
     opacity: 0;
     transition: opacity 1s;
     z-index: 1;
-} /* In-place positioning only (no-JS fallback). Portal-rendered tooltips are
-   positioned by src/tooltip.ts instead,so this rule stays scoped to the
+}
+
+/* In-place positioning only (no-JS fallback). Portal-rendered tooltips are
+   positioned by src/tooltip.ts instead, so this rule stays scoped to the
    trigger. */
 .fw-tablerow-title .fw-tooltip {
     position: absolute;
     top: calc(100% + 2px);
     left: calc(100% - 13px);
-} /* These rules are the no-JS fallback. When src/tooltip.ts is active it adds
+}
+
+/* These rules are the no-JS fallback. When src/tooltip.ts is active it adds
    `fw-tooltip-active` to the trigger and renders the tooltip in
-   document.#app-root,so it no longer matches these descendant selectors. */
+   document.body, so it no longer matches these descendant selectors. */
 .fw-tablerow-title.fw-wtooltip:not(.fw-tooltip-active):hover .fw-tooltip {
     visibility: visible;
     opacity: 1;
-} /* Show the table-row tooltip on keyboard focus as well as hover. */
+}
+
+/* Show the table-row tooltip on keyboard focus as well as hover. */
 .fw-tablerow-title.fw-wtooltip:not(.fw-tooltip-active):focus .fw-tooltip,
 .fw-tablerow-title.fw-wtooltip:not(.fw-tooltip-active):focus-within
     .fw-tooltip {
@@ -1100,14 +1143,18 @@ table.fw-data-table.fw-selection-table tbody tr {
 }
 .fw-tooltip em {
     font-style: italic;
-} /* Inline info tooltip (e.g. for dialog options) */
+}
+
+/* Inline info tooltip (e.g. for dialog options) */
 .fw-info-tooltip {
     position: relative;
     display: inline-block;
     margin-left: 4px;
     color: var(--cs-2-background);
     cursor: help;
-} /* The trigger is a real button so it is keyboard focusable. */
+}
+
+/* The trigger is a real button so it is keyboard focusable. */
 .fw-info-tooltip-trigger {
     border: none;
     background: none;
@@ -1122,7 +1169,9 @@ table.fw-data-table.fw-selection-table tbody tr {
 .fw-info-tooltip-trigger:hover,
 .fw-info-tooltip-trigger:focus-visible {
     color: var(--cs-link-color, var(--cs-2-background));
-} /* Shared tooltip box styling (applies in-place and portal-rendered). */
+}
+
+/* Shared tooltip box styling (applies in-place and portal-rendered). */
 .fw-info-tooltip-text {
     min-width: 280px;
     max-width: 360px;
@@ -1141,7 +1190,9 @@ table.fw-data-table.fw-selection-table tbody tr {
     font-weight: normal;
     font-style: normal;
     white-space: normal;
-} /* In-place positioning only (no-JS fallback). */
+}
+
+/* In-place positioning only (no-JS fallback). */
 .fw-info-tooltip .fw-info-tooltip-text {
     position: absolute;
     bottom: calc(100% + 6px);
@@ -1162,8 +1213,10 @@ table.fw-data-table.fw-selection-table tbody tr {
     border-width: 5px;
     border-style: solid;
     border-color: var(--cs-dark-background) transparent transparent transparent;
-} /* When the portal tooltip is flipped below its trigger because there was no
-   room above,point the arrow up instead of down. */
+}
+
+/* When the portal tooltip is flipped below its trigger because there was no
+   room above, point the arrow up instead of down. */
 .fw-info-tooltip-text.fw-tooltip-flipped::after {
     top: auto;
     bottom: 100%;
@@ -1176,7 +1229,9 @@ table.fw-data-table.fw-selection-table tbody tr {
 }
 .fw-info-tooltip-text li {
     margin-bottom: 4px;
-} /* === dialog.css === */
+}
+
+/* === dialog.css === */
 .fw-dialog {
     position: absolute;
     background-color: var(--cs-light-background);
@@ -1307,7 +1362,9 @@ table.fw-data-table.fw-selection-table tbody tr {
 }
 .fw-dialog form {
     padding: 8px;
-} /* Rules migrated from the old ui_dialogs.css so that dialogs render correctly
+}
+
+/* Rules migrated from the old ui_dialogs.css so that dialogs render correctly
    without loading a separate stylesheet. */
 .fw-dialog-titlebar .fw-dialog-titlebar-button {
     font-size: 14px;
@@ -1362,9 +1419,10 @@ table.fw-data-table.fw-selection-table tbody tr {
     outline: 2px solid var(--cs-dark-text);
     outline-offset: 2px;
     border-radius: 4px;
-} /* === drop_up.css === */
-/* Generic drop-up widget */
+}
 
+/* === drop_up.css === */
+/* Generic drop-up widget */
 .fw-drop-up-outer {
     all: revert;
     box-sizing: border-box;
@@ -1442,7 +1500,9 @@ table.fw-data-table.fw-selection-table tbody tr {
 }
 .fw-drop-up-option:focus {
     outline: none;
-} /* === faq_dialog.css === */
+}
+
+/* === faq_dialog.css === */
 div.fw-faq {
     line-height: 1.5em;
 }
@@ -1455,7 +1515,9 @@ div.fw-faq {
 }
 .fw-faq-question i {
     padding: 3px;
-} /* === file_selector.css === */
+}
+
+/* === file_selector.css === */
 .fw-file-selector {
     line-height: 1.2em;
     padding: 10px 10px 10px 20px;
@@ -1476,7 +1538,9 @@ div.fw-faq {
 .fw-file-selector .fw-file-name.fw-selected,
 .fw-file-selector .fw-folder-name.fw-selected {
     text-decoration: underline;
-} /* === forms.css === */
+}
+
+/* === forms.css === */
 input,
 textarea,
 button {
@@ -1532,7 +1596,9 @@ textarea:focus {
     min-height: 2.5rem;
     padding: 0.25rem;
     background: var(--input-background-color);
-} /**
+}
+
+/**
  * Checkbox
  */
 .fw-check {
@@ -1578,12 +1644,16 @@ textarea:focus {
     display: inline-block;
     vertical-align: top;
     margin-right: 6px;
-} /*
+}
+
+/*
  * checkbox in a fw-button
  */
 .fw-button input[type="checkbox"] {
     margin-right: 3px;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Override: remove the default border-bottom on form inputs
  * ----------------------------------------------------------------- */
 input[type="text"]:not(.fw-inline),
@@ -1593,14 +1663,18 @@ input[type="email"]:not(.fw-inline),
 input[type="number"]:not(.fw-inline),
 textarea {
     border-bottom: 0 none;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Category form — narrow inline input next to an add button
  * ----------------------------------------------------------------- */
 input[type="text"].category-form {
     width: calc(100% - 38px);
     display: inline-block;
     vertical-align: middle;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Focus states — extend the base rules with :focus-within support
  * ----------------------------------------------------------------- */
 input[type="text"]:focus,
@@ -1611,7 +1685,9 @@ input[type="email"]:focus,
 div.fw-input:focus-within,
 textarea:focus {
     background-color: var(--input-focus-background-color);
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Select containers
  * ----------------------------------------------------------------- */
 .fw-select-container select {
@@ -1632,7 +1708,9 @@ textarea:focus {
     top: 14px;
     right: 16px;
     pointer-events: none;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Entry field widths (ProseMirror inputs, selects)
  * ----------------------------------------------------------------- */
 .fw-entry-field .ProseMirror,
@@ -1654,14 +1732,18 @@ textarea:focus {
 }
 .fw-entry-field select.fw-large {
     width: 664px;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Form label
  * ----------------------------------------------------------------- */
 .form-label {
     font-size: 11px;
     font-weight: bold;
     margin-bottom: 5px;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Name input fields (first name / last name pairs)
  * ----------------------------------------------------------------- */
 .fw-name-input {
@@ -1669,7 +1751,9 @@ textarea:focus {
 }
 .fw-name-input.fw-first {
     margin-right: 23px;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Checkable table rows (app-specific positioning; base styles in
  * fwtoolkit/css/checkable_list.css)
  * ----------------------------------------------------------------- */
@@ -1680,7 +1764,9 @@ textarea:focus {
 .fw-checkable-td.fw-checked::after,
 tr.fw-checkable.fw-checked > td:last-child::after {
     top: 17px;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Addable input list
  * ----------------------------------------------------------------- */
 .fw-add-input {
@@ -1695,12 +1781,16 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 }
 .fw-list-input:first-child {
     margin-top: 0;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Form error
  * ----------------------------------------------------------------- */
 .fw-fomt-error {
     color: #ff0000;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * AJAX file uploader
  * ----------------------------------------------------------------- */
 .ajax-upload input[type="file"] {
@@ -1708,14 +1798,18 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 }
 .ajax-upload-label {
     margin-left: 10px;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Radio buttons
  * ----------------------------------------------------------------- */
 .fw-radio input[type="radio"] {
     display: inline-block;
     width: 40px;
     margin-bottom: 20px;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Type-switch field-part sizing overrides
  * (Base type-switch styles are in fwtoolkit/css/type_switch.css)
  * ----------------------------------------------------------------- */
@@ -1742,14 +1836,18 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 }
 .fw-type-switch-input-inner .field-part-single .ProseMirror {
     width: 100%;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Dialog table header cell sizing
  * ----------------------------------------------------------------- */
 .fw-dialog-table th {
     vertical-align: top;
     padding: 0 6px 0 8px;
     width: 164px;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * List input wrapper — add/remove buttons
  * ----------------------------------------------------------------- */
 .list-input-wrapper .add-remove-list {
@@ -1763,7 +1861,9 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 }
 .list-input-wrapper:last-child .add-remove-list::before {
     content: "\2795";
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Responsive breakpoints
  * ----------------------------------------------------------------- */
 @media screen and (width <= 740px) {
@@ -1819,7 +1919,9 @@ tr.fw-checkable.fw-checked > td:last-child::after {
     .fw-tabs-panel {
         overflow-x: hidden;
     }
-} /* === inline_tools.css === */
+}
+
+/* === inline_tools.css === */
 .inline-tools {
     position: absolute;
     left: auto;
@@ -1890,7 +1992,9 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 .menuicon.nocase::before {
     content: "cP";
     font-weight: bold;
-} /* === input_list.css === */
+}
+
+/* === input_list.css === */
 .fw-input-list-wrapper {
     width: 100%;
     border-collapse: collapse;
@@ -1917,7 +2021,9 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 .fw-input-list-wrapper tr.fw-form-error .fw-input-list-item-cell input,
 .fw-input-list-wrapper tr.fw-form-error .fw-input-list-item-cell textarea {
     background-color: var(--input-error-background-color);
-} /* === loader.css === */
+}
+
+/* === loader.css === */
 #fw-wait i {
     display: none;
 }
@@ -1950,7 +2056,9 @@ tr.fw-checkable.fw-checked > td:last-child::after {
     min-height: 105vh;
     font-size: 15px;
     margin-top: 20px;
-} /* === overview_menu.css === */
+}
+
+/* === overview_menu.css === */
 .fw-overview-menu-wrapper {
     position: relative;
     background-color: var(--cs-white-background);
@@ -2029,7 +2137,9 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 .fw-button .fw-search-label {
     margin-right: 8px;
     display: inline-block;
-} /* Hide label visually while keeping it accessible for screen readers
+}
+
+/* Hide label visually while keeping it accessible for screen readers
    when the search box is narrow */
 @media (width <= 600px) {
     .fw-button .fw-search-label {
@@ -2114,7 +2224,9 @@ span.select-action-dropdown {
 }
 .fw-pulldown-item.fw-selected {
     background-color: #f0f0f0;
-} /* === progress_task.css === */
+}
+
+/* === progress_task.css === */
 #fw-progress-outer-wrapper {
     position: fixed;
     left: 22px;
@@ -2235,9 +2347,10 @@ span.select-action-dropdown {
     100% {
         transform: translateX(-100%);
     }
-} /* === pulldown_menu.css === */
-/* Horizontal pulldown menu bar */
+}
 
+/* === pulldown_menu.css === */
+/* Horizontal pulldown menu bar */
 .fw-pulldown-menu-bar {
     display: flex;
     align-items: center;
@@ -2275,7 +2388,9 @@ span.select-action-dropdown {
 }
 .fw-pulldown-menu-item.fw-cursor {
     background-color: var(--cs-white-background-hover);
-} /* === pulldown.css === */
+}
+
+/* === pulldown.css === */
 /* pulldown menu box */
 .fw-pulldown {
     position: absolute;
@@ -2295,7 +2410,9 @@ span.select-action-dropdown {
 }
 .fw-pulldown.fw-right {
     right: 0;
-} /* sub menu */
+}
+
+/* sub menu */
 .fw-pulldown .fw-pulldown {
     top: 0;
     left: 100%;
@@ -2374,7 +2491,9 @@ span.select-action-dropdown {
 }
 .fw-pulldown input[type="radio"] {
     display: none;
-} /* === text.css === */
+}
+
+/* === text.css === */
 .fw-basic-text {
     font-family: Lato, sans-serif;
     font-size: 13px;
@@ -2407,7 +2526,9 @@ a:hover,
     font-size: 14px;
     font-weight: 700;
     color: var(--cs-4-text);
-} /* === two_pane_selector.css === */
+}
+
+/* === two_pane_selector.css === */
 .fw-ar-container {
     display: inline-block;
     width: 338px;
@@ -2445,7 +2566,9 @@ a:hover,
 .fw-two-pane-controls .fw-ar-button {
     display: block;
     margin: 8px auto;
-} /* === type_switch.css === */
+}
+
+/* === type_switch.css === */
 .fw-type-switch {
     position: relative;
     width: 140px;
@@ -2516,7 +2639,9 @@ a:hover,
     position: relative;
     float: left;
     width: calc(100% - 145px);
-} /* === ui_tabs.css === */
+}
+
+/* === ui_tabs.css === */
 .fw-tabs-nav {
     display: flex;
     list-style: none;

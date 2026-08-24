@@ -1,7 +1,9 @@
 table.fw-data-table {
     font-size: 13px;
     line-height: 1.25;
-} /* Prevent the search/top bar from overflowing a padded parent */
+}
+
+/* Prevent the search/top bar from overflowing a padded parent */
 .datatable-top,
 .datatable-container,
 .datatable-search,
@@ -19,7 +21,9 @@ table.fw-data-table thead,
 table.datatable-table thead {
     font-weight: 900;
     font-size: 11px;
-} /* simple-datatables wraps header text in a <button> - reset it to plain text */
+}
+
+/* simple-datatables wraps header text in a <button> - reset it to plain text */
 .datatable-table th button,
 .datatable-pagination-list button {
     color: inherit;
@@ -72,7 +76,9 @@ table.datatable-table td {
     padding: 15px 0;
     vertical-align: top;
     border-bottom: solid 1px var(--cs-white-border);
-} /* Align text with top of images */
+}
+
+/* Align text with top of images */
 table.fw-data-table tbody td {
     vertical-align: top;
 }
@@ -144,7 +150,9 @@ table.fw-data-table .fa-trash:hover,
 table.fw-data-table .fa-download:hover,
 table.fw-data-table .fa-history:hover {
     color: var(--cs-1-hover);
-} /* A deleted access rights row */
+}
+
+/* A deleted access rights row */
 .collaborator-tr[data-right="delete"],
 .fw-collaborator-tr[data-right="delete"] {
     display: none;
@@ -163,7 +171,9 @@ table.fw-data-table > tbody > tr > td:first-child {
 table.fw-data-table:focus > tbody > tr.datatable-cursor,
 table.fw-data-table:focus > tbody > tr.fw-datatable-cursor {
     background-color: var(--cs-white-background-selected);
-} /* the usermedia table */
+}
+
+/* the usermedia table */
 .fw-usermedia-title {
     display: inline-block;
     height: auto;
@@ -205,13 +215,19 @@ table.fw-data-table tbody tr.fw-checked td.checkable::after {
     position: absolute;
     right: 12px;
     top: 12px;
-} /* Selection tables (e.g. dialog pickers) */
+}
+
+/* Selection tables (e.g. dialog pickers) */
 table.fw-data-table.fw-selection-table tbody tr {
     cursor: pointer;
-} /* Word counter dialog table */
+}
+
+/* Word counter dialog table */
 .fw-word-counter-tbody {
     line-height: 38px;
-} /* Bulk action */
+}
+
+/* Bulk action */
 .dt-bulk {
     display: block;
     position: relative;

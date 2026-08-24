@@ -17,7 +17,9 @@
 }
 .fw-pulldown.fw-right {
     right: 0;
-} /* sub menu */
+}
+
+/* sub menu */
 .fw-pulldown .fw-pulldown {
     top: 0;
     left: 100%;

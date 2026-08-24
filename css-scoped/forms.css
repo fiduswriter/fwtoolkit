@@ -53,7 +53,9 @@ textarea:focus {
     min-height: 2.5rem;
     padding: 0.25rem;
     background: var(--input-background-color);
-} /**
+}
+
+/**
  * Checkbox
  */
 .fw-check {
@@ -99,12 +101,16 @@ textarea:focus {
     display: inline-block;
     vertical-align: top;
     margin-right: 6px;
-} /*
+}
+
+/*
  * checkbox in a fw-button
  */
 .fw-button input[type="checkbox"] {
     margin-right: 3px;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Override: remove the default border-bottom on form inputs
  * ----------------------------------------------------------------- */
 input[type="text"]:not(.fw-inline),
@@ -114,14 +120,18 @@ input[type="email"]:not(.fw-inline),
 input[type="number"]:not(.fw-inline),
 textarea {
     border-bottom: 0 none;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Category form — narrow inline input next to an add button
  * ----------------------------------------------------------------- */
 input[type="text"].category-form {
     width: calc(100% - 38px);
     display: inline-block;
     vertical-align: middle;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Focus states — extend the base rules with :focus-within support
  * ----------------------------------------------------------------- */
 input[type="text"]:focus,
@@ -132,7 +142,9 @@ input[type="email"]:focus,
 div.fw-input:focus-within,
 textarea:focus {
     background-color: var(--input-focus-background-color);
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Select containers
  * ----------------------------------------------------------------- */
 .fw-select-container select {
@@ -153,7 +165,9 @@ textarea:focus {
     top: 14px;
     right: 16px;
     pointer-events: none;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Entry field widths (ProseMirror inputs, selects)
  * ----------------------------------------------------------------- */
 .fw-entry-field .ProseMirror,
@@ -175,14 +189,18 @@ textarea:focus {
 }
 .fw-entry-field select.fw-large {
     width: 664px;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Form label
  * ----------------------------------------------------------------- */
 .form-label {
     font-size: 11px;
     font-weight: bold;
     margin-bottom: 5px;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Name input fields (first name / last name pairs)
  * ----------------------------------------------------------------- */
 .fw-name-input {
@@ -190,7 +208,9 @@ textarea:focus {
 }
 .fw-name-input.fw-first {
     margin-right: 23px;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Checkable table rows (app-specific positioning; base styles in
  * fwtoolkit/css/checkable_list.css)
  * ----------------------------------------------------------------- */
@@ -201,7 +221,9 @@ textarea:focus {
 .fw-checkable-td.fw-checked::after,
 tr.fw-checkable.fw-checked > td:last-child::after {
     top: 17px;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Addable input list
  * ----------------------------------------------------------------- */
 .fw-add-input {
@@ -216,12 +238,16 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 }
 .fw-list-input:first-child {
     margin-top: 0;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Form error
  * ----------------------------------------------------------------- */
 .fw-fomt-error {
     color: #ff0000;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * AJAX file uploader
  * ----------------------------------------------------------------- */
 .ajax-upload input[type="file"] {
@@ -229,14 +255,18 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 }
 .ajax-upload-label {
     margin-left: 10px;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Radio buttons
  * ----------------------------------------------------------------- */
 .fw-radio input[type="radio"] {
     display: inline-block;
     width: 40px;
     margin-bottom: 20px;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Type-switch field-part sizing overrides
  * (Base type-switch styles are in fwtoolkit/css/type_switch.css)
  * ----------------------------------------------------------------- */
@@ -263,14 +293,18 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 }
 .fw-type-switch-input-inner .field-part-single .ProseMirror {
     width: 100%;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Dialog table header cell sizing
  * ----------------------------------------------------------------- */
 .fw-dialog-table th {
     vertical-align: top;
     padding: 0 6px 0 8px;
     width: 164px;
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * List input wrapper — add/remove buttons
  * ----------------------------------------------------------------- */
 .list-input-wrapper .add-remove-list {
@@ -284,7 +318,9 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 }
 .list-input-wrapper:last-child .add-remove-list::before {
     content: "\2795";
-} /* -----------------------------------------------------------------
+}
+
+/* -----------------------------------------------------------------
  * Responsive breakpoints
  * ----------------------------------------------------------------- */
 @media screen and (width <= 740px) {

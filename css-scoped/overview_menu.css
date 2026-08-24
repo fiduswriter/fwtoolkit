@@ -76,7 +76,9 @@
 .fw-button .fw-search-label {
     margin-right: 8px;
     display: inline-block;
-} /* Hide label visually while keeping it accessible for screen readers
+}
+
+/* Hide label visually while keeping it accessible for screen readers
    when the search box is narrow */
 @media (width <= 600px) {
     .fw-button .fw-search-label {

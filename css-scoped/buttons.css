@@ -182,8 +182,9 @@
 .fw-button.fw-disabled {
     color: var(--cs-disabled);
     cursor: default;
-} /* The remainder of this file uses application specific colors */
+}
 
+/* The remainder of this file uses application specific colors */
 .fw-button.fw-facebook {
     background: linear-gradient(to bottom left, #0d78be, #0d63ab);
     box-shadow: 0 0 1px 1px #3c9fdf inset;

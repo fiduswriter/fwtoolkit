@@ -1,8 +1,7 @@
 /* =============================================================================
    HTML5 Boilerplate CSS: h5bp.com/css
    ========================================================================== */
-
-article,
+:where(#app-root) article,
 :where(#app-root) aside,
 :where(#app-root) details,
 :where(#app-root) figcaption,
@@ -21,12 +20,12 @@ article,
 }
 [hidden] {
     display: none;
-} /* http://meyerweb.com/eric/tools/css/reset/
+}
+
+/* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
 */
-
-html,
 :where(#app-root),
 :where(#app-root) div,
 :where(#app-root) span,
@@ -115,8 +114,10 @@ html,
 }
 audio:not([controls]) {
     display: none;
-} /* HTML5 display-role reset for older browsers */
-article,
+}
+
+/* HTML5 display-role reset for older browsers */
+:where(#app-root) article,
 :where(#app-root) aside,
 :where(#app-root) details,
 :where(#app-root) figcaption,

@@ -128,7 +128,9 @@
 }
 .fw-dialog form {
     padding: 8px;
-} /* Rules migrated from the old ui_dialogs.css so that dialogs render correctly
+}
+
+/* Rules migrated from the old ui_dialogs.css so that dialogs render correctly
    without loading a separate stylesheet. */
 .fw-dialog-titlebar .fw-dialog-titlebar-button {
     font-size: 14px;

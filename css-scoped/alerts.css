@@ -54,7 +54,9 @@
 #fw-alerts-wrapper .alerts-success {
     color: var(--success-text-color);
     background-color: rgb(var(--success-background-color));
-} /* A form wasn't filled out correctly and the warning was added to the form. */
+}
+
+/* A form wasn't filled out correctly and the warning was added to the form. */
 div.fw-warning {
     margin: 0 0 5px;
     border: 1px solid rgb(var(--warning-border-color));

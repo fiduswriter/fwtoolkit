@@ -47,10 +47,12 @@ in `dist/`, and component CSS in `css/`.
 │   ├── colors.css    # CSS custom properties (always load first)
 │   ├── common.css    # Base / global styles
 │   └── fwtoolkit.css # Concatenated bundle (generated)
+├── css-scoped/       # scopeCss'ed copies for embedding (generated, tracked)
 ├── test/             # Jest tests and `setup.ts`
 ├── demo/             # git-pages demo site
 ├── scripts/          # Build / deploy helpers
 │   ├── build-css.js  # Concatenates css/ into css/fwtoolkit.css
+│   ├── build-scoped-css.js # Generates css-scoped/ (--check verifies it)
 │   └── deploy-pages.sh # Deploys demo/ to git-pages
 ├── package.json      # Scripts, dependencies and package exports
 ├── tsconfig.json     # TypeScript compiler options
@@ -176,6 +178,30 @@ describe("basic UI helpers", () => {
   `scripts/build-css.js` from the individual files.
 - New component styles should be added as a new file in `css/` and will be
   included automatically in the bundle.
+
+## Generated css-scoped/ artifacts
+
+`css-scoped/*.css` is **generated and tracked**. It is produced by
+`scripts/build-scoped-css.js` (part of `npm run build`) by running `scopeCss`
+over the sheets in `css/`, and it ships inside the npm tarball (see the
+`files` field).
+
+Two invariants keep releases from churning these files:
+
+- The generator formats its output with Prettier using the repository's
+  `.prettierrc`, so committed files are byte-identical to generator output.
+  lint-staged deliberately does _not_ run Prettier on `css-scoped/**` — the
+  formatting is already baked in, and a hook reformat would desynchronize
+  the tracked files from the generator (this once caused every file to show
+  as modified after each publish).
+- `npm version` runs a `preversion` script that rebuilds and fails with
+  `git diff --exit-code -- css css-scoped` when the committed artifacts are
+  stale, so drift surfaces before a release instead of during publishing.
+
+When changing `css/`, `src/css_scope.ts` or the prefix, run `npm run build`
+and commit the regenerated `css-scoped/` files together with the source
+change. `node scripts/build-scoped-css.js --check` verifies freshness on
+demand.
 
 ## Deployment
 

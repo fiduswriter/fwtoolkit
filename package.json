@@ -35,6 +35,8 @@
     "scripts": {
         "build": "tsc && npm run build:css",
         "build:css": "node scripts/build-css.js && node scripts/build-scoped-css.js",
+        "check:scoped": "node scripts/build-scoped-css.js --check",
+        "preversion": "npm run build && git diff --exit-code -- css css-scoped",
         "deploy-pages": "./scripts/deploy-pages.sh",
         "typecheck": "tsc --noEmit",
         "prepublishOnly": "npm run build && npm test",
@@ -48,7 +50,10 @@
         "extract-i18n": "echo \"gettext extraction requires the fiduswriter-frontend-ts package scripts. Run: node ../../fiduswriter-frontend-ts/scripts/extract-fwtoolkit-i18n.js <django-locale> .\""
     },
     "lint-staged": {
-        "*.{ts,js,mjs,css,md,json,html}": [
+        "*.{ts,js,mjs,json,html,md}": [
+            "prettier --write"
+        ],
+        "css/**/*.css": [
             "prettier --write"
         ],
         "*.{ts,js,mjs}": [

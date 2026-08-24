@@ -134,4 +134,83 @@ describe("scopeCss", () => {
             )
         )
     })
+
+    describe("comments", () => {
+        it("keeps commas inside comments from splitting selector groups", () => {
+            // Regression: a comment containing a comma ahead of a selector
+            // list used to corrupt the grouping — everything up to the
+            // comma inside the comment was treated as one selector and
+            // leaked through unscoped.
+            const css =
+                "/* the caption is inline, and a colon follows */\n" +
+                "figcaption p, caption p { display: inline }"
+            expect(
+                norm(scopeCss(css, { prefix: PREFIX, elements: true }))
+            ).toBe(
+                norm(
+                    "/* the caption is inline, and a colon follows */ " +
+                        ":where(#my-host) figcaption p, :where(#my-host) caption p { display: inline }"
+                )
+            )
+        })
+
+        it("scopes the first selector of a group after a comma-bearing comment", () => {
+            const css = "/* sizes, in mm */\nh1, h2 { margin: 0 }"
+            expect(
+                norm(scopeCss(css, { prefix: PREFIX, elements: true }))
+            ).toBe(
+                norm(
+                    "/* sizes, in mm */ :where(#my-host) h1, :where(#my-host) h2 { margin: 0 }"
+                )
+            )
+        })
+
+        it("preserves banner comments between rules", () => {
+            const css =
+                "/* License: SIL OFL */\nbody { margin: 0 }\n/* section */\ntable { border-collapse: collapse }"
+            const out = scopeCss(css, { prefix: PREFIX })
+            expect(out).toContain("/* License: SIL OFL */")
+            expect(out).toContain("/* section */")
+            // Without `elements`, bare element selectors are untouched;
+            // only the banner positions and body mapping matter here.
+            expect(norm(out)).toBe(
+                norm(
+                    "/* License: SIL OFL */ #my-host { margin: 0 } /* section */ table { border-collapse: collapse }"
+                )
+            )
+        })
+
+        it("collapses comments inside selector lists without leaking them", () => {
+            const css = ".a /* note, with a comma */, .b { color: red }"
+            const out = scopeCss(css, { prefix: PREFIX })
+            expect(out).not.toContain("note")
+            // Class selectors are left untouched by design; the point is
+            // that both selectors survive as separate list entries.
+            expect(norm(out)).toBe(norm(".a , .b { color: red }"))
+        })
+
+        it("preserves comments inside declaration bodies", () => {
+            const css = "body { /* keep, this one */ margin: 0 }"
+            const out = scopeCss(css, { prefix: PREFIX })
+            expect(out).toContain("/* keep, this one */")
+            expect(norm(out)).toBe(
+                norm("#my-host { /* keep, this one */ margin: 0 }")
+            )
+        })
+
+        it("handles unterminated comments without throwing", () => {
+            const css = "h1 { color: red } /* trailing, unterminated"
+            const out = scopeCss(css, { prefix: PREFIX, elements: true })
+            expect(norm(out)).toContain(
+                norm(":where(#my-host) h1 { color: red }")
+            )
+        })
+
+        it("treats comment markers inside strings as literal text", () => {
+            const css = 'body::after { content: "a/*b,c" }'
+            expect(norm(scopeCss(css, { prefix: PREFIX }))).toBe(
+                norm('#my-host::after { content: "a/*b,c" }')
+            )
+        })
+    })
 })

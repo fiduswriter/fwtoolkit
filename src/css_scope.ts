@@ -21,6 +21,14 @@
  *     their inner selectors scoped; `@keyframes`/`@font-face` blocks are
  *     passed through untouched.
  *
+ * Comments:
+ *   - Inside declaration bodies they pass through untouched.
+ *   - Between rules (license banners, section dividers) they are preserved
+ *     in their position.
+ *   - Inside selector lists or at-rule preludes they are collapsed to a
+ *     space — commas inside such a comment must not be mistaken for
+ *     selector separators.
+ *
  * Example — embed the Fidus Writer editor (its mounted container carries the
  * `editor` class):
  *
@@ -136,9 +144,36 @@ export function scopeCss(css: string, options: CssScopeOptions): string {
             continue
         }
         if (ch === "/" && css[i + 1] === "*") {
-            emit("/*")
-            inComment = true
-            i += 2
+            const kind = currentKind()
+            if (kind === "declarations" || kind === "ignore") {
+                // Declaration bodies and ignored at-rule bodies pass through
+                // verbatim via the normal emit path below.
+                emit("/*")
+                inComment = true
+                i += 2
+                continue
+            }
+            // Selector-prelude position. Consume the whole comment here —
+            // letting it trickle into the selector buffer would make
+            // splitTopLevel() treat commas inside the comment as selector
+            // separators, corrupting selector groups and leaking unscoped
+            // selectors into the output.
+            const end = css.indexOf("*/", i + 2)
+            const stop = end === -1 ? n : end + 2
+            if (!seg.trim()) {
+                // Between rules (the buffer holds no selector yet): keep the
+                // comment in its position — license banners and section
+                // dividers live here. Pending whitespace is flushed first so
+                // the original line structure survives.
+                out += seg
+                seg = ""
+                out += css.slice(i, stop)
+            } else {
+                // Inside a selector list or at-rule prelude: collapse the
+                // comment to a separating space.
+                seg += " "
+            }
+            i = stop
             continue
         }
         if (ch === '"' || ch === "'") {

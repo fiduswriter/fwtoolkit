@@ -66,14 +66,22 @@ for (const name of readdirSync(cssDir)) {
             : scopeCss(source, { prefix, elements: false })
     const output = await format(join(outDir, name), scoped)
 
-    const existing = readFileSync(join(outDir, name), "utf8")
+    const outputPath = join(outDir, name)
+    let existing = null
+    try {
+        existing = readFileSync(outputPath, "utf8")
+    } catch (error) {
+        if (error.code !== "ENOENT") {
+            throw error
+        }
+    }
     if (existing === output) {
         continue
     }
     if (check) {
         stale.push(name)
     } else {
-        writeFileSync(join(outDir, name), output)
+        writeFileSync(outputPath, output)
     }
 }
 

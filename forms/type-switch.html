@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>fwtoolkit — TypeSwitch demo</title>
+        <link rel="stylesheet" href="../fontawesome/css/all.min.css" />
+        <link rel="stylesheet" href="../css/fwtoolkit.css" />
+        <link rel="stylesheet" href="../demo.css" />
+        <style>
+            body {
+                padding: 2rem;
+            }
+            #switch-host {
+                margin-top: 1rem;
+            }
+            .demo-value {
+                margin-top: 1rem;
+                font-family: monospace;
+            }
+        </style>
+        <script type="importmap">
+            {
+                "imports": {
+                    "fwtoolkit": "../dist/index.js",
+                    "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
+                    "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
+                    "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
+                    "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
+                    "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
+                    "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
+                    "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+                    "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+                }
+            }
+        </script>
+
+        <link rel="icon" type="image/png" href="../favicon.png" />
+    </head>
+    <body>
+        <h1>TypeSwitch demo</h1>
+        <p>
+            Sliding two-state toggle rendered by
+            <code>fwtoolkit/TypeSwitch</code>.
+        </p>
+        <div id="switch-host"></div>
+        <p class="demo-value">Current mode: <span id="mode-value">1</span></p>
+
+        <script type="module">
+            import { initSettings } from "fwtoolkit"
+            import { TypeSwitch } from "../dist/index.js"
+
+            initSettings({
+                apiUrl: url => url,
+                getCsrfToken: () => "",
+                gettext: s => s,
+                staticUrl: s => "../" + s,
+                interpolate: (fmt, arr) => fmt.replace(/%s/g, () => arr.shift())
+            })
+
+            const modeValue = document.getElementById("mode-value")
+            new TypeSwitch({
+                dom: document.getElementById("switch-host"),
+                label1: "Plain text",
+                label2: "Rich text",
+                render1: () =>
+                    "<input type='text' placeholder='Enter plain text'>",
+                render2: () =>
+                    "<textarea placeholder='Enter rich text'></textarea>",
+                onChange: mode => {
+                    modeValue.textContent = String(mode)
+                }
+            })
+        </script>
+    </body>
+</html>

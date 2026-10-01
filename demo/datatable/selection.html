@@ -63,8 +63,8 @@
         </div>
 
         <script type="module">
-            import { initSettings } from "fwtoolkit"
-            import { SelectionDataTable } from "../dist/index.js"
+            import {initSettings} from "fwtoolkit"
+            import {SelectionDataTable} from "../dist/index.js"
 
             initSettings({
                 apiUrl: url => url,
@@ -80,18 +80,18 @@
             }
 
             const rows = [
-                { cells: ["a", "Apple", "A round fruit"] },
-                { cells: ["b", "Banana", "A yellow fruit"] },
-                { cells: ["c", "Cherry", "A small stone fruit"] },
-                { cells: ["d", "Date", "A sweet brown fruit"] }
+                {cells: ["a", "Apple", "A round fruit"]},
+                {cells: ["b", "Banana", "A yellow fruit"]},
+                {cells: ["c", "Cherry", "A small stone fruit"]},
+                {cells: ["d", "Date", "A sweet brown fruit"]}
             ]
 
             const dt = new SelectionDataTable({
                 dom: document.getElementById("selection-host"),
                 columns: [
-                    { select: 0, hidden: true, name: "id" },
-                    { select: 1, name: "Name" },
-                    { select: 2, name: "Description" }
+                    {select: 0, hidden: true, name: "id"},
+                    {select: 1, name: "Name"},
+                    {select: 2, name: "Description"}
                 ],
                 data: rows,
                 scrollY: "250px",

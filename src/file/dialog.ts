@@ -1,10 +1,10 @@
-import { Dialog } from "../dialog.js"
-import { gettext } from "../settings.js"
-import { FileSelector } from "./selector.js"
-import { addAlert } from "../basic.js"
-import { NewFolderDialog } from "./new_folder_dialog.js"
-import { moveTemplate } from "./templates.js"
-import { moveFile, moveFileWithFunction, shortFileTitle } from "./tools.js"
+import {Dialog} from "../dialog.js"
+import {gettext} from "../settings.js"
+import {FileSelector} from "./selector.js"
+import {addAlert} from "../basic.js"
+import {NewFolderDialog} from "./new_folder_dialog.js"
+import {moveTemplate} from "./templates.js"
+import {moveFile, moveFileWithFunction, shortFileTitle} from "./tools.js"
 
 export interface MovingFile {
     id: number
@@ -67,7 +67,7 @@ export class FileDialog {
 
         this.path = this.getPath()
         this.fileSelector = false
-        this.dialog = new Dialog({ body: "" }) // placeholder, replaced in init()
+        this.dialog = new Dialog({body: ""}) // placeholder, replaced in init()
     }
 
     getPath(): string {
@@ -116,7 +116,7 @@ export class FileDialog {
                         dialog.open()
                     }
                 },
-                { type: "cancel" },
+                {type: "cancel"},
                 {
                     text: gettext("Submit"),
                     classes: "fw-dark",

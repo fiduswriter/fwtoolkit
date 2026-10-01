@@ -1,6 +1,6 @@
-import { ensureCSS } from "./network.js"
-import { escapeText } from "./basic.js"
-import { gettext, staticUrl } from "./settings.js"
+import {ensureCSS} from "./network.js"
+import {escapeText} from "./basic.js"
+import {gettext, staticUrl} from "./settings.js"
 
 export interface TwoPaneSelectorOptions<T> {
     dom: HTMLElement
@@ -52,7 +52,7 @@ export class TwoPaneSelector<T> {
     }
 
     private render(): void {
-        const { leftTitle, rightTitle, addButtonTitle, removeButtonTitle } =
+        const {leftTitle, rightTitle, addButtonTitle, removeButtonTitle} =
             this.options
         this.dom.innerHTML = `<div class="fw-two-pane-selector">
             <div class="fw-ar-container fw-two-pane-left">

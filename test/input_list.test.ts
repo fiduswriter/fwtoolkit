@@ -1,4 +1,4 @@
-import { InputList } from "../src/input_list.js"
+import {InputList} from "../src/input_list.js"
 
 describe("InputList", () => {
     beforeEach(() => {
@@ -10,7 +10,7 @@ describe("InputList", () => {
         new InputList<string>({
             dom,
             emptyValue: "",
-            renderItem: value => ({ html: `<input value="${value}">` }),
+            renderItem: value => ({html: `<input value="${value}">`}),
             getValue: el =>
                 (el.querySelector("input") as HTMLInputElement).value
         })
@@ -25,7 +25,7 @@ describe("InputList", () => {
             dom,
             initialValues: ["a", "b"],
             emptyValue: "",
-            renderItem: value => ({ html: `<input value="${value}">` }),
+            renderItem: value => ({html: `<input value="${value}">`}),
             getValue: el =>
                 (el.querySelector("input") as HTMLInputElement).value
         })
@@ -41,7 +41,7 @@ describe("InputList", () => {
             dom,
             initialValues: ["a"],
             emptyValue: "",
-            renderItem: value => ({ html: `<input value="${value}">` }),
+            renderItem: value => ({html: `<input value="${value}">`}),
             getValue: el =>
                 (el.querySelector("input") as HTMLInputElement).value
         })
@@ -56,7 +56,7 @@ describe("InputList", () => {
             dom,
             initialValues: ["a", "b"],
             emptyValue: "",
-            renderItem: value => ({ html: `<input value="${value}">` }),
+            renderItem: value => ({html: `<input value="${value}">`}),
             getValue: el =>
                 (el.querySelector("input") as HTMLInputElement).value
         })
@@ -71,7 +71,7 @@ describe("InputList", () => {
             dom,
             initialValues: ["a", ""],
             emptyValue: "",
-            renderItem: value => ({ html: `<input value="${value}">` }),
+            renderItem: value => ({html: `<input value="${value}">`}),
             getValue: el =>
                 (el.querySelector("input") as HTMLInputElement).value,
             validate: value => value.length > 0

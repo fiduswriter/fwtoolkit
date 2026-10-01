@@ -1,7 +1,7 @@
-import { execFileSync } from "node:child_process"
-import { existsSync, mkdtempSync, readdirSync, rmSync } from "node:fs"
-import { tmpdir } from "node:os"
-import { join } from "node:path"
+import {execFileSync} from "node:child_process"
+import {existsSync, mkdtempSync, readdirSync, rmSync} from "node:fs"
+import {tmpdir} from "node:os"
+import {join} from "node:path"
 
 const root = process.cwd()
 const script = join(root, "scripts", "build-scoped-css.js")
@@ -33,7 +33,7 @@ describe("build-scoped-css script", () => {
             )
             expect(written.sort()).toEqual(cssFiles().sort())
         } finally {
-            rmSync(outDir, { recursive: true, force: true })
+            rmSync(outDir, {recursive: true, force: true})
         }
     })
 
@@ -47,7 +47,7 @@ describe("build-scoped-css script", () => {
                 })
             ).toThrow()
         } finally {
-            rmSync(outDir, { recursive: true, force: true })
+            rmSync(outDir, {recursive: true, force: true})
         }
     })
 })

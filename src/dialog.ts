@@ -1,8 +1,8 @@
-import { keyName } from "w3c-keyname"
+import {keyName} from "w3c-keyname"
 
-import { findTarget } from "./basic.js"
-import { gettext } from "./settings.js"
-import { initTooltips } from "./tooltip.js"
+import {findTarget} from "./basic.js"
+import {gettext} from "./settings.js"
+import {initTooltips} from "./tooltip.js"
 
 export interface DialogButtonSpec {
     type?: "close" | "cancel" | "ok"
@@ -23,7 +23,7 @@ export interface DialogOptions {
     width?: number | false
     canClose?: boolean
     help?: (() => void) | false
-    note?: { text?: string; display?: boolean }
+    note?: {text?: string; display?: boolean}
     blur?: boolean
     buttons?: DialogButtonSpec[]
     beforeClose?: (() => void) | false
@@ -108,7 +108,7 @@ const dialogTemplate = ({
         ${body}
     </div>
     <div class="fw-dialog-buttonpane">
-        <div class="fw-dialog-buttonset">${buttonsTemplate({ buttons })}</div>
+        <div class="fw-dialog-buttonset">${buttonsTemplate({buttons})}</div>
     </div>
 </div>
 <div class="fw-overlay${blur === false ? " fw-no-blur" : ""}" style="z-index: ${zIndex - 1}"></div>`
@@ -138,7 +138,7 @@ const buttonTemplate = ({
 
 const BUTTON_TYPES: Record<
     "close" | "cancel" | "ok",
-    { text: string; classes: string; click: (dialog: Dialog) => () => void }
+    {text: string; classes: string; click: (dialog: Dialog) => () => void}
 > = {
     close: {
         text: gettext("Close"),
@@ -177,7 +177,7 @@ export class Dialog {
     canEscape: boolean
     dialogEl!: HTMLElement
     backdropEl!: HTMLElement
-    dragging: { x: number; y: number } | false
+    dragging: {x: number; y: number} | false
     hasBeenMoved: boolean
     listeners: Record<string, (event: Event) => void>
     fullScreen: boolean | false
@@ -336,7 +336,7 @@ export class Dialog {
 
     refreshButtons(): void {
         const buttonSet = this.dialogEl.querySelector(".fw-dialog-buttonset")!
-        buttonSet.innerHTML = buttonsTemplate({ buttons: this.buttons })
+        buttonSet.innerHTML = buttonsTemplate({buttons: this.buttons})
     }
 
     refreshNote(): void {
@@ -430,7 +430,7 @@ export class Dialog {
             this.onKeydown(event as KeyboardEvent)
         document.body.addEventListener("keydown", this.listeners.onKeydown)
         this.dialogEl.addEventListener("click", event => {
-            const el: { target?: Element | null } = {}
+            const el: {target?: Element | null} = {}
             switch (true) {
                 case findTarget(event, ".fw-dialog-buttonpane button", el): {
                     event.preventDefault()
@@ -461,7 +461,7 @@ export class Dialog {
             this.listeners.onScroll = event => this.onScroll(event)
             window.addEventListener("scroll", this.listeners.onScroll, false)
             this.dialogEl.addEventListener("mousedown", event => {
-                const el: { target?: Element | null } = {}
+                const el: {target?: Element | null} = {}
                 switch (true) {
                     case findTarget(event, ".fw-dialog-titlebar", el):
                         this.dragging = {
@@ -478,7 +478,7 @@ export class Dialog {
                 }
             })
             this.dialogEl.addEventListener("mouseup", event => {
-                const el: { target?: Element | null } = {}
+                const el: {target?: Element | null} = {}
                 switch (true) {
                     case findTarget(event, ".fw-dialog-titlebar", el):
                         this.dragging = false

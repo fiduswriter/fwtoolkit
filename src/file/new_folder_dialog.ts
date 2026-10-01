@@ -1,6 +1,6 @@
-import { Dialog } from "../dialog.js"
-import { newFolderTemplate } from "./templates.js"
-import { gettext } from "../settings.js"
+import {Dialog} from "../dialog.js"
+import {newFolderTemplate} from "./templates.js"
+import {gettext} from "../settings.js"
 
 export class NewFolderDialog {
     callback: (folderName: string) => void
@@ -15,7 +15,7 @@ export class NewFolderDialog {
             height: 150,
             body: newFolderTemplate(),
             buttons: [
-                { type: "cancel" },
+                {type: "cancel"},
                 {
                     text: gettext("Create folder"),
                     classes: "fw-dark",

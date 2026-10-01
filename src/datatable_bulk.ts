@@ -1,7 +1,7 @@
-import { keyName } from "w3c-keyname"
+import {keyName} from "w3c-keyname"
 
-import { whenReady } from "./basic.js"
-import { ContentMenu, ContentMenuInit } from "./content_menu.js"
+import {whenReady} from "./basic.js"
+import {ContentMenu, ContentMenuInit} from "./content_menu.js"
 
 export interface DataTableCell {
     data: unknown
@@ -107,7 +107,7 @@ export class DatatableBulk {
         // Clear any references to help garbage collection
         this.page = null as unknown as DatatableBulkPage
         this.table = undefined
-        this.model = { content: [] }
+        this.model = {content: []}
     }
 
     onKeyDown(event: KeyboardEvent): void {

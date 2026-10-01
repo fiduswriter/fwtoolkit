@@ -1,4 +1,4 @@
-import { PulldownMenu, PulldownMenuItem } from "../src/pulldown_menu.js"
+import {PulldownMenu, PulldownMenuItem} from "../src/pulldown_menu.js"
 
 describe("PulldownMenu", () => {
     let container: HTMLElement
@@ -14,7 +14,7 @@ describe("PulldownMenu", () => {
     })
 
     function makeMenu(actions: string[] = []): {
-        menu: { content: PulldownMenuItem[] }
+        menu: {content: PulldownMenuItem[]}
     } {
         return {
             menu: {
@@ -103,7 +103,7 @@ describe("PulldownMenu", () => {
 
     test("clicking an action item executes and closes the menu", () => {
         const actions: string[] = []
-        const pulldown = new PulldownMenu({ ...makeMenu(actions) })
+        const pulldown = new PulldownMenu({...makeMenu(actions)})
         pulldown.bind(container)
         ;(
             container.querySelector(
@@ -144,9 +144,9 @@ describe("PulldownMenu", () => {
 
     test("keyboard shortcut executes action", () => {
         const actions: string[] = []
-        const pulldown = new PulldownMenu({ ...makeMenu(actions) })
+        const pulldown = new PulldownMenu({...makeMenu(actions)})
         pulldown.bind(container)
-        const event = new KeyboardEvent("keydown", { key: "z", ctrlKey: true })
+        const event = new KeyboardEvent("keydown", {key: "z", ctrlKey: true})
         document.body.dispatchEvent(event)
         expect(actions).toEqual(["undo"])
     })
@@ -172,7 +172,7 @@ describe("PulldownMenu", () => {
                 content: [
                     {
                         id: "greet",
-                        title: (ctx: { name: string }) => `Hello ${ctx.name}`,
+                        title: (ctx: {name: string}) => `Hello ${ctx.name}`,
                         type: "action",
                         action: () => {}
                     } as PulldownMenuItem
@@ -181,11 +181,11 @@ describe("PulldownMenu", () => {
         }
         const pulldown = new PulldownMenu({
             menu: model.menu,
-            context: { name: "World" }
+            context: {name: "World"}
         })
         pulldown.bind(container)
         expect(container.textContent).toContain("Hello World")
-        pulldown.update({ name: "Fidus" })
+        pulldown.update({name: "Fidus"})
         expect(container.textContent).toContain("Hello Fidus")
     })
 

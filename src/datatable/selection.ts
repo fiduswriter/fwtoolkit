@@ -1,5 +1,5 @@
-import { DataTable } from "simple-datatables"
-import { gettext } from "../settings.js"
+import {DataTable} from "simple-datatables"
+import {gettext} from "../settings.js"
 
 export interface SelectionDataTableOptions {
     /** Container element that will hold the table. */
@@ -22,7 +22,7 @@ export interface SelectionDataTableOptions {
     onChange?: (selected: unknown[]) => void
     /** Custom simple-datatables template function. */
     template?: (
-        options: { classes: Record<string, string> },
+        options: {classes: Record<string, string>},
         dom: HTMLElement
     ) => string
     /** Ids that should be selected when the table is first rendered. */
@@ -56,9 +56,7 @@ export class SelectionDataTable {
         } else if (Array.isArray(firstRow)) {
             this.checkmarkColumn = firstRow.length
         } else {
-            this.checkmarkColumn = (
-                firstRow as { cells: unknown[] }
-            ).cells.length
+            this.checkmarkColumn = (firstRow as {cells: unknown[]}).cells.length
         }
         this.id = `fw-selection-dt-${++idCounter}`
     }
@@ -99,11 +97,11 @@ export class SelectionDataTable {
             columns,
             template: this.options.template
                 ? (
-                      options: { classes: Record<string, string> },
+                      options: {classes: Record<string, string>},
                       dom: HTMLElement
                   ) => this.options.template!(options, dom)
                 : (
-                      options: { classes: Record<string, string> },
+                      options: {classes: Record<string, string>},
                       dom: HTMLElement
                   ) => this.template(options, dom)
         }
@@ -131,12 +129,12 @@ export class SelectionDataTable {
         return data.map(row => {
             const cells = Array.isArray(row)
                 ? row
-                : (row as { cells: unknown[] }).cells
+                : (row as {cells: unknown[]}).cells
             const newCells = [...cells, []]
             if (Array.isArray(row)) {
                 return newCells
             }
-            return { ...row, cells: newCells }
+            return {...row, cells: newCells}
         })
     }
 
@@ -147,7 +145,7 @@ export class SelectionDataTable {
         if (idCol) {
             idCol.hidden = true
         } else {
-            columns.push({ select: idColumn, hidden: true })
+            columns.push({select: idColumn, hidden: true})
         }
         columns.push({
             select: this.checkmarkColumn,
@@ -169,15 +167,15 @@ export class SelectionDataTable {
         const idColumn = this.options.idColumn ?? 0
         const cells = Array.isArray(rawRow)
             ? rawRow
-            : (rawRow as { cells: { data: unknown; text?: string }[] }).cells
+            : (rawRow as {cells: {data: unknown; text?: string}[]}).cells
         const cell = cells[idColumn]
         if (cell === undefined || cell === null) {
             return ""
         }
         const id =
             typeof cell === "object" && cell !== null
-                ? ((cell as { text?: unknown; data?: unknown }).text ??
-                  (cell as { text?: unknown; data?: unknown }).data)
+                ? ((cell as {text?: unknown; data?: unknown}).text ??
+                  (cell as {text?: unknown; data?: unknown}).data)
                 : cell
         const selected = this.selectedIds.has(id)
         return selected
@@ -186,7 +184,7 @@ export class SelectionDataTable {
     }
 
     template(
-        options: { classes: Record<string, string> },
+        options: {classes: Record<string, string>},
         dom: HTMLElement
     ): string {
         return `<div class='${options.classes.top}'>
@@ -244,14 +242,14 @@ export class SelectionDataTable {
      * Insert new rows at the end of the table.
      * The checkmark column is appended automatically.
      */
-    insert({ data }: { data: unknown[][] }): void {
+    insert({data}: {data: unknown[][]}): void {
         if (!this.table) {
             return
         }
         const newRows = this.appendCheckmarkColumn(data).map(row => {
             const cells = Array.isArray(row)
                 ? row
-                : (row as { cells: unknown[] }).cells
+                : (row as {cells: unknown[]}).cells
             return {
                 cells: cells.map(cell => {
                     if (
@@ -259,7 +257,7 @@ export class SelectionDataTable {
                         typeof cell === "object" &&
                         "data" in (cell as Record<string, unknown>)
                     ) {
-                        return cell as { data: unknown; text?: string }
+                        return cell as {data: unknown; text?: string}
                     }
                     return {
                         data: cell,

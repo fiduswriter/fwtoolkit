@@ -1,4 +1,4 @@
-import { getSettings } from "./settings.js"
+import {getSettings} from "./settings.js"
 
 export interface FileUploadValue {
     file: Blob
@@ -92,7 +92,7 @@ export const postBare = (
 ): Promise<Response> => {
     const settings = getSettings()
 
-    const { csrfToken: csrfTokenOpt, keepalive = false, signal } = options
+    const {csrfToken: csrfTokenOpt, keepalive = false, signal} = options
     const csrfToken = csrfTokenOpt || settings.getCsrfToken() // Won't work in web worker.
 
     const fetchOptions: RequestInit = {
@@ -155,9 +155,9 @@ export const postJson = (
     object: Record<string, unknown> = {},
     files: PostFiles = {},
     options: PostOptions = {}
-): Promise<{ json: unknown; status: number }> =>
+): Promise<{json: unknown; status: number}> =>
     post(url, object, files, options).then(response =>
-        response.json().then(json => ({ json, status: response.status }))
+        response.json().then(json => ({json, status: response.status}))
     )
 
 export const ensureCSS = (cssUrl: string | string[]): boolean | void => {

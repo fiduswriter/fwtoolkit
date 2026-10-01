@@ -129,7 +129,7 @@
                         body: "This request was sent with the network helpers.",
                         userId: 1
                     })
-                        .then(({ json, status }) => log({ status, json }))
+                        .then(({json, status}) => log({status, json}))
                         .catch(err =>
                             log(`Error: ${err.status || err.message}`)
                         )

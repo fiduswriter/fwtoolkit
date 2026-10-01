@@ -51,8 +51,8 @@
         <pre id="log">Menu actions will be logged here…</pre>
 
         <script type="module">
-            import { initSettings } from "fwtoolkit"
-            import { OverviewMenuView } from "../dist/index.js"
+            import {initSettings} from "fwtoolkit"
+            import {OverviewMenuView} from "../dist/index.js"
 
             initSettings({
                 apiUrl: url => url,
@@ -70,12 +70,12 @@
             }
 
             const shortActions = [
-                { title: "New", action: () => log("New file"), order: 1 },
-                { title: "Open", action: () => log("Open file"), order: 2 },
-                { title: "Save", action: () => log("Save file"), order: 3 }
+                {title: "New", action: () => log("New file"), order: 1},
+                {title: "Open", action: () => log("Open file"), order: 2},
+                {title: "Save", action: () => log("Save file"), order: 3}
             ]
 
-            const longActions = Array.from({ length: 25 }, (_, i) => ({
+            const longActions = Array.from({length: 25}, (_, i) => ({
                 title: `Recent file ${i + 1}`,
                 action: () => log(`Open recent file ${i + 1}`),
                 order: i + 1

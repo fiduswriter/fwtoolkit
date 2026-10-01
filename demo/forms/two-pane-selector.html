@@ -49,8 +49,8 @@
         <p class="demo-value">Selected: <span id="selector-value">[]</span></p>
 
         <script type="module">
-            import { initSettings } from "fwtoolkit"
-            import { TwoPaneSelector } from "../dist/index.js"
+            import {initSettings} from "fwtoolkit"
+            import {TwoPaneSelector} from "../dist/index.js"
 
             initSettings({
                 apiUrl: url => url,
@@ -64,9 +64,9 @@
             new TwoPaneSelector({
                 dom: document.getElementById("selector-host"),
                 availableItems: [
-                    { id: 1, name: "Alice" },
-                    { id: 2, name: "Bob" },
-                    { id: 3, name: "Carol" }
+                    {id: 1, name: "Alice"},
+                    {id: 2, name: "Bob"},
+                    {id: 3, name: "Carol"}
                 ],
                 selectedItems: [],
                 renderItem: item => `<span>${item.name}</span>`,

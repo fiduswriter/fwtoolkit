@@ -65,8 +65,8 @@
         </main>
 
         <script type="module">
-            import { initSettings } from "fwtoolkit"
-            import { makeWorker } from "../dist/index.js"
+            import {initSettings} from "fwtoolkit"
+            import {makeWorker} from "../dist/index.js"
 
             initSettings({
                 apiUrl: url => url,
@@ -100,7 +100,7 @@
                     const a = Math.floor(Math.random() * 100)
                     const b = Math.floor(Math.random() * 100)
                     log(`Sending ${a} + ${b}`)
-                    worker.postMessage({ a, b })
+                    worker.postMessage({a, b})
                 })
 
             document

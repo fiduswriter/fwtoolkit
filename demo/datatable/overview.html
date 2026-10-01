@@ -64,8 +64,8 @@
         </div>
 
         <script type="module">
-            import { initSettings } from "fwtoolkit"
-            import { OverviewDataTable } from "../dist/index.js"
+            import {initSettings} from "fwtoolkit"
+            import {OverviewDataTable} from "../dist/index.js"
 
             initSettings({
                 apiUrl: url => url,
@@ -91,7 +91,7 @@
                         "2024-01-15"
                     ]
                 },
-                { cells: [2, false, "Bob", "bob@example.com", "2024-02-20"] },
+                {cells: [2, false, "Bob", "bob@example.com", "2024-02-20"]},
                 {
                     cells: [
                         3,
@@ -106,11 +106,11 @@
             const dt = new OverviewDataTable({
                 dom: document.getElementById("overview-host"),
                 columns: [
-                    { select: 0, hidden: true },
-                    { select: 1, sortable: false },
-                    { select: 2, title: "Name" },
-                    { select: 3, title: "Email" },
-                    { select: 4, title: "Date", type: "date" }
+                    {select: 0, hidden: true},
+                    {select: 1, sortable: false},
+                    {select: 2, title: "Name"},
+                    {select: 3, title: "Email"},
+                    {select: 4, title: "Date", type: "date"}
                 ],
                 data: rows,
                 searchable: true,

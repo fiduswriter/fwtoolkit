@@ -48,7 +48,7 @@
             <p id="selection"></p>
         </main>
         <script type="module">
-            import { initSettings, FileSelector } from "fwtoolkit"
+            import {initSettings, FileSelector} from "fwtoolkit"
 
             initSettings({
                 apiUrl: url => url,
@@ -59,10 +59,10 @@
             })
 
             const files = [
-                { title: "Readme.md", path: "/" },
-                { title: "Chapter 1.md", path: "/book/" },
-                { title: "Chapter 2.md", path: "/book/" },
-                { title: "Notes.txt", path: "/misc/" }
+                {title: "Readme.md", path: "/"},
+                {title: "Chapter 1.md", path: "/book/"},
+                {title: "Chapter 2.md", path: "/book/"},
+                {title: "Notes.txt", path: "/misc/"}
             ]
 
             document.getElementById("render").addEventListener("click", () => {

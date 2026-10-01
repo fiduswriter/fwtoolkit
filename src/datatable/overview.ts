@@ -1,10 +1,10 @@
-import { keyName } from "w3c-keyname"
-import { DataTable } from "simple-datatables"
+import {keyName} from "w3c-keyname"
+import {DataTable} from "simple-datatables"
 
-import { whenReady } from "../basic.js"
-import { gettext } from "../settings.js"
-import { ContentMenuInit } from "../content_menu.js"
-import { DatatableBulk } from "../datatable_bulk.js"
+import {whenReady} from "../basic.js"
+import {gettext} from "../settings.js"
+import {ContentMenuInit} from "../content_menu.js"
+import {DatatableBulk} from "../datatable_bulk.js"
 
 export interface OverviewDataTableOptions {
     /** Container element that will hold the table. */
@@ -31,7 +31,7 @@ export interface OverviewDataTableOptions {
     tabIndex?: number
     /** Custom simple-datatables template function. */
     template?: (
-        options: { classes: Record<string, string>; scrollY: string },
+        options: {classes: Record<string, string>; scrollY: string},
         dom: HTMLElement
     ) => string
     /** Explicit table headings. If omitted, headings are inferred from column definitions. */
@@ -44,22 +44,22 @@ export interface OverviewDataTableOptions {
         searchTitle?: string
     }
     /** Extract an id from a data row. Defaults to reading the id column cell. */
-    getId?: (row: { cells: { data: unknown; text?: string }[] }) => unknown
+    getId?: (row: {cells: {data: unknown; text?: string}[]}) => unknown
     /** Called when the user presses Enter on a row. */
     onEnter?: (
-        row: { cells: { data: unknown; text?: string }[] },
+        row: {cells: {data: unknown; text?: string}[]},
         event: KeyboardEvent
     ) => void
     /** Called when the user presses Delete on a row. */
     onDelete?: (
-        row: { cells: { data: unknown; text?: string }[] },
+        row: {cells: {data: unknown; text?: string}[]},
         event: KeyboardEvent
     ) => void
     /** Called whenever the checkbox selection changes. */
     onSelectionChange?: (selected: unknown[]) => void
     /** Optional rowRender hook. */
     rowRender?: (
-        row: { cells: { data: unknown; text?: string }[] },
+        row: {cells: {data: unknown; text?: string}[]},
         tr: unknown,
         index: number
     ) => void
@@ -74,13 +74,13 @@ export class OverviewDataTable {
     dom: HTMLElement
     table: DataTable | undefined
     dtBulk: DatatableBulk | undefined
-    lastSort: { column: number; dir: "asc" | "desc" }
+    lastSort: {column: number; dir: "asc" | "desc"}
     id: string
 
     constructor(options: OverviewDataTableOptions) {
         this.options = options
         this.dom = options.dom
-        this.lastSort = { column: 0, dir: "asc" }
+        this.lastSort = {column: 0, dir: "asc"}
         this.id = `fw-overview-dt-${++idCounter}`
     }
 
@@ -117,13 +117,13 @@ export class OverviewDataTable {
             columns: this.prepareColumns(),
             rowRender: (row: unknown, tr: unknown, index: number) => {
                 this.renderCheckboxCell(
-                    row as { cells: { data: unknown; text?: string }[] },
+                    row as {cells: {data: unknown; text?: string}[]},
                     tr,
                     index
                 )
                 if (this.options.rowRender) {
                     this.options.rowRender(
-                        row as { cells: { data: unknown; text?: string }[] },
+                        row as {cells: {data: unknown; text?: string}[]},
                         tr,
                         index
                     )
@@ -159,7 +159,7 @@ export class OverviewDataTable {
         )
 
         this.table.on("datatable.sort", (column, dir) => {
-            this.lastSort = { column, dir }
+            this.lastSort = {column, dir}
         })
 
         this.table.on("datatable.selectrow", (rowIndex, event) => {
@@ -172,7 +172,7 @@ export class OverviewDataTable {
                 getSelected: () => this.getSelected()
             }
             this.dtBulk = new DatatableBulk(
-                bulkPage as { dom: HTMLElement; getSelected: () => unknown[] },
+                bulkPage as {dom: HTMLElement; getSelected: () => unknown[]},
                 this.options.bulkMenu,
                 this.options.checkboxColumn ?? 1,
                 () => {
@@ -279,7 +279,7 @@ export class OverviewDataTable {
     }
 
     renderCheckboxCell(
-        row: { cells: { data: unknown; text?: string }[] },
+        row: {cells: {data: unknown; text?: string}[]},
         tr: unknown,
         index: number
     ): void {
@@ -291,7 +291,7 @@ export class OverviewDataTable {
         const inputId = `${this.id}-row-${index}`
         const visibleIndex = this.checkboxVisibleIndex()
         const trNode = tr as {
-            childNodes: { childNodes: Record<string, unknown>[] }[]
+            childNodes: {childNodes: Record<string, unknown>[]}[]
         }
         trNode.childNodes[visibleIndex].childNodes = [
             {
@@ -301,7 +301,7 @@ export class OverviewDataTable {
                     class: "entry-select fw-check",
                     "data-id": id,
                     id: inputId,
-                    ...(checked ? { checked: "" } : {})
+                    ...(checked ? {checked: ""} : {})
                 }
             },
             {
@@ -314,7 +314,7 @@ export class OverviewDataTable {
     }
 
     template(
-        options: { classes: Record<string, string>; scrollY: string },
+        options: {classes: Record<string, string>; scrollY: string},
         dom: HTMLElement
     ): string {
         const searchHtml = this.options.searchable
@@ -414,7 +414,7 @@ export class OverviewDataTable {
      * Insert new rows at the end of the table.
      * Accepts the same `{data: [...rows]}` shape as simple-datatables.
      */
-    insert({ data }: { data: unknown[][] }): void {
+    insert({data}: {data: unknown[][]}): void {
         if (!this.table) {
             return
         }
@@ -425,7 +425,7 @@ export class OverviewDataTable {
                     typeof cell === "object" &&
                     "data" in (cell as Record<string, unknown>)
                 ) {
-                    return cell as { data: unknown; text?: string }
+                    return cell as {data: unknown; text?: string}
                 }
                 return {
                     data: cell,
@@ -440,7 +440,7 @@ export class OverviewDataTable {
         this.applyLastSort()
     }
 
-    get rows(): { remove: (indices: number[]) => void } {
+    get rows(): {remove: (indices: number[]) => void} {
         return {
             remove: (indices: number[]) => {
                 const table = this.table
@@ -465,7 +465,7 @@ export class OverviewDataTable {
         this.table.data.data = this.table.data.data.filter(row => {
             const rowId = this.options.getId
                 ? this.options.getId(
-                      row as { cells: { data: unknown; text?: string }[] }
+                      row as {cells: {data: unknown; text?: string}[]}
                   )
                 : (row.cells[idColumn].text ?? row.cells[idColumn].data)
             return !ids.map(id => String(id)).includes(String(rowId))
@@ -478,7 +478,7 @@ export class OverviewDataTable {
         if (!this.table) {
             return
         }
-        const { column, dir } = this.lastSort
+        const {column, dir} = this.lastSort
         if (column !== undefined && dir) {
             this.table.columns.sort(column, dir)
         }

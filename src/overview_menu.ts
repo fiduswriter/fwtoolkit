@@ -1,8 +1,8 @@
-import { DiffDOM } from "diff-dom"
-import { keyName } from "w3c-keyname"
+import {DiffDOM} from "diff-dom"
+import {keyName} from "w3c-keyname"
 
-import { escapeText, whenReady } from "./basic.js"
-import { gettext } from "./settings.js"
+import {escapeText, whenReady} from "./basic.js"
+import {gettext} from "./settings.js"
 
 export interface OverviewMenuDropdownOption {
     title: string
@@ -93,7 +93,7 @@ export class OverviewMenuView {
     }
 
     addMissingIds(menu: {
-        content: Array<{ id?: string; type?: string; content?: unknown[] }>
+        content: Array<{id?: string; type?: string; content?: unknown[]}>
     }): void {
         // Add missing ids to menu items that don't have an ID.
         menu.content.forEach(item => {

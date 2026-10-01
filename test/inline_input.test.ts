@@ -1,16 +1,16 @@
-import { Schema } from "prosemirror-model"
-import { toggleMark } from "prosemirror-commands"
+import {Schema} from "prosemirror-model"
+import {toggleMark} from "prosemirror-commands"
 
-import { InlineInput } from "../src/inline_input.js"
-import { icon } from "../src/inline_tools.js"
+import {InlineInput} from "../src/inline_input.js"
+import {icon} from "../src/inline_tools.js"
 
 describe("InlineInput", () => {
     const schema = new Schema({
         nodes: {
-            doc: { content: "field" },
+            doc: {content: "field"},
             field: {
                 content: "inline*",
-                parseDOM: [{ tag: "p" }],
+                parseDOM: [{tag: "p"}],
                 toDOM: () => ["p", 0]
             },
             text: {},
@@ -18,17 +18,17 @@ describe("InlineInput", () => {
                 inline: true,
                 group: "inline",
                 selectable: false,
-                parseDOM: [{ tag: "br" }],
+                parseDOM: [{tag: "br"}],
                 toDOM: () => ["br"]
             }
         },
         marks: {
             strong: {
-                parseDOM: [{ tag: "strong" }],
+                parseDOM: [{tag: "strong"}],
                 toDOM: () => ["strong", 0]
             },
             em: {
-                parseDOM: [{ tag: "em" }],
+                parseDOM: [{tag: "em"}],
                 toDOM: () => ["em", 0]
             }
         }
@@ -62,9 +62,9 @@ describe("InlineInput", () => {
         const input = new InlineInput(dom, {
             schema,
             nodeType: "field",
-            initialValue: [{ type: "text", text: "Hello" }]
+            initialValue: [{type: "text", text: "Hello"}]
         })
-        const value = input.value as Array<{ type: string; text: string }>
+        const value = input.value as Array<{type: string; text: string}>
         expect(value).toHaveLength(1)
         expect(value[0].text).toBe("Hello")
     })

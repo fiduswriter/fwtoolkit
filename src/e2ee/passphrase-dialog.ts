@@ -8,9 +8,9 @@
  * 4. Recover with key - use recovery key to reset passphrase
  */
 
-import { Dialog, DialogButtonSpec } from "../dialog.js"
-import { escapeText } from "../basic.js"
-import { passwordStrength, strengthInfo } from "./password-dialog.js"
+import {Dialog, DialogButtonSpec} from "../dialog.js"
+import {escapeText} from "../basic.js"
+import {passwordStrength, strengthInfo} from "./password-dialog.js"
 
 export interface EnterPassphraseOptions {
     errorMessage?: string
@@ -489,7 +489,7 @@ export function recoverWithKeyDialog(
                     }
 
                     dialogInstance.close()
-                    onRecover({ recoveryKey, newPassphrase })
+                    onRecover({recoveryKey, newPassphrase})
                     resolve()
                 }
             },
@@ -647,7 +647,7 @@ export function changePassphraseDialog(
                     }
 
                     dialogInstance.close()
-                    await onChange({ oldPassphrase, newPassphrase })
+                    await onChange({oldPassphrase, newPassphrase})
                     resolve()
                 }
             },

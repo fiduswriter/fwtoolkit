@@ -252,7 +252,7 @@
                     showSystemMessage(
                         "This is a system message from fwtoolkit.",
                         [
-                            { type: "close" },
+                            {type: "close"},
                             {
                                 text: "Acknowledge",
                                 classes: "fw-dark",
@@ -323,7 +323,7 @@
                     const dataUri =
                         "data:text/plain;base64," + btoa("Hello from fwtoolkit")
                     const blob = convertDataURIToBlob(dataUri)
-                    log("blob-output", { type: blob.type, size: blob.size })
+                    log("blob-output", {type: blob.type, size: blob.size})
                 })
 
             document.getElementById("info-tooltip-host").innerHTML =

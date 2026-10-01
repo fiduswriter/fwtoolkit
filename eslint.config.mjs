@@ -15,7 +15,7 @@ export default tseslint.config(
             "@typescript-eslint/no-explicit-any": "off",
             "@typescript-eslint/no-unused-vars": [
                 "error",
-                { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }
+                {argsIgnorePattern: "^_", varsIgnorePattern: "^_"}
             ],
             semi: "off",
             "@typescript-eslint/semi": "off"

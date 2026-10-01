@@ -135,7 +135,7 @@ export class ContentMenu {
         id = false,
         page = false,
         classes = false,
-        menu = { content: [] },
+        menu = {content: []},
         height = false,
         width = false,
         onClose = false,
@@ -444,7 +444,7 @@ export class ContentMenu {
     }
 
     onKeyDown(event: KeyboardEvent): void {
-        const { key } = event
+        const {key} = event
         const menuItems = this.dialogEl.querySelectorAll(
             "li.fw-content-menu-item:not(.fw-disabled)"
         )

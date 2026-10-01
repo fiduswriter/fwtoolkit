@@ -38,7 +38,7 @@ export class PassphraseCrypto {
      */
     static generateMasterKey(): Promise<CryptoKey> {
         return crypto.subtle.generateKey(
-            { name: "AES-GCM", length: 256 },
+            {name: "AES-GCM", length: 256},
             true, // extractable for sessionStorage
             ["encrypt", "decrypt"]
         )
@@ -51,7 +51,7 @@ export class PassphraseCrypto {
      */
     static async generateDocumentPassword(): Promise<string> {
         const key = await crypto.subtle.generateKey(
-            { name: "AES-GCM", length: 256 },
+            {name: "AES-GCM", length: 256},
             true,
             ["encrypt", "decrypt"]
         )
@@ -65,7 +65,7 @@ export class PassphraseCrypto {
      */
     static generateKeyPair(): Promise<CryptoKeyPair> {
         return crypto.subtle.generateKey(
-            { name: "ECDH", namedCurve: "P-256" },
+            {name: "ECDH", namedCurve: "P-256"},
             true, // extractable for encrypted storage
             ["deriveKey"]
         )
@@ -118,7 +118,7 @@ export class PassphraseCrypto {
                 hash: "SHA-256"
             },
             keyMaterial,
-            { name: "AES-GCM", length: 256 },
+            {name: "AES-GCM", length: 256},
             true, // extractable so it can be used to encrypt keys
             ["encrypt", "decrypt"]
         )
@@ -155,8 +155,8 @@ export class PassphraseCrypto {
         const wrapped = PassphraseCrypto._base64ToBytes(wrappedKeyBase64)
         const algorithm =
             keyType === "AES-GCM"
-                ? { name: "AES-GCM", length: 256 }
-                : { name: "HMAC", hash: "SHA-256", length: 256 }
+                ? {name: "AES-GCM", length: 256}
+                : {name: "HMAC", hash: "SHA-256", length: 256}
         const usages =
             keyType === "AES-GCM" ? ["encrypt", "decrypt"] : ["sign", "verify"]
         return crypto.subtle.unwrapKey(
@@ -200,7 +200,7 @@ export class PassphraseCrypto {
             wrapped as Uint8Array<ArrayBuffer>,
             wrappingKey,
             "AES-KW",
-            { name: "ECDH", namedCurve: "P-256" },
+            {name: "ECDH", namedCurve: "P-256"},
             true,
             ["deriveKey"]
         )
@@ -219,7 +219,7 @@ export class PassphraseCrypto {
         const raw = await crypto.subtle.exportKey("raw", key)
         const iv = crypto.getRandomValues(new Uint8Array(12))
         const ciphertext = await crypto.subtle.encrypt(
-            { name: "AES-GCM", iv },
+            {name: "AES-GCM", iv},
             encryptionKey,
             raw
         )
@@ -241,14 +241,14 @@ export class PassphraseCrypto {
         const iv = combined.slice(0, 12)
         const ciphertext = combined.slice(12)
         const raw = await crypto.subtle.decrypt(
-            { name: "AES-GCM", iv },
+            {name: "AES-GCM", iv},
             encryptionKey,
             ciphertext
         )
         const algorithm =
             keyType === "AES-GCM"
-                ? { name: "AES-GCM", length: 256 }
-                : { name: "HMAC", hash: "SHA-256", length: 256 }
+                ? {name: "AES-GCM", length: 256}
+                : {name: "HMAC", hash: "SHA-256", length: 256}
         const usages =
             keyType === "AES-GCM" ? ["encrypt", "decrypt"] : ["sign", "verify"]
         return crypto.subtle.importKey(
@@ -272,7 +272,7 @@ export class PassphraseCrypto {
         const iv = crypto.getRandomValues(new Uint8Array(12))
         const encoded = new TextEncoder().encode(jwkString)
         const ciphertext = await crypto.subtle.encrypt(
-            { name: "AES-GCM", iv },
+            {name: "AES-GCM", iv},
             encryptionKey,
             encoded
         )
@@ -295,7 +295,7 @@ export class PassphraseCrypto {
         const iv = combined.slice(0, 12)
         const ciphertext = combined.slice(12)
         const decrypted = await crypto.subtle.decrypt(
-            { name: "AES-GCM", iv },
+            {name: "AES-GCM", iv},
             encryptionKey,
             ciphertext
         )
@@ -304,7 +304,7 @@ export class PassphraseCrypto {
         return crypto.subtle.importKey(
             "jwk",
             jwk,
-            { name: "ECDH", namedCurve: "P-256" },
+            {name: "ECDH", namedCurve: "P-256"},
             true,
             ["deriveKey"]
         )
@@ -328,7 +328,7 @@ export class PassphraseCrypto {
         return crypto.subtle.importKey(
             "jwk",
             jwk,
-            { name: "ECDH", namedCurve: "P-256" },
+            {name: "ECDH", namedCurve: "P-256"},
             true,
             []
         )
@@ -354,16 +354,16 @@ export class PassphraseCrypto {
     ): Promise<EncryptedDEKData> {
         // Generate ephemeral key pair
         const ephemeralPair = await crypto.subtle.generateKey(
-            { name: "ECDH", namedCurve: "P-256" },
+            {name: "ECDH", namedCurve: "P-256"},
             true,
             ["deriveKey"]
         )
 
         // Derive shared AES-GCM key
         const sharedKey = await crypto.subtle.deriveKey(
-            { name: "ECDH", public: recipientPublicKey },
+            {name: "ECDH", public: recipientPublicKey},
             ephemeralPair.privateKey,
-            { name: "AES-GCM", length: 256 },
+            {name: "AES-GCM", length: 256},
             false,
             ["encrypt", "decrypt"]
         )
@@ -372,7 +372,7 @@ export class PassphraseCrypto {
         const dekRaw = await crypto.subtle.exportKey("raw", dek)
         const iv = crypto.getRandomValues(new Uint8Array(12))
         const ciphertext = await crypto.subtle.encrypt(
-            { name: "AES-GCM", iv },
+            {name: "AES-GCM", iv},
             sharedKey,
             dekRaw
         )
@@ -413,16 +413,16 @@ export class PassphraseCrypto {
         const ephemeralPublicKey = await crypto.subtle.importKey(
             "jwk",
             ephemeralPublicJwk,
-            { name: "ECDH", namedCurve: "P-256" },
+            {name: "ECDH", namedCurve: "P-256"},
             true,
             []
         )
 
         // Derive shared AES-GCM key
         const sharedKey = await crypto.subtle.deriveKey(
-            { name: "ECDH", public: ephemeralPublicKey },
+            {name: "ECDH", public: ephemeralPublicKey},
             privateKey,
-            { name: "AES-GCM", length: 256 },
+            {name: "AES-GCM", length: 256},
             false,
             ["encrypt", "decrypt"]
         )
@@ -432,7 +432,7 @@ export class PassphraseCrypto {
         const iv = combined.slice(0, 12)
         const ciphertext = combined.slice(12)
         const dekRaw = await crypto.subtle.decrypt(
-            { name: "AES-GCM", iv },
+            {name: "AES-GCM", iv},
             sharedKey,
             ciphertext
         )
@@ -440,7 +440,7 @@ export class PassphraseCrypto {
         return crypto.subtle.importKey(
             "raw",
             dekRaw,
-            { name: "AES-GCM", length: 256 },
+            {name: "AES-GCM", length: 256},
             true,
             ["encrypt", "decrypt"]
         )
@@ -457,7 +457,7 @@ export class PassphraseCrypto {
         const data = encoder.encode(str)
         const iv = crypto.getRandomValues(new Uint8Array(12))
         const ciphertext = await crypto.subtle.encrypt(
-            { name: "AES-GCM", iv },
+            {name: "AES-GCM", iv},
             encryptionKey,
             data
         )
@@ -478,7 +478,7 @@ export class PassphraseCrypto {
         const iv = combined.slice(0, 12)
         const ciphertext = combined.slice(12)
         const decrypted = await crypto.subtle.decrypt(
-            { name: "AES-GCM", iv },
+            {name: "AES-GCM", iv},
             encryptionKey,
             ciphertext
         )
@@ -498,22 +498,22 @@ export class PassphraseCrypto {
         const data = encoder.encode(str)
 
         const ephemeralPair = await crypto.subtle.generateKey(
-            { name: "ECDH", namedCurve: "P-256" },
+            {name: "ECDH", namedCurve: "P-256"},
             true,
             ["deriveKey"]
         )
 
         const sharedKey = await crypto.subtle.deriveKey(
-            { name: "ECDH", public: recipientPublicKey },
+            {name: "ECDH", public: recipientPublicKey},
             ephemeralPair.privateKey,
-            { name: "AES-GCM", length: 256 },
+            {name: "AES-GCM", length: 256},
             false,
             ["encrypt", "decrypt"]
         )
 
         const iv = crypto.getRandomValues(new Uint8Array(12))
         const ciphertext = await crypto.subtle.encrypt(
-            { name: "AES-GCM", iv },
+            {name: "AES-GCM", iv},
             sharedKey,
             data
         )
@@ -548,15 +548,15 @@ export class PassphraseCrypto {
         const ephemeralPublicKey = await crypto.subtle.importKey(
             "jwk",
             ephemeralPublicJwk,
-            { name: "ECDH", namedCurve: "P-256" },
+            {name: "ECDH", namedCurve: "P-256"},
             true,
             []
         )
 
         const sharedKey = await crypto.subtle.deriveKey(
-            { name: "ECDH", public: ephemeralPublicKey },
+            {name: "ECDH", public: ephemeralPublicKey},
             privateKey,
-            { name: "AES-GCM", length: 256 },
+            {name: "AES-GCM", length: 256},
             false,
             ["encrypt", "decrypt"]
         )
@@ -565,7 +565,7 @@ export class PassphraseCrypto {
         const iv = combined.slice(0, 12)
         const ciphertext = combined.slice(12)
         const decrypted = await crypto.subtle.decrypt(
-            { name: "AES-GCM", iv },
+            {name: "AES-GCM", iv},
             sharedKey,
             ciphertext
         )
@@ -600,14 +600,14 @@ export class PassphraseCrypto {
         const mkBase64 = sessionStorage.getItem("e2ee_master_key")
         const skJwkString = sessionStorage.getItem("e2ee_private_key")
         if (!mkBase64 || !skJwkString) {
-            return { masterKey: null, privateKey: null }
+            return {masterKey: null, privateKey: null}
         }
         try {
             const mkRaw = PassphraseCrypto._base64ToBytes(mkBase64)
             const masterKey = await crypto.subtle.importKey(
                 "raw",
                 mkRaw as Uint8Array<ArrayBuffer>,
-                { name: "AES-GCM", length: 256 },
+                {name: "AES-GCM", length: 256},
                 true,
                 ["encrypt", "decrypt"]
             )
@@ -615,14 +615,14 @@ export class PassphraseCrypto {
             const privateKey = await crypto.subtle.importKey(
                 "jwk",
                 skJwk,
-                { name: "ECDH", namedCurve: "P-256" },
+                {name: "ECDH", namedCurve: "P-256"},
                 true,
                 ["deriveKey"]
             )
-            return { masterKey, privateKey }
+            return {masterKey, privateKey}
         } catch {
             PassphraseCrypto.clearKeysFromSession()
-            return { masterKey: null, privateKey: null }
+            return {masterKey: null, privateKey: null}
         }
     }
 

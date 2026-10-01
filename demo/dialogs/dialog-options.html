@@ -72,8 +72,8 @@
         </main>
 
         <script type="module">
-            import { initSettings } from "fwtoolkit"
-            import { Dialog, addAlert } from "../dist/index.js"
+            import {initSettings} from "fwtoolkit"
+            import {Dialog, addAlert} from "../dist/index.js"
 
             initSettings({
                 apiUrl: url => url,
@@ -106,7 +106,7 @@
                             text: "This note can provide extra context or a warning.",
                             display: true
                         },
-                        buttons: [{ type: "close" }]
+                        buttons: [{type: "close"}]
                     })
                     dialog.open()
                 })
@@ -119,7 +119,7 @@
                         body: "<p>This dialog is 500 × 300 pixels.</p>",
                         width: 500,
                         height: 300,
-                        buttons: [{ type: "close" }]
+                        buttons: [{type: "close"}]
                     })
                     dialog.open()
                 })
@@ -133,7 +133,7 @@
                         width: 500,
                         height: 300,
                         scrollable: true,
-                        buttons: [{ type: "close" }]
+                        buttons: [{type: "close"}]
                     })
                     dialog.open()
                 })
@@ -166,7 +166,7 @@
                         title: "Dialog with custom buttons",
                         body: "<p>Buttons can have custom text, classes and callbacks.</p>",
                         buttons: [
-                            { type: "cancel" },
+                            {type: "cancel"},
                             {
                                 text: "Trigger alert",
                                 classes: "fw-light",

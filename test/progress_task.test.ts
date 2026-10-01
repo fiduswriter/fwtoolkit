@@ -1,5 +1,5 @@
-import { jest } from "@jest/globals"
-import { addProgress } from "../src/progress_task.js"
+import {jest} from "@jest/globals"
+import {addProgress} from "../src/progress_task.js"
 
 describe("ProgressTask", () => {
     beforeEach(() => {
@@ -32,7 +32,7 @@ describe("ProgressTask", () => {
     })
 
     test("percentage is clamped between 0 and 100", () => {
-        const task = addProgress("info", "Test task", { percentage: 150 })
+        const task = addProgress("info", "Test task", {percentage: 150})
         const fill = document.querySelector(".fw-progress-fill") as HTMLElement
         expect(fill.style.width).toBe("100%")
         task.update(-10)
@@ -40,7 +40,7 @@ describe("ProgressTask", () => {
     })
 
     test("indeterminate mode renders animated bar", () => {
-        addProgress("info", "Test task", { percentage: null })
+        addProgress("info", "Test task", {percentage: null})
         const bar = document.querySelector(".fw-progress-bar")
         expect(bar?.classList.contains("fw-indeterminate")).toBe(true)
     })
@@ -55,7 +55,7 @@ describe("ProgressTask", () => {
 
     test("cancelable task renders cancel button", () => {
         const onCancel = jest.fn()
-        addProgress("info", "Test task", { cancelable: true, onCancel })
+        addProgress("info", "Test task", {cancelable: true, onCancel})
         const button = document.querySelector(".fw-progress-cancel")
         expect(button).not.toBeNull()
         ;(button as HTMLElement).click()
@@ -96,7 +96,7 @@ describe("ProgressTask", () => {
     })
 
     test("dismiss button can be hidden", () => {
-        addProgress("info", "Test task", { dismissable: false })
+        addProgress("info", "Test task", {dismissable: false})
         const button = document.querySelector(".fw-progress-cancel")
         expect(button).toBeNull()
     })

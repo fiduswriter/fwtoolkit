@@ -1,4 +1,4 @@
-import { apiUrl } from "../src/settings.js"
+import {apiUrl} from "../src/settings.js"
 
 describe("apiUrl helper", () => {
     test("returns a mapped static URL unchanged", () => {
@@ -6,13 +6,11 @@ describe("apiUrl helper", () => {
     })
 
     test("substitutes path parameters", () => {
-        expect(apiUrl("test.dynamic", { id: "42" })).toBe(
-            "/api/test/42/dynamic/"
-        )
+        expect(apiUrl("test.dynamic", {id: "42"})).toBe("/api/test/42/dynamic/")
     })
 
     test("encodes path parameters", () => {
-        expect(apiUrl("test.dynamic", { id: "a/b" })).toBe(
+        expect(apiUrl("test.dynamic", {id: "a/b"})).toBe(
             "/api/test/a%2Fb/dynamic/"
         )
     })

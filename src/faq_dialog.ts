@@ -1,9 +1,9 @@
-import { escapeText } from "./basic.js"
-import { Dialog } from "./dialog.js"
-import { ensureCSS } from "./network.js"
-import { staticUrl } from "./settings.js"
+import {escapeText} from "./basic.js"
+import {Dialog} from "./dialog.js"
+import {ensureCSS} from "./network.js"
+import {staticUrl} from "./settings.js"
 
-export interface FAQQuestion extends Array<string | { hasImage?: boolean }> {
+export interface FAQQuestion extends Array<string | {hasImage?: boolean}> {
     0: string
     1: string
 }
@@ -36,7 +36,7 @@ const faqTemplate = ({
 export class faqDialog {
     faqDialog: Dialog
 
-    constructor({ title = "", questions = [] }: FAQDialogOptions = {}) {
+    constructor({title = "", questions = []}: FAQDialogOptions = {}) {
         ensureCSS(staticUrl("css/fwtoolkit/faq_dialog.css"))
         const escapedQuestions: [string, string][] = []
 
@@ -44,7 +44,7 @@ export class faqDialog {
             const question = escapeText(q[0])
             let answer: string
             q[1] = escapeText(q[1])
-            if ((q[q.length - 1] as { hasImage?: boolean }).hasImage) {
+            if ((q[q.length - 1] as {hasImage?: boolean}).hasImage) {
                 // The tail of the question array (between the template and the
                 // hasImage marker) holds the positional arguments for the answer
                 // template. Pass them to interpolate with named substitution
@@ -62,7 +62,7 @@ export class faqDialog {
 
         this.faqDialog = new Dialog({
             title: title,
-            body: faqTemplate({ escapedQuestions }),
+            body: faqTemplate({escapedQuestions}),
             height: 600,
             width: 900,
             buttons: []

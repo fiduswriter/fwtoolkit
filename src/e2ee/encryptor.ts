@@ -25,7 +25,7 @@ export class E2EEEncryptor {
         const iv = crypto.getRandomValues(new Uint8Array(12))
         const encoded = new TextEncoder().encode(plaintext)
         const ciphertext = await crypto.subtle.encrypt(
-            { name: "AES-GCM", iv: iv },
+            {name: "AES-GCM", iv: iv},
             key,
             encoded
         )
@@ -51,7 +51,7 @@ export class E2EEEncryptor {
         const iv = combined.slice(0, 12)
         const ciphertext = combined.slice(12)
         const decrypted = await crypto.subtle.decrypt(
-            { name: "AES-GCM", iv: iv },
+            {name: "AES-GCM", iv: iv},
             key,
             ciphertext
         )
@@ -101,7 +101,7 @@ export class E2EEEncryptor {
     ): Promise<string> {
         const iv = crypto.getRandomValues(new Uint8Array(12))
         const ciphertext = await crypto.subtle.encrypt(
-            { name: "AES-GCM", iv: iv },
+            {name: "AES-GCM", iv: iv},
             key,
             buffer
         )
@@ -126,11 +126,7 @@ export class E2EEEncryptor {
         const combined = E2EEEncryptor._base64ToUint8Array(ciphertextBase64)
         const iv = combined.slice(0, 12)
         const ciphertext = combined.slice(12)
-        return crypto.subtle.decrypt(
-            { name: "AES-GCM", iv: iv },
-            key,
-            ciphertext
-        )
+        return crypto.subtle.decrypt({name: "AES-GCM", iv: iv}, key, ciphertext)
     }
 
     /**
@@ -148,7 +144,7 @@ export class E2EEEncryptor {
         const buffer = await file.arrayBuffer()
         const iv = crypto.getRandomValues(new Uint8Array(12))
         const ciphertext = await crypto.subtle.encrypt(
-            { name: "AES-GCM", iv: iv },
+            {name: "AES-GCM", iv: iv},
             key,
             buffer
         )
@@ -156,7 +152,7 @@ export class E2EEEncryptor {
         const combined = new Uint8Array(iv.length + ciphertext.byteLength)
         combined.set(iv, 0)
         combined.set(new Uint8Array(ciphertext), iv.length)
-        return new Blob([combined], { type: "application/octet-stream" })
+        return new Blob([combined], {type: "application/octet-stream"})
     }
 
     /**
@@ -221,7 +217,7 @@ export class E2EEEncryptor {
         }
         const base64 = btoa(binary)
         const decrypted = await E2EEEncryptor.decryptBuffer(base64, key)
-        const blob = new Blob([decrypted], { type: mimeType })
+        const blob = new Blob([decrypted], {type: mimeType})
         return URL.createObjectURL(blob)
     }
 

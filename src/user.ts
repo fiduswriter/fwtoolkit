@@ -1,11 +1,11 @@
-import { post } from "./network.js"
-import { apiUrl } from "./settings.js"
+import {post} from "./network.js"
+import {apiUrl} from "./settings.js"
 
 export const setLanguage = (
     _config: unknown,
     language: string
 ): Promise<unknown> =>
-    post(apiUrl("i18n.setLang"), { language }).then(() => {
+    post(apiUrl("i18n.setLang"), {language}).then(() => {
         // We delete the network cache as this contains the JS
         // translations.
         caches.keys().then(names => {
@@ -45,7 +45,7 @@ interface AvatarUser {
 }
 
 /** A template for the default round avatar view. */
-export const avatarTemplate = ({ user }: { user: AvatarUser }): string => {
+export const avatarTemplate = ({user}: {user: AvatarUser}): string => {
     const name = user.username || user.name || "A"
     if (user.avatar) {
         return `<img class="fw-avatar" src="${user.avatar}" alt="${name}">`

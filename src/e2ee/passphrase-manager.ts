@@ -10,10 +10,10 @@
  * - DEK sharing: encrypt DEK with recipient's public key
  */
 
-import { getJson, post, postJson } from "../network.js"
-import { apiUrl } from "../settings.js"
-import { E2EEKeyManager } from "./key-manager.js"
-import { PassphraseCrypto } from "./passphrase-crypto.js"
+import {getJson, post, postJson} from "../network.js"
+import {apiUrl} from "../settings.js"
+import {E2EEKeyManager} from "./key-manager.js"
+import {PassphraseCrypto} from "./passphrase-crypto.js"
 
 interface EncryptionKeyData {
     has_key: boolean
@@ -91,7 +91,7 @@ export class PassphraseManager {
      */
     static async setupEncryption(
         passphrase: string
-    ): Promise<{ recoveryKey: string }> {
+    ): Promise<{recoveryKey: string}> {
         // 1. Generate keys
         const masterKey = await PassphraseCrypto.generateMasterKey()
         const keyPair = await PassphraseCrypto.generateKeyPair()
@@ -116,7 +116,7 @@ export class PassphraseManager {
         const recoveryKeyCryptoKey = await crypto.subtle.importKey(
             "raw",
             recoveryKeyRaw as Uint8Array<ArrayBuffer>,
-            { name: "AES-GCM", length: 256 },
+            {name: "AES-GCM", length: 256},
             false,
             ["encrypt", "decrypt"]
         )
@@ -139,7 +139,7 @@ export class PassphraseManager {
             user_iterations: 600000,
             encrypted_master_key_backup: encryptedMasterKeyBackup
         }
-        const { status } = await postJson(
+        const {status} = await postJson(
             apiUrl("e2ee.user_encryption_key_save"),
             saveData
         )
@@ -150,7 +150,7 @@ export class PassphraseManager {
         // 7. Store in sessionStorage
         await PassphraseCrypto.storeKeysInSession(masterKey, keyPair.privateKey)
 
-        return { recoveryKey }
+        return {recoveryKey}
     }
 
     /**
@@ -256,7 +256,7 @@ export class PassphraseManager {
             user_iterations: 600000,
             encrypted_master_key_backup: encryptedMasterKeyBackup
         }
-        const { status } = await postJson(
+        const {status} = await postJson(
             apiUrl("e2ee.user_encryption_key_save"),
             saveData
         )
@@ -280,7 +280,7 @@ export class PassphraseManager {
     static async recoverWithRecoveryKey(
         recoveryKey: string,
         newPassphrase: string
-    ): Promise<{ newRecoveryKey: string }> {
+    ): Promise<{newRecoveryKey: string}> {
         // 1. Fetch encrypted keys from server
         const data = (await getJson(
             apiUrl("e2ee.user_encryption_key")
@@ -294,7 +294,7 @@ export class PassphraseManager {
         const recoveryKeyCryptoKey = await crypto.subtle.importKey(
             "raw",
             recoveryKeyRaw as Uint8Array<ArrayBuffer>,
-            { name: "AES-GCM", length: 256 },
+            {name: "AES-GCM", length: 256},
             false,
             ["encrypt", "decrypt"]
         )
@@ -326,7 +326,7 @@ export class PassphraseManager {
         const newRecoveryKeyCryptoKey = await crypto.subtle.importKey(
             "raw",
             newRecoveryKeyRaw as Uint8Array<ArrayBuffer>,
-            { name: "AES-GCM", length: 256 },
+            {name: "AES-GCM", length: 256},
             false,
             ["encrypt", "decrypt"]
         )
@@ -349,7 +349,7 @@ export class PassphraseManager {
             user_iterations: 600000,
             encrypted_master_key_backup: encryptedMasterKeyBackup
         }
-        const { status } = await postJson(
+        const {status} = await postJson(
             apiUrl("e2ee.user_encryption_key_save"),
             saveData
         )
@@ -363,7 +363,7 @@ export class PassphraseManager {
             newKeyPair.privateKey
         )
 
-        return { newRecoveryKey }
+        return {newRecoveryKey}
     }
 
     /**
@@ -379,13 +379,13 @@ export class PassphraseManager {
     static async getDocumentPassword(
         documentId: number
     ): Promise<string | null> {
-        const { masterKey, privateKey } =
+        const {masterKey, privateKey} =
             await PassphraseCrypto.getKeysFromSession()
         if (!masterKey || !privateKey) {
             return null
         }
 
-        const { json } = await postJson(
+        const {json} = await postJson(
             apiUrl("e2ee.document_encryption_key_get"),
             {
                 document_id: documentId
@@ -448,7 +448,7 @@ export class PassphraseManager {
     ): Promise<unknown> {
         let encryptedKey: string
         if (encryptedWithMasterKey) {
-            const { masterKey } = await PassphraseCrypto.getKeysFromSession()
+            const {masterKey} = await PassphraseCrypto.getKeysFromSession()
             if (!masterKey) {
                 throw new Error("Master key not available in session")
             }
@@ -463,7 +463,7 @@ export class PassphraseManager {
                 )
             }
             const pkJson = (await getJson(
-                apiUrl("e2ee.user_public_key", { userId: String(holderId) })
+                apiUrl("e2ee.user_public_key", {userId: String(holderId)})
             )) as PublicKeyData
             if (!pkJson.has_key) {
                 throw new Error("Recipient has not set up encryption")
@@ -487,7 +487,7 @@ export class PassphraseManager {
         if (holderId) {
             saveData.holder_id = holderId
         }
-        const { json, status } = await postJson(
+        const {json, status} = await postJson(
             apiUrl("e2ee.document_encryption_key_save"),
             saveData
         )
@@ -526,7 +526,7 @@ export class PassphraseManager {
     static async userHasEncryptionKeys(userId: number): Promise<boolean> {
         try {
             const data = (await getJson(
-                apiUrl("e2ee.user_public_key", { userId: String(userId) })
+                apiUrl("e2ee.user_public_key", {userId: String(userId)})
             )) as PublicKeyData
             return data.has_key === true
         } catch {

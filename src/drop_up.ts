@@ -1,4 +1,4 @@
-import { escapeText } from "./basic.js"
+import {escapeText} from "./basic.js"
 
 export interface DropUpOption {
     title: string

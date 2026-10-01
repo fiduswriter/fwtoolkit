@@ -13,8 +13,8 @@
  * the user is shown a degree of weakness and is therefore encouraged to use a stronger password.
  */
 
-import { Dialog, DialogButtonSpec } from "../dialog.js"
-import { escapeText } from "../basic.js"
+import {Dialog, DialogButtonSpec} from "../dialog.js"
+import {escapeText} from "../basic.js"
 
 export interface PasswordValidationResult {
     valid: boolean
@@ -52,7 +52,7 @@ export function validatePassword(password: string): PasswordValidationResult {
             message: gettext("Password must be at least 5 characters long.")
         }
     }
-    return { valid: true, message: "" }
+    return {valid: true, message: ""}
 }
 
 /**
@@ -124,11 +124,11 @@ export function passwordStrength(password: string): number {
  */
 export function strengthInfo(score: number): PasswordStrengthInfo {
     const levels: PasswordStrengthInfo[] = [
-        { cssClass: "very-weak", label: gettext("Very weak") },
-        { cssClass: "weak", label: gettext("Weak") },
-        { cssClass: "fair", label: gettext("Fair") },
-        { cssClass: "strong", label: gettext("Strong") },
-        { cssClass: "very-strong", label: gettext("Very strong") }
+        {cssClass: "very-weak", label: gettext("Very weak")},
+        {cssClass: "weak", label: gettext("Weak")},
+        {cssClass: "fair", label: gettext("Fair")},
+        {cssClass: "strong", label: gettext("Strong")},
+        {cssClass: "very-strong", label: gettext("Very strong")}
     ]
     return levels[score] || levels[0]
 }

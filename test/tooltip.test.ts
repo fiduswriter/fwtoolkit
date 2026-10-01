@@ -1,7 +1,7 @@
-import { jest } from "@jest/globals"
-import { infoTooltip } from "../src/basic.js"
-import { InfoRow } from "../src/info_row.js"
-import { initTooltips } from "../src/tooltip.js"
+import {jest} from "@jest/globals"
+import {infoTooltip} from "../src/basic.js"
+import {InfoRow} from "../src/info_row.js"
+import {initTooltips} from "../src/tooltip.js"
 
 describe("initTooltips", () => {
     beforeAll(() => {
@@ -35,8 +35,8 @@ describe("initTooltips", () => {
     }
 
     test("portals the info tooltip into document.body on hover", () => {
-        const { trigger, tooltip, button } = mountInfoTooltip()
-        button.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }))
+        const {trigger, tooltip, button} = mountInfoTooltip()
+        button.dispatchEvent(new MouseEvent("mouseover", {bubbles: true}))
         expect(trigger.classList.contains("fw-tooltip-active")).toBe(true)
         expect(tooltip.parentElement).toBe(document.body)
         expect(tooltip.style.position).toBe("fixed")
@@ -47,8 +47,8 @@ describe("initTooltips", () => {
     })
 
     test("hides and restores the info tooltip when the pointer leaves", () => {
-        const { trigger, tooltip, button } = mountInfoTooltip()
-        button.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }))
+        const {trigger, tooltip, button} = mountInfoTooltip()
+        button.dispatchEvent(new MouseEvent("mouseover", {bubbles: true}))
         expect(tooltip.parentElement).toBe(document.body)
         jest.useFakeTimers()
         button.dispatchEvent(
@@ -65,8 +65,8 @@ describe("initTooltips", () => {
     })
 
     test("does not hide while focus stays inside the trigger", () => {
-        const { trigger, tooltip, button } = mountInfoTooltip()
-        button.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }))
+        const {trigger, tooltip, button} = mountInfoTooltip()
+        button.dispatchEvent(new MouseEvent("mouseover", {bubbles: true}))
         expect(tooltip.parentElement).toBe(document.body)
         button.focus() // focusin keeps the tooltip alive after mouse leaves
         jest.useFakeTimers()
@@ -86,7 +86,7 @@ describe("initTooltips", () => {
     })
 
     test("portals the table-row tooltip on keyboard focus", () => {
-        const row = new InfoRow({ label: "Title", helpText: "Help" })
+        const row = new InfoRow({label: "Title", helpText: "Help"})
         document.body.insertAdjacentHTML(
             "beforeend",
             `<table>${row.html()}</table>`
@@ -110,7 +110,7 @@ describe("initTooltips", () => {
             '<div><button type="button">plain</button></div>'
         )
         const button = document.querySelector("button") as HTMLElement
-        button.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }))
+        button.dispatchEvent(new MouseEvent("mouseover", {bubbles: true}))
         expect(document.querySelector(".fw-info-tooltip-text")).toBeNull()
         expect(document.querySelector(".fw-tooltip")).toBeNull()
     })

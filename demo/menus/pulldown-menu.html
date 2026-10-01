@@ -54,8 +54,8 @@
         <pre id="log">Menu actions will be logged here…</pre>
 
         <script type="module">
-            import { initSettings } from "fwtoolkit"
-            import { PulldownMenu } from "../dist/index.js"
+            import {initSettings} from "fwtoolkit"
+            import {PulldownMenu} from "../dist/index.js"
 
             initSettings({
                 apiUrl: url => url,
@@ -72,7 +72,7 @@
                     el.textContent
             }
 
-            const context = { user: "Demo User" }
+            const context = {user: "Demo User"}
 
             const menu = {
                 content: [
@@ -104,7 +104,7 @@
                                 icon: "floppy-disk",
                                 action: () => log("Save")
                             },
-                            { id: "sep1", type: "separator", order: 4 },
+                            {id: "sep1", type: "separator", order: 4},
                             {
                                 id: "recent",
                                 title: "Recent",

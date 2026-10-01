@@ -151,7 +151,7 @@ environment.
 Example test pattern:
 
 ```typescript
-import { addAlert } from "../src/basic.js"
+import {addAlert} from "../src/basic.js"
 
 describe("basic UI helpers", () => {
     beforeEach(() => {

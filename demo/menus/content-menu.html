@@ -100,8 +100,8 @@
         <pre id="log">Events will be logged here…</pre>
 
         <script type="module">
-            import { initSettings } from "fwtoolkit"
-            import { ContentMenu, dropdownSelect } from "../dist/index.js"
+            import {initSettings} from "fwtoolkit"
+            import {ContentMenu, dropdownSelect} from "../dist/index.js"
 
             initSettings({
                 apiUrl: url => url,
@@ -141,7 +141,7 @@
                                 }
                             ]
                         },
-                        menuPos: { X: event.pageX, Y: event.pageY },
+                        menuPos: {X: event.pageX, Y: event.pageY},
                         onClose: () => log("Short content menu closed")
                     })
                     menu.open()
@@ -150,14 +150,14 @@
             document
                 .getElementById("open-long-menu")
                 .addEventListener("click", event => {
-                    const content = Array.from({ length: 30 }, (_, i) => ({
+                    const content = Array.from({length: 30}, (_, i) => ({
                         title: `Action ${i + 1}`,
                         action: () => log(`Action ${i + 1} selected`),
                         order: i + 1
                     }))
                     const menu = new ContentMenu({
-                        menu: { content },
-                        menuPos: { X: event.pageX, Y: event.pageY },
+                        menu: {content},
+                        menuPos: {X: event.pageX, Y: event.pageY},
                         onClose: () => log("Long content menu closed")
                     })
                     menu.open()

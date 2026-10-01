@@ -1,7 +1,7 @@
-import { ContentMenu, ContentMenuInit } from "./content_menu.js"
-import { Dialog } from "./dialog.js"
-import { isActivationEvent } from "./events.js"
-import { gettext } from "./settings.js"
+import {ContentMenu, ContentMenuInit} from "./content_menu.js"
+import {Dialog} from "./dialog.js"
+import {isActivationEvent} from "./events.js"
+import {gettext} from "./settings.js"
 
 export interface DropdownSelectOptions {
     onChange?: (value: string | false) => void
@@ -129,10 +129,10 @@ export const dropdownSelect = (
             return
         }
         // Determine menu position
-        let menuPos: { X: number; Y: number }
+        let menuPos: {X: number; Y: number}
         if (event.type === "click") {
             const mouseEvent = event as MouseEvent
-            menuPos = { X: mouseEvent.pageX, Y: mouseEvent.pageY }
+            menuPos = {X: mouseEvent.pageX, Y: mouseEvent.pageY}
         } else {
             // Keyboard event
             const rect = buttonDOM.getBoundingClientRect()
@@ -296,7 +296,7 @@ export interface DialogButtonSpec {
 // Used for system messages
 export const showSystemMessage = (
     message: string,
-    buttons: DialogButtonSpec[] = [{ type: "close" }]
+    buttons: DialogButtonSpec[] = [{type: "close"}]
 ): Dialog => {
     const dialog = new Dialog({
         title: gettext("System message"),
@@ -443,7 +443,7 @@ export const cancelPromise = (): Promise<never> => new Promise(() => {})
 export const findTarget = (
     event: Event,
     selector: string,
-    el?: { target?: Element | null }
+    el?: {target?: Element | null}
 ): boolean => {
     if (!el) {
         el = {}
@@ -471,7 +471,7 @@ export const whenReady = (): Promise<void> => {
     }
 }
 
-export const setDocTitle = (title: string, app: { name: string }): void => {
+export const setDocTitle = (title: string, app: {name: string}): void => {
     const titleText = `${title} - ${app.name}`
     if (document.title !== titleText) {
         document.title = titleText

@@ -1,7 +1,7 @@
-import { DiffDOM } from "diff-dom"
-import { keyName } from "w3c-keyname"
+import {DiffDOM} from "diff-dom"
+import {keyName} from "w3c-keyname"
 
-import { escapeText } from "./basic.js"
+import {escapeText} from "./basic.js"
 
 export interface PulldownMenuItem {
     id?: string
@@ -53,7 +53,7 @@ export class PulldownMenu {
     constructor(options: PulldownMenuOptions) {
         this.options = options
         this.context = options.context ?? null
-        this.dd = new DiffDOM({ valueDiffing: false })
+        this.dd = new DiffDOM({valueDiffing: false})
         this.container = null
         this.barEl = null
         this.listeners = {}

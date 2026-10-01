@@ -1,4 +1,4 @@
-import { DropUp } from "../src/drop_up.js"
+import {DropUp} from "../src/drop_up.js"
 
 describe("DropUp", () => {
     let container: HTMLElement
@@ -15,7 +15,7 @@ describe("DropUp", () => {
 
     test("render returns a drop-up element", () => {
         const dropUp = new DropUp({
-            options: [{ title: "Edit", action: () => {} }]
+            options: [{title: "Edit", action: () => {}}]
         })
         const el = dropUp.render()
         expect(el.classList.contains("fw-drop-up-outer")).toBe(true)
@@ -26,7 +26,7 @@ describe("DropUp", () => {
     test("render includes head HTML", () => {
         const dropUp = new DropUp({
             head: '<span class="title">Contributor</span>',
-            options: [{ title: "Edit", action: () => {} }]
+            options: [{title: "Edit", action: () => {}}]
         })
         const el = dropUp.render()
         expect(el.querySelector(".fw-drop-up-head")).not.toBeNull()
@@ -36,8 +36,8 @@ describe("DropUp", () => {
     test("open focuses the first option", () => {
         const dropUp = new DropUp({
             options: [
-                { title: "Edit", action: () => {} },
-                { title: "Remove", action: () => {} }
+                {title: "Edit", action: () => {}},
+                {title: "Remove", action: () => {}}
             ]
         })
         container.appendChild(dropUp.render())
@@ -49,8 +49,8 @@ describe("DropUp", () => {
     test("focusOption updates focused class", () => {
         const dropUp = new DropUp({
             options: [
-                { title: "Edit", action: () => {} },
-                { title: "Remove", action: () => {} }
+                {title: "Edit", action: () => {}},
+                {title: "Remove", action: () => {}}
             ]
         })
         container.appendChild(dropUp.render())
@@ -65,8 +65,8 @@ describe("DropUp", () => {
         const actions: string[] = []
         const dropUp = new DropUp({
             options: [
-                { title: "Edit", action: () => actions.push("edit") },
-                { title: "Remove", action: () => actions.push("remove") }
+                {title: "Edit", action: () => actions.push("edit")},
+                {title: "Remove", action: () => actions.push("remove")}
             ]
         })
         container.appendChild(dropUp.render())
@@ -78,8 +78,8 @@ describe("DropUp", () => {
     test("keyboard navigation with ArrowDown wraps around", () => {
         const dropUp = new DropUp({
             options: [
-                { title: "Edit", action: () => {} },
-                { title: "Remove", action: () => {} }
+                {title: "Edit", action: () => {}},
+                {title: "Remove", action: () => {}}
             ]
         })
         container.appendChild(dropUp.render())
@@ -87,7 +87,7 @@ describe("DropUp", () => {
         const list = container.querySelector(
             ".fw-drop-up-options"
         ) as HTMLElement
-        list.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }))
+        list.dispatchEvent(new KeyboardEvent("keydown", {key: "ArrowDown"}))
         const options = container.querySelectorAll(".fw-drop-up-option")
         expect(options[1].classList.contains("fw-focused")).toBe(true)
     })
@@ -96,8 +96,8 @@ describe("DropUp", () => {
         const actions: string[] = []
         const dropUp = new DropUp({
             options: [
-                { title: "Edit", action: () => actions.push("edit") },
-                { title: "Remove", action: () => actions.push("remove") }
+                {title: "Edit", action: () => actions.push("edit")},
+                {title: "Remove", action: () => actions.push("remove")}
             ]
         })
         container.appendChild(dropUp.render())
@@ -106,7 +106,7 @@ describe("DropUp", () => {
         const list = container.querySelector(
             ".fw-drop-up-options"
         ) as HTMLElement
-        list.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter" }))
+        list.dispatchEvent(new KeyboardEvent("keydown", {key: "Enter"}))
         expect(actions).toEqual(["remove"])
     })
 
@@ -116,7 +116,7 @@ describe("DropUp", () => {
             closed = true
         }
         const dropUp = new DropUp({
-            options: [{ title: "Edit", action: () => {} }],
+            options: [{title: "Edit", action: () => {}}],
             onClose
         })
         container.appendChild(dropUp.render())
@@ -124,7 +124,7 @@ describe("DropUp", () => {
         const list = container.querySelector(
             ".fw-drop-up-options"
         ) as HTMLElement
-        list.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }))
+        list.dispatchEvent(new KeyboardEvent("keydown", {key: "Escape"}))
         expect(dropUp.isOpen).toBe(false)
         expect(closed).toBe(true)
     })
@@ -132,8 +132,8 @@ describe("DropUp", () => {
     test("close resets focused state", () => {
         const dropUp = new DropUp({
             options: [
-                { title: "Edit", action: () => {} },
-                { title: "Remove", action: () => {} }
+                {title: "Edit", action: () => {}},
+                {title: "Remove", action: () => {}}
             ]
         })
         container.appendChild(dropUp.render())
@@ -148,7 +148,7 @@ describe("DropUp", () => {
     test("className is applied to option", () => {
         const dropUp = new DropUp({
             options: [
-                { title: "Edit", className: "edit-option", action: () => {} }
+                {title: "Edit", className: "edit-option", action: () => {}}
             ]
         })
         const el = dropUp.render()

@@ -1,6 +1,6 @@
-import { escapeText } from "../basic.js"
-import { postJson } from "../network.js"
-import { gettext } from "../settings.js"
+import {escapeText} from "../basic.js"
+import {postJson} from "../network.js"
+import {gettext} from "../settings.js"
 
 export const shortFileTitle = (title: string, path: string): string => {
     if (!path.length || path.endsWith("/")) {
@@ -53,8 +53,8 @@ export const moveFile = (
 ): Promise<string> => {
     path = cleanPath(title, path)
     return new Promise((resolve, reject) => {
-        postJson(moveUrl, { id: fileId, path }).then(({ json }) => {
-            const response = json as { done?: boolean }
+        postJson(moveUrl, {id: fileId, path}).then(({json}) => {
+            const response = json as {done?: boolean}
             if (response.done) {
                 resolve(path)
             } else {

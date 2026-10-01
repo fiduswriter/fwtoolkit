@@ -1,7 +1,7 @@
-import { ensureCSS } from "./network.js"
-import { getFocusIndex, setFocusIndex } from "./focus.js"
-import { isActivationEvent } from "./events.js"
-import { gettext, staticUrl } from "./settings.js"
+import {ensureCSS} from "./network.js"
+import {getFocusIndex, setFocusIndex} from "./focus.js"
+import {isActivationEvent} from "./events.js"
+import {gettext, staticUrl} from "./settings.js"
 
 export interface InputListItemRenderResult<T> {
     html: string
@@ -47,7 +47,7 @@ export class InputList<T> {
      * Validate all current values and highlight invalid items.
      */
     check(): boolean {
-        const { validate } = this.options
+        const {validate} = this.options
         if (!validate) {
             return true
         }
@@ -77,7 +77,7 @@ export class InputList<T> {
     }
 
     private addRow(tbody: HTMLElement, value: T, index: number): void {
-        const { html, bind } = this.options.renderItem(value, index)
+        const {html, bind} = this.options.renderItem(value, index)
         tbody.insertAdjacentHTML(
             "beforeend",
             `<tr>

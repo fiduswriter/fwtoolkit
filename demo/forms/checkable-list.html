@@ -48,8 +48,8 @@
         <p class="demo-value">Selected: <span id="checkable-value">[]</span></p>
 
         <script type="module">
-            import { initSettings } from "fwtoolkit"
-            import { CheckableList } from "../dist/index.js"
+            import {initSettings} from "fwtoolkit"
+            import {CheckableList} from "../dist/index.js"
 
             initSettings({
                 apiUrl: url => url,
@@ -63,9 +63,9 @@
             new CheckableList({
                 dom: document.getElementById("checkable-host"),
                 options: [
-                    { id: 1, label: "Category one" },
-                    { id: 2, label: "Category two" },
-                    { id: 3, label: "Category three" }
+                    {id: 1, label: "Category one"},
+                    {id: 2, label: "Category two"},
+                    {id: 3, label: "Category three"}
                 ],
                 initialValue: [1],
                 multiple: true,

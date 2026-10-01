@@ -41,10 +41,9 @@ const HIDE_DELAY = 150
 let initialized = false
 let activeTrigger: HTMLElement | null = null
 let activeTooltip: HTMLElement | null = null
-let tooltipOrigin: { parent: HTMLElement; nextSibling: Node | null } | null =
-    null
+let tooltipOrigin: {parent: HTMLElement; nextSibling: Node | null} | null = null
 let hideTimer: ReturnType<typeof setTimeout> | null = null
-let lastPointer: { x: number; y: number } = { x: -1, y: -1 }
+let lastPointer: {x: number; y: number} = {x: -1, y: -1}
 
 const getTrigger = (target: EventTarget | null): HTMLElement | null => {
     if (!(target instanceof Element)) {
@@ -213,7 +212,7 @@ const showTooltip = (trigger: HTMLElement): void => {
     }
     activeTrigger = trigger
     activeTooltip = tooltip
-    tooltipOrigin = { parent, nextSibling: tooltip.nextSibling }
+    tooltipOrigin = {parent, nextSibling: tooltip.nextSibling}
     document.body.appendChild(tooltip)
     tooltip.style.position = "fixed"
     tooltip.style.zIndex = String(getZIndex())
@@ -272,7 +271,7 @@ const onFocusOut = (event: FocusEvent): void => {
 }
 
 const onPointerMove = (event: PointerEvent): void => {
-    lastPointer = { x: event.clientX, y: event.clientY }
+    lastPointer = {x: event.clientX, y: event.clientY}
     if (activeTrigger && !activeTrigger.isConnected) {
         // The trigger was removed from the DOM while its tooltip was open.
         hideTooltip()

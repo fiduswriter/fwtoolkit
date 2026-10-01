@@ -1,6 +1,6 @@
-import { ensureCSS } from "./network.js"
-import { escapeText } from "./basic.js"
-import { gettext, staticUrl } from "./settings.js"
+import {ensureCSS} from "./network.js"
+import {escapeText} from "./basic.js"
+import {gettext, staticUrl} from "./settings.js"
 
 export type ProgressTaskType = "info" | "success" | "warning" | "error"
 
@@ -21,9 +21,9 @@ export interface ProgressTaskSpec {
     dismissable?: boolean
 }
 
-const ICONS: Record<ProgressTaskType, { running: string; done: string }> = {
-    info: { running: "fa fa-spinner fa-pulse", done: "fa fa-circle-check" },
-    success: { running: "fa fa-spinner fa-pulse", done: "fa fa-circle-check" },
+const ICONS: Record<ProgressTaskType, {running: string; done: string}> = {
+    info: {running: "fa fa-spinner fa-pulse", done: "fa fa-circle-check"},
+    success: {running: "fa fa-spinner fa-pulse", done: "fa fa-circle-check"},
     warning: {
         running: "fa fa-spinner fa-pulse",
         done: "fa fa-circle-exclamation"
@@ -241,7 +241,7 @@ export const addProgress = (
     title: string,
     options: Omit<ProgressTaskSpec, "title"> = {}
 ): ProgressTask => {
-    const task = new ProgressTask(alertType, { title, ...options })
+    const task = new ProgressTask(alertType, {title, ...options})
     task.open()
     return task
 }

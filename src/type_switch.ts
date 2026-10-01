@@ -1,6 +1,6 @@
-import { ensureCSS } from "./network.js"
-import { escapeText } from "./basic.js"
-import { staticUrl } from "./settings.js"
+import {ensureCSS} from "./network.js"
+import {escapeText} from "./basic.js"
+import {staticUrl} from "./settings.js"
 
 export interface TypeSwitchOptions {
     dom: HTMLElement

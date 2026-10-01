@@ -24,10 +24,10 @@
  *   node scripts/build-scoped-css.js [--out <dir>] [--prefix <selector>]
  *   node scripts/build-scoped-css.js --check   exit 1 when files are stale
  */
-import { readdirSync, readFileSync, writeFileSync, mkdirSync } from "node:fs"
-import { join } from "node:path"
+import {readdirSync, readFileSync, writeFileSync, mkdirSync} from "node:fs"
+import {join} from "node:path"
 import * as prettier from "prettier"
-import { scopeCss } from "../dist/index.js"
+import {scopeCss} from "../dist/index.js"
 
 const arg = (flag, fallback) => {
     const index = process.argv.indexOf(flag)
@@ -48,10 +48,10 @@ const check = hasFlag("--check")
 
 async function format(filepath, source) {
     const config = (await prettier.resolveConfig(filepath)) ?? {}
-    return prettier.format(source, { ...config, filepath })
+    return prettier.format(source, {...config, filepath})
 }
 
-mkdirSync(outDir, { recursive: true })
+mkdirSync(outDir, {recursive: true})
 
 let stale = []
 
@@ -62,8 +62,8 @@ for (const name of readdirSync(cssDir)) {
     const source = readFileSync(join(cssDir, name), "utf8")
     const scoped =
         name === "reset.css"
-            ? scopeCss(source, { prefix, elements: true })
-            : scopeCss(source, { prefix, elements: false })
+            ? scopeCss(source, {prefix, elements: true})
+            : scopeCss(source, {prefix, elements: false})
     const output = await format(join(outDir, name), scoped)
 
     const outputPath = join(outDir, name)

@@ -44,7 +44,7 @@ export class E2EEKeyManager {
                 hash: "SHA-256"
             },
             keyMaterial,
-            { name: "AES-GCM", length: 256 },
+            {name: "AES-GCM", length: 256},
             true, // extractable — required for sessionStorage caching
             ["encrypt", "decrypt"]
         )
@@ -87,7 +87,7 @@ export class E2EEKeyManager {
         return crypto.subtle.importKey(
             "raw",
             raw,
-            { name: "AES-GCM", length: 256 },
+            {name: "AES-GCM", length: 256},
             true,
             ["encrypt", "decrypt"]
         )
@@ -172,7 +172,7 @@ export class E2EEKeyManager {
                 return crypto.subtle.importKey(
                     "raw",
                     raw,
-                    { name: "AES-GCM", length: 256 },
+                    {name: "AES-GCM", length: 256},
                     true,
                     ["encrypt", "decrypt"]
                 )

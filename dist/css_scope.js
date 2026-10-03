@@ -1,0 +1,283 @@
+/**
+ * CSS scoping for embedding a full-page stylesheet inside a host page.
+ *
+ * A page-level stylesheet normally styles `document.body` (`body { ... }`,
+ * `body.state { ... }`, `html[hc=...] { ... }`) and sometimes resets *all*
+ * elements. When the same UI is mounted into a container element on a host
+ * page (a CMS, a plugin, an embed), those rules leak into the host.
+ *
+ * `scopeCss` rewrites such rules so they only apply inside a host container
+ * selector (`prefix`), letting you load the same stylesheets without an
+ * iframe:
+ *
+ *   - `body`        → `prefix`        (the container element)
+ *   - `body.foo`    → `prefix.foo`    (state classes stay on the container)
+ *   - `body .x`     → `prefix .x`
+ *   - `html[hc=...] ...` rules are page-context (paper sizing / high
+ *     contrast) and are dropped.
+ *   - When `elements` is true, bare element selectors (`a`, `input`, `table`,
+ *     ...) are prefixed with the container as well.
+ *   - `@media`/`@supports`/`@container`/`@layer` blocks are preserved and
+ *     their inner selectors scoped; `@keyframes`/`@font-face` blocks are
+ *     passed through untouched.
+ *
+ * Comments:
+ *   - Inside declaration bodies they pass through untouched.
+ *   - Between rules (license banners, section dividers) they are preserved
+ *     in their position.
+ *   - Inside selector lists or at-rule preludes they are collapsed to a
+ *     space — commas inside such a comment must not be mistaken for
+ *     selector separators.
+ *
+ * Example — embed the Fidus Writer editor (its mounted container carries the
+ * `editor` class):
+ *
+ *   scopeCss(editorCss, {prefix: "#my-editor .editor"})
+ *
+ * Note on `elements`: overlays and dialogs are often appended to
+ * `document.body` (outside the container) and rely on the unscoped base
+ * styles for `a`, `input`, etc. Scoping bare element selectors is therefore
+ * only safe for stylesheets that exist solely for the UI itself (resets,
+ * content styles). Other sheets should keep `elements: false` so class-based
+ * rules on body-level overlays keep working.
+ */
+export function scopeCss(css, options) {
+    const prefix = options.prefix;
+    const scopeElements = options.elements ?? false;
+    /**
+     * Selector used to scope rules to the host container.
+     *
+     * When `elements` is enabled (resets, content styles), the container is
+     * wrapped in `:where(...)` so the scoping contributes *no* specificity.
+     * Otherwise an ID-based container selector would inflate the reset's
+     * specificity and make it outrank the UI's own class rules (e.g.
+     * `#app div { padding: 0 }` beats `.editor-toolbar { padding-left: 110px }`).
+     * With `:where()`, element rules keep element-level specificity and the
+     * normal cascade applies — exactly like the full-page reset does.
+     */
+    const elementPrefix = scopeElements ? `:where(${prefix})` : prefix;
+    let out = "";
+    let seg = "";
+    let inComment = false;
+    let inString = null;
+    /** Block stack: "declarations" | "rules" | "ignore". */
+    const blocks = [];
+    const n = css.length;
+    let i = 0;
+    const currentKind = () => blocks.length ? blocks[blocks.length - 1] : "top";
+    /** Route a character to the selector buffer or the output stream. */
+    const emit = (ch) => {
+        const kind = currentKind();
+        if (kind === "declarations" || kind === "ignore") {
+            out += ch;
+        }
+        else {
+            seg += ch;
+        }
+    };
+    const flushSelectors = () => {
+        const text = seg;
+        seg = "";
+        const trimmed = text.trim();
+        if (!trimmed) {
+            blocks.push("declarations");
+            return text;
+        }
+        if (currentKind() === "ignore") {
+            blocks.push("declarations");
+            return text;
+        }
+        if (trimmed.startsWith("@")) {
+            // At-rule opening a block.
+            if (/^@media\b|^@supports\b|^@container\b|^@layer\b/.test(trimmed)) {
+                blocks.push("rules");
+            }
+            else {
+                blocks.push("ignore");
+            }
+            return text;
+        }
+        blocks.push("declarations");
+        return scopeSelectors(text, prefix, elementPrefix, scopeElements);
+    };
+    while (i < n) {
+        const ch = css[i];
+        if (inComment) {
+            if (ch === "*" && css[i + 1] === "/") {
+                emit("*/");
+                inComment = false;
+                i += 2;
+                continue;
+            }
+            emit(ch);
+            i++;
+            continue;
+        }
+        if (inString) {
+            if (ch === "\\") {
+                emit(ch);
+                emit(css[i + 1] ?? "");
+                i += 2;
+                continue;
+            }
+            if (ch === inString) {
+                inString = null;
+            }
+            emit(ch);
+            i++;
+            continue;
+        }
+        if (ch === "/" && css[i + 1] === "*") {
+            const kind = currentKind();
+            if (kind === "declarations" || kind === "ignore") {
+                // Declaration bodies and ignored at-rule bodies pass through
+                // verbatim via the normal emit path below.
+                emit("/*");
+                inComment = true;
+                i += 2;
+                continue;
+            }
+            // Selector-prelude position. Consume the whole comment here —
+            // letting it trickle into the selector buffer would make
+            // splitTopLevel() treat commas inside the comment as selector
+            // separators, corrupting selector groups and leaking unscoped
+            // selectors into the output.
+            const end = css.indexOf("*/", i + 2);
+            const stop = end === -1 ? n : end + 2;
+            if (!seg.trim()) {
+                // Between rules (the buffer holds no selector yet): keep the
+                // comment in its position — license banners and section
+                // dividers live here. Pending whitespace is flushed first so
+                // the original line structure survives.
+                out += seg;
+                seg = "";
+                out += css.slice(i, stop);
+            }
+            else {
+                // Inside a selector list or at-rule prelude: collapse the
+                // comment to a separating space.
+                seg += " ";
+            }
+            i = stop;
+            continue;
+        }
+        if (ch === '"' || ch === "'") {
+            inString = ch;
+            emit(ch);
+            i++;
+            continue;
+        }
+        const kind = currentKind();
+        if (ch === "{") {
+            if (kind === "declarations") {
+                // Nested block inside declarations (shouldn't occur); pass through.
+                out += "{";
+            }
+            else {
+                out += flushSelectors() + "{";
+            }
+            i++;
+            continue;
+        }
+        if (ch === "}") {
+            out += "}";
+            blocks.pop();
+            i++;
+            continue;
+        }
+        if (kind === "declarations" || kind === "ignore") {
+            // Declaration or at-rule body text: pass through verbatim.
+            out += ch;
+        }
+        else {
+            // Pre-block text (selectors / at-rule) or top-level junk.
+            seg += ch;
+        }
+        i++;
+    }
+    out += seg;
+    return out;
+}
+function scopeSelectors(text, prefix, elementPrefix, scopeElements) {
+    return (splitTopLevel(text, ",")
+        .map(sel => scopeSelector(sel, prefix, elementPrefix, scopeElements))
+        // Dropped selectors (e.g. page-context `html` rules) return "" —
+        // filter them out so the selector list never gets a stray leading
+        // comma, which would make the whole rule a parse error.
+        .filter(sel => sel.trim() !== "")
+        .join(","));
+}
+function scopeSelector(selector, prefix, elementPrefix, scopeElements) {
+    const s = selector.trim();
+    if (!s) {
+        return selector;
+    }
+    // Page-context html rules (paper sizing / high contrast) — drop entirely.
+    if (s === "html" || /^html(\[[^\]]*\])?[\s>+~,.:#[/(]/.test(s)) {
+        return "";
+    }
+    // body -> the host container.
+    if (s === "body") {
+        return elementPrefix;
+    }
+    if (/^body[\s]*[.#:([]/.test(s)) {
+        return elementPrefix + s.slice("body".length);
+    }
+    if (/\bbody\b/.test(s)) {
+        // body in a descendant/combinator position, e.g. "p body" or "body p".
+        const withPrefix = s.replace(/\bbody\b/g, elementPrefix);
+        return withPrefix.replace(new RegExp(`^${escapeRegex(prefix)}\\s+`), prefix);
+    }
+    // Bare element selector at the start (a, input, table, code, ...).
+    if (scopeElements &&
+        /^[a-zA-Z]/.test(s) &&
+        !/^[a-zA-Z][a-zA-Z0-9]*:/.test(s)) {
+        return `${elementPrefix} ${s}`;
+    }
+    return s;
+}
+function splitTopLevel(text, sep) {
+    const parts = [];
+    let cur = "";
+    let paren = 0;
+    let bracket = 0;
+    let inStr = null;
+    for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        if (inStr) {
+            cur += ch;
+            if (ch === "\\") {
+                cur += text[++i] ?? "";
+            }
+            else if (ch === inStr) {
+                inStr = null;
+            }
+            continue;
+        }
+        if (ch === '"' || ch === "'") {
+            inStr = ch;
+            cur += ch;
+            continue;
+        }
+        if (ch === "(")
+            paren++;
+        if (ch === ")")
+            paren--;
+        if (ch === "[")
+            bracket++;
+        if (ch === "]")
+            bracket--;
+        if (ch === sep && paren === 0 && bracket === 0) {
+            parts.push(cur);
+            cur = "";
+            continue;
+        }
+        cur += ch;
+    }
+    parts.push(cur);
+    return parts;
+}
+function escapeRegex(s) {
+    return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+//# sourceMappingURL=css_scope.js.map

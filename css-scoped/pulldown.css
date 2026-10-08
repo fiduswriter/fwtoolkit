@@ -25,6 +25,14 @@
     left: 100%;
     margin-top: 0;
 }
+
+/* A menu that would reach past the bottom of the viewport is flipped
+   upward: the menu code toggles fw-flip-up after measuring the rendered
+   menu, so items stay reachable on small screens. */
+.fw-pulldown .fw-pulldown.fw-flip-up {
+    top: auto;
+    bottom: 0;
+}
 .fw-marginbox-options.fw-pulldown .fw-pulldown {
     right: 100%;
     left: auto;

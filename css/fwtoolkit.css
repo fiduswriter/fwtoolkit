@@ -2713,6 +2713,14 @@ span.select-action-dropdown {
     margin-top: 4px;
 }
 
+/* A top-level menu that would reach past the bottom of the viewport is
+   flipped up above its header (see the fw-flip-up note in
+   pulldown.css). */
+.fw-pulldown-menu-header > .fw-pulldown.fw-flip-up {
+    top: auto;
+    bottom: calc(100% + 4px);
+}
+
 .fw-pulldown-menu-item.fw-cursor {
     background-color: var(--cs-white-background-hover);
 }
@@ -2747,6 +2755,14 @@ span.select-action-dropdown {
     top: 0;
     left: 100%;
     margin-top: 0;
+}
+
+/* A menu that would reach past the bottom of the viewport is flipped
+   upward: the menu code toggles fw-flip-up after measuring the rendered
+   menu, so items stay reachable on small screens. */
+.fw-pulldown .fw-pulldown.fw-flip-up {
+    top: auto;
+    bottom: 0;
 }
 
 .fw-marginbox-options.fw-pulldown .fw-pulldown {

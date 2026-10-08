@@ -129,6 +129,10 @@ export class PulldownMenu {
         this.listeners.onKeydown = event =>
             this.onKeydown(event as KeyboardEvent)
         document.body.addEventListener("keydown", this.listeners.onKeydown)
+        // A menu that fit when it was opened can overflow once the window
+        // is made smaller, and vice versa.
+        this.listeners.onResize = () => this.adjustOpenMenus()
+        window.addEventListener("resize", this.listeners.onResize)
     }
 
     destroy(): void {
@@ -140,6 +144,9 @@ export class PulldownMenu {
                 "keydown",
                 this.listeners.onKeydown
             )
+        }
+        if (this.listeners.onResize) {
+            window.removeEventListener("resize", this.listeners.onResize)
         }
         this.listeners = {}
         this.openMenu = null
@@ -501,6 +508,40 @@ export class PulldownMenu {
         }
         const diff = this.dd.diff(this.barEl, this.render())
         this.dd.apply(this.barEl, diff)
+        this.adjustOpenMenus()
+    }
+
+    /**
+     * Flip menus that reach past the bottom of the viewport upward, so
+     * their items stay reachable on small screens.
+     *
+     * The anchor is the list item for a submenu and the menu header for a
+     * top-level menu; the menu flips only when it overflows the viewport
+     * bottom and there is more room above the anchor than below it. Menus
+     * of a bar at the very top of the window therefore never flip, while
+     * submenus opened near the bottom do.
+     */
+    private adjustOpenMenus(): void {
+        if (!this.barEl) {
+            return
+        }
+        this.barEl
+            .querySelectorAll<HTMLElement>(".fw-pulldown.fw-open")
+            .forEach(menuEl => {
+                const anchor = menuEl.closest("li") ?? menuEl.parentElement
+                if (!anchor) {
+                    return
+                }
+                const menuRect = menuEl.getBoundingClientRect()
+                const anchorRect = anchor.getBoundingClientRect()
+                const spaceBelow = window.innerHeight - anchorRect.bottom
+                const spaceAbove = anchorRect.top
+                menuEl.classList.toggle(
+                    "fw-flip-up",
+                    menuRect.bottom > window.innerHeight &&
+                        spaceAbove > spaceBelow
+                )
+            })
     }
 
     private getMenuHTML(menu: PulldownMenuItem): string {

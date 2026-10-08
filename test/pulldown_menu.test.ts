@@ -1,3 +1,5 @@
+import {jest} from "@jest/globals"
+
 import {PulldownMenu, PulldownMenuItem} from "../src/pulldown_menu.js"
 
 describe("PulldownMenu", () => {
@@ -198,5 +200,127 @@ describe("PulldownMenu", () => {
             ) as HTMLElement
         ).click()
         expect(container.querySelector(".fw-pulldown hr")).not.toBeNull()
+    })
+
+    describe("viewport flip", () => {
+        // jsdom's default window height is 768.
+        const viewportHeight = window.innerHeight
+
+        function makeRect(top: number, bottom: number): DOMRect {
+            return {
+                x: 0,
+                y: top,
+                top,
+                bottom,
+                left: 0,
+                right: 100,
+                width: 100,
+                height: bottom - top,
+                toJSON: () => ({})
+            } as DOMRect
+        }
+
+        function openRecentSubmenu(): Element[] {
+            const pulldown = new PulldownMenu(makeMenu())
+            pulldown.bind(container)
+            ;(
+                container.querySelector(
+                    '[data-id="file"] .fw-pulldown-menu-title'
+                ) as HTMLElement
+            ).click()
+            ;(
+                container.querySelector('[data-id="recent"]') as HTMLElement
+            ).click()
+            return Array.from(
+                container.querySelectorAll(".fw-pulldown.fw-open")
+            )
+        }
+
+        afterEach(() => {
+            jest.restoreAllMocks()
+        })
+
+        test("submenu inside the viewport is not flipped", () => {
+            jest.spyOn(
+                Element.prototype,
+                "getBoundingClientRect"
+            ).mockImplementation(function (this: Element) {
+                return makeRect(100, 300)
+            })
+            const openMenus = openRecentSubmenu()
+            expect(openMenus[1].classList.contains("fw-flip-up")).toBe(false)
+        })
+
+        test("submenu overflowing the viewport flips up", () => {
+            jest.spyOn(
+                Element.prototype,
+                "getBoundingClientRect"
+            ).mockImplementation(function (this: Element) {
+                if (
+                    this.classList.contains("fw-pulldown") &&
+                    this.textContent?.includes("Doc 1") &&
+                    !this.textContent?.includes("New")
+                ) {
+                    // The Recent submenu reaches past the viewport.
+                    return makeRect(600, viewportHeight + 200)
+                }
+                if (this.tagName === "LI") {
+                    // The "Recent" item the submenu is anchored to.
+                    return makeRect(500, 549)
+                }
+                return makeRect(0, 10)
+            })
+            const openMenus = openRecentSubmenu()
+            expect(openMenus[1].classList.contains("fw-flip-up")).toBe(true)
+        })
+
+        test("submenu with more room below than above is not flipped", () => {
+            jest.spyOn(
+                Element.prototype,
+                "getBoundingClientRect"
+            ).mockImplementation(function (this: Element) {
+                if (
+                    this.classList.contains("fw-pulldown") &&
+                    this.textContent?.includes("Doc 1") &&
+                    !this.textContent?.includes("New")
+                ) {
+                    return makeRect(600, viewportHeight + 200)
+                }
+                if (this.tagName === "LI") {
+                    // Near the top: flipping would make it worse.
+                    return makeRect(100, 149)
+                }
+                return makeRect(0, 10)
+            })
+            const openMenus = openRecentSubmenu()
+            expect(openMenus[1].classList.contains("fw-flip-up")).toBe(false)
+        })
+
+        test("resizing the window re-evaluates the flip", () => {
+            const rectSpy = jest.spyOn(
+                Element.prototype,
+                "getBoundingClientRect"
+            )
+            rectSpy.mockImplementation(function (this: Element) {
+                return makeRect(100, 300)
+            })
+            const openMenus = openRecentSubmenu()
+            expect(openMenus[1].classList.contains("fw-flip-up")).toBe(false)
+            rectSpy.mockImplementation(function (this: Element) {
+                if (
+                    this.classList.contains("fw-pulldown") &&
+                    this.textContent?.includes("Doc 1") &&
+                    !this.textContent?.includes("New")
+                ) {
+                    return makeRect(600, viewportHeight + 200)
+                }
+                if (this.tagName === "LI") {
+                    return makeRect(500, 549)
+                }
+                return makeRect(0, 10)
+            })
+            window.dispatchEvent(new Event("resize"))
+            expect(openMenus[1].classList.contains("fw-flip-up")).toBe(true)
+        })
     })
 })

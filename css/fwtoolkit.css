@@ -1413,6 +1413,33 @@ table.fw-data-table.fw-selection-table tbody tr {
     position: initial !important;
 }
 
+/*
+ * Fullscreen dialogs (`fullScreen: true`) fill the window. The flex column
+ * layout subtracts the titlebar and button pane from the dialog's height so
+ * both stay visible, and lets the content take the rest, scrolling when it
+ * is taller than the window. The !important rules override the inline
+ * styles the Dialog class writes for hosts with an older stylesheet.
+ */
+.fw-dialog.fw-dialog-fullscreen {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.fw-dialog.fw-dialog-fullscreen .fw-dialog-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: auto !important;
+    height: auto !important;
+    overflow-y: auto;
+}
+
+.fw-dialog.fw-dialog-fullscreen .fw-dialog-buttonpane {
+    flex: 0 0 auto;
+}
+
 .fw-dialog-content.fw-scrollable {
     overflow-y: auto;
 }

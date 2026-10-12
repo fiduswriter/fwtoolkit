@@ -285,6 +285,11 @@ export class Dialog {
         this.backdropEl = document.body.lastElementChild as HTMLElement
         this.dialogEl = this.backdropEl.previousElementSibling as HTMLElement
         if (this.fullScreen) {
+            // The flex layout that keeps the titlebar, scrollable content and
+            // button pane inside the window comes from the
+            // `fw-dialog-fullscreen` CSS class; the inline styles remain for
+            // hosts that load an older copy of the stylesheet.
+            this.dialogEl.classList.add("fw-dialog-fullscreen")
             this.dialogEl.style.width = "98%"
             this.dialogEl.style.height = "100%"
             this.dialogEl.style.position = "fixed"

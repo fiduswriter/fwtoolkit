@@ -63,7 +63,7 @@
     },
     "dependencies": {
         "diff-dom": "^5.2.1",
-        "jszip": "^3.10.1",
+        "jszip": "^3.10.2",
         "simple-datatables": "^10.3.0",
         "w3c-keyname": "^2.2.8"
     },
@@ -77,26 +77,26 @@
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
-        "@fortawesome/fontawesome-free": "^7.2.0",
-        "@swc/core": "^1.16.1",
+        "@fortawesome/fontawesome-free": "^7.3.1",
+        "@swc/core": "^1.16.18",
         "@swc/jest": "^0.2.39",
         "@types/jest": "^30.0.0",
         "@typescript/native": "npm:typescript@^7.0.2",
-        "eslint": "^10.6.0",
+        "eslint": "^10.12.0",
         "gettext-parser": "^9.1.1",
-        "globals": "^17.7.0",
+        "globals": "^17.13.0",
         "husky": "^9.1.7",
         "jest": "^30.5.2",
         "jest-environment-jsdom": "^30.5.2",
-        "lint-staged": "^17.0.8",
-        "prettier": "^3.8.5",
-        "prosemirror-commands": "^1.7.0",
-        "prosemirror-history": "^1.4.0",
-        "prosemirror-keymap": "^1.2.0",
-        "prosemirror-model": "^1.23.0",
-        "prosemirror-state": "^1.4.0",
-        "prosemirror-view": "^1.37.0",
+        "lint-staged": "^17.6.0",
+        "prettier": "^3.9.10",
+        "prosemirror-commands": "^1.7.2",
+        "prosemirror-history": "^1.5.1",
+        "prosemirror-keymap": "^1.2.3",
+        "prosemirror-model": "^1.25.12",
+        "prosemirror-state": "^1.4.4",
+        "prosemirror-view": "^1.42.6",
         "typescript": "npm:@typescript/typescript6@^6.0.2",
-        "typescript-eslint": "^8.67.0"
+        "typescript-eslint": "^8.71.2"
     }
 }

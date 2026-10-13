@@ -2,7 +2,8 @@
 .fw-pulldown {
     position: absolute;
     display: none;
-    z-index: 101;
+    /* Above open dialogs, like .fw-content-menu (see there). */
+    z-index: calc(var(--highest-dialog-z-index, 100) + 2);
     box-shadow: 0 0 20px rgb(var(--pulldown-box-shadow-color));
     background-color: var(--cs-white-background);
     border-radius: 6px;

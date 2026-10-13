@@ -379,25 +379,22 @@ export class ContentMenu {
     }
 
     getHighestDialogZIndex(): number {
+        // Dialogs carry their z-index in the stylesheet (1000), not inline,
+        // so the inline style alone reads empty here and the menu would end
+        // up under the dialog it was opened from. Use the computed style,
+        // mirroring Dialog.nextDialogZIndex().
         let zIndex = 100
         document
-            .querySelectorAll("div.fw-content-menu")
-            .forEach(
-                dialogEl =>
-                    (zIndex = Math.max(
-                        zIndex,
-                        parseInt((dialogEl as HTMLElement).style.zIndex) || 100
-                    ))
-            )
-        document
-            .querySelectorAll("div.fw-dialog")
-            .forEach(
-                dialogEl =>
-                    (zIndex = Math.max(
-                        zIndex,
-                        parseInt((dialogEl as HTMLElement).style.zIndex) || 100
-                    ))
-            )
+            .querySelectorAll("div.fw-content-menu, div.fw-dialog")
+            .forEach(dialogEl => {
+                const computedZIndex = parseInt(
+                    window.getComputedStyle(dialogEl as HTMLElement).zIndex
+                )
+                zIndex = Math.max(
+                    zIndex,
+                    Number.isNaN(computedZIndex) ? 100 : computedZIndex
+                )
+            })
         return zIndex
     }
 

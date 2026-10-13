@@ -834,7 +834,10 @@ div.fw-warning {
     background-color: var(--cs-white-background);
     box-shadow: 0 0 20px rgb(var(--dropup-box-shadow-color));
     font-size: 14px;
-    z-index: 101;
+    /* Above open dialogs (z-index 1000): the Dialog class maintains
+     * --highest-dialog-z-index on body; when no dialog is open the fallback
+     * keeps the historical stacking just above the overlay (100). */
+    z-index: calc(var(--highest-dialog-z-index, 100) + 2);
     padding: 0;
     border: 0 none;
     border-image: initial;
@@ -2757,7 +2760,8 @@ span.select-action-dropdown {
 .fw-pulldown {
     position: absolute;
     display: none;
-    z-index: 101;
+    /* Above open dialogs, like .fw-content-menu (see there). */
+    z-index: calc(var(--highest-dialog-z-index, 100) + 2);
     box-shadow: 0 0 20px rgb(var(--pulldown-box-shadow-color));
     background-color: var(--cs-white-background);
     border-radius: 6px;

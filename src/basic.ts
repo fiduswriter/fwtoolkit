@@ -385,6 +385,27 @@ export const noSpaceTmp = (
     return out
 }
 
+/** Allowlist validator for user-supplied link targets.
+ * Accepts in-document fragments and http/https URLs only. */
+export const isSafeLinkHref = (href: unknown): boolean => {
+    if (typeof href !== "string") {
+        return false
+    }
+    const trimmed = href.trim()
+    if (!trimmed) {
+        return false
+    }
+    if (trimmed.startsWith("#")) {
+        return true
+    }
+    try {
+        const url = new URL(trimmed, window.location.origin)
+        return ["http:", "https:"].includes(url.protocol)
+    } catch {
+        return false
+    }
+}
+
 export const escapeText = (text: string): string => {
     return text
         .replace(/&/g, "&amp;")

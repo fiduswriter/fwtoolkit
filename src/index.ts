@@ -17,6 +17,7 @@ export {
     enableDatePicker,
     noSpaceTmp,
     escapeText,
+    isSafeLinkHref,
     unescapeText,
     infoTooltip,
     cancelPromise,

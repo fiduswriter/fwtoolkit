@@ -243,7 +243,7 @@ export class PassphraseManager {
     static async changePassphrase(
         oldPassphrase: string,
         newPassphrase: string,
-        accountPassword: string
+        accountPassword?: string
     ): Promise<boolean> {
         // 1. Fetch encrypted keys from server
         const data = (await getJson(
@@ -326,7 +326,7 @@ export class PassphraseManager {
     static async recoverWithRecoveryKey(
         recoveryKey: string,
         newPassphrase: string,
-        accountPassword: string
+        accountPassword?: string
     ): Promise<{newRecoveryKey: string}> {
         // 1. Fetch encrypted keys from server
         const data = (await getJson(

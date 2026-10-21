@@ -19,11 +19,13 @@ export interface EnterPassphraseOptions {
 export interface RecoverResult {
     recoveryKey: string
     newPassphrase: string
+    accountPassword: string
 }
 
 export interface ChangePassphraseResult {
     oldPassphrase: string
     newPassphrase: string
+    accountPassword: string
 }
 
 /**
@@ -427,6 +429,12 @@ export function recoverWithKeyDialog(
                     <input type="password" id="e2ee-confirm-passphrase-input" class="e2ee-password-input"
                            autocomplete="off" data-1p-ignore data-lp-ignore data-lpignore="true" data-bwignore data-form-type="other" />
                 </div>
+                <div class="e2ee-password-field">
+                    <label for="e2ee-recover-account-password">${gettext("Account password")}</label>
+                    <input type="password" id="e2ee-recover-account-password" class="e2ee-password-input"
+                           autocomplete="current-password" data-1p-ignore data-lp-ignore data-lpignore="true" data-bwignore data-form-type="other" />
+                    <p>${gettext("Recovering encryption keys requires confirming your account password.")}</p>
+                </div>
                 <div class="e2ee-password-error" id="e2ee-recover-error"></div>
             </div>
         `
@@ -448,6 +456,9 @@ export function recoverWithKeyDialog(
                     const confirmInput = document.getElementById(
                         "e2ee-confirm-passphrase-input"
                     )
+                    const accountInput = document.getElementById(
+                        "e2ee-recover-account-password"
+                    )
                     const errorEl =
                         document.getElementById("e2ee-recover-error")
 
@@ -459,6 +470,9 @@ export function recoverWithKeyDialog(
                         : ""
                     const confirmPassphrase = confirmInput
                         ? (confirmInput as HTMLInputElement).value
+                        : ""
+                    const accountPassword = accountInput
+                        ? (accountInput as HTMLInputElement).value
                         : ""
 
                     if (recoveryKey.length === 0) {
@@ -488,8 +502,17 @@ export function recoverWithKeyDialog(
                         return
                     }
 
+                    if (accountPassword.length === 0) {
+                        if (errorEl) {
+                            errorEl.textContent = gettext(
+                                "Please enter your account password."
+                            )
+                        }
+                        return
+                    }
+
                     dialogInstance.close()
-                    onRecover({recoveryKey, newPassphrase})
+                    onRecover({recoveryKey, newPassphrase, accountPassword})
                     resolve()
                 }
             },
@@ -586,6 +609,12 @@ export function changePassphraseDialog(
                     <input type="password" id="e2ee-confirm-new-passphrase-input" class="e2ee-password-input"
                            autocomplete="off" data-1p-ignore data-lp-ignore data-lpignore="true" data-bwignore data-form-type="other" />
                 </div>
+                <div class="e2ee-password-field">
+                    <label for="e2ee-change-account-password">${gettext("Account password")}</label>
+                    <input type="password" id="e2ee-change-account-password" class="e2ee-password-input"
+                           autocomplete="current-password" data-1p-ignore data-lp-ignore data-lpignore="true" data-bwignore data-form-type="other" />
+                    <p>${gettext("Changing encryption keys requires confirming your account password.")}</p>
+                </div>
                 <div class="e2ee-password-error" id="e2ee-change-error"></div>
             </div>
         `
@@ -607,6 +636,9 @@ export function changePassphraseDialog(
                     const confirmInput = document.getElementById(
                         "e2ee-confirm-new-passphrase-input"
                     )
+                    const accountInput = document.getElementById(
+                        "e2ee-change-account-password"
+                    )
                     const errorEl = document.getElementById("e2ee-change-error")
 
                     const oldPassphrase = oldInput
@@ -617,6 +649,9 @@ export function changePassphraseDialog(
                         : ""
                     const confirmPassphrase = confirmInput
                         ? (confirmInput as HTMLInputElement).value
+                        : ""
+                    const accountPassword = accountInput
+                        ? (accountInput as HTMLInputElement).value
                         : ""
 
                     if (oldPassphrase.length === 0) {
@@ -646,8 +681,21 @@ export function changePassphraseDialog(
                         return
                     }
 
+                    if (accountPassword.length === 0) {
+                        if (errorEl) {
+                            errorEl.textContent = gettext(
+                                "Please enter your account password."
+                            )
+                        }
+                        return
+                    }
+
                     dialogInstance.close()
-                    await onChange({oldPassphrase, newPassphrase})
+                    await onChange({
+                        oldPassphrase,
+                        newPassphrase,
+                        accountPassword
+                    })
                     resolve()
                 }
             },

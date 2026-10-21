@@ -23,6 +23,7 @@ interface EncryptionKeyData {
     encrypted_private_key?: string
     public_key?: string
     encrypted_master_key_backup?: string
+    version?: number
 }
 
 interface DocumentKeyData {
@@ -41,6 +42,44 @@ interface PreferencesData {
     preferences?: {
         has_dismissed_passphrase_offer?: boolean
     }
+}
+
+/**
+ * POST the encryption-key save payload without throwing on HTTP error
+ * responses, so callers can surface the server-provided rejection message.
+ */
+const postEncryptionKeySave = async (
+    saveData: Record<string, unknown>
+): Promise<{json: unknown; status: number}> => {
+    try {
+        const {json, status} = await postJson(
+            apiUrl("e2ee.user_encryption_key_save"),
+            saveData
+        )
+        return {json, status}
+    } catch (errorResponse) {
+        let json: unknown = null
+        try {
+            const response = errorResponse as Response
+            if (response && typeof response.json === "function") {
+                json = await response.json()
+            }
+        } catch {
+            json = null
+        }
+        const status = (errorResponse as Response)?.status || 500
+        return {json, status}
+    }
+}
+
+const errorMessage = (json: unknown, fallback: string): string => {
+    if (json && typeof json === "object" && "message" in json) {
+        const message = (json as {message?: unknown}).message
+        if (typeof message === "string" && message) {
+            return message
+        }
+    }
+    return fallback
 }
 
 export class PassphraseManager {
@@ -197,11 +236,14 @@ export class PassphraseManager {
      *
      * @param oldPassphrase - Current passphrase
      * @param newPassphrase - New passphrase
+     * @param accountPassword - Account password for step-up
+     *     verification (the server refuses a key rotation without it)
      * @returns true if successful
      */
     static async changePassphrase(
         oldPassphrase: string,
-        newPassphrase: string
+        newPassphrase: string,
+        accountPassword: string
     ): Promise<boolean> {
         // 1. Fetch encrypted keys from server
         const data = (await getJson(
@@ -254,14 +296,16 @@ export class PassphraseManager {
             encrypted_private_key: encryptedPrivateKey,
             user_salt: PassphraseCrypto._bytesToBase64(newSalt),
             user_iterations: 600000,
-            encrypted_master_key_backup: encryptedMasterKeyBackup
+            encrypted_master_key_backup: encryptedMasterKeyBackup,
+            password: accountPassword,
+            expected_version: data.version,
+            old_public_key: data.public_key
         }
-        const {status} = await postJson(
-            apiUrl("e2ee.user_encryption_key_save"),
-            saveData
-        )
+        const {json, status} = await postEncryptionKeySave(saveData)
         if (status >= 400) {
-            throw new Error("Failed to save updated encryption keys")
+            throw new Error(
+                errorMessage(json, "Failed to save updated encryption keys")
+            )
         }
 
         // 7. Update sessionStorage
@@ -275,11 +319,14 @@ export class PassphraseManager {
      *
      * @param recoveryKey - The recovery key (hex string)
      * @param newPassphrase - The new passphrase to set
+     * @param accountPassword - Account password for step-up
+     *     verification (the server refuses a key rotation without it)
      * @returns {newRecoveryKey: string}
      */
     static async recoverWithRecoveryKey(
         recoveryKey: string,
-        newPassphrase: string
+        newPassphrase: string,
+        accountPassword: string
     ): Promise<{newRecoveryKey: string}> {
         // 1. Fetch encrypted keys from server
         const data = (await getJson(
@@ -347,14 +394,16 @@ export class PassphraseManager {
             encrypted_private_key: encryptedPrivateKey,
             user_salt: PassphraseCrypto._bytesToBase64(newSalt),
             user_iterations: 600000,
-            encrypted_master_key_backup: encryptedMasterKeyBackup
+            encrypted_master_key_backup: encryptedMasterKeyBackup,
+            password: accountPassword,
+            expected_version: data.version,
+            old_public_key: data.public_key
         }
-        const {status} = await postJson(
-            apiUrl("e2ee.user_encryption_key_save"),
-            saveData
-        )
+        const {json, status} = await postEncryptionKeySave(saveData)
         if (status >= 400) {
-            throw new Error("Failed to save updated encryption keys")
+            throw new Error(
+                errorMessage(json, "Failed to save updated encryption keys")
+            )
         }
 
         // 9. Store in sessionStorage

@@ -2025,6 +2025,7 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 /* === input_list.css === */
 .fw-input-list-wrapper {
     width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
 }
 .fw-input-list-wrapper tr {
@@ -2036,7 +2037,19 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 .fw-input-list-item-cell {
     width: 100%;
 }
+
+/* Keep inputs inside list items within the available width so the
+   add/remove controls are always visible without horizontal scrolling. */
+.fw-input-list-wrapper .fw-input-list-item-cell .ProseMirror,
+.fw-input-list-wrapper .fw-input-list-item-cell input[type="text"],
+.fw-input-list-wrapper .fw-input-list-item-cell input[type="number"],
+.fw-input-list-wrapper .fw-input-list-item-cell textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
 .fw-input-field-list-ctrl {
+    width: 1%;
     white-space: nowrap;
     padding-left: 8px;
     padding-top: 10px;

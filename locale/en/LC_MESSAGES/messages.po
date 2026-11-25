@@ -8,6 +8,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Account password"
+msgstr "Account password"
+
 msgid "Action completed"
 msgstr "Action completed"
 
@@ -35,6 +38,9 @@ msgid ""
 msgstr ""
 "Change the document password. After changing, you must share the new "
 "password with all collaborators."
+
+msgid "Changing encryption keys requires confirming your account password."
+msgstr "Changing encryption keys requires confirming your account password."
 
 msgid "Close"
 msgstr "Close"
@@ -125,6 +131,9 @@ msgstr "Insert folder name"
 msgid "Insert path"
 msgstr "Insert path"
 
+msgid "More information"
+msgstr "More information"
+
 msgid "New folder"
 msgstr "New folder"
 
@@ -173,6 +182,9 @@ msgstr "Please enter the current password."
 msgid "Please enter the password."
 msgstr "Please enter the password."
 
+msgid "Please enter your account password."
+msgstr "Please enter your account password."
+
 msgid "Please enter your current passphrase."
 msgstr "Please enter your current passphrase."
 
@@ -190,6 +202,9 @@ msgstr "Recover Encryption"
 
 msgid "Recover with key"
 msgstr "Recover with key"
+
+msgid "Recovering encryption keys requires confirming your account password."
+msgstr "Recovering encryption keys requires confirming your account password."
 
 msgid "Recovery key"
 msgstr "Recovery key"

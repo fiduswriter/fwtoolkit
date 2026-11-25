@@ -8,6 +8,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Account password"
+msgstr "Hasło do konta"
+
 msgid "Action completed"
 msgstr "Akcja zakończona"
 
@@ -35,6 +38,9 @@ msgid ""
 msgstr ""
 "Zmień hasło dokumentu. Po zmianie musisz udostępnić nowe hasło wszystkim "
 "współpracownikom."
+
+msgid "Changing encryption keys requires confirming your account password."
+msgstr "Zmiana kluczy szyfrujących wymaga potwierdzenia hasła do konta."
 
 msgid "Close"
 msgstr "Zamknij"
@@ -124,6 +130,9 @@ msgstr "Wstaw nazwę folderu"
 msgid "Insert path"
 msgstr "Wstaw ścieżkę"
 
+msgid "More information"
+msgstr "Więcej informacji"
+
 msgid "New folder"
 msgstr "Nowy folder"
 
@@ -172,6 +181,9 @@ msgstr "Proszę wpisać aktualne hasło."
 msgid "Please enter the password."
 msgstr "Proszę wpisać hasło."
 
+msgid "Please enter your account password."
+msgstr "Proszę podać hasło do konta."
+
 msgid "Please enter your current passphrase."
 msgstr "Proszę wprowadzić aktualne hasło."
 
@@ -189,6 +201,9 @@ msgstr "Odzyskaj szyfrowanie"
 
 msgid "Recover with key"
 msgstr "Odzyskaj za pomocą klucza"
+
+msgid "Recovering encryption keys requires confirming your account password."
+msgstr "Odzyskiwanie kluczy szyfrujących wymaga potwierdzenia hasła do konta."
 
 msgid "Recovery key"
 msgstr "Klucz odzyskiwania"

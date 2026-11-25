@@ -8,6 +8,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Account password"
+msgstr "アカウントのパスワード"
+
 msgid "Action completed"
 msgstr "アクションが完了しました"
 
@@ -33,6 +36,9 @@ msgid ""
 "Change the document password. After changing, you must share the new "
 "password with all collaborators."
 msgstr "文書のパスワードを変更します。変更後は、新しいパスワードをすべての共同作業者と共有する必要があります。"
+
+msgid "Changing encryption keys requires confirming your account password."
+msgstr "暗号化キーを変更するには、アカウントのパスワードを確認する必要があります。"
 
 msgid "Close"
 msgstr "閉じる"
@@ -119,6 +125,9 @@ msgstr "フォルダー名を挿入"
 msgid "Insert path"
 msgstr "パスの挿入"
 
+msgid "More information"
+msgstr "詳細情報"
+
 msgid "New folder"
 msgstr "新しいフォルダー"
 
@@ -167,6 +176,9 @@ msgstr "現在のパスワードを入力してください。"
 msgid "Please enter the password."
 msgstr "パスワードを入力してください。"
 
+msgid "Please enter your account password."
+msgstr "アカウントのパスワードを入力してください。"
+
 msgid "Please enter your current passphrase."
 msgstr "現在のパスフレーズを入力してください。"
 
@@ -184,6 +196,9 @@ msgstr "暗号化を回復"
 
 msgid "Recover with key"
 msgstr "キーで回復"
+
+msgid "Recovering encryption keys requires confirming your account password."
+msgstr "暗号化キーを回復するには、アカウントのパスワードを確認する必要があります。"
 
 msgid "Recovery key"
 msgstr "回復キー"

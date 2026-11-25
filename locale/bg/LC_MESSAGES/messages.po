@@ -8,6 +8,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Account password"
+msgstr "Парола за акаунт"
+
 msgid "Action completed"
 msgstr "Действието е завършено"
 
@@ -35,6 +38,11 @@ msgid ""
 msgstr ""
 "Променете паролата на документа. След промяната трябва да споделите новата "
 "парола с всички сътрудници."
+
+msgid "Changing encryption keys requires confirming your account password."
+msgstr ""
+"Промяната на ключовете за шифроване изисква потвърждаване на паролата за "
+"вашия акаунт."
 
 msgid "Close"
 msgstr "Затвори"
@@ -126,6 +134,9 @@ msgstr "Вмъкване на име на папка"
 msgid "Insert path"
 msgstr "Вмъкване на път"
 
+msgid "More information"
+msgstr "Повече информация"
+
 msgid "New folder"
 msgstr "Нова папка"
 
@@ -174,6 +185,9 @@ msgstr "Моля, въведете текущата парола."
 msgid "Please enter the password."
 msgstr "Моля, въведете паролата."
 
+msgid "Please enter your account password."
+msgstr "Моля, въведете паролата за вашия акаунт."
+
 msgid "Please enter your current passphrase."
 msgstr "Моля, въведете текущата си парола."
 
@@ -191,6 +205,11 @@ msgstr "Възстановяване на криптиране"
 
 msgid "Recover with key"
 msgstr "Възстановяване с ключ"
+
+msgid "Recovering encryption keys requires confirming your account password."
+msgstr ""
+"Възстановяването на ключове за шифроване изисква потвърждаване на паролата "
+"за вашия акаунт."
 
 msgid "Recovery key"
 msgstr "Ключ за възстановяване"

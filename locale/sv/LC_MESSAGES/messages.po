@@ -8,6 +8,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Account password"
+msgstr "Kontolösenord"
+
 msgid "Action completed"
 msgstr "Åtgärden slutförd"
 
@@ -35,6 +38,10 @@ msgid ""
 msgstr ""
 "Ändra dokumentlösenordet. Efter ändring måste du dela det nya lösenordet med"
 " alla medarbetare."
+
+msgid "Changing encryption keys requires confirming your account password."
+msgstr ""
+"För att ändra krypteringsnycklar måste du bekräfta ditt kontolösenord."
 
 msgid "Close"
 msgstr "Stäng"
@@ -126,6 +133,9 @@ msgstr "Infoga mappnamn"
 msgid "Insert path"
 msgstr "Infoga sökväg"
 
+msgid "More information"
+msgstr "Mer information"
+
 msgid "New folder"
 msgstr "Ny mapp"
 
@@ -174,6 +184,9 @@ msgstr "Vänligen ange det aktuella lösenordet."
 msgid "Please enter the password."
 msgstr "Vänligen ange lösenordet."
 
+msgid "Please enter your account password."
+msgstr "Vänligen ange ditt kontolösenord."
+
 msgid "Please enter your current passphrase."
 msgstr "Vänligen ange din nuvarande lösenfras."
 
@@ -191,6 +204,10 @@ msgstr "Återställ kryptering"
 
 msgid "Recover with key"
 msgstr "Återställ med nyckel"
+
+msgid "Recovering encryption keys requires confirming your account password."
+msgstr ""
+"För att återställa krypteringsnycklar måste du bekräfta ditt kontolösenord."
 
 msgid "Recovery key"
 msgstr "Återställningsnyckel"

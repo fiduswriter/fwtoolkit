@@ -8,6 +8,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Account password"
+msgstr "Kontopassord"
+
 msgid "Action completed"
 msgstr "Handlingen fullført"
 
@@ -35,6 +38,9 @@ msgid ""
 msgstr ""
 "Endre dokumentpassordet. Etter endring må du dele det nye passordet med alle"
 " samarbeidspartnere."
+
+msgid "Changing encryption keys requires confirming your account password."
+msgstr "Endring av krypteringsnøkler krever bekreftelse av kontopassordet."
 
 msgid "Close"
 msgstr "Lukk"
@@ -126,6 +132,9 @@ msgstr "Sett inn mappenavn"
 msgid "Insert path"
 msgstr "Sett inn bane"
 
+msgid "More information"
+msgstr "Mer informasjon"
+
 msgid "New folder"
 msgstr "Ny mappe"
 
@@ -174,6 +183,9 @@ msgstr "Vennligst skriv inn gjeldende passord."
 msgid "Please enter the password."
 msgstr "Vennligst skriv inn passordet."
 
+msgid "Please enter your account password."
+msgstr "Vennligst skriv inn kontopassordet ditt."
+
 msgid "Please enter your current passphrase."
 msgstr "Vennligst skriv inn din nåværende passordfrase."
 
@@ -191,6 +203,10 @@ msgstr "Gjenopprett kryptering"
 
 msgid "Recover with key"
 msgstr "Gjenopprett med nøkkel"
+
+msgid "Recovering encryption keys requires confirming your account password."
+msgstr ""
+"Gjenoppretting av krypteringsnøkler krever bekreftelse av kontopassordet."
 
 msgid "Recovery key"
 msgstr "Gjenopprettingsnøkkel"

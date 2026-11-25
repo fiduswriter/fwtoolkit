@@ -8,6 +8,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Account password"
+msgstr "Accountwachtwoord"
+
 msgid "Action completed"
 msgstr "Actie voltooid"
 
@@ -35,6 +38,11 @@ msgid ""
 msgstr ""
 "Wijzig het documentwachtwoord. Na het wijzigen moet u het nieuwe wachtwoord "
 "met alle bijdragers delen."
+
+msgid "Changing encryption keys requires confirming your account password."
+msgstr ""
+"Als u de coderingssleutels wilt wijzigen, moet u uw accountwachtwoord "
+"bevestigen."
 
 msgid "Close"
 msgstr "Sluit"
@@ -127,6 +135,9 @@ msgstr "Mapnaam invoegen"
 msgid "Insert path"
 msgstr "Pad invoegen"
 
+msgid "More information"
+msgstr "Meer informatie"
+
 msgid "New folder"
 msgstr "Nieuwe map"
 
@@ -175,6 +186,9 @@ msgstr "Voer het huidige wachtwoord in."
 msgid "Please enter the password."
 msgstr "Voer het wachtwoord in."
 
+msgid "Please enter your account password."
+msgstr "Voer uw accountwachtwoord in."
+
 msgid "Please enter your current passphrase."
 msgstr "Voer uw huidige wachtwoordzin in."
 
@@ -192,6 +206,11 @@ msgstr "Herstel de codering"
 
 msgid "Recover with key"
 msgstr "Herstellen met sleutel"
+
+msgid "Recovering encryption keys requires confirming your account password."
+msgstr ""
+"Om de coderingssleutels te herstellen, moet u uw accountwachtwoord "
+"bevestigen."
 
 msgid "Recovery key"
 msgstr "Herstelsleutel"

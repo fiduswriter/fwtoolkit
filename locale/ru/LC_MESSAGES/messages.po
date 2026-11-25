@@ -8,6 +8,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Account password"
+msgstr "Пароль учетной записи"
+
 msgid "Action completed"
 msgstr "Действие завершено"
 
@@ -35,6 +38,11 @@ msgid ""
 msgstr ""
 "Измените пароль документа. После изменения вы должны сообщить новый пароль "
 "всем соавторам."
+
+msgid "Changing encryption keys requires confirming your account password."
+msgstr ""
+"Для изменения ключей шифрования требуется подтверждение пароля вашей учетной"
+" записи."
 
 msgid "Close"
 msgstr "Закрыть"
@@ -126,6 +134,9 @@ msgstr "Вставить имя папки"
 msgid "Insert path"
 msgstr "Вставить путь"
 
+msgid "More information"
+msgstr "Дополнительная информация"
+
 msgid "New folder"
 msgstr "Новая папка"
 
@@ -174,6 +185,9 @@ msgstr "Пожалуйста, введите текущий пароль."
 msgid "Please enter the password."
 msgstr "Пожалуйста, введите пароль."
 
+msgid "Please enter your account password."
+msgstr "Пожалуйста, введите пароль вашей учетной записи."
+
 msgid "Please enter your current passphrase."
 msgstr "Пожалуйста, введите текущий пароль."
 
@@ -191,6 +205,11 @@ msgstr "Восстановить шифрование"
 
 msgid "Recover with key"
 msgstr "Восстановить с помощью ключа"
+
+msgid "Recovering encryption keys requires confirming your account password."
+msgstr ""
+"Для восстановления ключей шифрования требуется подтверждение пароля вашей "
+"учетной записи."
 
 msgid "Recovery key"
 msgstr "Ключ восстановления"

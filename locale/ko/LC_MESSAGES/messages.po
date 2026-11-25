@@ -8,6 +8,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Account password"
+msgstr "계정 비밀번호"
+
 msgid "Action completed"
 msgstr "작업 완료"
 
@@ -33,6 +36,9 @@ msgid ""
 "Change the document password. After changing, you must share the new "
 "password with all collaborators."
 msgstr "문서 비밀번호를 변경하세요. 변경한 후에는 모든 공동작업자와 새 비밀번호를 공유해야 합니다."
+
+msgid "Changing encryption keys requires confirming your account password."
+msgstr "암호화 키를 변경하려면 계정 비밀번호를 확인해야 합니다."
 
 msgid "Close"
 msgstr "닫기"
@@ -119,6 +125,9 @@ msgstr "폴더 이름 삽입"
 msgid "Insert path"
 msgstr "경로 삽입"
 
+msgid "More information"
+msgstr "추가 정보"
+
 msgid "New folder"
 msgstr "새 폴더"
 
@@ -167,6 +176,9 @@ msgstr "현재 비밀번호를 입력해주세요."
 msgid "Please enter the password."
 msgstr "비밀번호를 입력해주세요."
 
+msgid "Please enter your account password."
+msgstr "계정 비밀번호를 입력해주세요."
+
 msgid "Please enter your current passphrase."
 msgstr "현재 암호를 입력하세요."
 
@@ -184,6 +196,9 @@ msgstr "암호화 복구"
 
 msgid "Recover with key"
 msgstr "키로 복구"
+
+msgid "Recovering encryption keys requires confirming your account password."
+msgstr "암호화 키를 복구하려면 계정 비밀번호를 확인해야 합니다."
 
 msgid "Recovery key"
 msgstr "복구 키"

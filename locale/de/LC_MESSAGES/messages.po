@@ -8,6 +8,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Account password"
+msgstr "Kontopasswort"
+
 msgid "Action completed"
 msgstr "Aktion ausgeführt"
 
@@ -35,6 +38,11 @@ msgid ""
 msgstr ""
 "Ändern Sie das Dokumentkennwort. Nach der Änderung müssen Sie das neue "
 "Passwort allen Mitarbeitern mitteilen."
+
+msgid "Changing encryption keys requires confirming your account password."
+msgstr ""
+"Zum Ändern der Verschlüsselungsschlüssel müssen Sie Ihr Kontokennwort "
+"bestätigen."
 
 msgid "Close"
 msgstr "Schließen"
@@ -127,6 +135,9 @@ msgstr "Ordnernamen einfügen"
 msgid "Insert path"
 msgstr "Pfad einfügen"
 
+msgid "More information"
+msgstr "Weitere Informationen"
+
 msgid "New folder"
 msgstr "Neuer Ordner"
 
@@ -175,6 +186,9 @@ msgstr "Bitte geben Sie das aktuelle Passwort ein."
 msgid "Please enter the password."
 msgstr "Bitte geben Sie das Passwort ein."
 
+msgid "Please enter your account password."
+msgstr "Bitte geben Sie Ihr Kontopasswort ein."
+
 msgid "Please enter your current passphrase."
 msgstr "Bitte geben Sie Ihr aktuelles Passwort ein."
 
@@ -192,6 +206,11 @@ msgstr "Verschlüsselung wiederherstellen"
 
 msgid "Recover with key"
 msgstr "Mit Schlüssel wiederherstellen"
+
+msgid "Recovering encryption keys requires confirming your account password."
+msgstr ""
+"Für die Wiederherstellung von Verschlüsselungsschlüsseln ist die Bestätigung"
+" Ihres Kontokennworts erforderlich."
 
 msgid "Recovery key"
 msgstr "Wiederherstellungsschlüssel"

@@ -8,6 +8,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Account password"
+msgstr "كلمة مرور الحساب"
+
 msgid "Action completed"
 msgstr "اكتمل الإجراء"
 
@@ -35,6 +38,9 @@ msgid ""
 msgstr ""
 "تغيير كلمة مرور المستند. بعد التغيير، يجب عليك مشاركة كلمة المرور الجديدة مع"
 " جميع المتعاونين."
+
+msgid "Changing encryption keys requires confirming your account password."
+msgstr "يتطلب تغيير مفاتيح التشفير تأكيد كلمة مرور حسابك."
 
 msgid "Close"
 msgstr "إغلاق"
@@ -125,6 +131,9 @@ msgstr "أدخل اسم المجلد"
 msgid "Insert path"
 msgstr "أدخل المسار"
 
+msgid "More information"
+msgstr "مزيد من المعلومات"
+
 msgid "New folder"
 msgstr "مجلد جديد"
 
@@ -173,6 +182,9 @@ msgstr "الرجاء إدخال كلمة المرور الحالية."
 msgid "Please enter the password."
 msgstr "الرجاء إدخال كلمة المرور."
 
+msgid "Please enter your account password."
+msgstr "الرجاء إدخال كلمة المرور الخاصة بحسابك."
+
 msgid "Please enter your current passphrase."
 msgstr "الرجاء إدخال عبارة المرور الحالية الخاصة بك."
 
@@ -190,6 +202,9 @@ msgstr "استعادة التشفير"
 
 msgid "Recover with key"
 msgstr "الاسترداد بالمفتاح"
+
+msgid "Recovering encryption keys requires confirming your account password."
+msgstr "تتطلب استعادة مفاتيح التشفير تأكيد كلمة مرور حسابك."
 
 msgid "Recovery key"
 msgstr "مفتاح الاسترداد"

@@ -8,6 +8,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Account password"
+msgstr "Password dell'account"
+
 msgid "Action completed"
 msgstr "Azione completata"
 
@@ -35,6 +38,11 @@ msgid ""
 msgstr ""
 "Modificare la password del documento. Dopo la modifica è necessario "
 "condividere la nuova password con tutti i collaboratori."
+
+msgid "Changing encryption keys requires confirming your account password."
+msgstr ""
+"La modifica delle chiavi di crittografia richiede la conferma della password"
+" dell'account."
 
 msgid "Close"
 msgstr "Chiudi"
@@ -127,6 +135,9 @@ msgstr "Inserisci il nome della cartella"
 msgid "Insert path"
 msgstr "Inserisci percorso"
 
+msgid "More information"
+msgstr "Maggiori informazioni"
+
 msgid "New folder"
 msgstr "Nuova cartella"
 
@@ -175,6 +186,9 @@ msgstr "Inserisci la password attuale."
 msgid "Please enter the password."
 msgstr "Inserisci la password."
 
+msgid "Please enter your account password."
+msgstr "Inserisci la password del tuo account."
+
 msgid "Please enter your current passphrase."
 msgstr "Inserisci la tua passphrase attuale."
 
@@ -192,6 +206,11 @@ msgstr "Recupera la crittografia"
 
 msgid "Recover with key"
 msgstr "Recuperare con chiave"
+
+msgid "Recovering encryption keys requires confirming your account password."
+msgstr ""
+"Il ripristino delle chiavi di crittografia richiede la conferma della "
+"password del tuo account."
 
 msgid "Recovery key"
 msgstr "Chiave di ripristino"

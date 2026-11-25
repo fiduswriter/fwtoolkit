@@ -8,6 +8,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Account password"
+msgstr "Heslo účtu"
+
 msgid "Action completed"
 msgstr "Akce dokončena"
 
@@ -35,6 +38,9 @@ msgid ""
 msgstr ""
 "Změňte heslo dokumentu. Po změně musíte nové heslo sdílet se všemi "
 "spolupracovníky."
+
+msgid "Changing encryption keys requires confirming your account password."
+msgstr "Změna šifrovacích klíčů vyžaduje potvrzení hesla k účtu."
 
 msgid "Close"
 msgstr "Zavřít"
@@ -126,6 +132,9 @@ msgstr "Vložte název složky"
 msgid "Insert path"
 msgstr "Vložit cestu"
 
+msgid "More information"
+msgstr "Více informací"
+
 msgid "New folder"
 msgstr "Nová složka"
 
@@ -174,6 +183,9 @@ msgstr "Zadejte prosím aktuální heslo."
 msgid "Please enter the password."
 msgstr "Zadejte heslo."
 
+msgid "Please enter your account password."
+msgstr "Zadejte heslo svého účtu."
+
 msgid "Please enter your current passphrase."
 msgstr "Zadejte své aktuální přístupové heslo."
 
@@ -191,6 +203,9 @@ msgstr "Obnovit šifrování"
 
 msgid "Recover with key"
 msgstr "Obnovit pomocí klíče"
+
+msgid "Recovering encryption keys requires confirming your account password."
+msgstr "Obnovení šifrovacích klíčů vyžaduje potvrzení hesla vašeho účtu."
 
 msgid "Recovery key"
 msgstr "Obnovovací klíč"

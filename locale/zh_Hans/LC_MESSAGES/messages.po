@@ -8,6 +8,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Account password"
+msgstr "账户密码"
+
 msgid "Action completed"
 msgstr "行动已完成"
 
@@ -33,6 +36,9 @@ msgid ""
 "Change the document password. After changing, you must share the new "
 "password with all collaborators."
 msgstr "更改文档密码。更改后，您必须与所有协作者共享新密码。"
+
+msgid "Changing encryption keys requires confirming your account password."
+msgstr "更改加密密钥需要确认您的帐户密码。"
 
 msgid "Close"
 msgstr "关闭"
@@ -119,6 +125,9 @@ msgstr "插入文件夹名称"
 msgid "Insert path"
 msgstr "插入路径"
 
+msgid "More information"
+msgstr "更多信息"
+
 msgid "New folder"
 msgstr "新建文件夹"
 
@@ -167,6 +176,9 @@ msgstr "请输入当前密码。"
 msgid "Please enter the password."
 msgstr "请输入密码。"
 
+msgid "Please enter your account password."
+msgstr "请输入您的帐户密码。"
+
 msgid "Please enter your current passphrase."
 msgstr "请输入您当前的密码。"
 
@@ -184,6 +196,9 @@ msgstr "恢复加密"
 
 msgid "Recover with key"
 msgstr "用钥匙恢复"
+
+msgid "Recovering encryption keys requires confirming your account password."
+msgstr "恢复加密密钥需要确认您的帐户密码。"
 
 msgid "Recovery key"
 msgstr "恢复密钥"

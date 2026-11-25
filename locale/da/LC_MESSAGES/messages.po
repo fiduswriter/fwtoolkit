@@ -8,6 +8,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Account password"
+msgstr "Kontoadgangskode"
+
 msgid "Action completed"
 msgstr "Handlingen afsluttet"
 
@@ -35,6 +38,10 @@ msgid ""
 msgstr ""
 "Skift dokumentets adgangskode. Efter ændring skal du dele den nye "
 "adgangskode med alle samarbejdspartnere."
+
+msgid "Changing encryption keys requires confirming your account password."
+msgstr ""
+"Ændring af krypteringsnøgler kræver bekræftelse af din kontoadgangskode."
 
 msgid "Close"
 msgstr "Luk"
@@ -127,6 +134,9 @@ msgstr "Indsæt mappenavn"
 msgid "Insert path"
 msgstr "Indsæt sti"
 
+msgid "More information"
+msgstr "Mere information"
+
 msgid "New folder"
 msgstr "Ny mappe"
 
@@ -175,6 +185,9 @@ msgstr "Indtast venligst den aktuelle adgangskode."
 msgid "Please enter the password."
 msgstr "Indtast venligst adgangskoden."
 
+msgid "Please enter your account password."
+msgstr "Indtast venligst din kontoadgangskode."
+
 msgid "Please enter your current passphrase."
 msgstr "Indtast venligst din nuværende adgangssætning."
 
@@ -192,6 +205,10 @@ msgstr "Gendan kryptering"
 
 msgid "Recover with key"
 msgstr "Gendan med nøgle"
+
+msgid "Recovering encryption keys requires confirming your account password."
+msgstr ""
+"Gendannelse af krypteringsnøgler kræver bekræftelse af din kontoadgangskode."
 
 msgid "Recovery key"
 msgstr "Gendannelsesnøgle"

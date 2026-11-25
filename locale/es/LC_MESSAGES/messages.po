@@ -8,6 +8,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Account password"
+msgstr "Contraseña de cuenta"
+
 msgid "Action completed"
 msgstr "Acción completada"
 
@@ -35,6 +38,10 @@ msgid ""
 msgstr ""
 "Cambie la contraseña del documento. Luego del cambio, deberás compartir la "
 "nueva contraseña con todos los colaboradores."
+
+msgid "Changing encryption keys requires confirming your account password."
+msgstr ""
+"Cambiar las claves de cifrado requiere confirmar la contraseña de su cuenta."
 
 msgid "Close"
 msgstr "Cerrar"
@@ -126,6 +133,9 @@ msgstr "Insertar nombre de carpeta"
 msgid "Insert path"
 msgstr "Insertar ruta"
 
+msgid "More information"
+msgstr "Más información"
+
 msgid "New folder"
 msgstr "Nueva carpeta"
 
@@ -174,6 +184,9 @@ msgstr "Por favor ingrese la contraseña actual."
 msgid "Please enter the password."
 msgstr "Por favor ingrese la contraseña."
 
+msgid "Please enter your account password."
+msgstr "Por favor ingrese la contraseña de su cuenta."
+
 msgid "Please enter your current passphrase."
 msgstr "Por favor ingrese su contraseña actual."
 
@@ -191,6 +204,11 @@ msgstr "Recuperar cifrado"
 
 msgid "Recover with key"
 msgstr "Recuperar con llave"
+
+msgid "Recovering encryption keys requires confirming your account password."
+msgstr ""
+"Para recuperar las claves de cifrado es necesario confirmar la contraseña de"
+" su cuenta."
 
 msgid "Recovery key"
 msgstr "Clave de recuperación"

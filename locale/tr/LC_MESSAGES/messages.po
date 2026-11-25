@@ -8,6 +8,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "Account password"
+msgstr "Hesap şifresi"
+
 msgid "Action completed"
 msgstr "İşlem tamamlandı"
 
@@ -35,6 +38,11 @@ msgid ""
 msgstr ""
 "Belge parolasını değiştirin. Değiştirdikten sonra yeni şifreyi tüm ortak "
 "çalışanlarla paylaşmalısınız."
+
+msgid "Changing encryption keys requires confirming your account password."
+msgstr ""
+"Şifreleme anahtarlarını değiştirmek, hesap şifrenizin onaylanmasını "
+"gerektirir."
 
 msgid "Close"
 msgstr "Kapat"
@@ -126,6 +134,9 @@ msgstr "Klasör adını ekle"
 msgid "Insert path"
 msgstr "Yol ekle"
 
+msgid "More information"
+msgstr "Daha fazla bilgi"
+
 msgid "New folder"
 msgstr "Yeni klasör"
 
@@ -174,6 +185,9 @@ msgstr "Lütfen mevcut şifrenizi giriniz."
 msgid "Please enter the password."
 msgstr "Lütfen şifreyi girin."
 
+msgid "Please enter your account password."
+msgstr "Lütfen hesabınızın şifresini girin."
+
 msgid "Please enter your current passphrase."
 msgstr "Lütfen mevcut parolanızı girin."
 
@@ -191,6 +205,11 @@ msgstr "Şifrelemeyi Kurtar"
 
 msgid "Recover with key"
 msgstr "Anahtarla kurtarma"
+
+msgid "Recovering encryption keys requires confirming your account password."
+msgstr ""
+"Şifreleme anahtarlarının kurtarılması, hesap şifrenizin onaylanmasını "
+"gerektirir."
 
 msgid "Recovery key"
 msgstr "Kurtarma anahtarı"

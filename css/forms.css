@@ -121,14 +121,21 @@ select:disabled {
 
 .fw-check + label {
     position: relative;
-    display: block;
+    display: inline-block;
+    /* The label is exactly the checkbox box so the ::after tick can be
+       positioned against it regardless of the surrounding layout. */
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+    vertical-align: middle;
     margin: 0;
     padding: 0;
 }
 
 .fw-check + label::before {
     content: "";
-    position: relative;
+    position: absolute;
+    inset: 0;
     display: block;
     box-sizing: border-box;
     width: 15px;
@@ -158,6 +165,7 @@ select:disabled {
     left: 5px;
     top: 2px;
     display: block;
+    box-sizing: content-box;
     width: 4px;
     height: 8px;
     border-bottom: 2px solid var(--fw-text-on-brand);
@@ -177,8 +185,6 @@ select:disabled {
 
 .fw-label-check + label {
     line-height: 15px;
-    /* Enlarge the clickable/target box without moving the glyph. */
-    padding-block: 14px;
 }
 
 .fw-label-check + label::before {

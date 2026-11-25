@@ -118,6 +118,15 @@ table.datatable-table th {
     text-align: left;
     white-space: nowrap;
 }
+
+/* The select-all pill in the header defines its own box. */
+table.fw-data-table th:has(> .dt-bulk),
+table.datatable-table th:has(> .dt-bulk) {
+    width: 1%;
+    padding: 6px 8px;
+    text-align: center;
+    white-space: nowrap;
+}
 table.fw-data-table th:last-child,
 table.fw-data-table td:last-child,
 table.datatable-table th:last-child,

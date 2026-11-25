@@ -1,30 +1,49 @@
 /* Bulk-action bar for overview/selection data tables. */
 
+/*
+ * Select-all control: one 60px-tall brand-tinted pill (radius 30) holding
+ * the 15px checkbox and the caret, as in Design 5. The pill is the visible
+ * hit target for both parts, and the parts sit 8px apart.
+ */
 .dt-bulk {
     display: inline-flex;
     align-items: center;
-    gap: var(--fw-space-1);
+    gap: var(--fw-space-2);
     position: relative;
-    min-width: var(--fw-hit-area);
-    min-height: var(--fw-hit-area);
-    padding: 0 var(--fw-space-1);
+    box-sizing: border-box;
+    min-width: 90px;
+    height: 60px;
+    padding: 0 16px;
+    background-color: var(--fw-brand-tint-3);
+    border-radius: var(--fw-radius-pill);
     vertical-align: middle;
 }
 
+.dt-bulk:hover {
+    background-color: var(--fw-brand-tint-2);
+}
+
+/* Keep the checkbox and its label as one tight unit inside the pill. */
+/* The label is exactly the 15px checkbox box (set in forms.css), so the
+   ::before box and the ::after tick always line up. The pill supplies the
+   padding, not the label. */
 .dt-bulk .fw-check + label {
-    display: inline-flex;
-    align-items: center;
-    min-width: calc(var(--fw-hit-area) - var(--fw-space-2));
-    min-height: calc(var(--fw-hit-area) - var(--fw-space-2));
-    vertical-align: middle;
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 0;
+}
+
+.dt-bulk .fw-check:focus-visible + label::before {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
 }
 
 .dt-bulk-dropdown {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--fw-hit-area);
-    height: var(--fw-hit-area);
+    width: 20px;
+    height: 20px;
     padding: 0;
     border-radius: var(--fw-radius-circle);
     color: var(--fw-text-primary);
@@ -33,12 +52,12 @@
 }
 
 .dt-bulk-dropdown:hover {
-    background-color: var(--fw-surface-2);
+    background-color: var(--fw-brand-tint-2);
 }
 
 .dt-bulk-dropdown:focus-visible {
     outline: 2px solid var(--fw-focus);
-    outline-offset: -2px;
+    outline-offset: 2px;
 }
 
 /* Floating bulk bar (selection helpers render it at the table foot). */

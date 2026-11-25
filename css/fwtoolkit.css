@@ -1104,10 +1104,11 @@ div.fw-warning {
 /* === content_menu.css === */
 .fw-content-menu {
     position: absolute;
-    color: var(--cs-white-text);
-    background-color: var(--cs-white-background);
-    box-shadow: 0 0 20px rgb(var(--dropup-box-shadow-color));
-    font-size: 14px;
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface);
+    box-shadow: var(--fw-shadow-2);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
     /* Above open dialogs (z-index 1000): the Dialog class maintains
      * --highest-dialog-z-index on body; when no dialog is open the fallback
      * keeps the historical stacking just above the overlay (100). */
@@ -1116,7 +1117,7 @@ div.fw-warning {
     border: 0 none;
     border-image: initial;
     overflow: hidden;
-    border-radius: 6px;
+    border-radius: var(--fw-radius-lg);
     outline: 0;
 }
 
@@ -1126,7 +1127,7 @@ div.fw-warning {
 
 .fw-content-menu-content {
     position: relative;
-    margin-top: 8px;
+    margin: 0;
     overflow: hidden;
 }
 
@@ -1147,57 +1148,78 @@ div.fw-warning {
 
 .fw-content-menu-list {
     list-style: none;
-    padding: 0 0 5px;
+    padding: 8px 0;
     cursor: pointer;
 }
 
 .fw-content-menu-item {
-    padding: 18px 31px 15px;
-    color: var(--cs-white-text);
-    font-family: Lato, sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 10px 24px;
+    color: var(--fw-text-primary);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    font-weight: var(--fw-font-weight-normal);
+    line-height: var(--fw-line-height-tight);
+    background-color: transparent;
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
 }
 
 .fw-content-menu-item.fw-disabled {
     pointer-events: none;
+    color: var(--fw-text-secondary);
     opacity: 0.6;
 }
 
 .fw-content-menu-item.fw-selected {
-    color: var(--cs-white-selected);
-    background-color: var(--cs-white-background-selected);
+    color: var(--fw-text-on-brand);
+    background-color: var(--fw-brand-tint-3);
+    font-weight: var(--fw-font-weight-medium);
 }
 
-.fw-content-menu-item:hover {
-    color: var(--cs-white-hover);
-    background-color: var(--cs-white-background-hover);
+.fw-content-menu-item:hover:not(.fw-disabled) {
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface-2);
 }
 
 .fw-content-menu-item:focus {
-    color: var(--cs-white-focus);
-    background-color: var(--cs-white-background-focus);
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface-2);
     outline: none;
+}
+
+.fw-content-menu-item:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: -2px;
 }
 
 .fw-content-menu-item-divider {
     border: 0 none;
-    border-top: 1px solid var(--pulldown-separator-color) !important;
+    border-top: 1px solid var(--fw-border-subtle) !important;
+    margin: 8px 12px;
 }
 
 .fw-content-menu-item-header {
     line-height: 18px;
-    background-color: var(--pulldown-header-background-color);
-    color: var(--pulldown-header-text-color);
+    background-color: transparent;
+    color: var(--fw-text-secondary);
+    font-size: var(--fw-font-size-sm);
+    font-weight: var(--fw-font-weight-medium);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     display: block;
-    text-align: center;
+    text-align: left;
+    padding: 12px 24px 4px;
+    min-height: 0;
 }
 
 .fw-content-menu-item-icon {
     position: absolute;
-    right: 40px;
-    color: var(--cs-white-text);
+    right: 24px;
+    color: var(--fw-text-secondary);
 }
 
 .fw-content-menu-columns {
@@ -1208,13 +1230,35 @@ div.fw-warning {
 .fw-content-menu-columns .fw-content-menu-list {
     flex: 1 0 200px;
     min-width: 200px;
-    padding: 0 0 5px;
+    padding: 8px 0;
 }
 
 /* === data_table.css === */
 table.fw-data-table {
-    font-size: 13px;
-    line-height: 1.25;
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    line-height: var(--fw-line-height-base);
+    color: var(--fw-text-primary);
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* Rounded selection highlight: the row keeps square cells but paints the
+   rounded tint via the first/last cell so tables stay valid markup. */
+table.fw-data-table tbody tr.fw-row-selected > td {
+    background-color: var(--fw-brand-tint-3);
+}
+
+table.fw-data-table tbody tr.fw-row-selected > td:first-child {
+    border-radius: var(--fw-radius-card) 0 0 var(--fw-radius-card);
+}
+
+table.fw-data-table tbody tr.fw-row-selected > td:last-child {
+    border-radius: 0 var(--fw-radius-card) var(--fw-radius-card) 0;
+}
+
+table.fw-data-table tbody tr {
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
 }
 
 /* Prevent the search/top bar from overflowing a padded parent */
@@ -1236,8 +1280,9 @@ table.fw-data-table:focus {
 
 table.fw-data-table thead,
 table.datatable-table thead {
-    font-weight: 900;
-    font-size: 11px;
+    font-weight: var(--fw-font-weight-medium);
+    font-size: var(--fw-font-size-lg);
+    color: var(--fw-text-primary);
 }
 
 /* simple-datatables wraps header text in a <button> - reset it to plain text */
@@ -1251,6 +1296,13 @@ table.datatable-table thead {
     font-family: inherit;
     font-weight: inherit;
     font-size: inherit;
+    border-radius: var(--fw-radius-sm);
+}
+
+.datatable-table th button:focus-visible,
+.datatable-pagination-list button:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
 }
 
 .datatable-sorter,
@@ -1270,7 +1322,7 @@ table.datatable-table thead {
     right: 4px;
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
-    opacity: 0.2;
+    opacity: 0.35;
 }
 
 .datatable-sorter::before {
@@ -1288,18 +1340,20 @@ table.datatable-table thead {
 .datatable-descending .datatable-sorter::before,
 .datatable-ascending .datatable-filter::after,
 .datatable-descending .datatable-filter::before {
-    opacity: 0.6;
+    opacity: 1;
+    color: var(--fw-accent);
 }
 
 table.datatable-table thead th a {
-    color: var(--cs-1-hover);
+    color: var(--fw-text-primary);
 }
 
 table.fw-data-table td,
 table.datatable-table td {
-    padding: 15px 0;
-    vertical-align: top;
-    border-bottom: solid 1px var(--cs-white-border);
+    padding: 16px 12px;
+    vertical-align: middle;
+    border-bottom: solid 1px var(--fw-border-subtle);
+    text-align: left;
 }
 
 /* Align text with top of images */
@@ -1309,20 +1363,31 @@ table.fw-data-table tbody td {
 
 table.fw-data-table th,
 table.datatable-table th {
-    padding: 15px 0;
-    vertical-align: top;
-    border-bottom: solid 1px var(--cs-white-header-border);
+    padding: 12px;
+    vertical-align: middle;
+    border-bottom: solid 2px var(--fw-border-strong);
+    text-align: left;
+    white-space: nowrap;
 }
 
 table.fw-data-table th:last-child,
 table.fw-data-table td:last-child,
 table.datatable-table th:last-child,
 table.datatable-table td:last-child {
-    padding-right: 0;
+    padding-right: 12px;
+}
+
+table.fw-data-table:focus {
+    outline: none;
 }
 
 table.fw-data-table:focus tbody td {
-    border-bottom-color: var(--menu-cursor-border-color);
+    border-bottom-color: var(--fw-border-subtle);
+}
+
+table.fw-data-table:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 4px;
 }
 
 table.fw-data-table .date,
@@ -1357,7 +1422,8 @@ table.fw-data-table td.td-icon {
 }
 
 table.fw-data-table-title {
-    color: var(--cs-1-text);
+    color: var(--fw-text-primary);
+    font-weight: var(--fw-font-weight-medium);
 }
 
 table.fw-data-table-title i.fa,
@@ -1371,14 +1437,25 @@ table.fw-data-table .fw-icon-trash {
     font-size: 15px;
 }
 
+/* Row-action icons: >=3:1 stroke colour (--fw-text-primary), with a 44px
+   hit area around the glyph. */
 .owned-by-user .icon-access-right,
 .fw-owned-by-user .fw-icon-access-right,
 table.fw-data-table .fa-clock,
 table.fw-data-table .fa-trash,
 table.fw-data-table .fa-download,
-table.fw-data-table .fa-history {
-    color: var(--cs-1-icon);
+table.fw-data-table .fa-history,
+table.fw-data-table .icon-trash,
+table.fw-data-table .fw-icon-trash {
+    color: var(--fw-text-primary);
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: var(--fw-radius-circle);
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
 }
 
 .owned-by-user .icon-access-right:hover,
@@ -1386,8 +1463,28 @@ table.fw-data-table .fa-history {
 table.fw-data-table .fa-clock:hover,
 table.fw-data-table .fa-trash:hover,
 table.fw-data-table .fa-download:hover,
-table.fw-data-table .fa-history:hover {
-    color: var(--cs-1-hover);
+table.fw-data-table .fa-history:hover,
+table.fw-data-table .icon-trash:hover,
+table.fw-data-table .fw-icon-trash:hover {
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface-2);
+}
+
+table.fw-data-table .fa-clock:focus-visible,
+table.fw-data-table .fa-trash:focus-visible,
+table.fw-data-table .fa-download:focus-visible,
+table.fw-data-table .fa-history:focus-visible,
+.owned-by-user .icon-access-right:focus-visible,
+.fw-owned-by-user .fw-icon-access-right:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+}
+
+/* Destructive row action keeps the danger accent on hover. */
+table.fw-data-table .fa-trash:hover,
+table.fw-data-table .icon-trash:hover,
+table.fw-data-table .fw-icon-trash:hover {
+    color: var(--fw-danger-text);
 }
 
 /* A deleted access rights row */
@@ -1409,9 +1506,16 @@ table.fw-data-table > tbody > tr > td:first-child {
     padding-left: 2px;
 }
 
-table.fw-data-table:focus > tbody > tr.datatable-cursor,
-table.fw-data-table:focus > tbody > tr.fw-datatable-cursor {
-    background-color: var(--cs-white-background-selected);
+table.fw-data-table:focus > tbody > tr.datatable-cursor > td,
+table.fw-data-table:focus > tbody > tr.fw-datatable-cursor > td,
+table.fw-data-table > tbody > tr.datatable-cursor > td,
+table.fw-data-table > tbody > tr.fw-datatable-cursor > td {
+    background-color: var(--fw-brand-tint-3);
+}
+
+table.fw-data-table:focus-visible > tbody > tr.datatable-cursor > td,
+table.fw-data-table:focus-visible > tbody > tr.fw-datatable-cursor > td {
+    box-shadow: inset 0 0 0 2px var(--fw-focus);
 }
 
 /* the usermedia table */
@@ -1468,28 +1572,148 @@ table.fw-data-table.fw-selection-table tbody tr {
     cursor: pointer;
 }
 
+table.fw-data-table.fw-selection-table tbody tr:hover > td {
+    background-color: var(--fw-surface-2);
+}
+
+/* simple-datatables chrome */
+.datatable-container {
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    color: var(--fw-text-primary);
+}
+
+.datatable-top,
+.datatable-bottom {
+    padding: 8px 0;
+    color: var(--fw-text-secondary);
+    font-size: var(--fw-font-size-sm);
+}
+
+.datatable-search .datatable-input,
+.datatable-input {
+    height: 44px;
+    padding: 0 16px;
+    border: 1px solid var(--fw-border);
+    border-radius: var(--fw-radius-pill);
+    background-color: var(--fw-surface);
+    color: var(--fw-text-primary);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+}
+
+.datatable-input:focus {
+    border-color: var(--fw-focus);
+    outline: none;
+}
+
+.datatable-selector {
+    min-height: 44px;
+    padding: 0 12px;
+    border: 1px solid var(--fw-border);
+    border-radius: var(--fw-radius-pill);
+    background-color: var(--fw-surface);
+    color: var(--fw-text-primary);
+}
+
+.datatable-pagination-list button {
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: var(--fw-radius-circle);
+    color: var(--fw-text-primary);
+}
+
+.datatable-pagination-list button:hover:not([disabled]) {
+    background-color: var(--fw-surface-2);
+}
+
+.datatable-pagination .active button {
+    background-color: var(--fw-brand-tint-2);
+    color: var(--fw-text-on-brand);
+}
+
+.datatable-pagination-list button[disabled] {
+    color: var(--fw-text-secondary);
+    opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    table.fw-data-table tbody tr,
+    table.fw-data-table .fa-trash {
+        transition: none;
+    }
+}
+
 /* Word counter dialog table */
 .fw-word-counter-tbody {
     line-height: 38px;
 }
 
-/* Bulk action */
+/* Bulk-action bar: see datatable_bulk.css */
+
+/* === datatable_bulk.css === */
+/* Bulk-action bar for overview/selection data tables. */
+
 .dt-bulk {
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--fw-space-1);
     position: relative;
-    min-width: 30px;
+    min-width: var(--fw-hit-area);
+    min-height: var(--fw-hit-area);
+    padding: 0 var(--fw-space-1);
+    vertical-align: middle;
 }
 
 .dt-bulk .fw-check + label {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    min-width: calc(var(--fw-hit-area) - var(--fw-space-2));
+    min-height: calc(var(--fw-hit-area) - var(--fw-space-2));
     vertical-align: middle;
 }
 
 .dt-bulk-dropdown {
-    display: inline-block;
-    vertical-align: middle;
-    padding-left: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--fw-hit-area);
+    height: var(--fw-hit-area);
+    padding: 0;
+    border-radius: var(--fw-radius-circle);
+    color: var(--fw-text-primary);
     cursor: pointer;
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+
+.dt-bulk-dropdown:hover {
+    background-color: var(--fw-surface-2);
+}
+
+.dt-bulk-dropdown:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: -2px;
+}
+
+/* Floating bulk bar (selection helpers render it at the table foot). */
+.dt-bulk-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--fw-space-2);
+    margin-top: var(--fw-space-3);
+    padding: var(--fw-space-2) var(--fw-space-3);
+    background-color: var(--fw-surface-2);
+    border-radius: var(--fw-radius-card);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    color: var(--fw-text-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dt-bulk-dropdown {
+        transition: none;
+    }
 }
 
 /* === dialog_table.css === */
@@ -2019,25 +2243,27 @@ table.fw-data-table.fw-selection-table tbody tr {
 
 .fw-drop-up-inner {
     position: relative;
-    background-color: var(--cs-white-background);
+    background-color: var(--fw-surface);
     z-index: 1;
+    font-family: var(--fw-font-sans);
     font-weight: normal;
-    color: var(--cs-white-text);
+    color: var(--fw-text-primary);
     left: 10px;
-    box-shadow: 0 0 20px rgb(var(--dropup-box-shadow-color));
-    border-radius: 6px;
+    box-shadow: var(--fw-shadow-2);
+    border-radius: var(--fw-radius-lg);
+    overflow: hidden;
 }
 
 .fw-drop-up-head {
     padding: 20px 22px;
-    background-color: var(--cs-dark-background);
-    color: var(--cs-dark-text);
-    font-family: Lato, sans-serif;
-    font-size: 13px;
-    font-weight: 400;
+    background-color: var(--fw-surface-2);
+    color: var(--fw-text-primary);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-md);
+    font-weight: var(--fw-font-weight-medium);
     line-height: 18px;
     letter-spacing: 0.13px;
-    border-radius: 6px 6px 0 0;
+    border-radius: var(--fw-radius-lg) var(--fw-radius-lg) 0 0;
 }
 
 .fw-drop-up-head > * + * {
@@ -2045,10 +2271,10 @@ table.fw-data-table.fw-selection-table tbody tr {
 }
 
 .fw-drop-up-head a {
-    color: var(--cs-dark-text);
-    font-family: Lato, sans-serif;
-    font-size: 12px;
-    font-weight: 700;
+    color: var(--fw-accent);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-sm);
+    font-weight: var(--fw-font-weight-semibold);
     text-decoration: none;
 }
 
@@ -2060,28 +2286,38 @@ table.fw-data-table.fw-selection-table tbody tr {
 }
 
 .fw-drop-up-option {
-    border-top: 1px solid var(--cs-light-border);
-    padding: 16px 30px;
-    color: var(--cs-light-text);
-    background: var(--cs-light-background);
-    font-family: Lato, sans-serif;
-    font-size: 13px;
-    font-weight: 400;
-    line-height: 1em;
+    border-top: 1px solid var(--fw-border-subtle);
+    min-height: 44px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    color: var(--fw-text-primary);
+    background: var(--fw-surface);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    font-weight: var(--fw-font-weight-normal);
+    line-height: var(--fw-line-height-tight);
+    cursor: pointer;
 }
 
 .fw-drop-up-option:hover,
 .fw-drop-up-option.fw-focused {
-    background-color: var(--cs-light-background-hover);
+    background-color: var(--fw-surface-2);
 }
 
 .fw-drop-up-option.fw-focused {
-    outline: 2px solid var(--cs-light-border);
+    outline: 2px solid var(--fw-focus);
     outline-offset: -2px;
 }
 
 .fw-drop-up-option:focus {
     outline: none;
+}
+
+.fw-drop-up-option:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: -2px;
 }
 
 /* === faq_dialog.css === */
@@ -2103,30 +2339,283 @@ div.fw-faq {
 }
 
 /* === file_selector.css === */
+/*
+ * macOS-Finder-style column browser for the file selector.
+ *
+ * Layout: a breadcrumb `nav` above a horizontally scrollable strip of
+ * columns. Every folder along the open path owns one column; the strip
+ * scrolls to reveal columns to the right as the user descends.
+ */
+
 .fw-file-selector {
-    line-height: 1.2em;
-    padding: 10px 10px 10px 20px;
+    --fw-column-width: 260px;
+    /* Bounded by the dialog content box; can be overridden by hosts. */
+    --fw-file-columns-height: max(320px, calc(100vh - 420px));
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--fw-space-2);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    line-height: var(--fw-line-height-base);
+    color: var(--fw-text-primary);
 }
 
-.fw-file-selector p.fw-file {
-    text-indent: -10px;
+/* -------------------------------------------------------------------------
+ * Breadcrumb
+ * ---------------------------------------------------------------------- */
+.fw-file-selector-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--fw-space-1);
+    padding: 0 var(--fw-space-1);
+    min-height: 32px;
 }
 
-.fw-file-selector .fa-plus-square,
-.fw-file-selector .fa-minus-square {
-    margin-left: -16px;
+.fw-file-selector-crumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 220px;
+    padding: 6px 12px;
+    border: 0;
+    border-radius: var(--fw-radius-pill);
+    background: none;
+    color: var(--fw-accent);
+    font: inherit;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
+.fw-file-selector-crumb > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fw-file-selector-crumb:hover {
+    background-color: var(--fw-surface-2);
+}
+
+.fw-file-selector-crumb:focus {
+    outline: none;
+}
+
+.fw-file-selector-crumb:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+}
+
+.fw-file-selector-crumb.fw-current {
+    color: var(--fw-text-primary);
+    font-weight: var(--fw-font-weight-medium);
+    cursor: default;
+}
+
+.fw-file-selector-crumb-sep {
+    color: var(--fw-text-secondary);
+    user-select: none;
+}
+
+/* -------------------------------------------------------------------------
+ * Column strip
+ * ---------------------------------------------------------------------- */
+.fw-file-selector-columns {
+    display: flex;
+    align-items: stretch;
+    gap: 1px;
+    height: var(--fw-file-columns-height);
+    min-height: 240px;
+    max-height: var(--fw-file-columns-height);
+    overflow: auto hidden;
+    border: 1px solid var(--fw-border-subtle);
+    border-radius: var(--fw-radius-md);
+    background-color: var(--fw-surface);
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+}
+
+.fw-file-selector-column {
+    flex: 0 0 var(--fw-column-width);
+    width: var(--fw-column-width);
+    min-width: var(--fw-column-width);
+    max-height: 100%;
+    overflow-y: auto;
+    border-right: 1px solid var(--fw-border-subtle);
+    background-color: var(--fw-surface);
+}
+
+.fw-file-selector-column:last-child {
+    border-right: 0;
+}
+
+.fw-file-selector-column.fw-closed {
+    display: none;
+}
+
+.fw-file-selector-column .fw-folder-content {
+    list-style: none;
+    margin: 0;
+    padding: var(--fw-space-1) 0;
+}
+
+/* -------------------------------------------------------------------------
+ * Rows
+ * ---------------------------------------------------------------------- */
+.fw-file-selector-row {
+    display: flex;
+    align-items: center;
+    gap: var(--fw-space-2);
+    box-sizing: border-box;
+    min-height: var(--fw-hit-area);
+    margin: 0 var(--fw-space-1);
+    padding: 0 var(--fw-space-3);
+    border-radius: var(--fw-radius-md);
+    color: var(--fw-text-primary);
+    cursor: pointer;
+    user-select: none;
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+
+.fw-file-selector-row:hover {
+    background-color: var(--fw-surface-2);
+}
+
+/* Keyboard cursor (roving tabindex). */
+.fw-file-selector-row.fw-active {
+    background-color: var(--fw-surface-2);
+}
+
+.fw-file-selector-row.fw-active:focus {
+    outline: none;
+}
+
+.fw-file-selector-row:focus-visible,
+.fw-file-selector-row.fw-active:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: -2px;
+}
+
+/* Selected entry: brand green as a 10% tint, never as text. */
+.fw-file-selector-row.fw-selected,
+.fw-file-selector-row.fw-selected.fw-active {
+    background-color: var(--fw-brand-tint-3);
+    color: var(--fw-text-on-brand);
+    font-weight: var(--fw-font-weight-medium);
+}
+
+.fw-file-selector-row.fw-selected:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: -2px;
+}
+
+.fw-file-selector-row-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 20px;
+    color: var(--fw-text-primary);
+}
+
+.fw-file-selector-row.fw-folder-row .fw-file-selector-row-icon {
+    color: var(--fw-brand-active);
+}
+
+.fw-file-selector-row .fw-folder-name,
+.fw-file-selector-row .fw-file-name {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* The historical selected-underline is replaced by the tinted row. */
+.fw-file-selector .fw-file-name.fw-selected,
+.fw-file-selector .fw-folder-name.fw-selected {
+    text-decoration: none;
+}
+
+.fw-file-selector-row-chevron {
+    flex: 0 0 auto;
+    margin-left: auto;
+    padding-left: var(--fw-space-1);
+    color: var(--fw-text-secondary);
+    font-size: var(--fw-font-size-sm);
+}
+
+.fw-file-selector-empty {
+    padding: var(--fw-space-3);
+    color: var(--fw-text-secondary);
+    font-size: var(--fw-font-size-sm);
+    font-style: italic;
+    list-style: none;
+}
+
+/* -------------------------------------------------------------------------
+ * Legacy hooks
+ *
+ * Older hosts/tests reference `i.fa-plus-square` to expand a folder and
+ * `.fw-folder-content .fw-folder-name` to find a folder. The column view
+ * exposes the expand affordance through the chevron and keeps the name
+ * classes; `p.fw-file`/`div.fw-folder` selectors are no longer produced but
+ * their class names are still tolerated for styling continuity.
+ * ---------------------------------------------------------------------- */
 .fw-file-selector .fa-plus-square,
 .fw-file-selector .fa-minus-square,
-.fw-file-selector .fw-file-name,
-.fw-file-selector .fw-folder-name {
+.fw-file-selector .fw-file-selector-row {
     cursor: pointer;
 }
 
-.fw-file-selector .fw-file-name.fw-selected,
-.fw-file-selector .fw-folder-name.fw-selected {
-    text-decoration: underline;
+@media (prefers-reduced-motion: reduce) {
+    .fw-file-selector-columns {
+        scroll-behavior: auto;
+    }
+
+    .fw-file-selector-row {
+        transition: none;
+    }
+}
+
+@media (width <= 700px) {
+    .fw-file-selector {
+        --fw-column-width: 220px;
+    }
+
+    /* On narrow screens one column at a time fits best. */
+    .fw-file-selector {
+        --fw-file-columns-height: 50vh;
+    }
+}
+
+/* -------------------------------------------------------------------------
+ * Move dialog (FileDialog) layout
+ * ---------------------------------------------------------------------- */
+.fw-file-dialog {
+    display: flex;
+    flex-direction: column;
+    gap: var(--fw-space-3);
+}
+
+.fw-file-dialog-path {
+    display: flex;
+    align-items: center;
+    gap: var(--fw-space-3);
+}
+
+.fw-file-dialog-path label {
+    flex: 0 0 auto;
+    font-size: var(--fw-font-size-sm);
+    font-weight: var(--fw-font-weight-medium);
+    color: var(--fw-text-muted);
+}
+
+.fw-file-dialog-path input {
+    flex: 1 1 auto;
+    margin: 0;
 }
 
 /* === forms.css === */
@@ -2804,7 +3293,7 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 /* === overview_menu.css === */
 .fw-overview-menu-wrapper {
     position: relative;
-    background-color: var(--cs-white-background);
+    background-color: var(--fw-surface-2);
     padding: 11px 8px;
 }
 
@@ -2893,6 +3382,7 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 .fw-button .fw-search-label {
     margin-right: 8px;
     display: inline-block;
+    color: var(--fw-text-secondary);
 }
 
 /* Hide label visually while keeping it accessible for screen readers
@@ -2911,55 +3401,59 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 }
 
 .fw-button input[type="text"] {
-    border: 1px solid #cccccc;
-    padding: 4px 8px;
-    border-radius: 4px;
+    border: 1px solid var(--fw-border);
+    padding: 4px 14px;
+    border-radius: var(--fw-radius-pill);
     width: calc(100% - 30px);
-    height: 30px;
+    height: 36px;
+    background-color: var(--fw-surface);
 }
 
 .fw-button input[type="text"]:focus {
-    outline: 2px solid #007bff;
-    border-color: #007bff;
+    border-color: var(--fw-focus);
 }
 
 .fw-text-menu {
-    height: 40px;
-    color: var(--cs-white-text-secondary);
-    padding: 0;
+    height: 44px;
+    color: var(--fw-text-primary);
+    padding: 0 12px;
     border: 0 none;
+    border-radius: var(--fw-radius-pill);
     background-color: transparent;
-    font-size: 14px;
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
     cursor: pointer;
     position: relative;
-    padding-left: 5px;
 }
 
-.fw-text-menu:focus::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 3px; /* Width of the border */
-    background-color: var(--menu-cursor-border-color); /* Color of the border */
+.fw-text-menu:focus {
+    outline: none;
+}
+
+.fw-text-menu:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
 }
 
 .fw-text-menu:hover {
-    color: var(--cs-white-text);
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface);
 }
 
 .fw-dropdown-menu {
-    padding-top: 14px;
-    font-size: 14px;
-    color: var(--cs-white-text-secondary);
+    display: inline-flex;
+    align-items: center;
+    padding: 0 12px;
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    color: var(--fw-text-primary);
     cursor: pointer;
-    height: 40px;
+    height: 44px;
     box-sizing: border-box;
 }
 
 .fw-dropdown-menu:hover {
-    color: var(--cs-white-text);
+    color: var(--fw-text-primary);
 }
 
 .fw-dropdown-menu label {
@@ -2969,6 +3463,9 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 div.select-action {
     cursor: pointer;
     min-width: 38px;
+    min-height: var(--fw-hit-area);
+    display: inline-flex;
+    align-items: center;
 }
 
 div.select-action input[type="checkbox"] {
@@ -2994,7 +3491,7 @@ span.select-action-dropdown {
 }
 
 .fw-pulldown-item.fw-selected {
-    background-color: #f0f0f0;
+    background-color: var(--fw-brand-tint-3);
 }
 
 /* === progress_task.css === */
@@ -3146,8 +3643,8 @@ span.select-action-dropdown {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-family: Lato, sans-serif;
-    font-size: 14px;
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
 }
 
 .fw-pulldown-menu-header {
@@ -3155,23 +3652,34 @@ span.select-action-dropdown {
 }
 
 .fw-pulldown-menu-title {
-    display: inline-block;
-    padding: 8px 12px;
-    color: var(--cs-white-text-secondary);
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 8px 16px;
+    color: var(--fw-text-primary);
+    font-weight: var(--fw-font-weight-medium);
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: var(--fw-radius-pill);
     user-select: none;
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
 }
 
-.fw-pulldown-menu-title:hover,
+.fw-pulldown-menu-title:hover {
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface-2);
+}
+
 .fw-pulldown-menu-title:focus {
-    color: var(--cs-white-text);
-    background-color: var(--cs-white-background-hover);
     outline: none;
 }
 
+.fw-pulldown-menu-title:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+}
+
 .fw-pulldown-menu-title.fw-disabled {
-    color: var(--cs-disabled);
+    color: var(--fw-text-secondary);
     cursor: not-allowed;
 }
 
@@ -3193,7 +3701,7 @@ span.select-action-dropdown {
 }
 
 .fw-pulldown-menu-item.fw-cursor {
-    background-color: var(--cs-white-background-hover);
+    background-color: var(--fw-surface-2);
 }
 
 /* === pulldown.css === */
@@ -3203,10 +3711,12 @@ span.select-action-dropdown {
     display: none;
     /* Above open dialogs, like .fw-content-menu (see there). */
     z-index: calc(var(--highest-dialog-z-index, 100) + 2);
-    box-shadow: 0 0 20px rgb(var(--pulldown-box-shadow-color));
-    background-color: var(--cs-white-background);
-    border-radius: 6px;
-    color: var(--cs-white-text);
+    box-shadow: var(--fw-shadow-2);
+    background-color: var(--fw-surface);
+    border-radius: var(--fw-radius-lg);
+    color: var(--fw-text-primary);
+    padding: 8px 0;
+    overflow: hidden;
 }
 
 .fw-pulldown.fw-open {
@@ -3251,41 +3761,65 @@ span.select-action-dropdown {
     position: relative;
     list-style: none;
     margin: 0;
-    padding: 12px 0;
+    padding: 0;
     border: 0 none;
 }
 
 .fw-pulldown-item {
     position: relative;
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     width: auto;
     height: auto;
-    min-width: 110px;
-    padding: 16px 30px;
-    font-size: 13px;
-    font-weight: 400;
-    line-height: 1;
+    min-width: 140px;
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 10px 24px;
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    font-weight: var(--fw-font-weight-normal);
+    line-height: var(--fw-line-height-tight);
+    color: var(--fw-text-primary);
+    background-color: transparent;
     text-align: left;
     text-decoration: none;
     white-space: nowrap;
     cursor: pointer;
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+
+.fw-pulldown-item:focus {
+    outline: none;
+}
+
+.fw-pulldown-item:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: -2px;
 }
 
 .fw-disabled .fw-pulldown-item,
 .fw-pulldown-item.fw-disabled {
-    color: var(--cs-disabled);
+    color: var(--fw-text-secondary);
     cursor: not-allowed;
+    opacity: 0.6;
 }
 
 .fw-pulldown-item.fw-selected {
-    color: var(--cs-white-selected);
-    background-color: var(--cs-white-background-selected);
+    color: var(--fw-text-on-brand);
+    background-color: var(--fw-brand-tint-3);
+    font-weight: var(--fw-font-weight-medium);
 }
 
-.fw-pulldown-item:hover,
-.fw-pulldown-item.fw-selected:hover {
-    color: var(--cs-white-hover);
-    background-color: var(--cs-white-background-hover);
+.fw-pulldown-item:hover:not(.fw-disabled),
+.fw-pulldown-item.fw-selected:hover:not(.fw-disabled),
+.fw-pulldown-item.fw-cursor {
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface-2);
+}
+
+.fw-pulldown-item.fw-selected:hover:not(.fw-disabled) {
+    background-color: var(--fw-brand-tint-2);
 }
 
 .fw-pulldown li:last-child .fw-pulldown-item {
@@ -3294,7 +3828,7 @@ span.select-action-dropdown {
 
 .fw-pulldown-item .fw-icon-right {
     position: absolute;
-    right: 10px;
+    right: 20px;
 }
 
 .fw-pulldown li {
@@ -3302,11 +3836,13 @@ span.select-action-dropdown {
 }
 
 .fw-pulldown hr {
-    width: 80%;
+    width: auto;
     display: block;
-    height: 1px;
+    height: 0;
+    margin: 8px 12px;
     border: 0;
-    background-color: var(--pulldown-separator-color);
+    border-top: 1px solid var(--fw-border-subtle);
+    background-color: transparent;
 }
 
 .fw-pulldown .fw-delete-comment::after {

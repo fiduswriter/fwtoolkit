@@ -1,6 +1,25 @@
 table.fw-data-table {
-    font-size: 13px;
-    line-height: 1.25;
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    line-height: var(--fw-line-height-base);
+    color: var(--fw-text-primary);
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* Rounded selection highlight: the row keeps square cells but paints the
+   rounded tint via the first/last cell so tables stay valid markup. */
+table.fw-data-table tbody tr.fw-row-selected > td {
+    background-color: var(--fw-brand-tint-3);
+}
+table.fw-data-table tbody tr.fw-row-selected > td:first-child {
+    border-radius: var(--fw-radius-card) 0 0 var(--fw-radius-card);
+}
+table.fw-data-table tbody tr.fw-row-selected > td:last-child {
+    border-radius: 0 var(--fw-radius-card) var(--fw-radius-card) 0;
+}
+table.fw-data-table tbody tr {
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
 }
 
 /* Prevent the search/top bar from overflowing a padded parent */
@@ -19,8 +38,9 @@ table.fw-data-table:focus {
 }
 table.fw-data-table thead,
 table.datatable-table thead {
-    font-weight: 900;
-    font-size: 11px;
+    font-weight: var(--fw-font-weight-medium);
+    font-size: var(--fw-font-size-lg);
+    color: var(--fw-text-primary);
 }
 
 /* simple-datatables wraps header text in a <button> - reset it to plain text */
@@ -34,6 +54,12 @@ table.datatable-table thead {
     font-family: inherit;
     font-weight: inherit;
     font-size: inherit;
+    border-radius: var(--fw-radius-sm);
+}
+.datatable-table th button:focus-visible,
+.datatable-pagination-list button:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
 }
 .datatable-sorter,
 .datatable-filter {
@@ -51,7 +77,7 @@ table.datatable-table thead {
     right: 4px;
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
-    opacity: 0.2;
+    opacity: 0.35;
 }
 .datatable-sorter::before {
     border-top: 4px solid currentColor;
@@ -66,16 +92,18 @@ table.datatable-table thead {
 .datatable-descending .datatable-sorter::before,
 .datatable-ascending .datatable-filter::after,
 .datatable-descending .datatable-filter::before {
-    opacity: 0.6;
+    opacity: 1;
+    color: var(--fw-accent);
 }
 table.datatable-table thead th a {
-    color: var(--cs-1-hover);
+    color: var(--fw-text-primary);
 }
 table.fw-data-table td,
 table.datatable-table td {
-    padding: 15px 0;
-    vertical-align: top;
-    border-bottom: solid 1px var(--cs-white-border);
+    padding: 16px 12px;
+    vertical-align: middle;
+    border-bottom: solid 1px var(--fw-border-subtle);
+    text-align: left;
 }
 
 /* Align text with top of images */
@@ -84,18 +112,27 @@ table.fw-data-table tbody td {
 }
 table.fw-data-table th,
 table.datatable-table th {
-    padding: 15px 0;
-    vertical-align: top;
-    border-bottom: solid 1px var(--cs-white-header-border);
+    padding: 12px;
+    vertical-align: middle;
+    border-bottom: solid 2px var(--fw-border-strong);
+    text-align: left;
+    white-space: nowrap;
 }
 table.fw-data-table th:last-child,
 table.fw-data-table td:last-child,
 table.datatable-table th:last-child,
 table.datatable-table td:last-child {
-    padding-right: 0;
+    padding-right: 12px;
+}
+table.fw-data-table:focus {
+    outline: none;
 }
 table.fw-data-table:focus tbody td {
-    border-bottom-color: var(--menu-cursor-border-color);
+    border-bottom-color: var(--fw-border-subtle);
+}
+table.fw-data-table:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 4px;
 }
 table.fw-data-table .date,
 table.fw-data-table .fw-date,
@@ -123,7 +160,8 @@ table.fw-data-table td.td-icon {
     text-align: center;
 }
 table.fw-data-table-title {
-    color: var(--cs-1-text);
+    color: var(--fw-text-primary);
+    font-weight: var(--fw-font-weight-medium);
 }
 table.fw-data-table-title i.fa,
 table.fw-data-table-title i.far,
@@ -134,22 +172,53 @@ table.fw-data-table .icon-trash,
 table.fw-data-table .fw-icon-trash {
     font-size: 15px;
 }
+
+/* Row-action icons: >=3:1 stroke colour (--fw-text-primary), with a 44px
+   hit area around the glyph. */
 .owned-by-user .icon-access-right,
 .fw-owned-by-user .fw-icon-access-right,
 table.fw-data-table .fa-clock,
 table.fw-data-table .fa-trash,
 table.fw-data-table .fa-download,
-table.fw-data-table .fa-history {
-    color: var(--cs-1-icon);
+table.fw-data-table .fa-history,
+table.fw-data-table .icon-trash,
+table.fw-data-table .fw-icon-trash {
+    color: var(--fw-text-primary);
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: var(--fw-radius-circle);
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
 }
 .owned-by-user .icon-access-right:hover,
 .fw-owned-by-user .fw-icon-access-right:hover,
 table.fw-data-table .fa-clock:hover,
 table.fw-data-table .fa-trash:hover,
 table.fw-data-table .fa-download:hover,
-table.fw-data-table .fa-history:hover {
-    color: var(--cs-1-hover);
+table.fw-data-table .fa-history:hover,
+table.fw-data-table .icon-trash:hover,
+table.fw-data-table .fw-icon-trash:hover {
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface-2);
+}
+table.fw-data-table .fa-clock:focus-visible,
+table.fw-data-table .fa-trash:focus-visible,
+table.fw-data-table .fa-download:focus-visible,
+table.fw-data-table .fa-history:focus-visible,
+.owned-by-user .icon-access-right:focus-visible,
+.fw-owned-by-user .fw-icon-access-right:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+}
+
+/* Destructive row action keeps the danger accent on hover. */
+table.fw-data-table .fa-trash:hover,
+table.fw-data-table .icon-trash:hover,
+table.fw-data-table .fw-icon-trash:hover {
+    color: var(--fw-danger-text);
 }
 
 /* A deleted access rights row */
@@ -168,9 +237,15 @@ table.fw-data-table .fw-string-avatar {
 table.fw-data-table > tbody > tr > td:first-child {
     padding-left: 2px;
 }
-table.fw-data-table:focus > tbody > tr.datatable-cursor,
-table.fw-data-table:focus > tbody > tr.fw-datatable-cursor {
-    background-color: var(--cs-white-background-selected);
+table.fw-data-table:focus > tbody > tr.datatable-cursor > td,
+table.fw-data-table:focus > tbody > tr.fw-datatable-cursor > td,
+table.fw-data-table > tbody > tr.datatable-cursor > td,
+table.fw-data-table > tbody > tr.fw-datatable-cursor > td {
+    background-color: var(--fw-brand-tint-3);
+}
+table.fw-data-table:focus-visible > tbody > tr.datatable-cursor > td,
+table.fw-data-table:focus-visible > tbody > tr.fw-datatable-cursor > td {
+    box-shadow: inset 0 0 0 2px var(--fw-focus);
 }
 
 /* the usermedia table */
@@ -221,25 +296,73 @@ table.fw-data-table tbody tr.fw-checked td.checkable::after {
 table.fw-data-table.fw-selection-table tbody tr {
     cursor: pointer;
 }
+table.fw-data-table.fw-selection-table tbody tr:hover > td {
+    background-color: var(--fw-surface-2);
+}
+
+/* simple-datatables chrome */
+.datatable-container {
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    color: var(--fw-text-primary);
+}
+.datatable-top,
+.datatable-bottom {
+    padding: 8px 0;
+    color: var(--fw-text-secondary);
+    font-size: var(--fw-font-size-sm);
+}
+.datatable-search .datatable-input,
+.datatable-input {
+    height: 44px;
+    padding: 0 16px;
+    border: 1px solid var(--fw-border);
+    border-radius: var(--fw-radius-pill);
+    background-color: var(--fw-surface);
+    color: var(--fw-text-primary);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+}
+.datatable-input:focus {
+    border-color: var(--fw-focus);
+    outline: none;
+}
+.datatable-selector {
+    min-height: 44px;
+    padding: 0 12px;
+    border: 1px solid var(--fw-border);
+    border-radius: var(--fw-radius-pill);
+    background-color: var(--fw-surface);
+    color: var(--fw-text-primary);
+}
+.datatable-pagination-list button {
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: var(--fw-radius-circle);
+    color: var(--fw-text-primary);
+}
+.datatable-pagination-list button:hover:not([disabled]) {
+    background-color: var(--fw-surface-2);
+}
+.datatable-pagination .active button {
+    background-color: var(--fw-brand-tint-2);
+    color: var(--fw-text-on-brand);
+}
+.datatable-pagination-list button[disabled] {
+    color: var(--fw-text-secondary);
+    opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    table.fw-data-table tbody tr,
+    table.fw-data-table .fa-trash {
+        transition: none;
+    }
+}
 
 /* Word counter dialog table */
 .fw-word-counter-tbody {
     line-height: 38px;
 }
 
-/* Bulk action */
-.dt-bulk {
-    display: block;
-    position: relative;
-    min-width: 30px;
-}
-.dt-bulk .fw-check + label {
-    display: inline-block;
-    vertical-align: middle;
-}
-.dt-bulk-dropdown {
-    display: inline-block;
-    vertical-align: middle;
-    padding-left: 3px;
-    cursor: pointer;
-}
+/* Bulk-action bar: see datatable_bulk.css */

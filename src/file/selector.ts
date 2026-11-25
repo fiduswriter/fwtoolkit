@@ -1,6 +1,6 @@
 import {escapeText, findTarget} from "../basic.js"
 import {ensureCSS} from "../network.js"
-import {staticUrl} from "../settings.js"
+import {gettext, staticUrl} from "../settings.js"
 
 export interface FileDescriptor {
     id?: number
@@ -39,6 +39,28 @@ export interface FileSelectorOptions {
     fileIcon?: string
 }
 
+interface ColumnState {
+    /** The folder whose contents this column lists. */
+    folder: FileSelectorFolder
+    /** The entry with the roving tabindex inside this column. */
+    active: FileSelectorEntry | null
+    /** Autoscroll target for the roving focus, consumed on next render. */
+    focusActive?: boolean
+}
+
+/**
+ * macOS-Finder-style "column view" file browser.
+ *
+ * A column is rendered for every folder along the current path, from the root
+ * to the deepest opened folder. Selecting a folder opens its contents in the
+ * next column to the right; selecting a file reports the file. The column
+ * strip scrolls horizontally as the user descends.
+ *
+ * All selection state is kept in the folder tree (`this.root`), so existing
+ * callers that call `addFolder()`/`deselectAll()` keep working unchanged. The
+ * widget implements `role="tree"` with roving tabindex and Finder-like
+ * keyboard navigation (arrows, Home/End, Enter/Space, type-ahead).
+ */
 export class FileSelector {
     dom: HTMLElement
     files: FileDescriptor[]
@@ -50,6 +72,12 @@ export class FileSelector {
     fileIcon: string
     root: FileSelectorFolder
     selected: FileSelectorEntry[]
+    /** Path of the deepest opened folder ("/" for the root). */
+    currentPath: string
+    columns: ColumnState[]
+    typeAhead: string
+    typeAheadTimer: ReturnType<typeof setTimeout> | null
+    bound: boolean
 
     constructor({
         dom,
@@ -78,6 +106,11 @@ export class FileSelector {
             children: []
         }
         this.selected = []
+        this.currentPath = "/"
+        this.columns = []
+        this.typeAhead = ""
+        this.typeAheadTimer = null
+        this.bound = false
         if (this.selectFolders && !this.multiSelect) {
             this.root.selected = true
             this.selected.push(this.root)
@@ -189,6 +222,7 @@ export class FileSelector {
             this.selected = []
         }
         this.selected.push(newFolder)
+        this.currentPath = selectedFolder.path
         this.selectDir(newFolder.path)
         this.render()
     }
@@ -199,117 +233,557 @@ export class FileSelector {
         this.render()
     }
 
-    render(): void {
-        this.dom.innerHTML = this.renderFolder(this.root)
-    }
-
-    renderFolder(folder: FileSelectorFolder, indentLevel = 0): string {
-        let returnString = ""
-        returnString += `<div class="fw-folder${folder.open ? "" : " fw-closed"}">`
-        returnString += `<p style="margin-left:${indentLevel * 10}px;">${
-            folder.children.length
-                ? `<i class="far fa-${folder.open ? "minus" : "plus"}-square"></i>&nbsp;`
-                : ""
-        }<span class="fw-folder-name${folder.selected ? " fw-selected" : ""}"><i class="fas fa-folder"></i>&nbsp;${escapeText(folder.name)}</span></p>`
-        if (folder.open) {
-            returnString += '<div class="fw-folder-content">'
-            returnString += folder.children
-                .map(child => {
-                    if (child.type === "folder") {
-                        return this.renderFolder(child, indentLevel + 1)
-                    } else {
-                        return `<p class="fw-file" style="margin-left:${(indentLevel + 1) * 10 + 20}px;"><span class="fw-file-name${child.selected ? " fw-selected" : ""}"><i class="${this.fileIcon}"></i>&nbsp;${escapeText(child.name)}</span></p>`
-                    }
-                })
-                .join("")
-            returnString += "</div>"
+    /**
+     * Resolve a folder from its path, or `null` when the path is unknown.
+     */
+    findFolderByPath(path: string): FileSelectorFolder | null {
+        if (path === "/" || !path.length) {
+            return this.root
         }
-        returnString += "</div>"
-        return returnString
-    }
-
-    findEntry(dom: Element): FileSelectorEntry {
-        const searchPath: number[] = []
-        let seekItem: Element | null = dom
-        let closest = seekItem.closest("div.fw-folder, p.fw-file")
-        while (closest) {
-            seekItem = closest
-            let itemNumber = 0
-            while (seekItem.previousElementSibling) {
-                itemNumber++
-                seekItem = seekItem.previousElementSibling
+        const parts = path.split("/").filter(part => part.length)
+        let folder: FileSelectorFolder = this.root
+        for (const part of parts) {
+            const child = folder.children.find(
+                entry => entry.type === "folder" && entry.name === part
+            ) as FileSelectorFolder | undefined
+            if (!child) {
+                return null
             }
-            searchPath.push(itemNumber)
-            seekItem = seekItem.parentElement
-            closest = seekItem?.closest("div.fw-folder, p.fw-file") ?? null
+            folder = child
         }
-        let entry: FileSelectorEntry = this.root
-        searchPath.pop()
-        while (searchPath.length) {
-            entry = (entry as FileSelectorFolder).children[searchPath.pop()!]
+        return folder
+    }
+
+    /** Path chain from the root to `path` (inclusive). */
+    pathChain(path: string): FileSelectorFolder[] {
+        const chain: FileSelectorFolder[] = [this.root]
+        if (path === "/" || !path.length) {
+            return chain
         }
-        return entry
+        const parts = path.split("/").filter(part => part.length)
+        let folder: FileSelectorFolder = this.root
+        for (const part of parts) {
+            const child = folder.children.find(
+                entry => entry.type === "folder" && entry.name === part
+            ) as FileSelectorFolder | undefined
+            if (!child) {
+                break
+            }
+            chain.push(child)
+            folder = child
+        }
+        return chain
+    }
+
+    /**
+     * Build the column list from the currently opened path. A column is added
+     * for every folder along the chain plus one final column listing the
+     * deepest opened folder's contents.
+     */
+    buildColumns(): void {
+        const chain = this.pathChain(this.currentPath)
+        this.columns = chain.map(folder => {
+            const old = this.columns.find(column => column.folder === folder)
+            return {
+                folder,
+                active: old?.active ?? null,
+                focusActive: old?.focusActive
+            }
+        })
+        this.columns.forEach(column => {
+            const entries = column.folder.children
+            if (!column.active || !entries.includes(column.active)) {
+                column.active =
+                    (entries.find(entry => entry.selected) as
+                        FileSelectorEntry | undefined) ??
+                    entries[0] ??
+                    null
+            }
+        })
+    }
+
+    render(): void {
+        const previousActive = document.activeElement as HTMLElement | null
+        const hasExplicitFocus = this.columns.some(column => column.focusActive)
+        const wasFocused =
+            !hasExplicitFocus &&
+            !!previousActive &&
+            previousActive.classList.contains("fw-file-selector-row") &&
+            this.dom.contains(previousActive)
+        const previousPath = wasFocused ? previousActive!.dataset.path : null
+        const previousType = wasFocused ? previousActive!.dataset.type : null
+
+        this.buildColumns()
+        if (wasFocused) {
+            // Keep the roving focus with the row that had it, when it still
+            // exists after the rebuild.
+            this.columns.forEach(column => {
+                column.focusActive =
+                    !!column.active &&
+                    column.active.path === previousPath &&
+                    column.active.type === previousType
+            })
+            if (!this.columns.some(column => column.focusActive)) {
+                const column = this.columns[this.columns.length - 1]
+                if (column) {
+                    column.focusActive = true
+                }
+            }
+        }
+
+        this.dom.classList.add("fw-file-selector")
+        this.dom.setAttribute("role", "tree")
+        this.dom.setAttribute("aria-label", gettext("Folders and files"))
+        this.dom.innerHTML = `${this.renderBreadcrumb()}${this.renderColumns()}`
+
+        const activated = this.columns.find(column => column.focusActive)
+        const row = activated ? this.rowElement(activated) : null
+        if (row) {
+            row.focus()
+            this.ensureVisible(row)
+        }
+        this.columns.forEach(column => (column.focusActive = false))
+    }
+
+    /** The DOM row element for a column's active entry. */
+    rowElement(column: ColumnState): HTMLElement | null {
+        if (!column.active) {
+            return null
+        }
+        const rows = this.dom.querySelectorAll(
+            `.fw-file-selector-row[data-path="${escapeSelector(column.active.path)}"]`
+        )
+        for (const row of Array.from(rows)) {
+            if ((row as HTMLElement).dataset.type === column.active.type) {
+                return row as HTMLElement
+            }
+        }
+        return null
+    }
+
+    /** Scroll a row into view, horizontally for its column strip. */
+    ensureVisible(element: HTMLElement): void {
+        const columnsEl = this.dom.querySelector(
+            ".fw-file-selector-columns"
+        ) as HTMLElement | null
+        const columnEl = element.closest(
+            ".fw-file-selector-column"
+        ) as HTMLElement | null
+        if (columnsEl && columnEl) {
+            const columnsRect = columnsEl.getBoundingClientRect()
+            const columnRect = columnEl.getBoundingClientRect()
+            if (columnRect.right > columnsRect.right) {
+                columnsEl.scrollLeft +=
+                    columnRect.right - columnsRect.right + 16
+            } else if (columnRect.left < columnsRect.left) {
+                columnsEl.scrollLeft -= columnsRect.left - columnRect.left + 16
+            }
+        }
+        if (columnEl) {
+            const columnRect = columnEl.getBoundingClientRect()
+            const rowRect = element.getBoundingClientRect()
+            if (rowRect.bottom > columnRect.bottom) {
+                columnEl.scrollTop += rowRect.bottom - columnRect.bottom
+            } else if (rowRect.top < columnRect.top) {
+                columnEl.scrollTop -= columnRect.top - rowRect.top
+            }
+        }
+    }
+
+    renderBreadcrumb(): string {
+        const chain = this.pathChain(this.currentPath)
+        const segments = chain.map(folder => {
+            const icon = folder === this.root ? "fa-hard-drive" : "fa-folder"
+            const label = `<i class="fas ${icon}" aria-hidden="true"></i>
+                <span>${escapeText(folder === this.root ? gettext("Root") : folder.name)}</span>`
+            if (folder === chain[chain.length - 1]) {
+                return `<span class="fw-file-selector-crumb fw-current" aria-current="location">${label}</span>`
+            }
+            return `<button type="button" class="fw-file-selector-crumb" data-path="${escapeText(folder.path)}">${label}</button>`
+        })
+        return `<nav class="fw-file-selector-breadcrumb" aria-label="${escapeText(gettext("Path"))}">${segments.join('<span class="fw-file-selector-crumb-sep" aria-hidden="true">›</span>')}</nav>`
+    }
+
+    renderColumns(): string {
+        return `<div class="fw-file-selector-columns">${this.columns
+            .map(column => this.renderColumn(column))
+            .join("")}</div>`
+    }
+
+    renderColumn(column: ColumnState): string {
+        const folder = column.folder
+        const label =
+            folder === this.root ? gettext("Root") : folder.name || folder.path
+        const rows = folder.children.length
+            ? folder.children
+                  .map(entry => this.renderRow(entry, column))
+                  .join("")
+            : `<li class="fw-file-selector-empty" role="presentation">${escapeText(gettext("No items"))}</li>`
+        return `<div class="fw-file-selector-column fw-folder${folder.open ? "" : " fw-closed"}" role="group" aria-label="${escapeText(label)}" data-path="${escapeText(folder.path)}">
+    <ul class="fw-folder-content" role="presentation">${rows}</ul>
+</div>`
+    }
+
+    renderRow(entry: FileSelectorEntry, column: ColumnState): string {
+        const isFolder = entry.type === "folder"
+        const isActive = column.active === entry
+        const isSelected = !!entry.selected
+        const isOpen =
+            isFolder && this.columns.some(state => state.folder === entry)
+        const icon = isFolder
+            ? `<i class="fas fa-folder" aria-hidden="true"></i>`
+            : `<i class="${this.fileIcon}" aria-hidden="true"></i>`
+        const classes = [
+            "fw-file-selector-row",
+            isFolder ? "fw-folder-row" : "fw-file",
+            isActive ? "fw-active" : "",
+            isSelected ? "fw-selected" : "",
+            isFolder && entry.open ? "fw-open" : ""
+        ]
+            .filter(Boolean)
+            .join(" ")
+        // `fw-folder-name` / `fw-file-name` are kept so that downstream
+        // selectors and existing tests keep resolving.
+        const nameClass = isFolder
+            ? `fw-folder-name${isSelected ? " fw-selected" : ""}`
+            : `fw-file-name${isSelected ? " fw-selected" : ""}`
+        const expanded = isFolder
+            ? ` aria-expanded="${isOpen || entry.open ? "true" : "false"}"`
+            : ""
+        return `<li class="${classes}" role="treeitem" tabindex="${isActive ? "0" : "-1"}" aria-selected="${isSelected}"${expanded} data-path="${escapeText(entry.path)}" data-type="${entry.type}">
+    <span class="fw-file-selector-row-icon">${icon}</span>
+    <span class="${nameClass}">${escapeText(entry.name)}</span>
+    ${isFolder ? '<i class="fas fa-chevron-right fw-file-selector-row-chevron" aria-hidden="true"></i>' : ""}
+</li>`
+    }
+
+    /** The column whose folder directly contains `entry`. */
+    columnContaining(entry: FileSelectorEntry): ColumnState | null {
+        return (
+            this.columns.find(column =>
+                column.folder.children.includes(entry)
+            ) ?? null
+        )
+    }
+
+    focusColumn(column: ColumnState | null): void {
+        this.columns.forEach(state => {
+            state.focusActive = state === column
+        })
+        this.render()
+    }
+
+    /** Select (and, for folders, open) an entry. */
+    selectEntry(entry: FileSelectorEntry): void {
+        if (this.multiSelect && entry.type === "file") {
+            const existing = this.selected.find(
+                selected =>
+                    selected.type === "file" && selected.path === entry.path
+            )
+            if (existing) {
+                existing.selected = false
+                this.selected = this.selected.filter(
+                    selected => selected !== existing
+                )
+                this.render()
+                return
+            }
+            entry.selected = true
+        } else {
+            this.selected.forEach(selected => (selected.selected = false))
+            this.selected = []
+            entry.selected = true
+            this.selected.push(entry)
+        }
+        if (entry.type === "folder") {
+            this.openFolder(entry)
+            this.selectDir(entry.path)
+        } else {
+            this.render()
+            this.selectFile(entry.path)
+        }
+    }
+
+    openFolder(folder: FileSelectorFolder): void {
+        folder.open = true
+        this.currentPath = folder.path
+        const column = this.columnContaining(folder)
+        if (column) {
+            column.active = folder
+        }
+        this.render()
+    }
+
+    /** Collapse every folder below `folder` and make it the current one. */
+    closePathTo(folder: FileSelectorFolder): void {
+        const reset = (entries: FileSelectorEntry[]): void => {
+            entries.forEach(entry => {
+                if (entry.type === "folder") {
+                    entry.open = entry === folder
+                    reset(entry.children)
+                }
+            })
+        }
+        reset(this.root.children)
+        folder.open = true
+        this.currentPath = folder.path
+        if (this.selectFolders && !this.multiSelect) {
+            this.selected.forEach(selected => (selected.selected = false))
+            this.selected = [folder]
+            folder.selected = true
+        }
+        this.focusColumn(this.columnContaining(folder))
+    }
+
+    toggleFolder(folder: FileSelectorFolder): void {
+        if (folder.open && folder.path === this.currentPath) {
+            const parent = this.findParent(folder) ?? this.root
+            this.closePathTo(parent)
+        } else {
+            this.openFolder(folder)
+        }
+    }
+
+    findParent(entry: FileSelectorEntry): FileSelectorFolder | null {
+        const found = (
+            entries: FileSelectorEntry[],
+            parent: FileSelectorFolder
+        ): FileSelectorFolder | null => {
+            for (const child of entries) {
+                if (child === entry) {
+                    return parent
+                }
+                if (child.type === "folder") {
+                    const result = found(child.children, child)
+                    if (result) {
+                        return result
+                    }
+                }
+            }
+            return null
+        }
+        return found(this.root.children, this.root)
+    }
+
+    moveWithinColumn(column: ColumnState, delta: number): boolean {
+        const entries = column.folder.children
+        if (!entries.length) {
+            return false
+        }
+        const index = column.active ? entries.indexOf(column.active) : -1
+        const nextIndex =
+            index === -1
+                ? 0
+                : Math.min(Math.max(index + delta, 0), entries.length - 1)
+        column.active = entries[nextIndex]
+        column.focusActive = true
+        this.render()
+        return true
+    }
+
+    goToColumn(offset: number, sourceColumn?: ColumnState): boolean {
+        const index = sourceColumn
+            ? this.columns.indexOf(sourceColumn)
+            : this.columns.findIndex(column => column.focusActive)
+        const source = this.columns[index]
+        const target = this.columns[index + offset]
+        if (!source || !target) {
+            return false
+        }
+        if (offset < 0 && target.folder.children.includes(source.folder)) {
+            // Walking left re-highlights, in its parent column, the folder
+            // whose contents the source column lists.
+            target.active = source.folder
+        }
+        this.focusColumn(target)
+        return true
+    }
+
+    handleTypeAhead(key: string, column: ColumnState): boolean {
+        if (this.typeAheadTimer) {
+            clearTimeout(this.typeAheadTimer)
+        }
+        this.typeAhead += key.toLowerCase()
+        this.typeAheadTimer = setTimeout(() => {
+            this.typeAhead = ""
+            this.typeAheadTimer = null
+        }, 700)
+        const matches = column.folder.children.filter(entry =>
+            entry.name.toLowerCase().startsWith(this.typeAhead)
+        )
+        const chosen =
+            matches.find(entry => entry !== column.active) ?? matches[0]
+        if (!chosen) {
+            return false
+        }
+        column.active = chosen
+        column.focusActive = true
+        this.render()
+        return true
+    }
+
+    onKeydown(event: KeyboardEvent): void {
+        const row = (event.target as Element | null)?.closest(
+            ".fw-file-selector-row"
+        ) as HTMLElement | null
+        if (!row) {
+            return
+        }
+        const entry = this.entryFromRow(row)
+        const column = entry ? this.columnContaining(entry) : null
+        if (!entry || !column) {
+            return
+        }
+
+        switch (event.key) {
+            case "ArrowDown":
+                event.preventDefault()
+                this.moveWithinColumn(column, 1)
+                break
+            case "ArrowUp":
+                event.preventDefault()
+                this.moveWithinColumn(column, -1)
+                break
+            case "ArrowRight":
+                event.preventDefault()
+                if (entry.type === "folder") {
+                    this.openFolder(entry)
+                }
+                break
+            case "ArrowLeft":
+                event.preventDefault()
+                this.goToColumn(-1, column)
+                break
+            case "Home":
+                event.preventDefault()
+                if (column.folder.children.length) {
+                    column.active = column.folder.children[0]
+                    column.focusActive = true
+                    this.render()
+                }
+                break
+            case "End":
+                event.preventDefault()
+                if (column.folder.children.length) {
+                    column.active =
+                        column.folder.children[
+                            column.folder.children.length - 1
+                        ]
+                    column.focusActive = true
+                    this.render()
+                }
+                break
+            case "Enter":
+            case " ":
+                event.preventDefault()
+                this.selectEntry(entry)
+                break
+            default:
+                if (
+                    event.key.length === 1 &&
+                    !event.ctrlKey &&
+                    !event.metaKey &&
+                    !event.altKey
+                ) {
+                    if (this.handleTypeAhead(event.key, column)) {
+                        event.preventDefault()
+                    }
+                }
+                break
+        }
+    }
+
+    onFocus(event: FocusEvent): void {
+        const row = (event.target as Element | null)?.closest(
+            ".fw-file-selector-row"
+        ) as HTMLElement | null
+        const entry = row ? this.entryFromRow(row) : null
+        const column = entry ? this.columnContaining(entry) : null
+        if (!entry || !column) {
+            return
+        }
+        if (column.active !== entry) {
+            column.active = entry
+        }
+        this.columns.forEach(state => (state.focusActive = false))
     }
 
     bind(): void {
+        if (this.bound) {
+            return
+        }
+        this.bound = true
         this.dom.addEventListener("click", event => {
             const el: {target?: Element | null} = {}
             switch (true) {
-                case findTarget(event, ".fa-plus-square", el): {
+                case findTarget(event, ".fw-file-selector-crumb", el): {
                     event.preventDefault()
-                    const entry = this.findEntry(el.target!)
-                    ;(entry as FileSelectorFolder).open = true
-                    this.render()
-                    break
-                }
-                case findTarget(event, ".fa-minus-square", el): {
-                    event.preventDefault()
-                    const entry = this.findEntry(el.target!)
-                    ;(entry as FileSelectorFolder).open = false
-                    this.render()
-                    break
-                }
-                case findTarget(event, ".fw-folder-name", el): {
-                    event.preventDefault()
-                    if (!this.selectFolders) {
-                        // Folders cannot be selected
-                        return
-                    }
-                    const entry = this.findEntry(el.target!)
-                    if (this.selected.includes(entry)) {
-                        entry.selected = false
-                        this.selected = this.selected.filter(e => e !== entry)
-                        this.render()
-                    } else {
-                        entry.selected = true
-                        if (!this.multiSelect && this.selected.length) {
-                            this.selected[0].selected = false
-                        }
-                        this.selected.push(entry)
-                        this.render()
-                        this.selectDir((entry as FileSelectorFolder).path)
+                    const path = (el.target as HTMLElement).dataset.path
+                    const folder = path ? this.findFolderByPath(path) : null
+                    if (folder) {
+                        this.closePathTo(folder)
                     }
                     break
                 }
-                case findTarget(event, ".fw-file-name", el): {
+                case findTarget(event, ".fa-plus-square", el):
+                case findTarget(event, ".fw-file-selector-row-chevron", el): {
                     event.preventDefault()
-                    const entry = this.findEntry(el.target!)
-                    if (this.selected.includes(entry)) {
-                        entry.selected = false
-                        this.selected = this.selected.filter(e => e !== entry)
-                        this.render()
-                    } else {
-                        entry.selected = true
-                        if (!this.multiSelect && this.selected.length) {
-                            this.selected[0].selected = false
-                        }
-                        this.selected.push(entry)
-                        this.render()
-                        this.selectFile((entry as FileSelectorFile).path)
+                    const row = (el.target as Element).closest(
+                        ".fw-file-selector-row"
+                    ) as HTMLElement | null
+                    const entry = row ? this.entryFromRow(row) : null
+                    if (entry && entry.type === "folder") {
+                        this.toggleFolder(entry)
+                    }
+                    break
+                }
+                case findTarget(event, ".fw-file-selector-row", el): {
+                    event.preventDefault()
+                    const entry = this.entryFromRow(el.target as HTMLElement)
+                    if (entry) {
+                        this.selectEntry(entry)
                     }
                     break
                 }
             }
         })
+        this.dom.addEventListener("keydown", event => this.onKeydown(event))
+        this.dom.addEventListener("focusin", event =>
+            this.onFocus(event as FocusEvent)
+        )
+    }
+
+    entryFromRow(row: HTMLElement): FileSelectorEntry | null {
+        const path = row.dataset.path
+        const type = row.dataset.type
+        const search = (
+            entries: FileSelectorEntry[]
+        ): FileSelectorEntry | null => {
+            for (const entry of entries) {
+                if (entry.path === path && entry.type === type) {
+                    return entry
+                }
+                if (entry.type === "folder") {
+                    const result = search(entry.children)
+                    if (result) {
+                        return result
+                    }
+                }
+            }
+            return null
+        }
+        return search(this.root.children)
+    }
+
+    /**
+     * Locate the entry for a DOM node. Retained for backwards compatibility
+     * with earlier versions that exposed tree-based lookup.
+     */
+    findEntry(dom: Element): FileSelectorEntry {
+        const row = dom.closest(".fw-file-selector-row") as HTMLElement | null
+        return (row ? this.entryFromRow(row) : null) ?? this.root
     }
 }
+
+const escapeSelector = (value: string): string =>
+    typeof CSS !== "undefined" && CSS.escape ? CSS.escape(value) : value

@@ -1,10 +1,10 @@
 minimumReleaseAge: 0
 allowBuilds:
-  '@parcel/watcher': true
-  '@swc/core': true
-  unrs-resolver: true
+    "@parcel/watcher": true
+    "@swc/core": true
+    unrs-resolver: true
 onlyBuiltDependencies:
-  - '@swc/core'
-  - unrs-resolver
+    - "@swc/core"
+    - unrs-resolver
 overrides:
-  test-exclude: ^8.0.0
+    test-exclude: ^8.0.0

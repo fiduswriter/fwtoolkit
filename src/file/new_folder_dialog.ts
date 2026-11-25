@@ -18,7 +18,7 @@ export class NewFolderDialog {
                 {type: "cancel"},
                 {
                     text: gettext("Create folder"),
-                    classes: "fw-dark",
+                    classes: "fw-green fw-dialog-button-primary",
                     click: () => {
                         const folderName = (
                             this.dialog.dialogEl!.querySelector(

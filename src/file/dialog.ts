@@ -70,6 +70,20 @@ export class FileDialog {
         this.dialog = new Dialog({body: ""}) // placeholder, replaced in init()
     }
 
+    /** Folder containing the moved file(s), with a trailing slash. */
+    startFolderPath(): string {
+        if (!this.movingFiles.length) {
+            return "/"
+        }
+        const path = this.getPath()
+        if (path.endsWith("/")) {
+            return path
+        }
+        const parts = path.split("/")
+        parts.pop()
+        return `${parts.join("/")}/`
+    }
+
     getPath(): string {
         if (this.movingFiles.length === 1) {
             let path = this.movingFiles[0].path
@@ -98,14 +112,13 @@ export class FileDialog {
             title: this.title,
             id: "move-dialog",
             width: 820,
-            height: 440,
             body: moveTemplate({
                 path: this.path
             }),
             buttons: [
                 {
                     text: gettext("New folder"),
-                    classes: "fw-dark",
+                    classes: "fw-light",
                     click: () => {
                         const dialog = new NewFolderDialog(folderName => {
                             if (!this.fileSelector) {
@@ -119,7 +132,7 @@ export class FileDialog {
                 {type: "cancel"},
                 {
                     text: gettext("Submit"),
-                    classes: "fw-dark",
+                    classes: "fw-green fw-dialog-button-primary",
                     click: () => {
                         //apply the current state to server
                         let path = (
@@ -164,6 +177,14 @@ export class FileDialog {
             fileIcon: this.fileIcon
         })
         this.fileSelector.init()
+        // Start in the folder that currently holds the moved file(s) so the
+        // column browser opens at the right level.
+        const startFolder = this.fileSelector.findFolderByPath(
+            this.startFolderPath()
+        )
+        if (startFolder) {
+            this.fileSelector.closePathTo(startFolder)
+        }
     }
 
     moveFile(file: MovingFile, requestedPath: string): Promise<void> {

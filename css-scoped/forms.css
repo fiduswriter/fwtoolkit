@@ -1,9 +1,22 @@
 input,
 textarea,
-button {
-    font-family: Lato, sans-serif;
+button,
+select {
+    font-family: var(--fw-font-sans);
     margin: 0;
-    outline-width: 0;
+}
+
+/* Buttons and selects keep their own focus treatment. */
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+}
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 1px;
 }
 textarea {
     padding: 2px;
@@ -16,17 +29,34 @@ input[type="number"]:not(.fw-inline),
 textarea {
     box-sizing: border-box;
     width: 100%;
-    height: 40px;
-    padding: 0 10px;
-    font-size: 14px;
-    line-height: 1.33em;
+    height: 44px;
+    padding: 0 16px;
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    line-height: var(--fw-line-height-base);
     box-shadow: none;
-    border-radius: 0;
+    border-radius: var(--fw-radius-md);
     margin: 5px 0;
-    color: var(--cs-white-text);
-    background-color: var(--input-background-color);
-    border: 0 none;
-    border-bottom: 1px solid var(--input-border-color);
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface);
+    border: 1px solid var(--fw-border);
+    transition:
+        border-color var(--fw-motion-fast) var(--fw-motion-ease),
+        background-color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+textarea {
+    height: auto;
+    min-height: 88px;
+    padding: 10px 16px;
+    resize: vertical;
+}
+input[type="text"]:hover:not(:disabled),
+input[type="number"]:hover:not(:disabled),
+input[type="password"]:hover:not(:disabled),
+input[type="search"]:hover:not(:disabled),
+input[type="email"]:hover:not(:disabled),
+textarea:hover:not(:disabled) {
+    border-color: var(--fw-border-strong);
 }
 input[type="text"]:focus,
 input[type="number"]:focus,
@@ -34,7 +64,20 @@ input[type="password"]:focus,
 input[type="search"]:focus,
 input[type="email"]:focus,
 textarea:focus {
-    background-color: var(--input-focus-background-color);
+    background-color: var(--fw-surface);
+    border-color: var(--fw-focus);
+}
+input[aria-invalid="true"],
+textarea[aria-invalid="true"],
+.fw-input[aria-invalid="true"] {
+    border-color: var(--fw-danger-text);
+}
+input:disabled,
+textarea:disabled,
+select:disabled {
+    background-color: var(--fw-surface-2);
+    color: var(--fw-text-secondary);
+    cursor: not-allowed;
 }
 .fw-dialog input[type="text"]:not(.fw-inline),
 .fw-dialog input[type="password"]:not(.fw-inline),
@@ -48,11 +91,14 @@ textarea:focus {
     border: 1px solid var(--input-dialog-border-color);
 }
 .fw-entry-field .ProseMirror {
-    border: 1px solid var(--input-border-color);
-    border-radius: 4px;
+    border: 1px solid var(--fw-border);
+    border-radius: var(--fw-radius-md);
     min-height: 2.5rem;
     padding: 0.25rem;
-    background: var(--input-background-color);
+    background: var(--fw-surface);
+}
+.fw-entry-field .ProseMirror:focus-within {
+    border-color: var(--fw-focus);
 }
 
 /**
@@ -72,15 +118,25 @@ textarea:focus {
     content: "";
     position: relative;
     display: block;
-    width: 13px;
-    height: 13px;
-    border: 1px solid var(--overview-checkbox-border);
-    border-radius: 2px;
-    background: linear-gradient(
-        to bottom,
-        rgb(var(--overview-checkbox-background-color-from)) 0%,
-        rgb(var(--overview-checkbox-background-color-to)) 100%
-    );
+    box-sizing: border-box;
+    width: 15px;
+    height: 15px;
+    /* 1px #8c8c8c border reaches >3:1 on white (WCAG 1.4.11). */
+    border: 1px solid var(--fw-border-control);
+    border-radius: var(--fw-radius-control);
+    background-color: var(--fw-surface);
+    transition:
+        background-color var(--fw-motion-fast) var(--fw-motion-ease),
+        border-color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+.fw-check:hover:not(:disabled) + label::before {
+    border-color: var(--fw-text-primary);
+}
+
+/* Brand green is a fill; the checkmark uses dark text on the green fill. */
+.fw-check:checked + label::before {
+    border-color: var(--fw-brand-active);
+    background-color: var(--fw-brand);
 }
 .fw-check:checked + label::after {
     content: "";
@@ -88,14 +144,24 @@ textarea:focus {
     left: 5px;
     top: 2px;
     display: block;
-    width: 3px;
-    height: 7px;
-    border-bottom: 2px solid var(--overview-checkbox-color);
-    border-right: 2px solid var(--overview-checkbox-color);
+    width: 4px;
+    height: 8px;
+    border-bottom: 2px solid var(--fw-text-on-brand);
+    border-right: 2px solid var(--fw-text-on-brand);
     transform: rotate(45deg);
+}
+.fw-check:disabled + label::before {
+    border-color: var(--fw-border-subtle);
+    background-color: var(--fw-surface-2);
+}
+.fw-check:focus-visible + label::before {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
 }
 .fw-label-check + label {
     line-height: 15px;
+    /* Enlarge the clickable/target box without moving the glyph. */
+    padding-block: 14px;
 }
 .fw-label-check + label::before {
     display: inline-block;
@@ -108,18 +174,6 @@ textarea:focus {
  */
 .fw-button input[type="checkbox"] {
     margin-right: 3px;
-}
-
-/* -----------------------------------------------------------------
- * Override: remove the default border-bottom on form inputs
- * ----------------------------------------------------------------- */
-input[type="text"]:not(.fw-inline),
-input[type="password"]:not(.fw-inline),
-input[type="search"]:not(.fw-inline),
-input[type="email"]:not(.fw-inline),
-input[type="number"]:not(.fw-inline),
-textarea {
-    border-bottom: 0 none;
 }
 
 /* -----------------------------------------------------------------
@@ -141,7 +195,8 @@ input[type="search"]:focus,
 input[type="email"]:focus,
 div.fw-input:focus-within,
 textarea:focus {
-    background-color: var(--input-focus-background-color);
+    background-color: var(--fw-surface);
+    border-color: var(--fw-focus);
 }
 
 /* -----------------------------------------------------------------
@@ -162,9 +217,10 @@ textarea:focus {
 }
 .fw-select-container .fw-select-arrow {
     position: absolute;
-    top: 14px;
+    top: 17px;
     right: 16px;
     pointer-events: none;
+    color: var(--fw-text-muted);
 }
 
 /* -----------------------------------------------------------------
@@ -178,10 +234,11 @@ textarea:focus {
 }
 .fw-entry-field select {
     padding: 0 3px 0 13px;
-    border: 0 none;
-    color: var(--cs-light-text);
-    background-color: var(--select-background-color);
-    height: 38px;
+    border: 1px solid var(--fw-border);
+    border-radius: var(--fw-radius-md);
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface);
+    height: 44px;
     width: 561px;
     appearance: none;
     cursor: pointer;
@@ -195,8 +252,10 @@ textarea:focus {
  * Form label
  * ----------------------------------------------------------------- */
 .form-label {
-    font-size: 11px;
-    font-weight: bold;
+    display: block;
+    font-size: var(--fw-font-size-sm);
+    font-weight: var(--fw-font-weight-medium);
+    color: var(--fw-text-muted);
     margin-bottom: 5px;
 }
 
@@ -229,6 +288,15 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 .fw-add-input {
     cursor: pointer;
     margin-left: 14px;
+    /* Keep a 44px hit area around the glyph. */
+    display: inline-block;
+    padding: 8px;
+}
+.fw-add-input:focus-visible,
+.list-input-wrapper .add-remove-list:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+    border-radius: var(--fw-radius-sm);
 }
 .fw-add-input::before {
     width: 0.7em;
@@ -244,7 +312,8 @@ tr.fw-checkable.fw-checked > td:last-child::after {
  * Form error
  * ----------------------------------------------------------------- */
 .fw-fomt-error {
-    color: #ff0000;
+    color: var(--fw-danger-text);
+    font-size: var(--fw-font-size-sm);
 }
 
 /* -----------------------------------------------------------------

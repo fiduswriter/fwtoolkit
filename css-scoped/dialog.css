@@ -1,14 +1,16 @@
 .fw-dialog {
     position: absolute;
-    background-color: var(--cs-light-background);
-    font-size: 14px;
+    background-color: var(--fw-surface);
+    color: var(--fw-text-primary);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
     overflow: visible;
     outline: 0;
-    padding: 0 19px 19px;
-    box-shadow: none;
+    padding: 0 32px 32px;
+    box-shadow: var(--fw-shadow-3);
     border: 0 none;
     border-image: initial;
-    border-radius: 0;
+    border-radius: var(--fw-radius-lg);
     z-index: 1000; /* Ensure dialog stays on top */
     user-select: none; /* Prevent interaction with background content */
 }
@@ -45,24 +47,31 @@
 }
 .fw-dialog-titlebar {
     position: relative;
-    margin: 0 -19px;
-    padding: 19px 40px 19px 19px;
-    background: var(--cs-dark-background);
-    color: var(--cs-dark-text);
+    margin: 0 -32px;
+    padding: 32px 96px 12px 32px;
+    background: var(--fw-surface);
+    color: var(--fw-text-primary);
+    border-radius: var(--fw-radius-lg) var(--fw-radius-lg) 0 0;
     cursor: move; /* fallback if grab cursor is unsupported */
     cursor: grab;
     user-select: none;
 }
 .fw-dialog-title {
-    font-size: 15px;
-    font-weight: 400;
+    font-size: var(--fw-font-size-display);
+    font-weight: var(--fw-font-weight-normal);
+    line-height: var(--fw-line-height-tight);
     text-transform: none;
+    color: var(--fw-text-primary);
+}
+.fw-dialog-titlebar .fa {
+    margin-right: 12px;
+    color: var(--fw-text-secondary);
 }
 .fw-dialog-titlebar-close {
-    right: 19px;
+    right: 20px;
 }
 .fw-dialog-titlebar-help {
-    right: 39px;
+    right: 60px;
 }
 .fw-dialog-button-icon-only {
     width: 2em;
@@ -71,10 +80,10 @@
     white-space: nowrap;
 }
 .fw-dialog-titlebar .fw-dialog-button-icon-only {
-    color: var(--cs-dark-text);
+    color: var(--fw-text-primary);
 }
 .fw-dialog-titlebar .fw-dialog-button-icon-only:hover {
-    color: var(--cs-dark-hover);
+    color: var(--fw-text-secondary);
 }
 .fw-dialog-button-icon-only .fw-icon {
     position: absolute;
@@ -85,7 +94,7 @@
 }
 .fw-dialog-content {
     position: relative;
-    margin-top: 24px;
+    margin-top: 20px;
     /* Tooltips escape the scroll container because they are portal-rendered
        in document.body (see src/tooltip.ts). `visible auto` would be coerced
        by browsers to `auto auto` (visible + auto is not representable), so
@@ -93,7 +102,7 @@
        scrolls when the content grows too tall. */
     overflow: hidden auto;
     padding: 6px;
-    max-height: calc(100vh - 133px);
+    max-height: calc(100vh - 160px);
     min-height: 20px;
     max-width: calc(100vw - 4px);
 }
@@ -113,14 +122,18 @@
     margin: 0;
 }
 .fw-dialog-buttonpane {
-    padding-top: 20px;
+    padding-top: 28px;
 }
 .fw-dialog-buttonset {
     position: relative;
     text-align: right;
 }
 .fw-dialog-buttonset .fw-button {
-    margin-left: 6px;
+    margin-left: 12px;
+    min-height: 44px;
+    height: 44px;
+    padding: 0 24px;
+    font-size: var(--fw-font-size-lg);
 }
 .fw-overlay {
     position: fixed;
@@ -128,7 +141,9 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgb(var(--overlay-color));
+    /* Design 5 backdrop: 70% black. --overlay-color stays available for
+       hosts that override it. */
+    background-color: var(--fw-overlay);
     z-index: 100;
     backdrop-filter: blur(2px);
 }
@@ -145,8 +160,8 @@
 }
 .fw-dialog-content .fw-note-el {
     margin-bottom: 10px;
-    font-size: smaller;
-    color: var(--error-background-color);
+    font-size: var(--fw-font-size-sm);
+    color: var(--fw-danger-text);
 }
 .fw-dialog-content .fw-note-el.fw-hide {
     display: none;
@@ -206,8 +221,62 @@
     background: transparent;
     border: none;
 }
-.fw-dialog-titlebar .fw-dialog-button-icon-only:focus {
-    outline: 2px solid var(--cs-dark-text);
+.fw-dialog-titlebar .fw-dialog-button-icon-only:focus-visible {
+    outline: 2px solid var(--fw-focus);
     outline-offset: 2px;
-    border-radius: 4px;
+    border-radius: var(--fw-radius-circle);
+}
+.fw-dialog-titlebar .fw-dialog-button-icon-only:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Text-only dismissal buttons ("Cancel", "Close"): no fill, no border. */
+.fw-dialog-buttonset .fw-button.fw-dialog-button-text {
+    background: none;
+    border-color: transparent;
+    color: var(--fw-text-primary);
+}
+.fw-dialog-buttonset .fw-button.fw-dialog-button-text:hover {
+    background-color: var(--fw-surface-2);
+    color: var(--fw-text-primary);
+}
+.fw-dialog-buttonset .fw-button.fw-dialog-button-primary {
+    background-color: var(--fw-brand-tint-2);
+    border-color: var(--fw-brand);
+    color: var(--fw-text-on-brand);
+}
+.fw-dialog-buttonset .fw-button.fw-dialog-button-primary:hover {
+    background-color: var(--fw-brand-tint);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .fw-dialog {
+        animation: fw-dialog-in var(--fw-motion-base) var(--fw-motion-ease);
+    }
+    .fw-overlay {
+        animation: fw-dialog-overlay-in var(--fw-motion-base)
+            var(--fw-motion-ease);
+    }
+}
+
+@keyframes fw-dialog-in {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fw-dialog-overlay-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }

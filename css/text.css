@@ -1,38 +1,77 @@
 .fw-basic-text {
-    font-family: Lato, sans-serif;
-    font-size: 13px;
-    line-height: 1.33em;
-    color: var(--cs-1-hover);
-    font-weight: 400;
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-md);
+    line-height: var(--fw-line-height-base);
+    color: var(--fw-text-primary);
+    font-weight: var(--fw-font-weight-normal);
 }
 
+/* Accent blue reaches 5.4:1 on white; the old red link colour was used as
+   a warning colour and stays available through --cs-1-text. */
 a,
 .fw-link-text {
     cursor: pointer;
-    color: var(--cs-1-text);
+    color: var(--fw-accent);
 }
 
 a:hover,
 .fw-link-text:hover {
     cursor: pointer;
-    color: var(--cs-1-hover);
+    color: var(--fw-accent-active);
+}
+
+a:focus-visible,
+.fw-link-text:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+    border-radius: var(--fw-radius-sm);
 }
 
 .fw-header-text {
-    color: var(--cs-5-text);
-    font-size: 14px;
+    color: var(--fw-text-primary);
+    font-size: var(--fw-font-size-base);
 }
 
 .fw-header-navigation-text {
-    color: var(--cs-5-text);
-    font-weight: 400;
+    color: var(--fw-text-primary);
+    font-weight: var(--fw-font-weight-medium);
     letter-spacing: 0.6px;
     text-transform: uppercase;
-    font-size: 15px;
+    font-size: var(--fw-font-size-lg);
 }
 
 .fw-green-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--cs-4-text);
+    font-size: var(--fw-font-size-base);
+    font-weight: var(--fw-font-weight-semibold);
+    color: var(--fw-success);
+}
+
+.fw-section-title {
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-2xl);
+    font-weight: var(--fw-font-weight-normal);
+    line-height: var(--fw-line-height-tight);
+    color: var(--fw-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.fw-text-secondary {
+    color: var(--fw-text-secondary);
+}
+
+.fw-text-muted {
+    color: var(--fw-text-muted);
+}
+
+.fw-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
 }

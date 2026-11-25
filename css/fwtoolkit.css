@@ -1,13 +1,15 @@
 /* === colors.css === */
 :root {
-    --main-text-color: #2c2723;
-    --main-background-color: #f2f2f2;
+    /* Legacy aliases: re-pointed at the Design 5 semantic layer in
+       tokens.css. Downstream repos keep working unchanged. */
+    --main-text-color: var(--fw-text-primary);
+    --main-background-color: var(--fw-surface-2);
     --overlay-color: 170 170 170 / 0.3;
-    --input-focus-background-color: #fbf9d2;
-    --input-background-color: #ffffff;
-    --input-border-color: #c8c8c8;
-    --input-dialog-border-color: #e0e0e0;
-    --select-background-color: #f3f3f3;
+    --input-focus-background-color: var(--fw-surface);
+    --input-background-color: var(--fw-surface);
+    --input-border-color: var(--fw-border-strong);
+    --input-dialog-border-color: var(--fw-border-subtle);
+    --select-background-color: var(--fw-surface-2);
     --wait-active-background-color: 240 240 240 / 0.7;
     --wait-active-full-background-color: 240 240 240 / 1;
     --alert-box-shadow-color: 240 240 240 / 1;
@@ -23,61 +25,61 @@
     --error-border-color: #af3515;
     --error-background-color: #cc3f1a;
     --error-text-color: #ffffff;
-    --pulldown-header-text-color: #ffffff;
-    --pulldown-header-background-color: #2c2723;
-    --pulldown-separator-color: #f2f2f2;
+    --pulldown-header-text-color: var(--fw-text-primary);
+    --pulldown-header-background-color: var(--fw-surface);
+    --pulldown-separator-color: var(--fw-border-subtle);
     --pulldown-box-shadow-color: 0 0 0 / 0.2;
-    --menu-cursor-border-color: #63ab0d;
+    --menu-cursor-border-color: var(--fw-brand);
 
     /* tabs */
-    --tabs-border-color: #e0e0e0;
-    --tabs-text-inactive: #888888;
-    --tabs-text-active: #333333;
-    --tabs-indicator-color: #42a061;
+    --tabs-border-color: var(--fw-border-subtle);
+    --tabs-text-inactive: var(--fw-text-secondary);
+    --tabs-text-active: var(--fw-text-primary);
+    --tabs-indicator-color: var(--fw-brand);
 
     /* Color Schemes (CS) */
 
     /* red text */
-    --cs-1-text: #b73717;
-    --cs-1-icon: #a7321f;
-    --cs-1-hover: #2c2723;
+    --cs-1-text: var(--fw-danger-text);
+    --cs-1-icon: var(--fw-danger);
+    --cs-1-hover: var(--fw-text-primary);
 
     /* white on blue */
-    --cs-2-background-from: #0d78be;
-    --cs-2-background-to: #0d63ab;
-    --cs-2-background: #0d78be; /* flat */
-    --cs-2-border: #0557a1;
-    --cs-2-background-hover: #0d63ab;
-    --cs-2-background-selected: #63ab0d;
-    --cs-2-box-shadow: #3c9fdf;
-    --cs-2-text: #ffffff;
+    --cs-2-background-from: var(--fw-accent-hover);
+    --cs-2-background-to: var(--fw-accent);
+    --cs-2-background: var(--fw-accent); /* flat */
+    --cs-2-border: var(--fw-accent-active);
+    --cs-2-background-hover: var(--fw-accent-active);
+    --cs-2-background-selected: var(--fw-brand-active);
+    --cs-2-box-shadow: var(--fw-accent);
+    --cs-2-text: var(--fw-text-on-accent);
 
     /* white on orange */
-    --cs-3-text: #ffffff;
-    --cs-3-background-from: #d3421c;
-    --cs-3-background-to: #b13615;
-    --cs-3-background-hover: #b13615;
-    --cs-3-border: #7d331f;
+    --cs-3-text: var(--fw-text-inverse);
+    --cs-3-background-from: var(--fw-danger);
+    --cs-3-background-to: var(--fw-danger-text);
+    --cs-3-background-hover: var(--fw-danger-text);
+    --cs-3-border: var(--fw-danger-text);
 
     /* light green text */
-    --cs-4-text: #4c6860;
+    --cs-4-text: var(--fw-text-muted);
 
-    /* white on light green */
-    --cs-5-background: #4c6860;
-    --cs-5-text: #ffffff;
-    --cs-5-border: #f2f2f2;
-    --cs-5-background-hover: #97cdbe;
+    /* dark on light green (formerly white on light green) */
+    --cs-5-background: var(--fw-brand-tint);
+    --cs-5-text: var(--fw-text-primary);
+    --cs-5-border: var(--fw-border-subtle);
+    --cs-5-background-hover: var(--fw-brand-tint-2);
 
-    /* white on dark green */
-    --cs-6-text: #ffffff;
-    --cs-6-background: #5a7e73;
-    --cs-6-border: #7d948e;
-    --cs-6-background-focus: #8ab5a6;
-    --cs-6-background-hover: #96c6b8;
+    /* dark on brand green */
+    --cs-6-text: var(--fw-text-on-brand);
+    --cs-6-background: var(--fw-brand);
+    --cs-6-border: var(--fw-brand-hover);
+    --cs-6-background-focus: var(--fw-brand-hover);
+    --cs-6-background-hover: var(--fw-brand-hover);
 
     /* white on dark */
-    --cs-dark-text: #ffffff;
-    --cs-dark-hover: #e0e0e0;
+    --cs-dark-text: var(--fw-text-inverse);
+    --cs-dark-hover: var(--fw-surface-3);
     --cs-dark-border: #4f4d4f;
     --cs-dark-background-hover: #585858;
     --cs-dark-background: #585858; /* flat */
@@ -86,36 +88,36 @@
     --cs-dark-box-shadow: #7f7f7f;
 
     /* dark on white-ish background */
-    --cs-light-text: #2c2723;
-    --cs-light-hover: #000000;
-    --cs-light-text-secondary: #6e6e6e;
-    --cs-light-border: #e0e0e0;
-    --cs-light-background: #f9f9f9;
-    --cs-light-background-hover: #e0e0e0;
-    --cs-light-box-shadow: #9e9e9e;
+    --cs-light-text: var(--fw-text-primary);
+    --cs-light-hover: var(--fw-text-primary);
+    --cs-light-text-secondary: var(--fw-text-muted);
+    --cs-light-border: var(--fw-border-subtle);
+    --cs-light-background: var(--fw-surface-1);
+    --cs-light-background-hover: var(--fw-surface-2);
+    --cs-light-box-shadow: var(--fw-border);
 
     /* black on white */
-    --cs-white-text: #000000;
-    --cs-white-hover: #000000;
-    --cs-white-focus: #000000;
-    --cs-white-selected: #000000;
-    --cs-white-border: #cccccc;
-    --cs-white-header-border: #888888;
-    --cs-white-text-secondary: #727272;
-    --cs-white-placeholder-text: #cecece;
-    --cs-white-background: #ffffff;
-    --cs-white-background-hover: #cccccc;
-    --cs-white-background-focus: #cccccc;
-    --cs-white-background-selected: #dddddd;
+    --cs-white-text: var(--fw-text-primary);
+    --cs-white-hover: var(--fw-text-on-brand);
+    --cs-white-focus: var(--fw-focus);
+    --cs-white-selected: var(--fw-text-on-brand);
+    --cs-white-border: var(--fw-border);
+    --cs-white-header-border: var(--fw-border-strong);
+    --cs-white-text-secondary: var(--fw-text-muted);
+    --cs-white-placeholder-text: var(--fw-text-secondary);
+    --cs-white-background: var(--fw-surface);
+    --cs-white-background-hover: var(--fw-surface-2);
+    --cs-white-background-focus: var(--fw-surface-2);
+    --cs-white-background-selected: var(--fw-brand-tint);
 
     /* disabled */
-    --cs-disabled: #a9a9a9;
-    --cs-disabled-background: #d3d3d3;
-    --cs-disabled-border: #a9a9a9;
-    --overview-checkbox-color: #000000;
+    --cs-disabled: var(--fw-text-secondary);
+    --cs-disabled-background: var(--fw-surface-2);
+    --cs-disabled-border: var(--fw-border);
+    --overview-checkbox-color: var(--fw-text-on-brand);
     --overview-checkbox-background-color-from: 255 255 255 / 1;
     --overview-checkbox-background-color-to: 255 255 255 / 0;
-    --overview-checkbox-border: #a9a9a9;
+    --overview-checkbox-border: var(--fw-border-control);
 
     /* template manager */
 
@@ -124,14 +126,174 @@
     /* feedback tab */
 }
 
+/* === tokens.css === */
+/*
+ * Design 5 semantic token layer.
+ *
+ * Load order: this file must come first (right after colors.css), because
+ * every other stylesheet consumes these tokens. The legacy tokens in
+ * colors.css (--main-*, --cs-*, --overview-*) are kept as aliases of the
+ * semantic layer below so that downstream repositories continue to work
+ * unchanged.
+ *
+ * Contrast rules (WCAG 2.2 AA) enforced by the palette:
+ * - --fw-brand (#50c95f) is a FILL only, never text on white (2.1:1).
+ *   Text on brand fills must use --fw-text-on-brand (#292929, ~6.8:1).
+ * - --fw-accent (#1b57ff) may be used for text/links on white (5.4:1) and
+ *   with white text on top (5.4:1).
+ * - Non-text UI (icons, control borders) must reach 3:1 on white, hence
+ *   --fw-border-strong (#8c8c8c); --fw-border is decorative only.
+ */
+
+:root {
+    /* Typography */
+    --fw-font-sans:
+        "Poppins", "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+    --fw-font-serif:
+        "EB Garamond", "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --fw-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    --fw-font-size-xs: 11px;
+    --fw-font-size-sm: 12px;
+    --fw-font-size-md: 13px;
+    --fw-font-size-base: 14px;
+    --fw-font-size-lg: 15px;
+    --fw-font-size-xl: 16px;
+    --fw-font-size-2xl: 19px;
+    --fw-font-size-3xl: 22px;
+    --fw-font-size-title: 26px;
+    --fw-font-size-display: 33px;
+
+    --fw-font-weight-light: 300;
+    --fw-font-weight-normal: 400;
+    --fw-font-weight-medium: 500;
+    --fw-font-weight-semibold: 600;
+
+    --fw-line-height-tight: 1.2;
+    --fw-line-height-base: 1.4;
+    --fw-line-height-relaxed: 1.6;
+
+    /* Text */
+    --fw-text-primary: #3a3a3a;
+    --fw-text-secondary: #848383;
+    --fw-text-muted: #6f6f6f;
+    --fw-text-inverse: #ffffff;
+    --fw-text-on-brand: #292929;
+    --fw-text-on-accent: #ffffff;
+
+    /* Surfaces */
+    --fw-surface: #ffffff;
+    --fw-surface-1: #fcfcfc;
+    --fw-surface-2: #f0f0f0;
+    --fw-surface-3: #eeeeee;
+    --fw-surface-inverse: #3a3a3a;
+
+    /* Borders */
+    --fw-border: #c4c4c4;
+    --fw-border-strong: #8c8c8c;
+    --fw-border-subtle: #e5e5e5;
+    --fw-border-control: #8c8c8c;
+
+    /* Brand (green) — fills only */
+    --fw-brand: #50c95f;
+    --fw-brand-hover: #46ad53;
+    --fw-brand-active: #35883f;
+    --fw-brand-tint: #edfaef;
+    --fw-brand-tint-2: #ceead2;
+    --fw-brand-tint-3: rgb(80 201 95 / 10%);
+
+    /* Accent (blue) — text and fills */
+    --fw-accent: #1b57ff;
+    --fw-accent-hover: #3269fd;
+    --fw-accent-active: #1d4bcd;
+    --fw-accent-tint: #e8eefe;
+
+    /* Neutral control (gray pill buttons) */
+    --fw-neutral: #f0f0f0;
+    --fw-neutral-hover: #e2e2e2;
+    --fw-neutral-active: #d2d2d2;
+    --fw-neutral-text: #3a3a3a;
+
+    /* Status */
+    --fw-danger: #fc6310;
+    --fw-danger-text: #c22c00;
+    --fw-warning: #f5c518;
+    --fw-success: #35883f;
+    --fw-info: #1b57ff;
+    --fw-highlight: #fffad0;
+
+    /* Overlays & elevation */
+    --fw-overlay: rgb(0 0 0 / 70%);
+    --fw-shadow-1: 0 1px 2px rgb(0 0 0 / 8%);
+    --fw-shadow-2: 0 4px 16px rgb(0 0 0 / 12%);
+    --fw-shadow-3: 0 12px 40px rgb(0 0 0 / 18%);
+
+    /* Focus — single consistent ring, ≥3:1 against both white and brand */
+    --fw-focus: #1b57ff;
+    --fw-focus-ring: 0 0 0 2px var(--fw-surface), 0 0 0 4px var(--fw-focus);
+    --fw-focus-ring-inset: inset 0 0 0 2px var(--fw-focus);
+
+    /* Radii */
+    --fw-radius-pill: 30px;
+    --fw-radius-card: 30px;
+    --fw-radius-lg: 16px;
+    --fw-radius-md: 8px;
+    --fw-radius-sm: 4px;
+    --fw-radius-control: 3px;
+    --fw-radius-circle: 50%;
+
+    /* Sizing */
+    --fw-control-height: 60px;
+    --fw-control-height-sm: 44px;
+    --fw-icon-button: 60px;
+    --fw-icon-button-sm: 44px;
+    --fw-topbar-height: 100px;
+    --fw-hit-area: 44px;
+
+    /* Spacing */
+    --fw-space-1: 4px;
+    --fw-space-2: 8px;
+    --fw-space-3: 12px;
+    --fw-space-4: 16px;
+    --fw-space-5: 24px;
+    --fw-space-6: 32px;
+    --fw-space-7: 48px;
+
+    /* Motion */
+    --fw-motion-fast: 120ms;
+    --fw-motion-base: 200ms;
+    --fw-motion-ease: cubic-bezier(0.2, 0, 0, 1);
+
+    /* Layering (kept in sync with dialog.ts / overview menus) */
+    --fw-z-overlay: 100;
+    --fw-z-dialog: 1000;
+    --fw-z-menu: 1100;
+    --fw-z-tooltip: 1200;
+    --fw-z-alert: 1300;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --fw-motion-fast: 0ms;
+        --fw-motion-base: 0ms;
+    }
+}
+
 /* === common.css === */
 body {
     width: 100%;
     height: 100%;
-    background-color: var(--main-background-color);
-    color: var(--main-text-color);
+    background-color: var(--fw-surface-2);
+    color: var(--fw-text-primary);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    font-weight: var(--fw-font-weight-normal);
+    line-height: var(--fw-line-height-base);
     min-width: calc(380px - 100vw + 100%); /* to substract scrollbar width. */
     overflow-y: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body.fw-scrollable {
@@ -141,7 +303,8 @@ body.fw-scrollable {
 .fw-header {
     width: 100%;
     height: auto;
-    background-color: var(--cs-5-background);
+    background-color: var(--fw-surface-2);
+    color: var(--fw-text-primary);
     z-index: 2;
 }
 
@@ -171,8 +334,9 @@ body.fw-scrollable {
 }
 
 .fw-contents h1 {
-    font-size: 2em;
-    font-weight: bold;
+    font-size: var(--fw-font-size-title);
+    font-weight: var(--fw-font-weight-medium);
+    line-height: var(--fw-line-height-tight);
     margin-bottom: 0.2em;
 }
 
@@ -212,7 +376,9 @@ table .fw-inline {
 }
 
 .fw-avatar {
-    border: solid 1px var(--cs-light-border);
+    border: solid 1px var(--fw-border-subtle);
+    border-radius: var(--fw-radius-circle);
+    object-fit: cover;
 }
 
 .fw-string-avatar {
@@ -220,9 +386,9 @@ table .fw-inline {
     line-height: 1;
     text-align: center;
     text-transform: uppercase;
-    border-radius: 50%;
-    background-color: grey;
-    color: white;
+    border-radius: var(--fw-radius-circle);
+    background-color: var(--fw-surface-inverse);
+    color: var(--fw-text-inverse);
 }
 
 .fw-string-avatar > span {
@@ -263,10 +429,10 @@ table .fw-inline {
 }
 
 .fw-avatar-card-email {
-    font-size: 13px;
+    font-size: var(--fw-font-size-md);
     display: block;
     padding-top: 6px;
-    color: var(--cs-white-text-secondary);
+    color: var(--fw-text-secondary);
 }
 
 .ProseMirror {
@@ -283,7 +449,7 @@ table .fw-inline {
 }
 
 .ProseMirror span.fw-placeholder::before {
-    color: var(--cs-white-placeholder-text);
+    color: var(--fw-text-secondary);
     content: attr(data-placeholder);
     cursor: text;
 }
@@ -306,20 +472,38 @@ table .fw-inline {
 
 div.fw-input {
     box-sizing: border-box;
-    font-size: 14px;
-    line-height: 1.33em;
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    line-height: var(--fw-line-height-base);
     box-shadow: none;
-    border-radius: 0;
+    border-radius: var(--fw-radius-md);
     padding: 11px 10px 0;
     min-height: 38px;
-    color: var(--cs-light-text);
-    background-color: var(--cs-light-background);
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface);
 }
 
 .fw-access-key {
     text-decoration: underline;
     text-underline-offset: 2px; /* Adjust for better visibility */
     pointer-events: none;
+}
+
+/* Global focus policy: never remove focus without a replacement. */
+:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 /* === add_remove_dialog.css === */
@@ -418,30 +602,82 @@ div.fw-warning {
 
 /* === buttons.css === */
 .fw-button {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     width: auto;
+    min-height: 34px;
     height: 34px;
-    line-height: 34px;
-    padding: 0 12px;
-    font-size: 14px;
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 3px;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0 16px;
+    font-family: inherit;
+    font-size: var(--fw-font-size-base);
+    font-weight: var(--fw-font-weight-medium);
+    color: var(--fw-text-primary);
+    border: 1px solid var(--fw-border-subtle);
+    border-radius: var(--fw-radius-pill);
     cursor: pointer;
     text-decoration: none;
-    background: none;
+    background: var(--fw-surface);
     box-shadow: none;
-    box-sizing: content-box;
+    box-sizing: border-box;
     position: relative;
+    transition:
+        background-color var(--fw-motion-fast) var(--fw-motion-ease),
+        border-color var(--fw-motion-fast) var(--fw-motion-ease),
+        color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+
+/* Default (unstyled) buttons behave like a neutral pill. */
+.fw-button:not(
+    .fw-light,
+    .fw-white,
+    .fw-green,
+    .fw-orange,
+    .fw-dark,
+    .fw-socialaccount
+) {
+    background-color: var(--fw-neutral);
+    border-color: transparent;
+    color: var(--fw-neutral-text);
+}
+
+.fw-button:not(
+        .fw-light,
+        .fw-white,
+        .fw-green,
+        .fw-orange,
+        .fw-dark,
+        .fw-socialaccount
+    ):not(.fw-disabled):hover {
+    background-color: var(--fw-neutral-hover);
+}
+
+.fw-button:not(
+        .fw-light,
+        .fw-white,
+        .fw-green,
+        .fw-orange,
+        .fw-dark,
+        .fw-socialaccount
+    ):not(.fw-disabled):active {
+    background-color: var(--fw-neutral-active);
 }
 
 .fw-button label {
     cursor: pointer;
 }
 
-.fw-button:focus,
-.fw-button:active {
-    outline: 5px solid var(--cs-6-background-focus);
+.fw-button:focus {
+    outline: none;
+}
+
+/* Single consistent focus indicator (WCAG 2.4.11/2.4.13, >=3:1). */
+.fw-button:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
 }
 
 .fw-button.fw-uppercase {
@@ -449,122 +685,141 @@ div.fw-warning {
 }
 
 .fw-button.fw-large {
-    height: 40px;
-    line-height: 40px;
-    padding: 0 10px;
+    height: 44px;
+    min-height: 44px;
+    line-height: 1.2;
+    padding: 0 24px;
+    font-size: var(--fw-font-size-lg);
 }
 
 .fw-button.fw-small {
     height: 26px;
-    line-height: 26px;
-    padding: 0 6px;
+    min-height: 26px;
+    line-height: 1.2;
+    padding: 0 10px;
+    font-size: var(--fw-font-size-sm);
 }
 
 .fw-button.fw-square {
     width: 34px;
+    min-width: 34px;
+    height: 34px;
+    min-height: 34px;
     padding: 0;
     text-align: center;
+    border-radius: var(--fw-radius-circle);
 }
 
 .fw-button.fw-large.fw-square {
-    width: 40px;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
+}
+
+.fw-button.fw-small.fw-square {
+    width: 26px;
+    min-width: 26px;
+    height: 26px;
+    min-height: 26px;
 }
 
 .fw-button .fw-button-icon::before {
-    line-height: 34px;
+    line-height: 1;
     margin: 0;
 }
 
-.fw-button.fw-large .fw-button-icon::before {
-    line-height: 40px;
-}
-
-.fw-button.fw-small .fw-button-icon::before {
-    line-height: 26px;
-}
-
 .fw-button.fw-large.fw-dropdown {
-    padding-right: 22px;
+    padding-right: 40px;
 }
 
-.fw-button.fw-large.fw-dropdown .fa-caret-down {
-    display: block;
+.fw-button.fw-dropdown .fa-caret-down {
     position: absolute;
-    right: 10px;
-    top: 12px;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .fw-button.fw-light {
-    border-color: var(--cs-light-border);
-    background-color: var(--cs-light-background);
-    color: var(--cs-light-text);
+    border-color: var(--fw-border-subtle);
+    background-color: var(--fw-surface);
+    color: var(--fw-text-primary);
 }
 
 .fw-button.fw-white {
-    border: 0 none;
-    background-color: var(--cs-white-background);
-    color: var(--cs-white-text);
+    border: 1px solid var(--fw-border-subtle);
+    background-color: var(--fw-surface);
+    color: var(--fw-text-primary);
 }
 
 .fw-button.fw-white.fw-state-active {
-    background-color: var(--cs-white-background-selected);
-    color: var(--cs-white-selected);
+    background-color: var(--fw-brand-tint);
+    border-color: var(--fw-brand);
+    color: var(--fw-text-on-brand);
 }
 
 .fw-button.fw-white:not(.fw-disabled):hover {
-    background-color: var(--cs-white-background-hover);
-    color: var(--cs-white-hover);
+    background-color: var(--fw-surface-2);
+    color: var(--fw-text-primary);
 }
 
-.fw-button.fw-light:not(.fw-disabled):hover,
+.fw-button.fw-light:not(.fw-disabled):hover {
+    background-color: var(--fw-surface-2);
+    color: var(--fw-text-primary);
+}
+
 .fw-button.fw-light.fw-state-active {
-    background-color: var(--cs-light-background-hover);
-    color: var(--cs-light-hover);
+    background-color: var(--fw-brand-tint);
+    border-color: var(--fw-brand);
+    color: var(--fw-text-on-brand);
 }
 
+/* Brand green: FILL only. Dark text keeps contrast at ~6.8:1. */
 .fw-button.fw-green {
-    color: var(--cs-6-text);
-    border-color: var(--cs-6-border);
-    background-color: var(--cs-6-background);
+    color: var(--fw-text-on-brand);
+    border-color: transparent;
+    background-color: var(--fw-brand);
 }
 
 .fw-button.fw-green:not(.fw-disabled):hover {
-    background-color: var(--cs-6-background-hover);
+    background-color: var(--fw-brand-hover);
+    color: var(--fw-text-on-brand);
+}
+
+.fw-button.fw-green:not(.fw-disabled):active {
+    background-color: var(--fw-brand-active);
+    color: var(--fw-text-inverse);
 }
 
 .fw-button.fw-orange {
-    color: var(--cs-3-text);
-    background: linear-gradient(
-        to bottom left,
-        var(--cs-3-background-from),
-        var(--cs-3-background-to)
-    );
-    border-color: var(--cs-3-border);
+    color: var(--fw-text-inverse);
+    background-color: var(--fw-danger);
+    border-color: transparent;
 }
 
 .fw-button.fw-orange:not(.fw-disabled):hover {
-    background: var(--cs-3-background-hover);
+    background-color: var(--fw-danger-text);
+    color: var(--fw-text-inverse);
 }
 
 .fw-button.fw-dark {
-    color: var(--cs-dark-text);
-    background: linear-gradient(
-        to bottom left,
-        var(--cs-dark-background-from),
-        var(--cs-dark-background-to)
-    );
-    box-shadow: 0 1px 1px 0 var(--cs-dark-box-shadow) inset;
-    border-color: var(--cs-dark-border);
+    color: var(--fw-text-inverse);
+    background-color: var(--fw-surface-inverse);
+    box-shadow: none;
+    border-color: transparent;
 }
 
 .fw-button.fw-dark:not(.fw-disabled):hover {
-    background: var(--cs-dark-background-hover);
+    background-color: #585858;
+    color: var(--fw-text-inverse);
 }
 
-.fw-button:disabled {
-    background: var(--cs-disabled-background);
-    color: var(--cs-disabled);
-    border-color: var(--cs-disabled-border);
+.fw-button:disabled,
+.fw-button[aria-disabled="true"] {
+    background: var(--fw-surface-2);
+    color: var(--fw-text-secondary);
+    border-color: var(--fw-border-subtle);
+    cursor: not-allowed;
 }
 
 .fw-button.fw-left {
@@ -584,10 +839,11 @@ div.fw-warning {
 }
 
 .fw-button.fw-socialaccount {
-    display: inline-block;
+    display: inline-flex;
     width: auto;
-    height: 38px;
-    border-radius: 5px;
+    height: 44px;
+    min-height: 44px;
+    border-radius: var(--fw-radius-pill);
     font-size: 15px;
     vertical-align: top;
     line-height: 35px;
@@ -621,20 +877,38 @@ div.fw-warning {
 
 .fw-plain-button {
     display: block;
-    font-size: 11px;
+    font-size: var(--fw-font-size-xs);
     line-height: 24px;
-    background-color: var(--cs-light-background);
-    font-weight: 700;
+    background-color: var(--fw-surface-2);
+    font-weight: var(--fw-font-weight-semibold);
     text-align: center;
+    cursor: pointer;
+    border-radius: var(--fw-radius-sm);
 }
 
 .fw-plain-button:hover {
-    background-color: var(--cs-light-background-hover);
+    background-color: var(--fw-neutral-hover);
+}
+
+.fw-plain-button:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
 }
 
 .fw-button.fw-disabled {
-    color: var(--cs-disabled);
+    color: var(--fw-text-secondary);
     cursor: default;
+    opacity: 0.6;
+}
+
+.fw-button.fw-disabled:hover {
+    background-color: var(--fw-surface-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fw-button {
+        transition: none;
+    }
 }
 
 /* The remainder of this file uses application specific colors */
@@ -1399,15 +1673,17 @@ table.fw-data-table.fw-selection-table tbody tr {
 /* === dialog.css === */
 .fw-dialog {
     position: absolute;
-    background-color: var(--cs-light-background);
-    font-size: 14px;
+    background-color: var(--fw-surface);
+    color: var(--fw-text-primary);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
     overflow: visible;
     outline: 0;
-    padding: 0 19px 19px;
-    box-shadow: none;
+    padding: 0 32px 32px;
+    box-shadow: var(--fw-shadow-3);
     border: 0 none;
     border-image: initial;
-    border-radius: 0;
+    border-radius: var(--fw-radius-lg);
     z-index: 1000; /* Ensure dialog stays on top */
     user-select: none; /* Prevent interaction with background content */
 }
@@ -1449,27 +1725,35 @@ table.fw-data-table.fw-selection-table tbody tr {
 
 .fw-dialog-titlebar {
     position: relative;
-    margin: 0 -19px;
-    padding: 19px 40px 19px 19px;
-    background: var(--cs-dark-background);
-    color: var(--cs-dark-text);
+    margin: 0 -32px;
+    padding: 32px 96px 12px 32px;
+    background: var(--fw-surface);
+    color: var(--fw-text-primary);
+    border-radius: var(--fw-radius-lg) var(--fw-radius-lg) 0 0;
     cursor: move; /* fallback if grab cursor is unsupported */
     cursor: grab;
     user-select: none;
 }
 
 .fw-dialog-title {
-    font-size: 15px;
-    font-weight: 400;
+    font-size: var(--fw-font-size-display);
+    font-weight: var(--fw-font-weight-normal);
+    line-height: var(--fw-line-height-tight);
     text-transform: none;
+    color: var(--fw-text-primary);
+}
+
+.fw-dialog-titlebar .fa {
+    margin-right: 12px;
+    color: var(--fw-text-secondary);
 }
 
 .fw-dialog-titlebar-close {
-    right: 19px;
+    right: 20px;
 }
 
 .fw-dialog-titlebar-help {
-    right: 39px;
+    right: 60px;
 }
 
 .fw-dialog-button-icon-only {
@@ -1480,11 +1764,11 @@ table.fw-data-table.fw-selection-table tbody tr {
 }
 
 .fw-dialog-titlebar .fw-dialog-button-icon-only {
-    color: var(--cs-dark-text);
+    color: var(--fw-text-primary);
 }
 
 .fw-dialog-titlebar .fw-dialog-button-icon-only:hover {
-    color: var(--cs-dark-hover);
+    color: var(--fw-text-secondary);
 }
 
 .fw-dialog-button-icon-only .fw-icon {
@@ -1497,7 +1781,7 @@ table.fw-data-table.fw-selection-table tbody tr {
 
 .fw-dialog-content {
     position: relative;
-    margin-top: 24px;
+    margin-top: 20px;
     /* Tooltips escape the scroll container because they are portal-rendered
        in document.body (see src/tooltip.ts). `visible auto` would be coerced
        by browsers to `auto auto` (visible + auto is not representable), so
@@ -1505,7 +1789,7 @@ table.fw-data-table.fw-selection-table tbody tr {
        scrolls when the content grows too tall. */
     overflow: hidden auto;
     padding: 6px;
-    max-height: calc(100vh - 133px);
+    max-height: calc(100vh - 160px);
     min-height: 20px;
     max-width: calc(100vw - 4px);
 }
@@ -1530,7 +1814,7 @@ table.fw-data-table.fw-selection-table tbody tr {
 }
 
 .fw-dialog-buttonpane {
-    padding-top: 20px;
+    padding-top: 28px;
 }
 
 .fw-dialog-buttonset {
@@ -1539,7 +1823,11 @@ table.fw-data-table.fw-selection-table tbody tr {
 }
 
 .fw-dialog-buttonset .fw-button {
-    margin-left: 6px;
+    margin-left: 12px;
+    min-height: 44px;
+    height: 44px;
+    padding: 0 24px;
+    font-size: var(--fw-font-size-lg);
 }
 
 .fw-overlay {
@@ -1548,7 +1836,9 @@ table.fw-data-table.fw-selection-table tbody tr {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgb(var(--overlay-color));
+    /* Design 5 backdrop: 70% black. --overlay-color stays available for
+       hosts that override it. */
+    background-color: var(--fw-overlay);
     z-index: 100;
     backdrop-filter: blur(2px);
 }
@@ -1569,8 +1859,8 @@ table.fw-data-table.fw-selection-table tbody tr {
 
 .fw-dialog-content .fw-note-el {
     margin-bottom: 10px;
-    font-size: smaller;
-    color: var(--error-background-color);
+    font-size: var(--fw-font-size-sm);
+    color: var(--fw-danger-text);
 }
 
 .fw-dialog-content .fw-note-el.fw-hide {
@@ -1638,10 +1928,69 @@ table.fw-data-table.fw-selection-table tbody tr {
     border: none;
 }
 
-.fw-dialog-titlebar .fw-dialog-button-icon-only:focus {
-    outline: 2px solid var(--cs-dark-text);
+.fw-dialog-titlebar .fw-dialog-button-icon-only:focus-visible {
+    outline: 2px solid var(--fw-focus);
     outline-offset: 2px;
-    border-radius: 4px;
+    border-radius: var(--fw-radius-circle);
+}
+
+.fw-dialog-titlebar .fw-dialog-button-icon-only:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Text-only dismissal buttons ("Cancel", "Close"): no fill, no border. */
+.fw-dialog-buttonset .fw-button.fw-dialog-button-text {
+    background: none;
+    border-color: transparent;
+    color: var(--fw-text-primary);
+}
+
+.fw-dialog-buttonset .fw-button.fw-dialog-button-text:hover {
+    background-color: var(--fw-surface-2);
+    color: var(--fw-text-primary);
+}
+
+.fw-dialog-buttonset .fw-button.fw-dialog-button-primary {
+    background-color: var(--fw-brand-tint-2);
+    border-color: var(--fw-brand);
+    color: var(--fw-text-on-brand);
+}
+
+.fw-dialog-buttonset .fw-button.fw-dialog-button-primary:hover {
+    background-color: var(--fw-brand-tint);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .fw-dialog {
+        animation: fw-dialog-in var(--fw-motion-base) var(--fw-motion-ease);
+    }
+
+    .fw-overlay {
+        animation: fw-dialog-overlay-in var(--fw-motion-base)
+            var(--fw-motion-ease);
+    }
+}
+
+@keyframes fw-dialog-in {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fw-dialog-overlay-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 /* === drop_up.css === */
@@ -1783,10 +2132,24 @@ div.fw-faq {
 /* === forms.css === */
 input,
 textarea,
-button {
-    font-family: Lato, sans-serif;
+button,
+select {
+    font-family: var(--fw-font-sans);
     margin: 0;
-    outline-width: 0;
+}
+
+/* Buttons and selects keep their own focus treatment. */
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 1px;
 }
 
 textarea {
@@ -1801,17 +2164,36 @@ input[type="number"]:not(.fw-inline),
 textarea {
     box-sizing: border-box;
     width: 100%;
-    height: 40px;
-    padding: 0 10px;
-    font-size: 14px;
-    line-height: 1.33em;
+    height: 44px;
+    padding: 0 16px;
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    line-height: var(--fw-line-height-base);
     box-shadow: none;
-    border-radius: 0;
+    border-radius: var(--fw-radius-md);
     margin: 5px 0;
-    color: var(--cs-white-text);
-    background-color: var(--input-background-color);
-    border: 0 none;
-    border-bottom: 1px solid var(--input-border-color);
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface);
+    border: 1px solid var(--fw-border);
+    transition:
+        border-color var(--fw-motion-fast) var(--fw-motion-ease),
+        background-color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+
+textarea {
+    height: auto;
+    min-height: 88px;
+    padding: 10px 16px;
+    resize: vertical;
+}
+
+input[type="text"]:hover:not(:disabled),
+input[type="number"]:hover:not(:disabled),
+input[type="password"]:hover:not(:disabled),
+input[type="search"]:hover:not(:disabled),
+input[type="email"]:hover:not(:disabled),
+textarea:hover:not(:disabled) {
+    border-color: var(--fw-border-strong);
 }
 
 input[type="text"]:focus,
@@ -1820,7 +2202,22 @@ input[type="password"]:focus,
 input[type="search"]:focus,
 input[type="email"]:focus,
 textarea:focus {
-    background-color: var(--input-focus-background-color);
+    background-color: var(--fw-surface);
+    border-color: var(--fw-focus);
+}
+
+input[aria-invalid="true"],
+textarea[aria-invalid="true"],
+.fw-input[aria-invalid="true"] {
+    border-color: var(--fw-danger-text);
+}
+
+input:disabled,
+textarea:disabled,
+select:disabled {
+    background-color: var(--fw-surface-2);
+    color: var(--fw-text-secondary);
+    cursor: not-allowed;
 }
 
 .fw-dialog input[type="text"]:not(.fw-inline),
@@ -1835,11 +2232,15 @@ textarea:focus {
     border: 1px solid var(--input-dialog-border-color);
 }
 .fw-entry-field .ProseMirror {
-    border: 1px solid var(--input-border-color);
-    border-radius: 4px;
+    border: 1px solid var(--fw-border);
+    border-radius: var(--fw-radius-md);
     min-height: 2.5rem;
     padding: 0.25rem;
-    background: var(--input-background-color);
+    background: var(--fw-surface);
+}
+
+.fw-entry-field .ProseMirror:focus-within {
+    border-color: var(--fw-focus);
 }
 
 /**
@@ -1861,15 +2262,26 @@ textarea:focus {
     content: "";
     position: relative;
     display: block;
-    width: 13px;
-    height: 13px;
-    border: 1px solid var(--overview-checkbox-border);
-    border-radius: 2px;
-    background: linear-gradient(
-        to bottom,
-        rgb(var(--overview-checkbox-background-color-from)) 0%,
-        rgb(var(--overview-checkbox-background-color-to)) 100%
-    );
+    box-sizing: border-box;
+    width: 15px;
+    height: 15px;
+    /* 1px #8c8c8c border reaches >3:1 on white (WCAG 1.4.11). */
+    border: 1px solid var(--fw-border-control);
+    border-radius: var(--fw-radius-control);
+    background-color: var(--fw-surface);
+    transition:
+        background-color var(--fw-motion-fast) var(--fw-motion-ease),
+        border-color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+
+.fw-check:hover:not(:disabled) + label::before {
+    border-color: var(--fw-text-primary);
+}
+
+/* Brand green is a fill; the checkmark uses dark text on the green fill. */
+.fw-check:checked + label::before {
+    border-color: var(--fw-brand-active);
+    background-color: var(--fw-brand);
 }
 
 .fw-check:checked + label::after {
@@ -1878,15 +2290,27 @@ textarea:focus {
     left: 5px;
     top: 2px;
     display: block;
-    width: 3px;
-    height: 7px;
-    border-bottom: 2px solid var(--overview-checkbox-color);
-    border-right: 2px solid var(--overview-checkbox-color);
+    width: 4px;
+    height: 8px;
+    border-bottom: 2px solid var(--fw-text-on-brand);
+    border-right: 2px solid var(--fw-text-on-brand);
     transform: rotate(45deg);
+}
+
+.fw-check:disabled + label::before {
+    border-color: var(--fw-border-subtle);
+    background-color: var(--fw-surface-2);
+}
+
+.fw-check:focus-visible + label::before {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
 }
 
 .fw-label-check + label {
     line-height: 15px;
+    /* Enlarge the clickable/target box without moving the glyph. */
+    padding-block: 14px;
 }
 
 .fw-label-check + label::before {
@@ -1900,18 +2324,6 @@ textarea:focus {
  */
 .fw-button input[type="checkbox"] {
     margin-right: 3px;
-}
-
-/* -----------------------------------------------------------------
- * Override: remove the default border-bottom on form inputs
- * ----------------------------------------------------------------- */
-input[type="text"]:not(.fw-inline),
-input[type="password"]:not(.fw-inline),
-input[type="search"]:not(.fw-inline),
-input[type="email"]:not(.fw-inline),
-input[type="number"]:not(.fw-inline),
-textarea {
-    border-bottom: 0 none;
 }
 
 /* -----------------------------------------------------------------
@@ -1933,7 +2345,8 @@ input[type="search"]:focus,
 input[type="email"]:focus,
 div.fw-input:focus-within,
 textarea:focus {
-    background-color: var(--input-focus-background-color);
+    background-color: var(--fw-surface);
+    border-color: var(--fw-focus);
 }
 
 /* -----------------------------------------------------------------
@@ -1957,9 +2370,10 @@ textarea:focus {
 
 .fw-select-container .fw-select-arrow {
     position: absolute;
-    top: 14px;
+    top: 17px;
     right: 16px;
     pointer-events: none;
+    color: var(--fw-text-muted);
 }
 
 /* -----------------------------------------------------------------
@@ -1974,10 +2388,11 @@ textarea:focus {
 
 .fw-entry-field select {
     padding: 0 3px 0 13px;
-    border: 0 none;
-    color: var(--cs-light-text);
-    background-color: var(--select-background-color);
-    height: 38px;
+    border: 1px solid var(--fw-border);
+    border-radius: var(--fw-radius-md);
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface);
+    height: 44px;
     width: 561px;
     appearance: none;
     cursor: pointer;
@@ -1992,8 +2407,10 @@ textarea:focus {
  * Form label
  * ----------------------------------------------------------------- */
 .form-label {
-    font-size: 11px;
-    font-weight: bold;
+    display: block;
+    font-size: var(--fw-font-size-sm);
+    font-weight: var(--fw-font-weight-medium);
+    color: var(--fw-text-muted);
     margin-bottom: 5px;
 }
 
@@ -2028,6 +2445,16 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 .fw-add-input {
     cursor: pointer;
     margin-left: 14px;
+    /* Keep a 44px hit area around the glyph. */
+    display: inline-block;
+    padding: 8px;
+}
+
+.fw-add-input:focus-visible,
+.list-input-wrapper .add-remove-list:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+    border-radius: var(--fw-radius-sm);
 }
 
 .fw-add-input::before {
@@ -2046,7 +2473,8 @@ tr.fw-checkable.fw-checked > td:last-child::after {
  * Form error
  * ----------------------------------------------------------------- */
 .fw-fomt-error {
-    color: #ff0000;
+    color: var(--fw-danger-text);
+    font-size: var(--fw-font-size-sm);
 }
 
 /* -----------------------------------------------------------------
@@ -2899,42 +3327,81 @@ span.select-action-dropdown {
 
 /* === text.css === */
 .fw-basic-text {
-    font-family: Lato, sans-serif;
-    font-size: 13px;
-    line-height: 1.33em;
-    color: var(--cs-1-hover);
-    font-weight: 400;
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-md);
+    line-height: var(--fw-line-height-base);
+    color: var(--fw-text-primary);
+    font-weight: var(--fw-font-weight-normal);
 }
 
+/* Accent blue reaches 5.4:1 on white; the old red link colour was used as
+   a warning colour and stays available through --cs-1-text. */
 a,
 .fw-link-text {
     cursor: pointer;
-    color: var(--cs-1-text);
+    color: var(--fw-accent);
 }
 
 a:hover,
 .fw-link-text:hover {
     cursor: pointer;
-    color: var(--cs-1-hover);
+    color: var(--fw-accent-active);
+}
+
+a:focus-visible,
+.fw-link-text:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+    border-radius: var(--fw-radius-sm);
 }
 
 .fw-header-text {
-    color: var(--cs-5-text);
-    font-size: 14px;
+    color: var(--fw-text-primary);
+    font-size: var(--fw-font-size-base);
 }
 
 .fw-header-navigation-text {
-    color: var(--cs-5-text);
-    font-weight: 400;
+    color: var(--fw-text-primary);
+    font-weight: var(--fw-font-weight-medium);
     letter-spacing: 0.6px;
     text-transform: uppercase;
-    font-size: 15px;
+    font-size: var(--fw-font-size-lg);
 }
 
 .fw-green-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--cs-4-text);
+    font-size: var(--fw-font-size-base);
+    font-weight: var(--fw-font-weight-semibold);
+    color: var(--fw-success);
+}
+
+.fw-section-title {
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-2xl);
+    font-weight: var(--fw-font-weight-normal);
+    line-height: var(--fw-line-height-tight);
+    color: var(--fw-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.fw-text-secondary {
+    color: var(--fw-text-secondary);
+}
+
+.fw-text-muted {
+    color: var(--fw-text-muted);
+}
+
+.fw-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
 }
 
 /* === two_pane_selector.css === */

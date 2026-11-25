@@ -1,28 +1,80 @@
 .fw-button {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     width: auto;
+    min-height: 34px;
     height: 34px;
-    line-height: 34px;
-    padding: 0 12px;
-    font-size: 14px;
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 3px;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0 16px;
+    font-family: inherit;
+    font-size: var(--fw-font-size-base);
+    font-weight: var(--fw-font-weight-medium);
+    color: var(--fw-text-primary);
+    border: 1px solid var(--fw-border-subtle);
+    border-radius: var(--fw-radius-pill);
     cursor: pointer;
     text-decoration: none;
-    background: none;
+    background: var(--fw-surface);
     box-shadow: none;
-    box-sizing: content-box;
+    box-sizing: border-box;
     position: relative;
+    transition:
+        background-color var(--fw-motion-fast) var(--fw-motion-ease),
+        border-color var(--fw-motion-fast) var(--fw-motion-ease),
+        color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+
+/* Default (unstyled) buttons behave like a neutral pill. */
+.fw-button:not(
+    .fw-light,
+    .fw-white,
+    .fw-green,
+    .fw-orange,
+    .fw-dark,
+    .fw-socialaccount
+) {
+    background-color: var(--fw-neutral);
+    border-color: transparent;
+    color: var(--fw-neutral-text);
+}
+
+.fw-button:not(
+        .fw-light,
+        .fw-white,
+        .fw-green,
+        .fw-orange,
+        .fw-dark,
+        .fw-socialaccount
+    ):not(.fw-disabled):hover {
+    background-color: var(--fw-neutral-hover);
+}
+
+.fw-button:not(
+        .fw-light,
+        .fw-white,
+        .fw-green,
+        .fw-orange,
+        .fw-dark,
+        .fw-socialaccount
+    ):not(.fw-disabled):active {
+    background-color: var(--fw-neutral-active);
 }
 
 .fw-button label {
     cursor: pointer;
 }
 
-.fw-button:focus,
-.fw-button:active {
-    outline: 5px solid var(--cs-6-background-focus);
+.fw-button:focus {
+    outline: none;
+}
+
+/* Single consistent focus indicator (WCAG 2.4.11/2.4.13, >=3:1). */
+.fw-button:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
 }
 
 .fw-button.fw-uppercase {
@@ -30,122 +82,141 @@
 }
 
 .fw-button.fw-large {
-    height: 40px;
-    line-height: 40px;
-    padding: 0 10px;
+    height: 44px;
+    min-height: 44px;
+    line-height: 1.2;
+    padding: 0 24px;
+    font-size: var(--fw-font-size-lg);
 }
 
 .fw-button.fw-small {
     height: 26px;
-    line-height: 26px;
-    padding: 0 6px;
+    min-height: 26px;
+    line-height: 1.2;
+    padding: 0 10px;
+    font-size: var(--fw-font-size-sm);
 }
 
 .fw-button.fw-square {
     width: 34px;
+    min-width: 34px;
+    height: 34px;
+    min-height: 34px;
     padding: 0;
     text-align: center;
+    border-radius: var(--fw-radius-circle);
 }
 
 .fw-button.fw-large.fw-square {
-    width: 40px;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
+}
+
+.fw-button.fw-small.fw-square {
+    width: 26px;
+    min-width: 26px;
+    height: 26px;
+    min-height: 26px;
 }
 
 .fw-button .fw-button-icon::before {
-    line-height: 34px;
+    line-height: 1;
     margin: 0;
 }
 
-.fw-button.fw-large .fw-button-icon::before {
-    line-height: 40px;
-}
-
-.fw-button.fw-small .fw-button-icon::before {
-    line-height: 26px;
-}
-
 .fw-button.fw-large.fw-dropdown {
-    padding-right: 22px;
+    padding-right: 40px;
 }
 
-.fw-button.fw-large.fw-dropdown .fa-caret-down {
-    display: block;
+.fw-button.fw-dropdown .fa-caret-down {
     position: absolute;
-    right: 10px;
-    top: 12px;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .fw-button.fw-light {
-    border-color: var(--cs-light-border);
-    background-color: var(--cs-light-background);
-    color: var(--cs-light-text);
+    border-color: var(--fw-border-subtle);
+    background-color: var(--fw-surface);
+    color: var(--fw-text-primary);
 }
 
 .fw-button.fw-white {
-    border: 0 none;
-    background-color: var(--cs-white-background);
-    color: var(--cs-white-text);
+    border: 1px solid var(--fw-border-subtle);
+    background-color: var(--fw-surface);
+    color: var(--fw-text-primary);
 }
 
 .fw-button.fw-white.fw-state-active {
-    background-color: var(--cs-white-background-selected);
-    color: var(--cs-white-selected);
+    background-color: var(--fw-brand-tint);
+    border-color: var(--fw-brand);
+    color: var(--fw-text-on-brand);
 }
 
 .fw-button.fw-white:not(.fw-disabled):hover {
-    background-color: var(--cs-white-background-hover);
-    color: var(--cs-white-hover);
+    background-color: var(--fw-surface-2);
+    color: var(--fw-text-primary);
 }
 
-.fw-button.fw-light:not(.fw-disabled):hover,
+.fw-button.fw-light:not(.fw-disabled):hover {
+    background-color: var(--fw-surface-2);
+    color: var(--fw-text-primary);
+}
+
 .fw-button.fw-light.fw-state-active {
-    background-color: var(--cs-light-background-hover);
-    color: var(--cs-light-hover);
+    background-color: var(--fw-brand-tint);
+    border-color: var(--fw-brand);
+    color: var(--fw-text-on-brand);
 }
 
+/* Brand green: FILL only. Dark text keeps contrast at ~6.8:1. */
 .fw-button.fw-green {
-    color: var(--cs-6-text);
-    border-color: var(--cs-6-border);
-    background-color: var(--cs-6-background);
+    color: var(--fw-text-on-brand);
+    border-color: transparent;
+    background-color: var(--fw-brand);
 }
 
 .fw-button.fw-green:not(.fw-disabled):hover {
-    background-color: var(--cs-6-background-hover);
+    background-color: var(--fw-brand-hover);
+    color: var(--fw-text-on-brand);
+}
+
+.fw-button.fw-green:not(.fw-disabled):active {
+    background-color: var(--fw-brand-active);
+    color: var(--fw-text-inverse);
 }
 
 .fw-button.fw-orange {
-    color: var(--cs-3-text);
-    background: linear-gradient(
-        to bottom left,
-        var(--cs-3-background-from),
-        var(--cs-3-background-to)
-    );
-    border-color: var(--cs-3-border);
+    color: var(--fw-text-inverse);
+    background-color: var(--fw-danger);
+    border-color: transparent;
 }
 
 .fw-button.fw-orange:not(.fw-disabled):hover {
-    background: var(--cs-3-background-hover);
+    background-color: var(--fw-danger-text);
+    color: var(--fw-text-inverse);
 }
 
 .fw-button.fw-dark {
-    color: var(--cs-dark-text);
-    background: linear-gradient(
-        to bottom left,
-        var(--cs-dark-background-from),
-        var(--cs-dark-background-to)
-    );
-    box-shadow: 0 1px 1px 0 var(--cs-dark-box-shadow) inset;
-    border-color: var(--cs-dark-border);
+    color: var(--fw-text-inverse);
+    background-color: var(--fw-surface-inverse);
+    box-shadow: none;
+    border-color: transparent;
 }
 
 .fw-button.fw-dark:not(.fw-disabled):hover {
-    background: var(--cs-dark-background-hover);
+    background-color: #585858;
+    color: var(--fw-text-inverse);
 }
 
-.fw-button:disabled {
-    background: var(--cs-disabled-background);
-    color: var(--cs-disabled);
-    border-color: var(--cs-disabled-border);
+.fw-button:disabled,
+.fw-button[aria-disabled="true"] {
+    background: var(--fw-surface-2);
+    color: var(--fw-text-secondary);
+    border-color: var(--fw-border-subtle);
+    cursor: not-allowed;
 }
 
 .fw-button.fw-left {
@@ -165,10 +236,11 @@
 }
 
 .fw-button.fw-socialaccount {
-    display: inline-block;
+    display: inline-flex;
     width: auto;
-    height: 38px;
-    border-radius: 5px;
+    height: 44px;
+    min-height: 44px;
+    border-radius: var(--fw-radius-pill);
     font-size: 15px;
     vertical-align: top;
     line-height: 35px;
@@ -202,20 +274,38 @@
 
 .fw-plain-button {
     display: block;
-    font-size: 11px;
+    font-size: var(--fw-font-size-xs);
     line-height: 24px;
-    background-color: var(--cs-light-background);
-    font-weight: 700;
+    background-color: var(--fw-surface-2);
+    font-weight: var(--fw-font-weight-semibold);
     text-align: center;
+    cursor: pointer;
+    border-radius: var(--fw-radius-sm);
 }
 
 .fw-plain-button:hover {
-    background-color: var(--cs-light-background-hover);
+    background-color: var(--fw-neutral-hover);
+}
+
+.fw-plain-button:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
 }
 
 .fw-button.fw-disabled {
-    color: var(--cs-disabled);
+    color: var(--fw-text-secondary);
     cursor: default;
+    opacity: 0.6;
+}
+
+.fw-button.fw-disabled:hover {
+    background-color: var(--fw-surface-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fw-button {
+        transition: none;
+    }
 }
 
 /* The remainder of this file uses application specific colors */

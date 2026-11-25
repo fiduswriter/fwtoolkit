@@ -166,10 +166,11 @@ table {
 
 a {
     text-decoration: none;
-    outline: none;
 }
 
+/* Focus is handled globally in common.css (:focus-visible ring). */
 ::placeholder {
-    color: #a9abaa;
-    font-size: 14px;
+    color: var(--fw-text-secondary);
+    opacity: 1;
+    font-size: var(--fw-font-size-base);
 }

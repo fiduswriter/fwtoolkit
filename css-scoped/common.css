@@ -1,10 +1,16 @@
 #app-root {
     width: 100%;
     height: 100%;
-    background-color: var(--main-background-color);
-    color: var(--main-text-color);
+    background-color: var(--fw-surface-2);
+    color: var(--fw-text-primary);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    font-weight: var(--fw-font-weight-normal);
+    line-height: var(--fw-line-height-base);
     min-width: calc(380px - 100vw + 100%); /* to substract scrollbar width. */
     overflow-y: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 #app-root.fw-scrollable {
     overflow-y: auto;
@@ -12,7 +18,8 @@
 .fw-header {
     width: 100%;
     height: auto;
-    background-color: var(--cs-5-background);
+    background-color: var(--fw-surface-2);
+    color: var(--fw-text-primary);
     z-index: 2;
 }
 .fw-container {
@@ -39,8 +46,9 @@
     }
 }
 .fw-contents h1 {
-    font-size: 2em;
-    font-weight: bold;
+    font-size: var(--fw-font-size-title);
+    font-weight: var(--fw-font-weight-medium);
+    line-height: var(--fw-line-height-tight);
     margin-bottom: 0.2em;
 }
 .fw-contents .fw-errorlist {
@@ -73,16 +81,18 @@ table .fw-inline {
     padding: 5px 0;
 }
 .fw-avatar {
-    border: solid 1px var(--cs-light-border);
+    border: solid 1px var(--fw-border-subtle);
+    border-radius: var(--fw-radius-circle);
+    object-fit: cover;
 }
 .fw-string-avatar {
     display: inline-block;
     line-height: 1;
     text-align: center;
     text-transform: uppercase;
-    border-radius: 50%;
-    background-color: grey;
-    color: white;
+    border-radius: var(--fw-radius-circle);
+    background-color: var(--fw-surface-inverse);
+    color: var(--fw-text-inverse);
 }
 .fw-string-avatar > span {
     display: inline-block;
@@ -116,10 +126,10 @@ table .fw-inline {
     font-size: 17px;
 }
 .fw-avatar-card-email {
-    font-size: 13px;
+    font-size: var(--fw-font-size-md);
     display: block;
     padding-top: 6px;
-    color: var(--cs-white-text-secondary);
+    color: var(--fw-text-secondary);
 }
 .ProseMirror {
     position: relative;
@@ -133,7 +143,7 @@ table .fw-inline {
     white-space: pre-wrap;
 }
 .ProseMirror span.fw-placeholder::before {
-    color: var(--cs-white-placeholder-text);
+    color: var(--fw-text-secondary);
     content: attr(data-placeholder);
     cursor: text;
 }
@@ -152,17 +162,35 @@ table .fw-inline {
 }
 div.fw-input {
     box-sizing: border-box;
-    font-size: 14px;
-    line-height: 1.33em;
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    line-height: var(--fw-line-height-base);
     box-shadow: none;
-    border-radius: 0;
+    border-radius: var(--fw-radius-md);
     padding: 11px 10px 0;
     min-height: 38px;
-    color: var(--cs-light-text);
-    background-color: var(--cs-light-background);
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface);
 }
 .fw-access-key {
     text-decoration: underline;
     text-underline-offset: 2px; /* Adjust for better visibility */
     pointer-events: none;
+}
+
+/* Global focus policy: never remove focus without a replacement. */
+:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }

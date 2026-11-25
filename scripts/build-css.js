@@ -5,7 +5,7 @@ const cssDir = new URL("../css", import.meta.url).pathname
 const outputFile = join(cssDir, "fwtoolkit.css")
 
 // Files that should appear first because they define variables or base styles.
-const firstFiles = ["colors.css", "common.css"]
+const firstFiles = ["colors.css", "tokens.css", "common.css"]
 
 const files = readdirSync(cssDir)
     .filter(

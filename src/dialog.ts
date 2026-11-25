@@ -136,23 +136,26 @@ const buttonTemplate = ({
     ${dropdown ? '<i class="fa fa-caret-down" aria-hidden="true"></i>' : ""}
 </button>`
 
+// Design 5: dismissal actions are text-only ("Cancel" / "Close") and the
+// confirming action is a tinted primary pill. The legacy colour classes are
+// kept alongside so hosts overriding only one of them still work.
 const BUTTON_TYPES: Record<
     "close" | "cancel" | "ok",
     {text: string; classes: string; click: (dialog: Dialog) => () => void}
 > = {
     close: {
         text: gettext("Close"),
-        classes: "fw-orange",
+        classes: "fw-light fw-dialog-button-text",
         click: dialog => () => dialog.close()
     },
     cancel: {
         text: gettext("Cancel"),
-        classes: "fw-orange",
+        classes: "fw-light fw-dialog-button-text",
         click: dialog => () => dialog.close()
     },
     ok: {
         text: gettext("OK"),
-        classes: "fw-dark",
+        classes: "fw-green fw-dialog-button-primary",
         click: dialog => () => dialog.close()
     }
 }

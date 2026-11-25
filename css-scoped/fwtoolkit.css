@@ -812,14 +812,17 @@ div.fw-warning {
 }
 .fw-button.fw-socialaccount {
     display: inline-flex;
+    justify-content: flex-start;
+    gap: 0;
     width: auto;
     height: 44px;
     min-height: 44px;
     border-radius: var(--fw-radius-pill);
     font-size: 15px;
     vertical-align: top;
-    line-height: 35px;
-    padding: 0;
+    line-height: 1.2;
+    /* Left gutter reserved for the icon segment; the label follows it. */
+    padding: 0 20px 0 0;
     background: linear-gradient(
         to bottom left,
         var(--cs-2-background-from),
@@ -834,13 +837,16 @@ div.fw-warning {
     background: var(--cs-2-background-hover);
 }
 .fw-button.fw-socialaccount > span {
-    display: inline-block;
-    width: 37px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 44px;
     height: 100%;
     text-align: center;
-    font-size: 15px;
-    margin-right: 12px;
-    line-height: 37px;
+    font-size: 16px;
+    margin-right: 16px;
+    line-height: 1;
     border-right: 1px solid var(--cs-2-border);
     box-shadow: 1px 0 0 0 var(--cs-2-box-shadow);
 }

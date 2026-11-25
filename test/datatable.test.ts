@@ -86,3 +86,68 @@ describe("SelectionDataTable", () => {
         expect(dt.getSelected()).toEqual([])
     })
 })
+
+describe("OverviewDataTable select-all placement", () => {
+    beforeEach(() => {
+        document.body.innerHTML = ""
+        // simple-datatables calls scrollIntoView when scrollY is set; jsdom
+        // does not implement it.
+        if (!Element.prototype.scrollIntoView) {
+            Element.prototype.scrollIntoView = () => {}
+        }
+    })
+
+    const build = (scrollY: string | false) => {
+        const dom = document.createElement("div")
+        document.body.appendChild(dom)
+        const dt = new OverviewDataTable({
+            dom,
+            scrollY,
+            columns: [
+                {select: 0, hidden: true},
+                {select: 1, sortable: false},
+                {select: 2, title: "Name"},
+                {select: 3, title: "Email"}
+            ],
+            data: [{cells: [1, false, "Alice", "a@example.com"]}],
+            bulkMenu: {content: [{title: "Delete", action: () => {}}]}
+        })
+        dt.init()
+        return {dom, dt}
+    }
+
+    test("places the bulk control once, in a header cell", () => {
+        const {dom} = build(false)
+        const bulks = dom.querySelectorAll(".dt-bulk")
+        expect(bulks.length).toBe(1)
+        expect(bulks[0].closest("thead")).not.toBeNull()
+        expect(bulks[0].closest("th")).not.toBeNull()
+    })
+
+    test("is idempotent when the header is re-processed", () => {
+        const {dom, dt} = build(false)
+        dt.insertBulkHeader()
+        dt.insertBulkHeader()
+        expect(dom.querySelectorAll(".dt-bulk").length).toBe(1)
+    })
+
+    test("uses the header container table when scrollY splits the table", () => {
+        const {dom} = build("300px")
+        const bulk = dom.querySelector(".dt-bulk")
+        expect(bulk).not.toBeNull()
+        const headerContainer = dom.querySelector(".datatable-headercontainer")
+        if (headerContainer) {
+            expect(headerContainer.contains(bulk as Node)).toBe(true)
+        }
+        expect(dom.querySelectorAll(".dt-bulk").length).toBe(1)
+    })
+
+    test("keeps the bulk control when rows are added", () => {
+        const {dom, dt} = build(false)
+        dt.init()
+        for (let i = 0; i < 3; i++) {
+            dt.insertBulkHeader()
+        }
+        expect(dom.querySelectorAll(".dt-bulk").length).toBe(1)
+    })
+})

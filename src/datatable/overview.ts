@@ -182,7 +182,45 @@ export class OverviewDataTable {
                 }
             )
             this.dtBulk.init(this.table)
+            // simple-datatables rebuilds its header rows on every render, so
+            // the bulk control is (re)inserted after each one.
             this.insertBulkHeader()
+            this.table.on("datatable.update", () => this.insertBulkHeader())
+            this.table.on("datatable.sort", () => this.insertBulkHeader())
+            this.table.on("datatable.refresh", () => this.insertBulkHeader())
+            // simple-datatables writes its header after init and can add an
+            // extra empty header row later. Re-assert the placement whenever
+            // the table head changes, coalescing bursts into one pass.
+            if (typeof MutationObserver !== "undefined") {
+                const thead = this.table.dom.querySelector("thead")
+                if (thead) {
+                    let scheduled = false
+                    const observer = new MutationObserver(() => {
+                        if (scheduled) {
+                            return
+                        }
+                        scheduled = true
+                        queueMicrotask(() => {
+                            scheduled = false
+                            const labelRow = Array.from(
+                                thead.querySelectorAll("tr")
+                            ).find(row =>
+                                row.querySelector(".datatable-sorter")
+                            )
+                            const bulkTh = thead
+                                .querySelector(".dt-bulk")
+                                ?.closest("th")
+                            if (!labelRow) {
+                                return
+                            }
+                            if (!bulkTh || !labelRow.contains(bulkTh)) {
+                                this.insertBulkHeader()
+                            }
+                        })
+                    })
+                    observer.observe(thead, {childList: true, subtree: true})
+                }
+            }
         } else {
             // Without a bulk menu we still need clicks on row checkboxes to work.
             this.bindRowCheckboxClick()
@@ -197,21 +235,51 @@ export class OverviewDataTable {
         if (!this.table || !this.dtBulk) {
             return
         }
+        // With `scrollY` set, simple-datatables splits the table into a
+        // header-only table inside `.datatable-headercontainer` and a body
+        // table inside `.datatable-container`. The bulk control belongs in
+        // the (visible, sticky) header table. Fall back to the single thead
+        // for tables without a fixed header.
+        // `this.table.dom` is the <table> itself; the wrapper lives in the
+        // host element we were given.
+        const wrapper = this.dom.querySelector(".datatable-wrapper")
+        const headerTable = wrapper?.querySelector(
+            ".datatable-headercontainer table"
+        )
+        const scopes: ParentNode[] = headerTable
+            ? [headerTable]
+            : Array.from(this.dom.querySelectorAll("table")).slice(0, 1)
+        const thead = scopes
+            .map(scope => scope.querySelector("thead"))
+            .find(thead => !!thead?.querySelector(".datatable-sorter"))
+        if (!thead) {
+            return
+        }
+        thead.querySelectorAll(".dt-bulk").forEach(el => el.remove())
+
         const visibleIndex = this.checkboxVisibleIndex()
-        const visibleThs = Array.from(
-            this.table.dom.querySelectorAll("thead th")
-        ).filter(th => {
-            const htmlTh = th as HTMLTableCellElement
+        const rows = Array.from(thead.querySelectorAll("tr"))
+        const labelRow =
+            rows.find(row => row.querySelector(".datatable-sorter")) || rows[0]
+        rows.forEach(row => {
+            if (row !== labelRow && !row.textContent?.trim().length) {
+                row.remove()
+            }
+        })
+        const cells = Array.from(labelRow.children).filter(th => {
+            const el = th as HTMLTableCellElement
             return (
-                !htmlTh.hidden &&
+                !el.hidden &&
                 !th.hasAttribute("hidden") &&
-                htmlTh.style.display !== "none"
+                el.style.display !== "none"
             )
         })
-        const th = visibleThs[visibleIndex]
-        if (th) {
-            th.innerHTML = this.dtBulk.getHTML()
+        const th = cells[visibleIndex] as HTMLElement | undefined
+        if (!th) {
+            return
         }
+        th.innerHTML = this.dtBulk.getHTML()
+        th.removeAttribute("data-sortable")
     }
 
     getHeadings(): string[] {

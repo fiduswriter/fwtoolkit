@@ -1353,6 +1353,63 @@ table.fw-data-table tbody tr {
     width: auto;
 }
 
+/* Design 5: the search field is a 258x60 white pill in the top-right corner,
+   not a full-width box. */
+.datatable-top {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-height: var(--fw-control-height);
+    padding: 0 0 var(--fw-space-2);
+}
+
+.datatable-search {
+    position: relative;
+    flex: 0 0 auto;
+    width: 258px;
+    max-width: 100%;
+}
+
+.datatable-search::before {
+    content: "\f002";
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family:
+        "Font Awesome 7 Free", "Font Awesome 6 Free", "FontAwesome", monospace;
+    font-weight: 900;
+    font-size: var(--fw-font-size-base);
+    color: var(--fw-text-secondary);
+    pointer-events: none;
+}
+
+.datatable-search .datatable-input.datatable-input {
+    width: 100%;
+    height: var(--fw-control-height);
+    padding: 0 20px 0 48px;
+    border: 0;
+    border-radius: var(--fw-radius-pill);
+    background-color: var(--fw-surface);
+    box-shadow: var(--fw-shadow-1);
+    font-size: var(--fw-font-size-base);
+}
+
+.datatable-search .datatable-input.datatable-input::placeholder {
+    color: var(--fw-text-secondary);
+}
+
+.datatable-search .datatable-input.datatable-input:focus {
+    box-shadow: var(--fw-focus-ring);
+    border-color: transparent;
+}
+
+@media (width <= 700px) {
+    .datatable-search {
+        width: 100%;
+    }
+}
+
 table.fw-data-table:focus {
     outline: none;
 }
@@ -1450,12 +1507,19 @@ table.datatable-table th {
 }
 
 /* The select-all pill in the header defines its own box. */
+/* The select-all pill defines its own box; the cell must not pad it, so
+   the pill's checkbox can line up with the row checkboxes (see
+   datatable_bulk.css). */
+/* Select-all header cell: sized to the 60px pill (Design 5 places the pill
+   in the header row with its checkbox level with the row checkboxes), with
+   the column labels vertically centred against it. */
 table.fw-data-table th:has(> .dt-bulk),
 table.datatable-table th:has(> .dt-bulk) {
     width: 1%;
-    padding: 6px 8px;
-    text-align: center;
+    padding: 0;
+    text-align: left;
     white-space: nowrap;
+    vertical-align: middle;
 }
 
 table.fw-data-table th:last-child,
@@ -1678,7 +1742,6 @@ table.fw-data-table.fw-selection-table tbody tr:hover > td {
     font-size: var(--fw-font-size-sm);
 }
 
-.datatable-search .datatable-input,
 .datatable-input {
     height: 44px;
     padding: 0 16px;
@@ -1743,9 +1806,14 @@ table.fw-data-table.fw-selection-table tbody tr:hover > td {
 /* Bulk-action bar for overview/selection data tables. */
 
 /*
- * Select-all control: one 60px-tall brand-tinted pill (radius 30) holding
- * the 15px checkbox and the caret, as in Design 5. The pill is the visible
- * hit target for both parts, and the parts sit 8px apart.
+ * Select-all control: a 60px-tall brand-tinted oval (radius 30) with the
+ * 15px checkbox and the caret 8px apart, as in Design 5.
+ *
+ * Layout: the control keeps a compact in-flow box (so it does not stretch
+ * the fixed-height table header), and the oval is painted by a
+ * pseudo-element centred on it, overhanging above and below. The checkbox
+ * therefore stays on the header's text baseline and lines up with the row
+ * checkboxes below.
  */
 .dt-bulk {
     display: inline-flex;
@@ -1753,16 +1821,41 @@ table.fw-data-table.fw-selection-table tbody tr:hover > td {
     gap: var(--fw-space-2);
     position: relative;
     box-sizing: border-box;
-    min-width: 90px;
-    height: 60px;
-    padding: 0 16px;
-    background-color: var(--fw-brand-tint-3);
-    border-radius: var(--fw-radius-pill);
+    height: 24px;
+    /* Shift so the checkbox lines up with the row checkboxes (which sit at
+       the cell's left edge); the oval then hangs into the gutter. */
+    margin-left: -16px;
+    padding: 0 22px 0 18px;
     vertical-align: middle;
+    z-index: 1;
 }
 
-.dt-bulk:hover {
+/* The oval: 90x60, centred on the control. Design 5 hangs it left of the
+   checkbox (oval x 9048, checkbox x 9071) so the checkbox can line up with
+   the row checkboxes while the oval extends into the gutter. */
+.dt-bulk::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    /* Design 5: the oval starts 23px left of its checkbox. */
+    left: -5px;
+    width: 90px;
+    height: 60px;
+    transform: translateY(-50%);
+    background-color: var(--fw-brand-tint-3);
+    border-radius: var(--fw-radius-pill);
+    pointer-events: none;
+    z-index: -1;
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+
+.dt-bulk:hover::before {
     background-color: var(--fw-brand-tint-2);
+}
+
+/* Keep the overhanging oval from being clipped by the header cell. */
+th:has(> .dt-bulk) {
+    overflow: visible;
 }
 
 /* Keep the checkbox and its label as one tight unit inside the pill. */

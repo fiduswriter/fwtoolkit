@@ -24,16 +24,45 @@ import {Dialog} from "fwtoolkit/dialog.js"
 ## CSS
 
 The package ships the styles for its UI components under `fwtoolkit/css/`.
-Load at least `colors.css` and the component styles you need. If the host page
-has not already applied a CSS reset, also load `reset.css` before the component
-styles:
+Load `colors.css` and `tokens.css` first (they define the design tokens), then
+the component styles you need. If the host page has not already applied a CSS
+reset, load `reset.css` before the component styles:
 
 ```html
 <link rel="stylesheet" href="node_modules/fwtoolkit/css/reset.css" />
 <link rel="stylesheet" href="node_modules/fwtoolkit/css/colors.css" />
+<link rel="stylesheet" href="node_modules/fwtoolkit/css/tokens.css" />
 <link rel="stylesheet" href="node_modules/fwtoolkit/css/dialog.css" />
 <link rel="stylesheet" href="node_modules/fwtoolkit/css/buttons.css" />
 ```
+
+### Design tokens
+
+`css/tokens.css` defines the semantic Design 5 layer (`--fw-*`): typography
+(Poppins UI typeface, size/weight/line-height scales), colours, radii, sizing,
+spacing, motion and z-index. New component code should use these tokens.
+
+The legacy token names in `css/colors.css` (`--main-*`, `--cs-*`,
+`--overview-*`, `--input-*`, `--tabs-*`, …) are retained and now alias the
+semantic layer, so existing host stylesheets keep working unchanged.
+
+Contrast rules are enforced by `test/contrast.test.ts`:
+
+- `--fw-brand` (`#50c95f`) is a fill only — it never reaches 4.5:1 on white.
+  Text on green uses `--fw-text-on-brand` (`#292929`, ~6.8:1).
+- `--fw-accent` (blue) is safe for text and for white-on-accent.
+- Non-text control strokes use `--fw-border-control` (`#8c8c8c`, ≥3:1).
+- `--fw-text-secondary` is darkened to `#656565` so secondary text still passes
+  AA on `--fw-surface-2`; the mock's lighter `#848383` is available as
+  `--fw-text-tertiary` for large/decorative text only.
+
+### Accessibility
+
+All interactive components use a single `:focus-visible` ring
+(`--fw-focus`), keep their keyboard operability and ARIA semantics, and honour
+`prefers-reduced-motion`. The file dialog is a Finder-style column browser with
+`role="tree"`/`role="treeitem"`, roving tabindex, arrow-key navigation and a
+clickable breadcrumb.
 
 In Fidus Writer the CSS is copied automatically to the static files directory
 by the `copy_fwtoolkit_css` postinstall step.

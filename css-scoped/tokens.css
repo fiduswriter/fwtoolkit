@@ -46,8 +46,12 @@
 
     /* Text */
     --fw-text-primary: #3a3a3a;
-    --fw-text-secondary: #848383;
-    --fw-text-muted: #6f6f6f;
+    /* Secondary text must pass AA at body sizes: #848383 only reaches
+       3.8:1, so the design's "muted" grey is used here instead. */
+    --fw-text-secondary: #656565;
+    --fw-text-muted: #515151;
+    /* Decorative / large-only hint colour from the design (#848383). */
+    --fw-text-tertiary: #848383;
     --fw-text-inverse: #ffffff;
     --fw-text-on-brand: #292929;
     --fw-text-on-accent: #ffffff;
@@ -89,7 +93,9 @@
     --fw-danger: #fc6310;
     --fw-danger-text: #c22c00;
     --fw-warning: #f5c518;
-    --fw-success: #35883f;
+    /* Success fill takes white text at 4.5:1+ (the mock's lighter green
+       only reached ~4.4:1). */
+    --fw-success: #2f7d38;
     --fw-info: #1b57ff;
     --fw-highlight: #fffad0;
 

@@ -11,24 +11,35 @@
 }
 .inline-tools .menuicon {
     position: relative;
-    display: inline-block;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: var(--fw-hit-area);
+    height: var(--fw-hit-area);
+    border-radius: var(--fw-radius-circle);
     overflow: hidden;
     text-indent: -999px;
-    background-color: var(--cs-2-background);
-    color: var(--cs-2-text);
+    background-color: var(--fw-surface-2);
+    color: var(--fw-text-primary);
     cursor: pointer;
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
 }
 .inline-tools .menuicon:hover {
-    background-color: var(--cs-2-background-hover);
+    background-color: var(--fw-neutral-hover);
 }
+
+/* Active inline formats use the brand as a fill with dark glyphs. */
 .inline-tools .menuicon.fw-active {
-    background-color: var(--cs-2-background-selected);
+    background-color: var(--fw-brand);
+    color: var(--fw-text-on-brand);
+}
+.inline-tools .menuicon:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
 }
 .inline-tools .menuicon + .menuicon {
-    margin-left: 2px;
+    margin-left: var(--fw-space-1);
 }
 .inline-tools .menuicon::before {
     position: absolute;
@@ -38,8 +49,8 @@
     height: 100%;
     text-indent: 0;
     text-align: center;
-    line-height: 25px;
-    font-size: 13px;
+    line-height: 1;
+    font-size: var(--fw-font-size-md);
 }
 .menuicon.strong::before,
 .menuicon.em::before,

@@ -27,12 +27,28 @@
     width: 1%;
     white-space: nowrap;
     padding-left: 8px;
-    padding-top: 10px;
-    color: var(--cs-light-text);
+    vertical-align: middle;
+    color: var(--fw-text-primary);
 }
 .fw-input-field-list-ctrl .fa-minus-circle,
 .fw-input-field-list-ctrl .fa-plus-circle {
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--fw-hit-area);
+    min-height: var(--fw-hit-area);
+    border-radius: var(--fw-radius-circle);
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+.fw-input-field-list-ctrl .fa-minus-circle:hover,
+.fw-input-field-list-ctrl .fa-plus-circle:hover {
+    background-color: var(--fw-surface-2);
+}
+.fw-input-field-list-ctrl .fa-minus-circle:focus-visible,
+.fw-input-field-list-ctrl .fa-plus-circle:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
 }
 .fw-input-list-wrapper tr.fw-form-error .fw-input-list-item-cell input,
 .fw-input-list-wrapper tr.fw-form-error .fw-input-list-item-cell textarea {

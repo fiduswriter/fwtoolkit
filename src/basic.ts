@@ -260,7 +260,7 @@ export const addAlert = (
     if (!document.getElementById("fw-alerts-outer-wrapper")) {
         document.body.insertAdjacentHTML(
             "beforeend",
-            '<div id="fw-alerts-outer-wrapper"><ul id="fw-alerts-wrapper"></ul></div>'
+            '<div id="fw-alerts-outer-wrapper"><ul id="fw-alerts-wrapper" aria-live="polite" aria-relevant="additions"></ul></div>'
         )
     }
     const alertsWrapper = document.getElementById("fw-alerts-wrapper")
@@ -269,7 +269,7 @@ export const addAlert = (
     }
     alertsWrapper.insertAdjacentHTML(
         "beforeend",
-        `<li class="fa-before fa-${iconNames[alertType]} alerts-${alertType}">${alertMsg}</li>`
+        `<li class="fa-before fa-${iconNames[alertType]} alerts-${alertType}" role="${alertType === "error" ? "alert" : "status"}" tabindex="0">${alertMsg}</li>`
     )
     const alertBox = alertsWrapper.lastElementChild
     if (!alertBox) {

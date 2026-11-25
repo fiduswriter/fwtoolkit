@@ -1,13 +1,21 @@
 .fw-ar-container {
     display: inline-block;
+    box-sizing: border-box;
     width: 338px;
     height: 360px;
-    background-color: var(--cs-white-background);
-    border: solid 1px var(--cs-white-border);
+    background-color: var(--fw-surface);
+    border: solid 1px var(--fw-border-subtle);
+    border-radius: var(--fw-radius-md);
     vertical-align: middle;
-    padding: 20px 14px 0;
+    padding: 12px;
     overflow-y: auto;
     margin-bottom: 16px;
+    font-family: var(--fw-font-sans);
+}
+
+.fw-ar-container:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
 }
 
 .fw-ar-button {
@@ -29,10 +37,27 @@
 
 .fw-two-pane-item {
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    min-height: var(--fw-hit-area);
+    padding: 0 var(--fw-space-3);
+    border-radius: var(--fw-radius-md);
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+
+.fw-two-pane-item:hover {
+    background-color: var(--fw-surface-2);
 }
 
 .fw-two-pane-item.fw-selected {
-    background-color: var(--cs-light-background-hover);
+    background-color: var(--fw-brand-tint-3);
+    color: var(--fw-text-on-brand);
+    font-weight: var(--fw-font-weight-medium);
+}
+
+.fw-two-pane-item:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: -2px;
 }
 
 .fw-two-pane-controls {

@@ -3,16 +3,47 @@
 }
 .fw-checkable-label {
     position: relative;
-    display: block;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
     width: 462px;
-    height: 36px;
-    line-height: 36px;
-    border: solid 1px var(--cs-light-border);
-    padding-left: 12px;
+    max-width: 100%;
+    min-height: var(--fw-hit-area);
+    line-height: var(--fw-line-height-tight);
+    border: solid 1px var(--fw-border);
+    border-radius: var(--fw-radius-md);
+    padding: 0 var(--fw-space-4);
     margin-bottom: 10px;
+    font-family: var(--fw-font-sans);
+    cursor: pointer;
+    transition:
+        background-color var(--fw-motion-fast) var(--fw-motion-ease),
+        border-color var(--fw-motion-fast) var(--fw-motion-ease);
 }
+.fw-checkable-label:hover {
+    border-color: var(--fw-border-strong);
+}
+.fw-checkable-label.fw-checked {
+    background-color: var(--fw-brand-tint-3);
+    border-color: var(--fw-brand);
+}
+
+/* Kept visually hidden for backwards compatibility, but focusable and
+   announced: focus moves to it with the keyboard. */
 .fw-checkable-input {
-    display: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+.fw-checkable-label:has(.fw-checkable-input:focus-visible) {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
 }
 .fw-checkable-label.fw-checked::after {
     display: inline-block;

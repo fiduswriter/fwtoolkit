@@ -100,8 +100,10 @@ export class ProgressTask {
             : ""
         const progressBarHtml =
             this.percentage === null
-                ? '<div class="fw-progress-bar fw-indeterminate" aria-hidden="true"><div class="fw-progress-fill"></div></div>'
-                : `<div class="fw-progress-bar" aria-hidden="true"><div class="fw-progress-fill" style="width: ${Math.max(0, Math.min(100, this.percentage))}%"></div></div>`
+                ? '<div class="fw-progress-bar fw-indeterminate" role="progressbar" aria-label="' +
+                  escapeText(this.title) +
+                  '"><div class="fw-progress-fill"></div></div>'
+                : `<div class="fw-progress-bar" role="progressbar" aria-label="${escapeText(this.title)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.max(0, Math.min(100, this.percentage))}"><div class="fw-progress-fill" style="width: ${Math.max(0, Math.min(100, this.percentage))}%"></div></div>`
         const cancelHtml = this.cancelable
             ? `<button class="fw-progress-cancel" type="button" aria-label="${escapeText(gettext("Cancel"))}"><i class="fa fa-times"></i></button>`
             : this.dismissable
@@ -110,7 +112,7 @@ export class ProgressTask {
         const iconClass = ICONS[this.alertType].running
         wrapper.insertAdjacentHTML(
             "beforeend",
-            `<li id="${this.id}" class="fw-progress-task fw-progress-${this.alertType}" role="status" aria-live="polite" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${this.percentage === null ? 0 : this.percentage}">
+            `<li id="${this.id}" class="fw-progress-task fw-progress-${this.alertType}" role="status" aria-live="polite" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${this.percentage === null ? 0 : this.percentage}"${this.percentage === null ? ' aria-valuetext="' + escapeText(gettext("In progress")) + '"' : ""}>
                 <div class="fw-progress-header">
                     <span class="fw-progress-icon ${iconClass}"></span>
                     <span class="fw-progress-title">${escapeText(this.title)}</span>

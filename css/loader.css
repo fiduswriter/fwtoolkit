@@ -7,6 +7,7 @@
     inset: 0;
     background-color: rgb(var(--wait-active-background-color));
     z-index: 1500;
+    font-family: var(--fw-font-sans);
 }
 
 #fw-wait.fw-active.fw-full {
@@ -19,9 +20,17 @@
     position: fixed;
     top: 50%;
     left: 50%;
-    font-size: 24px;
+    font-size: 32px;
+    color: var(--fw-brand-active);
     margin-top: -0.5em;
     margin-left: -0.5em;
+    animation: fw-wait-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes fw-wait-pulse {
+    50% {
+        opacity: 0.45;
+    }
 }
 
 #fw-wait span {
@@ -33,6 +42,7 @@
     justify-content: center;
     align-items: center;
     min-height: 105vh;
-    font-size: 15px;
+    font-size: var(--fw-font-size-lg);
+    color: var(--fw-text-primary);
     margin-top: 20px;
 }

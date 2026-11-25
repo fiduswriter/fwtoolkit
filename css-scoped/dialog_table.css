@@ -4,14 +4,31 @@
 }
 .fw-tablerow-title {
     display: table-cell;
-    padding-top: 10px;
-    font-size: 11px;
+    padding-top: 12px;
+    font-size: var(--fw-font-size-sm);
     line-height: 15px;
-    font-weight: bold;
+    font-weight: var(--fw-font-weight-medium);
+    color: var(--fw-text-muted);
 }
 .fw-dialog-table tr > td .fa-minus-circle,
 .fw-dialog-table tr > td .fa-plus-circle {
     cursor: pointer;
+    color: var(--fw-text-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--fw-hit-area);
+    min-height: var(--fw-hit-area);
+    border-radius: var(--fw-radius-circle);
+}
+.fw-dialog-table tr > td .fa-minus-circle:hover,
+.fw-dialog-table tr > td .fa-plus-circle:hover {
+    background-color: var(--fw-surface-2);
+}
+.fw-dialog-table tr > td .fa-minus-circle:focus-visible,
+.fw-dialog-table tr > td .fa-plus-circle:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
 }
 .fw-input-list-wrapper > tbody > tr:last-child > td > .fa-minus-circle {
     display: none;
@@ -24,11 +41,13 @@
     vertical-align: baseline;
     content: "?";
     line-height: 1;
-    color: white;
-    background-color: rgb(var(--tooltip-background-color));
-    width: 12px;
-    height: 10px;
-    border-radius: 6px;
+    color: var(--fw-text-inverse);
+    background-color: var(--fw-surface-inverse);
+    width: 14px;
+    height: 14px;
+    box-sizing: border-box;
+    border-radius: var(--fw-radius-circle);
+    font-size: 10px;
     margin-left: 5px;
     text-align: center;
     padding-top: 2px;
@@ -38,15 +57,17 @@
    when the tooltip is portal-rendered in document.body (see src/tooltip.ts). */
 .fw-tooltip {
     min-width: 260px;
-    background-color: var(--cs-dark-background);
-    color: var(--cs-dark-text);
-    border-radius: 6px;
-    line-height: 1.5;
+    background-color: var(--fw-surface-inverse);
+    color: var(--fw-text-inverse);
+    border-radius: var(--fw-radius-md);
+    box-shadow: var(--fw-shadow-2);
+    font-family: var(--fw-font-sans);
+    line-height: var(--fw-line-height-relaxed);
     padding: 14px 18px;
-    font-size: 12px;
+    font-size: var(--fw-font-size-sm);
     visibility: hidden;
     opacity: 0;
-    transition: opacity 1s;
+    transition: opacity var(--fw-motion-base) var(--fw-motion-ease);
     z-index: 1;
 }
 
@@ -83,7 +104,7 @@
     position: relative;
     display: inline-block;
     margin-left: 4px;
-    color: var(--cs-2-background);
+    color: var(--fw-accent);
     cursor: help;
 }
 
@@ -97,26 +118,32 @@
     line-height: inherit;
     color: inherit;
     cursor: help;
-    border-radius: 4px;
+    border-radius: var(--fw-radius-sm);
 }
-.fw-info-tooltip-trigger:hover,
+.fw-info-tooltip-trigger:hover {
+    color: var(--fw-accent);
+}
 .fw-info-tooltip-trigger:focus-visible {
-    color: var(--cs-link-color, var(--cs-2-background));
+    color: var(--fw-accent);
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
 }
 
 /* Shared tooltip box styling (applies in-place and portal-rendered). */
 .fw-info-tooltip-text {
     min-width: 280px;
     max-width: 360px;
-    background-color: var(--cs-dark-background);
-    color: var(--cs-dark-text);
-    border-radius: 6px;
+    background-color: var(--fw-surface-inverse);
+    color: var(--fw-text-inverse);
+    border-radius: var(--fw-radius-md);
+    box-shadow: var(--fw-shadow-2);
+    font-family: var(--fw-font-sans);
     padding: 12px 16px;
-    font-size: 12px;
-    line-height: 1.5;
+    font-size: var(--fw-font-size-sm);
+    line-height: var(--fw-line-height-relaxed);
     visibility: hidden;
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity var(--fw-motion-base) var(--fw-motion-ease);
     z-index: 100;
     pointer-events: none;
     text-align: left;
@@ -145,7 +172,7 @@
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: var(--cs-dark-background) transparent transparent transparent;
+    border-color: var(--fw-surface-inverse) transparent transparent transparent;
 }
 
 /* When the portal tooltip is flipped below its trigger because there was no
@@ -153,7 +180,7 @@
 .fw-info-tooltip-text.fw-tooltip-flipped::after {
     top: auto;
     bottom: 100%;
-    border-color: transparent transparent var(--cs-dark-background) transparent;
+    border-color: transparent transparent var(--fw-surface-inverse) transparent;
 }
 .fw-info-tooltip-text ul {
     margin: 6px 0 0 16px;
@@ -162,4 +189,11 @@
 }
 .fw-info-tooltip-text li {
     margin-bottom: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fw-tooltip,
+    .fw-info-tooltip-text {
+        transition: none;
+    }
 }

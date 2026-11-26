@@ -1806,14 +1806,14 @@ table.fw-data-table.fw-selection-table tbody tr:hover > td {
 /* Bulk-action bar for overview/selection data tables. */
 
 /*
- * Select-all control: a 60px-tall brand-tinted oval (radius 30) with the
- * 15px checkbox and the caret 8px apart, as in Design 5.
+ * Select-all control: a brand-tinted oval (radius 30) holding the 15px
+ * checkbox and the caret, as in Design 5.
  *
- * Layout: the control keeps a compact in-flow box (so it does not stretch
- * the fixed-height table header), and the oval is painted by a
- * pseudo-element centred on it, overhanging above and below. The checkbox
- * therefore stays on the header's text baseline and lines up with the row
- * checkboxes below.
+ * It stays entirely inside the table box so it is never clipped: the oval
+ * is the control's own background, sized around the checkbox and caret, and
+ * the checkbox lines up with the row checkboxes through the pill's left
+ * padding. The header cell gives it enough height for the full oval so it
+ * does not spill onto the first data row.
  */
 .dt-bulk {
     display: inline-flex;
@@ -1821,41 +1821,27 @@ table.fw-data-table.fw-selection-table tbody tr:hover > td {
     gap: var(--fw-space-2);
     position: relative;
     box-sizing: border-box;
-    height: 24px;
-    /* Shift so the checkbox lines up with the row checkboxes (which sit at
-       the cell's left edge); the oval then hangs into the gutter. */
-    margin-left: -16px;
-    padding: 0 22px 0 18px;
-    vertical-align: middle;
-    z-index: 1;
-}
-
-/* The oval: 90x60, centred on the control. Design 5 hangs it left of the
-   checkbox (oval x 9048, checkbox x 9071) so the checkbox can line up with
-   the row checkboxes while the oval extends into the gutter. */
-.dt-bulk::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    /* Design 5: the oval starts 23px left of its checkbox. */
-    left: -5px;
-    width: 90px;
-    height: 60px;
-    transform: translateY(-50%);
+    height: 40px;
+    /* The pill starts at the cell edge; the left padding is exactly the
+       row cells' inset so the checkbox lines up with the row checkboxes. */
+    min-width: 90px;
+    padding: 0 18px 0 2px;
+    margin: 0;
     background-color: var(--fw-brand-tint-3);
     border-radius: var(--fw-radius-pill);
-    pointer-events: none;
-    z-index: -1;
+    vertical-align: middle;
     transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
 }
 
-.dt-bulk:hover::before {
+.dt-bulk:hover {
     background-color: var(--fw-brand-tint-2);
 }
 
-/* Keep the overhanging oval from being clipped by the header cell. */
+/* The header cell must not clip the pill; a small top inset keeps the pill
+   clear of the header's top edge without letting it reach the first row. */
 th:has(> .dt-bulk) {
     overflow: visible;
+    padding-block: 4px;
 }
 
 /* Keep the checkbox and its label as one tight unit inside the pill. */

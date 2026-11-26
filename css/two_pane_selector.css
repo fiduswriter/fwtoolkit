@@ -1,5 +1,9 @@
+/* The container is the single scroll owner. The inner list flexes to fill
+   the remaining space instead of being a second, nested scroll container
+   (which drew scrollbars even when the content fits). */
 .fw-ar-container {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
     box-sizing: border-box;
     width: 338px;
     height: 360px;
@@ -9,8 +13,14 @@
     vertical-align: middle;
     padding: 12px;
     overflow-y: auto;
+    overflow-x: hidden;
     margin-bottom: 16px;
     font-family: var(--fw-font-sans);
+}
+
+.fw-ar-container > .fw-green-title {
+    flex: 0 0 auto;
+    margin: 0 0 var(--fw-space-1);
 }
 
 .fw-ar-container:focus-visible {
@@ -31,8 +41,9 @@
 }
 
 .fw-two-pane-list {
-    height: calc(100% - 40px);
-    overflow-y: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: visible;
 }
 
 .fw-two-pane-item {

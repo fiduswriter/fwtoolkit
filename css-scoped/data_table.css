@@ -8,14 +8,22 @@ table.fw-data-table {
 }
 
 /* Rounded selection highlight: the row keeps square cells but paints the
-   rounded tint via the first/last cell so tables stay valid markup. */
-table.fw-data-table tbody tr.fw-row-selected > td {
+   rounded tint via the first/last cell so tables stay valid markup. The
+   outer cells carry the same 16px inset as the header so the highlight's
+   rounded ends line up with the select-all pill above. */
+table.fw-data-table tbody tr.fw-row-selected > td,
+table.fw-data-table tbody tr.datatable-cursor > td,
+table.fw-data-table tbody tr.fw-datatable-cursor > td {
     background-color: var(--fw-brand-tint-3);
 }
-table.fw-data-table tbody tr.fw-row-selected > td:first-child {
+table.fw-data-table tbody tr.fw-row-selected > td:first-child,
+table.fw-data-table tbody tr.datatable-cursor > td:first-child,
+table.fw-data-table tbody tr.fw-datatable-cursor > td:first-child {
     border-radius: var(--fw-radius-card) 0 0 var(--fw-radius-card);
 }
-table.fw-data-table tbody tr.fw-row-selected > td:last-child {
+table.fw-data-table tbody tr.fw-row-selected > td:last-child,
+table.fw-data-table tbody tr.datatable-cursor > td:last-child,
+table.fw-data-table tbody tr.fw-datatable-cursor > td:last-child {
     border-radius: 0 var(--fw-radius-card) var(--fw-radius-card) 0;
 }
 table.fw-data-table tbody tr {
@@ -171,26 +179,16 @@ table.datatable-table th {
     white-space: nowrap;
 }
 
-/* The select-all pill in the header defines its own box. */
-/* The select-all pill defines its own box; the cell must not pad it, so
-   the pill's checkbox can line up with the row checkboxes (see
-   datatable_bulk.css). */
-/* Select-all header cell: sized to the 60px pill (Design 5 places the pill
-   in the header row with its checkbox level with the row checkboxes), with
-   the column labels vertically centred against it. */
+/* Select-all header cell: sized to the pill, with horizontal padding only
+   so the pill keeps its outer gutter (see the outer-gutter rules at the end
+   of this file). */
 table.fw-data-table th:has(> .dt-bulk),
 table.datatable-table th:has(> .dt-bulk) {
     width: 1%;
-    padding: 0;
+    padding: 0 12px;
     text-align: left;
     white-space: nowrap;
     vertical-align: middle;
-}
-table.fw-data-table th:last-child,
-table.fw-data-table td:last-child,
-table.datatable-table th:last-child,
-table.datatable-table td:last-child {
-    padding-right: 12px;
 }
 table.fw-data-table:focus {
     outline: none;
@@ -303,7 +301,8 @@ table.fw-data-table .fw-string-avatar {
     margin: -4px 10px -5px 0;
 }
 table.fw-data-table > tbody > tr > td:first-child {
-    padding-left: 2px;
+    /* 16px outer gutter, matching the header and the rounded row highlight. */
+    padding-left: 16px;
 }
 table.fw-data-table:focus > tbody > tr.datatable-cursor > td,
 table.fw-data-table:focus > tbody > tr.fw-datatable-cursor > td,
@@ -433,3 +432,32 @@ table.fw-data-table.fw-selection-table tbody tr:hover > td {
 }
 
 /* Bulk-action bar: see datatable_bulk.css */
+
+/* -------------------------------------------------------------------------
+ * Outer gutters
+ *
+ * The first and last cells of every row (header and body) get a 16px
+ * gutter. The select-all pill lives in the first header cell, and rounded
+ * row highlights follow the same inset, so the pill's checkbox lines up
+ * with the row checkboxes and the rounded ends line up with the pill.
+ * Declared last so they win over the base cell padding above.
+ * ---------------------------------------------------------------------- */
+table.fw-data-table th:first-child,
+table.fw-data-table td:first-child,
+table.datatable-table th:first-child,
+table.datatable-table td:first-child {
+    padding-left: 16px;
+}
+table.fw-data-table th:last-child,
+table.fw-data-table td:last-child,
+table.datatable-table th:last-child,
+table.datatable-table td:last-child {
+    padding-right: 16px;
+}
+
+/* The bulk pill cell has no gutter of its own: the pill owns its inner
+   spacing, and the pill's checkbox is aligned with the row checkboxes by
+   starting the pill at the table edge (see datatable_bulk.css). */
+table.fw-data-table th:has(> .dt-bulk):first-child {
+    padding-left: 0;
+}

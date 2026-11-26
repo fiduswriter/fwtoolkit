@@ -17,10 +17,13 @@
     position: relative;
     box-sizing: border-box;
     height: 40px;
-    /* The pill starts at the cell edge; the left padding is exactly the
-       row cells' inset so the checkbox lines up with the row checkboxes. */
-    min-width: 90px;
-    padding: 0 18px 0 2px;
+    /* Left padding puts the checkbox exactly where the row checkboxes sit
+       (16px in from the table edge); the right padding matches so the
+       checkbox and caret are centred in the pill. */
+    /* Symmetric padding: centres the checkbox and caret inside the oval.
+       Left padding is the table's outer gutter, so the checkbox lines up
+       with the row checkboxes below. */
+    padding: 0 25px 0 16px;
     margin: 0;
     background-color: var(--fw-brand-tint-3);
     border-radius: var(--fw-radius-pill);
@@ -49,6 +52,11 @@ th:has(> .dt-bulk) {
     padding: 0;
 }
 
+/* The real checkbox is visually hidden; keep it out of the flex layout. */
+.dt-bulk .fw-check {
+    display: none;
+}
+
 .dt-bulk .fw-check:focus-visible + label::before {
     outline: 2px solid var(--fw-focus);
     outline-offset: 2px;
@@ -58,8 +66,8 @@ th:has(> .dt-bulk) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     padding: 0;
     border-radius: var(--fw-radius-circle);
     color: var(--fw-text-primary);

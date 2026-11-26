@@ -1,13 +1,24 @@
+/* Inline formatting toolbar shown under a focused inline input. */
 .inline-tools {
     position: absolute;
     left: auto;
     top: auto;
-    margin-top: 3px;
+    margin-top: 4px;
     display: none;
+    align-items: center;
+    gap: 2px;
+    padding: 4px;
+    /* Its own surface: it floats over the page, so it must not blend into
+       the background (the page and --fw-surface-2 are both #f0f0f0). */
+    background-color: var(--fw-surface);
+    border: 1px solid var(--fw-border-subtle);
+    border-radius: var(--fw-radius-pill);
+    box-shadow: var(--fw-shadow-2);
+    z-index: 10;
 }
 
 .ProseMirror-focused + .inline-tools {
-    display: block;
+    display: inline-flex;
     z-index: 10;
 }
 
@@ -17,46 +28,55 @@
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    width: var(--fw-hit-area);
-    height: var(--fw-hit-area);
+    /* Compact control (smaller than the 44px touch target; the toolbar is a
+       dense, pointer-and-keyboard affordance next to the text). */
+    width: 28px;
+    height: 28px;
+    padding: 0;
     border-radius: var(--fw-radius-circle);
     overflow: hidden;
     text-indent: -999px;
-    background-color: var(--fw-surface-2);
+    background-color: transparent;
     color: var(--fw-text-primary);
     cursor: pointer;
     transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
 }
 
 .inline-tools .menuicon:hover {
-    background-color: var(--fw-neutral-hover);
+    background-color: var(--fw-surface-2);
 }
 
 /* Active inline formats use the brand as a fill with dark glyphs. */
 .inline-tools .menuicon.fw-active {
-    background-color: var(--fw-brand);
+    background-color: var(--fw-brand-tint-3);
     color: var(--fw-text-on-brand);
+}
+
+.inline-tools .menuicon.fw-active:hover {
+    background-color: var(--fw-brand-tint-2);
 }
 
 .inline-tools .menuicon:focus-visible {
     outline: 2px solid var(--fw-focus);
-    outline-offset: 2px;
+    outline-offset: 1px;
 }
 
 .inline-tools .menuicon + .menuicon {
-    margin-left: var(--fw-space-1);
+    margin-left: 0;
 }
 
+/* Glyph centred in the 28px box. */
 .inline-tools .menuicon::before {
-    position: absolute;
-    left: 0;
-    top: 0;
+    position: static;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
     text-indent: 0;
     text-align: center;
     line-height: 1;
-    font-size: var(--fw-font-size-md);
+    font-size: var(--fw-font-size-xs);
 }
 
 .menuicon.strong::before,

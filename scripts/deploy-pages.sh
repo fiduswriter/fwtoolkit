@@ -16,6 +16,8 @@ mkdir "$BUILD_DIR"
 cp -r "$ROOT/demo/"* "$BUILD_DIR/"
 cp -r "$ROOT/dist" "$BUILD_DIR/"
 cp -r "$ROOT/css" "$BUILD_DIR/"
+mkdir -p "$BUILD_DIR/css/fwtoolkit"
+cp "$ROOT/css/"*.css "$BUILD_DIR/css/fwtoolkit/"
 
 # Copy Font Awesome assets locally so the demo does not rely on external CDNs.
 mkdir -p "$BUILD_DIR/fontawesome"

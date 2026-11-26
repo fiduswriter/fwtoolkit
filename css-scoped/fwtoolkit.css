@@ -430,6 +430,9 @@ table .fw-inline {
 .ProseMirror pre {
     white-space: pre-wrap;
 }
+.ProseMirror br.ProseMirror-trailingBreak {
+    display: none;
+}
 .ProseMirror span.fw-placeholder::before {
     color: var(--fw-text-secondary);
     content: attr(data-placeholder);
@@ -2698,7 +2701,16 @@ textarea[aria-invalid="true"],
 .fw-input[aria-invalid="true"] {
     border-color: var(--fw-danger-text);
 }
-input:disabled,
+.fw-dialog input[type="text"]:not(.fw-inline):focus,
+.fw-dialog input[type="password"]:not(.fw-inline):focus,
+.fw-dialog input[type="search"]:not(.fw-inline):focus,
+.fw-dialog input[type="email"]:not(.fw-inline):focus,
+.fw-dialog input[type="number"]:not(.fw-inline):focus,
+.fw-dialog textarea:focus,
+.fw-dialog div[contenteditable="true"]:focus {
+    border-color: var(--fw-focus);
+}
+input:disabled:not(.fw-inline),
 textarea:disabled,
 select:disabled {
     background-color: var(--fw-surface-2);
@@ -2717,14 +2729,20 @@ select:disabled {
     border: 1px solid var(--input-dialog-border-color);
 }
 .fw-entry-field .ProseMirror {
+    box-sizing: border-box;
+    width: 100%;
     border: 1px solid var(--fw-border);
     border-radius: var(--fw-radius-md);
-    min-height: 2.5rem;
-    padding: 0.25rem;
+    min-height: var(--fw-control-height-sm);
+    padding: 10px 16px;
     background: var(--fw-surface);
 }
-.fw-entry-field .ProseMirror:focus-within {
+.fw-entry-field:focus-within .ProseMirror {
     border-color: var(--fw-focus);
+}
+.fw-entry-field .ProseMirror p,
+.fw-floating-field .ProseMirror p {
+    margin: 0;
 }
 
 /**
@@ -3108,6 +3126,28 @@ tr.fw-checkable.fw-checked > td:last-child::after {
 .fw-floating-field > textarea {
     margin: 0;
 }
+.fw-floating-field .ProseMirror {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: var(--fw-control-height-sm);
+    margin: 0;
+    padding: 10px 16px;
+    border: 1px solid var(--fw-border);
+    border-radius: var(--fw-radius-md);
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface);
+    transition: border-color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+.fw-floating-field:focus-within .ProseMirror {
+    border-color: var(--fw-focus);
+}
+.fw-floating-field:not(:focus-within):not(.fw-filled)
+    :is(input, textarea)::placeholder,
+.fw-floating-field:not(:focus-within):not(.fw-filled)
+    .ProseMirror
+    .fw-placeholder::before {
+    color: transparent;
+}
 .fw-floating-field > label {
     position: absolute;
     top: calc(14px + 22px);
@@ -3131,15 +3171,14 @@ tr.fw-checkable.fw-checked > td:last-child::after {
         color var(--fw-motion-fast) var(--fw-motion-ease);
 }
 
-/* Floated: focused, or holding a value. Sits fully above the field's top
-   border (no notch), which is the Design 5 treatment. */
+/* The surface-colored label masks the border to create the Design 5 notch. */
 .fw-floating-field:focus-within > label,
 .fw-floating-field.fw-filled > label {
-    top: 6px;
+    top: 14px;
     font-size: var(--fw-font-size-xs);
-    font-weight: var(--fw-font-weight-medium);
+    font-weight: var(--fw-font-weight-normal);
     color: var(--fw-text-muted);
-    background-color: transparent;
+    background-color: var(--fw-surface);
 }
 .fw-floating-field:focus-within > label {
     color: var(--fw-focus);

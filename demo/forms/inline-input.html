@@ -16,21 +16,6 @@
             .demo-field {
                 margin: 1.5rem 0;
             }
-            .demo-field label {
-                display: block;
-                font-weight: 600;
-                margin-bottom: 0.5rem;
-            }
-            .inline-input {
-                position: relative;
-                box-sizing: border-box;
-                width: 100%;
-                border: 1px solid var(--cs-gray, #ccc);
-                border-radius: 4px;
-                min-height: 2.5rem;
-                padding: 0.25rem;
-                overflow-wrap: break-word;
-            }
             .demo-value {
                 margin-top: 1rem;
                 font-family: monospace;
@@ -69,8 +54,8 @@
         <!-- Extra bottom room so the inline formatting toolbar, which is
              absolutely positioned below the input, does not overlap the
              controls that follow. -->
-        <div class="demo-field" style="margin-bottom: 56px">
-            <label for="title-input">Title of publication</label>
+        <div class="demo-field fw-floating-field" style="margin-bottom: 56px">
+            <label id="title-input-label">Title of publication</label>
             <div id="title-input" class="inline-input"></div>
         </div>
 
@@ -81,7 +66,13 @@
 Click the button to see the current value.</pre>
 
         <script type="module">
-            import {InlineInput, icon, initSettings, gettext} from "fwtoolkit"
+            import {
+                InlineInput,
+                icon,
+                initSettings,
+                initFloatingLabels,
+                gettext
+            } from "fwtoolkit"
             import {toggleMark} from "prosemirror-commands"
             import {Schema} from "prosemirror-model"
 
@@ -92,7 +83,6 @@ Click the button to see the current value.</pre>
                 staticUrl: s => "../" + s,
                 interpolate: (fmt, arr) => fmt.replace(/%s/g, () => arr.shift())
             })
-            initFloatingLabels()
 
             const schema = new Schema({
                 nodes: {
@@ -170,6 +160,11 @@ Click the button to see the current value.</pre>
                     ]
                 }
             )
+
+            input.view.dom.setAttribute("role", "textbox")
+            input.view.dom.setAttribute("aria-multiline", "false")
+            input.view.dom.setAttribute("aria-labelledby", "title-input-label")
+            initFloatingLabels()
 
             document
                 .getElementById("get-value")

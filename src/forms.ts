@@ -10,14 +10,20 @@
 
 const updateFilled = (field: Element): void => {
     const control = field.querySelector<
-        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >("input:not([type='checkbox']):not([type='radio']), textarea, select")
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | HTMLElement
+    >(
+        "input:not([type='checkbox']):not([type='radio']), textarea, select, [contenteditable='true']"
+    )
     if (!control) {
         return
     }
-    const hasValue = control.value.length > 0
-    field.classList.toggle("fw-filled", hasValue)
-    field.classList.toggle("fw-disabled", control.disabled)
+    const value = "value" in control ? control.value : control.textContent || ""
+    const disabled =
+        "disabled" in control
+            ? control.disabled
+            : control.getAttribute("aria-disabled") === "true"
+    field.classList.toggle("fw-filled", value.length > 0)
+    field.classList.toggle("fw-disabled", disabled)
 }
 
 /**

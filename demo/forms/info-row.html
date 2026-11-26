@@ -128,7 +128,7 @@
                 ".fw-entry-field.plain-field"
             )
             if (plainField) {
-                plainField.innerHTML = `<input type="text" placeholder="Enter a value…">`
+                plainField.innerHTML = `<input type="text" aria-label="Plain label" placeholder="Enter a value…">`
             }
 
             // Rich-text InlineInput with a small formatting toolbar.
@@ -164,7 +164,10 @@
                         }
                     }
                 })
-                new InlineInput(titleField, {
+                const titleLabel =
+                    titleField.parentElement?.querySelector("th h4")
+                titleLabel?.setAttribute("id", "title-input-label")
+                const titleInput = new InlineInput(titleField, {
                     schema,
                     nodeType: "field",
                     placeholder: "Type the title and use the toolbar…",
@@ -179,6 +182,12 @@
                         }
                     ]
                 })
+                titleInput.view.dom.setAttribute("role", "textbox")
+                titleInput.view.dom.setAttribute("aria-multiline", "false")
+                titleInput.view.dom.setAttribute(
+                    "aria-labelledby",
+                    "title-input-label"
+                )
             }
 
             // Numbers-only input.
@@ -186,7 +195,7 @@
                 ".fw-entry-field.year-field"
             )
             if (yearField) {
-                yearField.innerHTML = `<input type="number" inputmode="numeric" pattern="[0-9]*" placeholder="2024">`
+                yearField.innerHTML = `<input type="number" aria-label="Publication year" inputmode="numeric" pattern="[0-9]*" placeholder="2024">`
             }
 
             // TypeSwitch between a single-line input and a textarea.
@@ -199,9 +208,9 @@
                     label1: "Single line",
                     label2: "Multi line",
                     render1: () =>
-                        `<input type="text" placeholder="Short abstract…">`,
+                        `<input type="text" aria-label="Abstract" placeholder="Short abstract…">`,
                     render2: () =>
-                        `<textarea rows="4" placeholder="Longer abstract…"></textarea>`
+                        `<textarea rows="4" aria-label="Abstract" placeholder="Longer abstract…"></textarea>`
                 })
             }
 

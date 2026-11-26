@@ -142,6 +142,9 @@ table .fw-inline {
 .ProseMirror pre {
     white-space: pre-wrap;
 }
+.ProseMirror br.ProseMirror-trailingBreak {
+    display: none;
+}
 .ProseMirror span.fw-placeholder::before {
     color: var(--fw-text-secondary);
     content: attr(data-placeholder);

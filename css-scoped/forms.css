@@ -452,3 +452,81 @@ tr.fw-checkable.fw-checked > td:last-child::after {
         overflow-x: hidden;
     }
 }
+
+/* -------------------------------------------------------------------------
+ * Floating labels
+ *
+ * Wrap a labelled field in `.fw-floating-field` to get a Material-style
+ * text field:
+ *
+ *   <div class="fw-floating-field">
+ *       <label for="x">Label</label>
+ *       <input type="text" id="x" placeholder=" ">
+ *   </div>
+ *
+ * While the field is empty and unfocused the label sits inside it, where
+ * placeholder text would be. On focus, or once the field has content, the
+ * label shrinks and rises above the field with a short transition.
+ *
+ * The "has content" state is tracked by `initFloatingLabels()` (src/
+ * forms.ts), which adds `.fw-filled` to the wrapper on input; focus is pure
+ * CSS via `:focus-within`. The input needs a placeholder (a single space is
+ * enough) so the browser has a text-free state to anchor the label to.
+ * ---------------------------------------------------------------------- */
+.fw-floating-field {
+    position: relative;
+    display: block;
+    padding-top: 14px;
+}
+.fw-floating-field > input:not(.fw-inline),
+.fw-floating-field > textarea {
+    margin: 0;
+}
+.fw-floating-field > label {
+    position: absolute;
+    top: calc(14px + 22px);
+    left: 17px;
+    z-index: 1;
+    display: block;
+    margin: 0;
+    padding: 0 4px;
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    font-weight: var(--fw-font-weight-normal);
+    line-height: 1;
+    color: var(--fw-text-secondary);
+    background-color: transparent;
+    pointer-events: none;
+    transform: translateY(-50%);
+    transform-origin: left center;
+    transition:
+        top var(--fw-motion-base) var(--fw-motion-ease),
+        font-size var(--fw-motion-base) var(--fw-motion-ease),
+        color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+
+/* Floated: focused, or holding a value. Sits fully above the field's top
+   border (no notch), which is the Design 5 treatment. */
+.fw-floating-field:focus-within > label,
+.fw-floating-field.fw-filled > label {
+    top: 6px;
+    font-size: var(--fw-font-size-xs);
+    font-weight: var(--fw-font-weight-medium);
+    color: var(--fw-text-muted);
+    background-color: transparent;
+}
+.fw-floating-field:focus-within > label {
+    color: var(--fw-focus);
+}
+
+/* Disabled fields keep the label in place. */
+.fw-floating-field.fw-disabled > label {
+    color: var(--fw-text-secondary);
+    opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fw-floating-field > label {
+        transition: none;
+    }
+}

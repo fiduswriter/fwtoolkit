@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>fwtoolkit — Floating label fields</title>
+        <link rel="stylesheet" href="../fontawesome/css/all.min.css" />
+        <link rel="stylesheet" href="../css/fwtoolkit.css" />
+        <link rel="stylesheet" href="../demo.css" />
+        <style>
+            body {
+                padding: 2rem;
+            }
+            .demo-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 0 2rem;
+                max-width: 900px;
+                margin-top: 1rem;
+            }
+            .demo-grid .fw-floating-field {
+                margin-bottom: 8px;
+            }
+            .demo-value {
+                margin-top: 1rem;
+                font-family: monospace;
+            }
+        </style>
+        <script type="importmap">
+            {
+                "imports": {
+                    "fwtoolkit": "../dist/index.js",
+                    "prosemirror-commands": "https://esm.sh/prosemirror-commands@1.7.1?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "prosemirror-history": "https://esm.sh/prosemirror-history@1.5.0?external=prosemirror-state,prosemirror-transform",
+                    "prosemirror-keymap": "https://esm.sh/prosemirror-keymap@1.2.3?external=prosemirror-state",
+                    "prosemirror-model": "https://esm.sh/prosemirror-model@1.25.9?target=es2022",
+                    "prosemirror-state": "https://esm.sh/prosemirror-state@1.4.4?target=es2022",
+                    "prosemirror-transform": "https://esm.sh/prosemirror-transform@1.12.0?external=prosemirror-model",
+                    "prosemirror-view": "https://esm.sh/prosemirror-view@1.41.9?external=prosemirror-model,prosemirror-state,prosemirror-transform",
+                    "simple-datatables": "https://esm.sh/simple-datatables@10.2.0",
+                    "w3c-keyname": "https://esm.sh/w3c-keyname@2.2.8",
+                    "diff-dom": "https://esm.sh/diff-dom@5.2.1"
+                }
+            }
+        </script>
+        <link rel="icon" type="image/png" href="../favicon.png" />
+    </head>
+    <body>
+        <main class="demo-container">
+            <p><a href="../index.html">&larr; Back to demos</a></p>
+            <h1>Floating label fields</h1>
+            <p>
+                A labelled field keeps its label inside the field while it is
+                empty and unfocused, then rises it above the field on focus or
+                once it has content. Try clicking or typing into the fields.
+            </p>
+
+            <div class="demo-grid">
+                <div class="fw-floating-field">
+                    <label for="fld-title">Title of publication</label>
+                    <input type="text" id="fld-title" placeholder=" " />
+                </div>
+                <div class="fw-floating-field">
+                    <label for="fld-author">Author</label>
+                    <input
+                        type="text"
+                        id="fld-author"
+                        placeholder=" "
+                        value="Ada Lovelace"
+                    />
+                </div>
+                <div class="fw-floating-field">
+                    <label for="fld-email">Email address</label>
+                    <input type="email" id="fld-email" placeholder=" " />
+                </div>
+                <div class="fw-floating-field fw-disabled">
+                    <label for="fld-disabled">Disabled field</label>
+                    <input
+                        type="text"
+                        id="fld-disabled"
+                        placeholder=" "
+                        disabled
+                    />
+                </div>
+            </div>
+
+            <h2>Field values</h2>
+            <pre class="demo-value" id="output"></pre>
+
+            <h2>Markup</h2>
+            <pre class="demo-value">
+&lt;div class="fw-floating-field"&gt;
+    &lt;label for="title"&gt;Title of publication&lt;/label&gt;
+    &lt;input type="text" id="title" placeholder=" "&gt;
+&lt;/div&gt;
+
+&lt;script type="module"&gt;
+    import {initFloatingLabels} from "fwtoolkit"
+    initFloatingLabels()
+&lt;/script&gt;</pre>
+        </main>
+        <script type="module">
+            import {initFloatingLabels} from "fwtoolkit"
+
+            initFloatingLabels()
+
+            const output = document.getElementById("output")
+            const update = () => {
+                output.textContent = ["fld-title", "fld-author", "fld-email"]
+                    .map(
+                        id =>
+                            `${id}: ${JSON.stringify(document.getElementById(id).value)}`
+                    )
+                    .join("\n")
+            }
+            document.addEventListener("input", update)
+            update()
+        </script>
+    </body>
+</html>

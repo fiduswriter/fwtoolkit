@@ -92,6 +92,7 @@ Click the button to see the current value.</pre>
                 staticUrl: s => "../" + s,
                 interpolate: (fmt, arr) => fmt.replace(/%s/g, () => arr.shift())
             })
+            initFloatingLabels()
 
             const schema = new Schema({
                 nodes: {

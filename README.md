@@ -56,6 +56,31 @@ Contrast rules are enforced by `test/contrast.test.ts`:
   AA on `--fw-surface-2`; the mock's lighter `#848383` is available as
   `--fw-text-tertiary` for large/decorative text only.
 
+### Floating-label fields
+
+Wrap a labelled field in `.fw-floating-field` to get a Material-style text
+field: the label sits inside the field while it is empty and unfocused, and
+rises above it on focus or once the field has content.
+
+```html
+<div class="fw-floating-field">
+    <label for="title">Title of publication</label>
+    <input type="text" id="title" placeholder=" " />
+</div>
+
+<script type="module">
+    import {initFloatingLabels} from "fwtoolkit"
+    initFloatingLabels() // call again for fields added later, e.g. dialogs
+</script>
+```
+
+- The input needs a placeholder — a single space is enough.
+- Focus is handled entirely in CSS (`:focus-within`); `initFloatingLabels()`
+  only tracks the "has content" state (`.fw-filled`) and the disabled state.
+- Call `initFloatingLabels(dialog.dialogEl)` after opening a dialog, since the
+  dialog body does not exist until then.
+- Motion is disabled under `prefers-reduced-motion`.
+
 ### Accessibility
 
 All interactive components use a single `:focus-visible` ring

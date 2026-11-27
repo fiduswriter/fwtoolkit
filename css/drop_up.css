@@ -1,0 +1,101 @@
+/* Generic drop-up widget */
+
+.fw-drop-up-outer {
+    all: revert;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-size: 100%;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: none;
+    text-transform: none;
+    letter-spacing: normal;
+    line-height: normal;
+    color: inherit;
+    background: transparent;
+    contain: layout style;
+    isolation: isolate;
+    white-space: initial;
+    position: absolute;
+}
+
+.fw-drop-up-inner {
+    position: relative;
+    background-color: var(--fw-surface);
+    z-index: 1;
+    font-family: var(--fw-font-sans);
+    font-weight: normal;
+    color: var(--fw-text-primary);
+    left: 10px;
+    box-shadow: var(--fw-shadow-2);
+    border-radius: var(--fw-radius-lg);
+    overflow: hidden;
+}
+
+.fw-drop-up-head {
+    padding: 20px 22px;
+    background-color: var(--fw-surface-2);
+    color: var(--fw-text-primary);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-md);
+    font-weight: var(--fw-font-weight-medium);
+    line-height: 18px;
+    letter-spacing: 0.13px;
+    border-radius: var(--fw-radius-lg) var(--fw-radius-lg) 0 0;
+}
+
+.fw-drop-up-head > * + * {
+    margin-top: 14px;
+}
+
+.fw-drop-up-head a {
+    color: var(--fw-accent);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-sm);
+    font-weight: var(--fw-font-weight-semibold);
+    text-decoration: none;
+}
+
+.fw-drop-up-options {
+    list-style: none;
+    padding: 0 0 12px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.fw-drop-up-option {
+    border-top: 1px solid var(--fw-border-subtle);
+    min-height: 44px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    color: var(--fw-text-primary);
+    background: var(--fw-surface);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    font-weight: var(--fw-font-weight-normal);
+    line-height: var(--fw-line-height-tight);
+    cursor: pointer;
+}
+
+.fw-drop-up-option:hover,
+.fw-drop-up-option.fw-focused {
+    background-color: var(--fw-surface-2);
+}
+
+.fw-drop-up-option.fw-focused {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: -2px;
+}
+
+.fw-drop-up-option:focus {
+    outline: none;
+}
+
+.fw-drop-up-option:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: -2px;
+}

@@ -1,0 +1,202 @@
+.fw-overview-menu-wrapper {
+    position: relative;
+    background-color: var(--fw-surface-2);
+    padding: 11px 8px;
+}
+
+#fw-overview-menu,
+#fw-overview-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#fw-overview-menu {
+    position: relative;
+    margin: 0 213px;
+}
+
+#fw-overview-menu::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+@media (width <= 1429px) {
+    #fw-overview-menu {
+        margin: 0 auto;
+        max-width: 1004px;
+    }
+}
+
+.fw-overview-menu-item {
+    position: relative;
+    float: left;
+    margin-right: 14px;
+}
+
+.fw-search-field-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.fw-search-field-container .fw-search-label {
+    position: absolute;
+    left: 20px;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    pointer-events: none; /* Makes the label non-interactive */
+    user-select: none;
+    z-index: 1;
+}
+
+.fw-search-field-container input.fw-search-field[type="search"] {
+    position: relative;
+    z-index: 2;
+    background: transparent; /* Makes input background transparent to show label */
+}
+
+.fw-search-field-container:has(
+        input.fw-search-field[type="search"]:not(:placeholder-shown)
+    )
+    label.fw-search-label {
+    display: none;
+}
+
+.fw-search-field-container i.fa {
+    position: relative;
+    z-index: 3;
+    margin-left: 8px;
+}
+
+.fw-overview-menu-item.fw-search {
+    float: right;
+    margin-right: 0;
+}
+
+.fw-overview-menu-item.fw-search div.fw-button.fw-disabled {
+    background-color: var(--input-background-color);
+}
+
+.fw-overview-menu-item.fw-search div.fw-button.fw-disabled:focus-within {
+    background-color: var(--input-focus-background-color);
+}
+
+.fw-button .fw-search-label {
+    margin-right: 8px;
+    display: inline-block;
+    color: var(--fw-text-secondary);
+}
+
+/* Hide label visually while keeping it accessible for screen readers
+   when the search box is narrow */
+@media (width <= 600px) {
+    .fw-button .fw-search-label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        border: 0;
+    }
+}
+
+.fw-button input[type="text"] {
+    border: 1px solid var(--fw-border);
+    padding: 4px 14px;
+    border-radius: var(--fw-radius-pill);
+    width: calc(100% - 30px);
+    height: 36px;
+    background-color: var(--fw-surface);
+}
+
+.fw-button input[type="text"]:focus {
+    border-color: var(--fw-focus);
+}
+
+.fw-text-menu {
+    height: 44px;
+    color: var(--fw-text-primary);
+    padding: 0 12px;
+    border: 0 none;
+    border-radius: var(--fw-radius-pill);
+    background-color: transparent;
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    cursor: pointer;
+    position: relative;
+}
+
+.fw-text-menu:focus {
+    outline: none;
+}
+
+.fw-text-menu:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+}
+
+.fw-text-menu:hover {
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface);
+}
+
+.fw-dropdown-menu {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 12px;
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    color: var(--fw-text-primary);
+    cursor: pointer;
+    height: 44px;
+    box-sizing: border-box;
+}
+
+.fw-dropdown-menu:hover {
+    color: var(--fw-text-primary);
+}
+
+.fw-dropdown-menu label {
+    cursor: pointer;
+}
+
+div.select-action {
+    cursor: pointer;
+    min-width: 38px;
+    min-height: var(--fw-hit-area);
+    display: inline-flex;
+    align-items: center;
+}
+
+div.select-action input[type="checkbox"] {
+    cursor: default;
+}
+
+span.select-action-dropdown {
+    margin-left: 5px;
+}
+
+.fw-button.fw-white input[type="text"] {
+    color: var(--cs-light-text);
+    background-color: var(--cs-light-background);
+}
+
+.fw-button.fw-white:focus-within {
+    background-color: var(--input-focus-background-color);
+}
+
+.fw-button.fw-white input[type="text"]:focus,
+.fw-white.fw-input:hover {
+    background-color: var(--input-focus-background-color);
+}
+
+.fw-pulldown-item.fw-selected {
+    background-color: var(--fw-brand-tint-3);
+}

@@ -1,0 +1,81 @@
+/* The container is the single scroll owner. The inner list flexes to fill
+   the remaining space instead of being a second, nested scroll container
+   (which drew scrollbars even when the content fits). */
+.fw-ar-container {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 338px;
+    height: 360px;
+    background-color: var(--fw-surface);
+    border: solid 1px var(--fw-border-subtle);
+    border-radius: var(--fw-radius-md);
+    vertical-align: middle;
+    padding: 12px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-bottom: 16px;
+    font-family: var(--fw-font-sans);
+}
+
+.fw-ar-container > .fw-green-title {
+    flex: 0 0 auto;
+    margin: 0 0 var(--fw-space-1);
+}
+
+.fw-ar-container:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+}
+
+.fw-ar-button {
+    display: inline-block;
+    margin: 0 16px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.fw-two-pane-selector {
+    display: flex;
+    align-items: center;
+}
+
+.fw-two-pane-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: visible;
+}
+
+.fw-two-pane-item {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    min-height: var(--fw-hit-area);
+    padding: 0 var(--fw-space-3);
+    border-radius: var(--fw-radius-md);
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+
+.fw-two-pane-item:hover {
+    background-color: var(--fw-surface-2);
+}
+
+.fw-two-pane-item.fw-selected {
+    background-color: var(--fw-brand-tint-3);
+    color: var(--fw-text-on-brand);
+    font-weight: var(--fw-font-weight-medium);
+}
+
+.fw-two-pane-item:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: -2px;
+}
+
+.fw-two-pane-controls {
+    text-align: center;
+}
+
+.fw-two-pane-controls .fw-ar-button {
+    display: block;
+    margin: 8px auto;
+}

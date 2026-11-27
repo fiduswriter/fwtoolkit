@@ -1,0 +1,155 @@
+/* pulldown menu box */
+.fw-pulldown {
+    position: absolute;
+    display: none;
+    /* Above open dialogs, like .fw-content-menu (see there). */
+    z-index: calc(var(--highest-dialog-z-index, 100) + 2);
+    box-shadow: var(--fw-shadow-2);
+    background-color: var(--fw-surface);
+    border-radius: var(--fw-radius-lg);
+    color: var(--fw-text-primary);
+    padding: 8px 0;
+    overflow: hidden;
+}
+
+.fw-pulldown.fw-open {
+    display: block;
+}
+
+.fw-pulldown.fw-left,
+.fw-pulldown.fw-center {
+    left: -10px;
+}
+
+.fw-pulldown.fw-right {
+    right: 0;
+}
+
+/* sub menu */
+.fw-pulldown .fw-pulldown {
+    top: 0;
+    left: 100%;
+    margin-top: 0;
+}
+
+/* A menu that would reach past the bottom of the viewport is flipped
+   upward: the menu code toggles fw-flip-up after measuring the rendered
+   menu, so items stay reachable on small screens. */
+.fw-pulldown .fw-pulldown.fw-flip-up {
+    top: auto;
+    bottom: 0;
+}
+
+.fw-marginbox-options.fw-pulldown .fw-pulldown {
+    right: 100%;
+    left: auto;
+}
+
+.fw-pulldown.fw-right .fw-pulldown {
+    left: auto;
+    right: 100%;
+}
+
+.fw-pulldown > ul {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+}
+
+.fw-pulldown-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: auto;
+    height: auto;
+    min-width: 140px;
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 10px 24px;
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    font-weight: var(--fw-font-weight-normal);
+    line-height: var(--fw-line-height-tight);
+    color: var(--fw-text-primary);
+    background-color: transparent;
+    text-align: left;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+
+.fw-pulldown-item:focus {
+    outline: none;
+}
+
+.fw-pulldown-item:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: -2px;
+}
+
+.fw-disabled .fw-pulldown-item,
+.fw-pulldown-item.fw-disabled {
+    color: var(--fw-text-secondary);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.fw-pulldown-item.fw-selected {
+    color: var(--fw-text-on-brand);
+    background-color: var(--fw-brand-tint-3);
+    font-weight: var(--fw-font-weight-medium);
+}
+
+.fw-pulldown-item:hover:not(.fw-disabled),
+.fw-pulldown-item.fw-selected:hover:not(.fw-disabled),
+.fw-pulldown-item.fw-cursor {
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface-2);
+}
+
+.fw-pulldown-item.fw-selected:hover:not(.fw-disabled) {
+    background-color: var(--fw-brand-tint-2);
+}
+
+.fw-pulldown li:last-child .fw-pulldown-item {
+    border-bottom: 0 none;
+}
+
+.fw-pulldown-item .fw-icon-right {
+    position: absolute;
+    right: 20px;
+}
+
+.fw-pulldown li {
+    position: relative;
+}
+
+.fw-pulldown hr {
+    width: auto;
+    display: block;
+    height: 0;
+    margin: 8px 12px;
+    border: 0;
+    border-top: 1px solid var(--fw-border-subtle);
+    background-color: transparent;
+}
+
+.fw-pulldown .fw-delete-comment::after {
+    font-family: "Font Awesome 7 Free", monospace;
+    content: "\f2ed";
+    opacity: 0.4;
+    float: right;
+    display: block;
+}
+
+.fw-pulldown-icon {
+    margin-left: 0;
+}
+
+.fw-pulldown input[type="radio"] {
+    display: none;
+}

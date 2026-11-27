@@ -1,0 +1,278 @@
+/*
+ * macOS-Finder-style column browser for the file selector.
+ *
+ * Layout: a breadcrumb `nav` above a horizontally scrollable strip of
+ * columns. Every folder along the open path owns one column; the strip
+ * scrolls to reveal columns to the right as the user descends.
+ */
+
+.fw-file-selector {
+    --fw-column-width: 260px;
+    /* Bounded by the dialog content box; can be overridden by hosts. */
+    --fw-file-columns-height: max(320px, calc(100vh - 420px));
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--fw-space-2);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    line-height: var(--fw-line-height-base);
+    color: var(--fw-text-primary);
+}
+
+/* -------------------------------------------------------------------------
+ * Breadcrumb
+ * ---------------------------------------------------------------------- */
+.fw-file-selector-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--fw-space-1);
+    padding: 0 var(--fw-space-1);
+    min-height: 32px;
+}
+
+.fw-file-selector-crumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 220px;
+    padding: 6px 12px;
+    border: 0;
+    border-radius: var(--fw-radius-pill);
+    background: none;
+    color: var(--fw-accent);
+    font: inherit;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.fw-file-selector-crumb > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fw-file-selector-crumb:hover {
+    background-color: var(--fw-surface-2);
+}
+
+.fw-file-selector-crumb:focus {
+    outline: none;
+}
+
+.fw-file-selector-crumb:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+}
+
+.fw-file-selector-crumb.fw-current {
+    color: var(--fw-text-primary);
+    font-weight: var(--fw-font-weight-medium);
+    cursor: default;
+}
+
+.fw-file-selector-crumb-sep {
+    color: var(--fw-text-secondary);
+    user-select: none;
+}
+
+/* -------------------------------------------------------------------------
+ * Column strip
+ * ---------------------------------------------------------------------- */
+.fw-file-selector-columns {
+    display: flex;
+    align-items: stretch;
+    gap: 1px;
+    height: var(--fw-file-columns-height);
+    min-height: 240px;
+    max-height: var(--fw-file-columns-height);
+    overflow: auto hidden;
+    border: 1px solid var(--fw-border-subtle);
+    border-radius: var(--fw-radius-md);
+    background-color: var(--fw-surface);
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+}
+
+.fw-file-selector-column {
+    flex: 0 0 var(--fw-column-width);
+    width: var(--fw-column-width);
+    min-width: var(--fw-column-width);
+    max-height: 100%;
+    overflow-y: auto;
+    border-right: 1px solid var(--fw-border-subtle);
+    background-color: var(--fw-surface);
+}
+
+.fw-file-selector-column:last-child {
+    border-right: 0;
+}
+
+.fw-file-selector-column.fw-closed {
+    display: none;
+}
+
+.fw-file-selector-column .fw-folder-content {
+    list-style: none;
+    margin: 0;
+    padding: var(--fw-space-1) 0;
+}
+
+/* -------------------------------------------------------------------------
+ * Rows
+ * ---------------------------------------------------------------------- */
+.fw-file-selector-row {
+    display: flex;
+    align-items: center;
+    gap: var(--fw-space-2);
+    box-sizing: border-box;
+    min-height: var(--fw-hit-area);
+    margin: 0 var(--fw-space-1);
+    padding: 0 var(--fw-space-3);
+    border-radius: var(--fw-radius-md);
+    color: var(--fw-text-primary);
+    cursor: pointer;
+    user-select: none;
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+
+.fw-file-selector-row:hover {
+    background-color: var(--fw-surface-2);
+}
+
+/* Keyboard cursor (roving tabindex). */
+.fw-file-selector-row.fw-active {
+    background-color: var(--fw-surface-2);
+}
+
+.fw-file-selector-row.fw-active:focus {
+    outline: none;
+}
+
+.fw-file-selector-row:focus-visible,
+.fw-file-selector-row.fw-active:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: -2px;
+}
+
+/* Selected entry: brand green as a 10% tint, never as text. */
+.fw-file-selector-row.fw-selected,
+.fw-file-selector-row.fw-selected.fw-active {
+    background-color: var(--fw-brand-tint-3);
+    color: var(--fw-text-on-brand);
+    font-weight: var(--fw-font-weight-medium);
+}
+
+.fw-file-selector-row.fw-selected:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: -2px;
+}
+
+.fw-file-selector-row-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 20px;
+    color: var(--fw-text-primary);
+}
+
+.fw-file-selector-row.fw-folder-row .fw-file-selector-row-icon {
+    color: var(--fw-brand-active);
+}
+
+.fw-file-selector-row .fw-folder-name,
+.fw-file-selector-row .fw-file-name {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* The historical selected-underline is replaced by the tinted row. */
+.fw-file-selector .fw-file-name.fw-selected,
+.fw-file-selector .fw-folder-name.fw-selected {
+    text-decoration: none;
+}
+
+.fw-file-selector-row-chevron {
+    flex: 0 0 auto;
+    margin-left: auto;
+    padding-left: var(--fw-space-1);
+    color: var(--fw-text-secondary);
+    font-size: var(--fw-font-size-sm);
+}
+
+.fw-file-selector-empty {
+    padding: var(--fw-space-3);
+    color: var(--fw-text-secondary);
+    font-size: var(--fw-font-size-sm);
+    font-style: italic;
+    list-style: none;
+}
+
+/* -------------------------------------------------------------------------
+ * Legacy hooks
+ *
+ * Older hosts/tests reference `i.fa-plus-square` to expand a folder and
+ * `.fw-folder-content .fw-folder-name` to find a folder. The column view
+ * exposes the expand affordance through the chevron and keeps the name
+ * classes; `p.fw-file`/`div.fw-folder` selectors are no longer produced but
+ * their class names are still tolerated for styling continuity.
+ * ---------------------------------------------------------------------- */
+.fw-file-selector .fa-plus-square,
+.fw-file-selector .fa-minus-square,
+.fw-file-selector .fw-file-selector-row {
+    cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fw-file-selector-columns {
+        scroll-behavior: auto;
+    }
+
+    .fw-file-selector-row {
+        transition: none;
+    }
+}
+
+@media (width <= 700px) {
+    .fw-file-selector {
+        --fw-column-width: 220px;
+    }
+
+    /* On narrow screens one column at a time fits best. */
+    .fw-file-selector {
+        --fw-file-columns-height: 50vh;
+    }
+}
+
+/* -------------------------------------------------------------------------
+ * Move dialog (FileDialog) layout
+ * ---------------------------------------------------------------------- */
+.fw-file-dialog {
+    display: flex;
+    flex-direction: column;
+    gap: var(--fw-space-3);
+}
+
+.fw-file-dialog-path {
+    display: flex;
+    align-items: center;
+    gap: var(--fw-space-3);
+}
+
+.fw-file-dialog-path label {
+    flex: 0 0 auto;
+    font-size: var(--fw-font-size-sm);
+    font-weight: var(--fw-font-weight-medium);
+    color: var(--fw-text-muted);
+}
+
+.fw-file-dialog-path input {
+    flex: 1 1 auto;
+    margin: 0;
+}

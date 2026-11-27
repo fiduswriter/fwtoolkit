@@ -1,0 +1,106 @@
+#fw-alerts-outer-wrapper {
+    position: fixed;
+    right: 22px;
+    bottom: 10px;
+    direction: rtl;
+    column-width: 360px;
+    z-index: calc(var(--highest-dialog-z-index, 100) + 2);
+}
+
+#fw-alerts-wrapper {
+    z-index: 1600;
+    direction: ltr;
+}
+
+#fw-alerts-wrapper li {
+    display: block; /* else several of them will stack horizontally. */
+    position: relative;
+    box-sizing: border-box;
+    width: 280px;
+    height: auto;
+    padding: 18px 20px 18px 60px;
+    border: none;
+    border-radius: var(--fw-radius-lg);
+    box-shadow: var(--fw-shadow-2);
+    margin-bottom: 8px;
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-lg);
+    line-height: 20px;
+    opacity: 1;
+    -webkit-column-break-inside: avoid;
+    break-inside: avoid;
+}
+
+#fw-alerts-wrapper li:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+}
+
+#fw-alerts-wrapper li::before {
+    position: absolute;
+    left: 20px;
+    top: 18px;
+    font-size: 20px;
+    display: inline-block;
+    font-family:
+        "Font Awesome 7 Free", "Font Awesome 6 Free", "FontAwesome", monospace;
+    font-weight: 900;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: var(--fa, "");
+}
+
+/* Alert colours are chosen so that the text/fill pair passes WCAG AA:
+   white on #3a3a3a (neutral), #1d4bcd (info), #35883f (success);
+   #292929 on the pale warning fill. */
+#fw-alerts-wrapper .alerts-error {
+    color: var(--fw-text-inverse);
+    background-color: var(--fw-danger-text);
+}
+
+#fw-alerts-wrapper .alerts-warning {
+    color: var(--fw-text-primary);
+    background-color: var(--fw-highlight);
+    box-shadow:
+        var(--fw-shadow-2),
+        inset 0 0 0 1px #e5d27a;
+}
+
+#fw-alerts-wrapper .alerts-info {
+    color: var(--fw-text-inverse);
+    background-color: var(--fw-accent-active);
+}
+
+#fw-alerts-wrapper .alerts-success {
+    color: var(--fw-text-inverse);
+    background-color: var(--fw-success);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    #fw-alerts-wrapper li {
+        animation: fw-alert-in var(--fw-motion-base) var(--fw-motion-ease);
+    }
+}
+
+@keyframes fw-alert-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* A form wasn't filled out correctly and the warning was added to the form. */
+div.fw-warning {
+    margin: 0 0 5px;
+    border: 1px solid #e5d27a;
+    border-radius: var(--fw-radius-md);
+    background-color: var(--fw-highlight);
+    color: var(--fw-text-primary);
+    padding: 12px;
+}

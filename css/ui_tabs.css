@@ -1,0 +1,93 @@
+.fw-tabs-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--fw-space-1);
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px;
+    border-bottom: 1px solid var(--fw-border-subtle);
+    height: auto;
+    width: auto;
+    font-family: var(--fw-font-sans);
+}
+
+.fw-tabs-nav > li {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: var(--fw-hit-area);
+    padding: 6px 18px;
+    cursor: pointer;
+    font-weight: var(--fw-font-weight-medium);
+    color: var(--fw-text-secondary);
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px;
+    transition:
+        color var(--fw-motion-fast) var(--fw-motion-ease),
+        border-color var(--fw-motion-fast) var(--fw-motion-ease);
+    float: none;
+    margin-right: 0;
+}
+
+.fw-tabs-nav > li:hover {
+    color: var(--fw-text-primary);
+}
+
+.fw-tabs-nav > li:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: -2px;
+    border-radius: var(--fw-radius-sm);
+}
+
+.fw-tabs-nav .fw-button {
+    color: inherit;
+    border: none;
+    background: transparent;
+    padding: 0;
+    min-height: 0;
+    height: auto;
+    font-size: inherit;
+    font-weight: inherit;
+    border-radius: 0;
+}
+
+.fw-tabs-nav .fw-button:hover {
+    background: transparent;
+    color: inherit;
+}
+
+.fw-tabs-nav .fw-tabs-active,
+.fw-tabs-nav .fw-current-tab {
+    color: var(--fw-text-primary);
+    border-bottom-color: var(--fw-brand);
+}
+
+.fw-tabs-nav .fw-tabs-active .fw-button,
+.fw-tabs-nav .fw-current-tab .fw-button {
+    color: var(--fw-text-primary);
+    background: transparent;
+}
+
+.fw-tabs-nav > li:hover .fw-button {
+    color: var(--fw-text-primary);
+}
+
+.fw-tabs-panel {
+    height: auto;
+    overflow: auto;
+    min-height: 220px;
+    padding: 0;
+    margin-top: 24px;
+}
+
+.fw-tab-link-inner {
+    display: block;
+    margin-left: 20px;
+    color: var(--fw-text-secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fw-tabs-nav > li {
+        transition: none;
+    }
+}

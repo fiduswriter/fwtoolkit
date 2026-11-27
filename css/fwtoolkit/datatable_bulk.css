@@ -1,0 +1,106 @@
+/* Bulk-action bar for overview/selection data tables. */
+
+/*
+ * Select-all control: a brand-tinted oval (radius 30) holding the 15px
+ * checkbox and the caret, as in Design 5.
+ *
+ * It stays entirely inside the table box so it is never clipped: the oval
+ * is the control's own background, sized around the checkbox and caret, and
+ * the checkbox lines up with the row checkboxes through the pill's left
+ * padding. The header cell gives it enough height for the full oval so it
+ * does not spill onto the first data row.
+ */
+.dt-bulk {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--fw-space-2);
+    position: relative;
+    box-sizing: border-box;
+    height: 40px;
+    /* Left padding puts the checkbox exactly where the row checkboxes sit
+       (16px in from the table edge); the right padding matches so the
+       checkbox and caret are centred in the pill. */
+    /* Symmetric padding: centres the checkbox and caret inside the oval.
+       Left padding is the table's outer gutter, so the checkbox lines up
+       with the row checkboxes below. */
+    padding: 0 25px 0 16px;
+    margin: 0;
+    background-color: var(--fw-brand-tint-3);
+    border-radius: var(--fw-radius-pill);
+    vertical-align: middle;
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+
+.dt-bulk:hover {
+    background-color: var(--fw-brand-tint-2);
+}
+
+/* The header cell must not clip the pill; a small top inset keeps the pill
+   clear of the header's top edge without letting it reach the first row. */
+th:has(> .dt-bulk) {
+    overflow: visible;
+    padding-block: 4px;
+}
+
+/* Keep the checkbox and its label as one tight unit inside the pill. */
+/* The label is exactly the 15px checkbox box (set in forms.css), so the
+   ::before box and the ::after tick always line up. The pill supplies the
+   padding, not the label. */
+.dt-bulk .fw-check + label {
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 0;
+}
+
+/* The real checkbox is visually hidden; keep it out of the flex layout. */
+.dt-bulk .fw-check {
+    display: none;
+}
+
+.dt-bulk .fw-check:focus-visible + label::before {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+}
+
+.dt-bulk-dropdown {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border-radius: var(--fw-radius-circle);
+    color: var(--fw-text-primary);
+    cursor: pointer;
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+
+.dt-bulk-dropdown:hover {
+    background-color: var(--fw-brand-tint-2);
+}
+
+.dt-bulk-dropdown:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+}
+
+/* Floating bulk bar (selection helpers render it at the table foot). */
+.dt-bulk-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--fw-space-2);
+    margin-top: var(--fw-space-3);
+    padding: var(--fw-space-2) var(--fw-space-3);
+    background-color: var(--fw-surface-2);
+    border-radius: var(--fw-radius-card);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    color: var(--fw-text-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dt-bulk-dropdown {
+        transition: none;
+    }
+}

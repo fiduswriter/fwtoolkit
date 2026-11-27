@@ -1,0 +1,321 @@
+.fw-dialog {
+    position: absolute;
+    background-color: var(--fw-surface);
+    color: var(--fw-text-primary);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    overflow: visible;
+    outline: 0;
+    padding: 0 32px 32px;
+    box-shadow: var(--fw-shadow-3);
+    border: 0 none;
+    border-image: initial;
+    border-radius: var(--fw-radius-lg);
+    z-index: 1000; /* Ensure dialog stays on top */
+    user-select: none; /* Prevent interaction with background content */
+}
+
+.fw-dialog-fullpage {
+    position: initial !important;
+}
+
+/*
+ * Fullscreen dialogs (`fullScreen: true`) fill the window. The flex column
+ * layout subtracts the titlebar and button pane from the dialog's height so
+ * both stay visible, and lets the content take the rest, scrolling when it
+ * is taller than the window. The !important rules override the inline
+ * styles the Dialog class writes for hosts with an older stylesheet.
+ */
+.fw-dialog.fw-dialog-fullscreen {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.fw-dialog.fw-dialog-fullscreen .fw-dialog-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: auto !important;
+    height: auto !important;
+    overflow-y: auto;
+}
+
+.fw-dialog.fw-dialog-fullscreen .fw-dialog-buttonpane {
+    flex: 0 0 auto;
+}
+
+.fw-dialog-content.fw-scrollable {
+    overflow-y: auto;
+}
+
+.fw-dialog-titlebar {
+    position: relative;
+    margin: 0 -32px;
+    padding: 32px 96px 12px 32px;
+    background: var(--fw-surface);
+    color: var(--fw-text-primary);
+    border-radius: var(--fw-radius-lg) var(--fw-radius-lg) 0 0;
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    user-select: none;
+}
+
+.fw-dialog-title {
+    font-size: var(--fw-font-size-display);
+    font-weight: var(--fw-font-weight-normal);
+    line-height: var(--fw-line-height-tight);
+    text-transform: none;
+    color: var(--fw-text-primary);
+}
+
+.fw-dialog-titlebar .fa {
+    margin-right: 12px;
+    color: var(--fw-text-secondary);
+}
+
+.fw-dialog-titlebar-close {
+    right: 20px;
+}
+
+.fw-dialog-titlebar-help {
+    right: 60px;
+}
+
+.fw-dialog-button-icon-only {
+    width: 2em;
+    box-sizing: border-box;
+    text-indent: -9999px;
+    white-space: nowrap;
+}
+
+.fw-dialog-titlebar .fw-dialog-button-icon-only {
+    color: var(--fw-text-primary);
+}
+
+.fw-dialog-titlebar .fw-dialog-button-icon-only:hover {
+    color: var(--fw-text-secondary);
+}
+
+.fw-dialog-button-icon-only .fw-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: -2px;
+    margin-left: 0;
+}
+
+.fw-dialog-content {
+    position: relative;
+    margin-top: 20px;
+    /* Tooltips escape the scroll container because they are portal-rendered
+       in document.body (see src/tooltip.ts). `visible auto` would be coerced
+       by browsers to `auto auto` (visible + auto is not representable), so
+       hidden on the x-axis avoids a horizontal scrollbar while the y-axis
+       scrolls when the content grows too tall. */
+    overflow: hidden auto;
+    padding: 6px;
+    max-height: calc(100vh - 160px);
+    min-height: 20px;
+    max-width: calc(100vw - 4px);
+}
+
+.fw-input-list-wrapper > tbody > tr:last-child > td {
+    padding-bottom: 0;
+}
+
+.fw-input-list-wrapper td.fw-input-field-list-ctrl {
+    padding-right: 20px;
+    text-align: right;
+    vertical-align: middle;
+}
+
+.fw-input-list-wrapper td.fw-input-field-list-ctrl .fa {
+    display: inline;
+}
+
+.fw-entry-field input[type="text"],
+.fw-entry-field input[type="number"] {
+    margin: 0;
+}
+
+.fw-dialog-buttonpane {
+    padding-top: 28px;
+}
+
+.fw-dialog-buttonset {
+    position: relative;
+    text-align: right;
+}
+
+.fw-dialog-buttonset .fw-button {
+    margin-left: 12px;
+    min-height: 44px;
+    height: 44px;
+    padding: 0 24px;
+    font-size: var(--fw-font-size-lg);
+}
+
+.fw-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    /* Design 5 backdrop: 70% black. --overlay-color stays available for
+       hosts that override it. */
+    background-color: var(--fw-overlay);
+    z-index: 100;
+    backdrop-filter: blur(2px);
+}
+
+.fw-overlay.fw-no-blur {
+    backdrop-filter: none;
+}
+
+.fw-dialog-content textarea {
+    min-height: 112px;
+    min-width: 350px;
+    height: auto;
+}
+
+.fw-media-file-input {
+    display: none;
+}
+
+.fw-dialog-content .fw-note-el {
+    margin-bottom: 10px;
+    font-size: var(--fw-font-size-sm);
+    color: var(--fw-danger-text);
+}
+
+.fw-dialog-content .fw-note-el.fw-hide {
+    display: none;
+}
+
+.fw-dialog form {
+    padding: 8px;
+}
+
+/* Rules migrated from the old ui_dialogs.css so that dialogs render correctly
+   without loading a separate stylesheet. */
+.fw-dialog-titlebar .fw-dialog-titlebar-button {
+    font-size: 14px;
+    line-height: 1em;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+.fw-dialog-titlebar-close,
+.fw-dialog-titlebar-help {
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0;
+    padding: 1px;
+}
+
+.fw-dialog-button-icon-only .fw-icon::before {
+    display: inline-block;
+    font-family:
+        "Font Awesome 7 Free", "Font Awesome 6 Free", "FontAwesome", monospace;
+    font-weight: 900;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-indent: 5019px;
+}
+
+.fw-icon-close::before {
+    width: 0.7em;
+    height: 1em;
+    padding-top: 5px;
+    content: "\f00d";
+}
+
+.fw-icon-help::before {
+    width: 0.7em;
+    height: 1em;
+    padding-top: 5px;
+    content: "\f128";
+}
+
+.fw-dialog-titlebar .fw-dialog-button-icon-only {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 8px;
+    background: transparent;
+    border: none;
+}
+
+.fw-dialog-titlebar .fw-dialog-button-icon-only:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+    border-radius: var(--fw-radius-circle);
+}
+
+.fw-dialog-titlebar .fw-dialog-button-icon-only:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Text-only dismissal buttons ("Cancel", "Close"): no fill, no border. */
+.fw-dialog-buttonset .fw-button.fw-dialog-button-text {
+    background: none;
+    border-color: transparent;
+    color: var(--fw-text-primary);
+}
+
+.fw-dialog-buttonset .fw-button.fw-dialog-button-text:hover {
+    background-color: var(--fw-surface-2);
+    color: var(--fw-text-primary);
+}
+
+.fw-dialog-buttonset .fw-button.fw-dialog-button-primary {
+    background-color: var(--fw-brand-tint-2);
+    border-color: var(--fw-brand);
+    color: var(--fw-text-on-brand);
+}
+
+.fw-dialog-buttonset .fw-button.fw-dialog-button-primary:hover {
+    background-color: var(--fw-brand-tint);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .fw-dialog {
+        animation: fw-dialog-in var(--fw-motion-base) var(--fw-motion-ease);
+    }
+
+    .fw-overlay {
+        animation: fw-dialog-overlay-in var(--fw-motion-base)
+            var(--fw-motion-ease);
+    }
+}
+
+@keyframes fw-dialog-in {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fw-dialog-overlay-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

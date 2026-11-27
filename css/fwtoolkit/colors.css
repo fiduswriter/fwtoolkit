@@ -1,0 +1,126 @@
+:root {
+    /* Legacy aliases: re-pointed at the Design 5 semantic layer in
+       tokens.css. Downstream repos keep working unchanged. */
+    --main-text-color: var(--fw-text-primary);
+    --main-background-color: var(--fw-surface-2);
+    --overlay-color: 170 170 170 / 0.3;
+    --input-focus-background-color: var(--fw-surface);
+    --input-background-color: var(--fw-surface);
+    --input-border-color: var(--fw-border-strong);
+    --input-dialog-border-color: var(--fw-border-subtle);
+    --select-background-color: var(--fw-surface-2);
+    --wait-active-background-color: 240 240 240 / 0.7;
+    --wait-active-full-background-color: 240 240 240 / 1;
+    --alert-box-shadow-color: 240 240 240 / 1;
+    --dropup-box-shadow-color: 0 0 0 / 0.11;
+    --tooltip-background-color: 38 38 38 / 0.6;
+    --info-text-color: #ffffff;
+    --info-background-color: 36 113 176 / 0.8;
+    --success-text-color: #ffffff;
+    --success-background-color: 109 164 147 / 0.8;
+    --warning-text-color: #ffffff;
+    --warning-background-color: 221 208 63 / 0.8;
+    --warning-border-color: 200 63 27 / 0.8;
+    --error-border-color: #af3515;
+    --error-background-color: #cc3f1a;
+    --error-text-color: #ffffff;
+    --pulldown-header-text-color: var(--fw-text-primary);
+    --pulldown-header-background-color: var(--fw-surface);
+    --pulldown-separator-color: var(--fw-border-subtle);
+    --pulldown-box-shadow-color: 0 0 0 / 0.2;
+    --menu-cursor-border-color: var(--fw-brand);
+
+    /* tabs */
+    --tabs-border-color: var(--fw-border-subtle);
+    --tabs-text-inactive: var(--fw-text-secondary);
+    --tabs-text-active: var(--fw-text-primary);
+    --tabs-indicator-color: var(--fw-brand);
+
+    /* Color Schemes (CS) */
+
+    /* red text */
+    --cs-1-text: var(--fw-danger-text);
+    --cs-1-icon: var(--fw-danger);
+    --cs-1-hover: var(--fw-text-primary);
+
+    /* white on blue */
+    --cs-2-background-from: var(--fw-accent-hover);
+    --cs-2-background-to: var(--fw-accent);
+    --cs-2-background: var(--fw-accent); /* flat */
+    --cs-2-border: var(--fw-accent-active);
+    --cs-2-background-hover: var(--fw-accent-active);
+    --cs-2-background-selected: var(--fw-brand-active);
+    --cs-2-box-shadow: var(--fw-accent);
+    --cs-2-text: var(--fw-text-on-accent);
+
+    /* white on orange */
+    --cs-3-text: var(--fw-text-inverse);
+    --cs-3-background-from: var(--fw-danger);
+    --cs-3-background-to: var(--fw-danger-text);
+    --cs-3-background-hover: var(--fw-danger-text);
+    --cs-3-border: var(--fw-danger-text);
+
+    /* light green text */
+    --cs-4-text: var(--fw-text-muted);
+
+    /* dark on light green (formerly white on light green) */
+    --cs-5-background: var(--fw-brand-tint);
+    --cs-5-text: var(--fw-text-primary);
+    --cs-5-border: var(--fw-border-subtle);
+    --cs-5-background-hover: var(--fw-brand-tint-2);
+
+    /* dark on brand green */
+    --cs-6-text: var(--fw-text-on-brand);
+    --cs-6-background: var(--fw-brand);
+    --cs-6-border: var(--fw-brand-hover);
+    --cs-6-background-focus: var(--fw-brand-hover);
+    --cs-6-background-hover: var(--fw-brand-hover);
+
+    /* white on dark */
+    --cs-dark-text: var(--fw-text-inverse);
+    --cs-dark-hover: var(--fw-surface-3);
+    --cs-dark-border: #4f4d4f;
+    --cs-dark-background-hover: #585858;
+    --cs-dark-background: #585858; /* flat */
+    --cs-dark-background-from: #6a6a6a;
+    --cs-dark-background-to: #585858;
+    --cs-dark-box-shadow: #7f7f7f;
+
+    /* dark on white-ish background */
+    --cs-light-text: var(--fw-text-primary);
+    --cs-light-hover: var(--fw-text-primary);
+    --cs-light-text-secondary: var(--fw-text-muted);
+    --cs-light-border: var(--fw-border-subtle);
+    --cs-light-background: var(--fw-surface-1);
+    --cs-light-background-hover: var(--fw-surface-2);
+    --cs-light-box-shadow: var(--fw-border);
+
+    /* black on white */
+    --cs-white-text: var(--fw-text-primary);
+    --cs-white-hover: var(--fw-text-on-brand);
+    --cs-white-focus: var(--fw-focus);
+    --cs-white-selected: var(--fw-text-on-brand);
+    --cs-white-border: var(--fw-border);
+    --cs-white-header-border: var(--fw-border-strong);
+    --cs-white-text-secondary: var(--fw-text-muted);
+    --cs-white-placeholder-text: var(--fw-text-secondary);
+    --cs-white-background: var(--fw-surface);
+    --cs-white-background-hover: var(--fw-surface-2);
+    --cs-white-background-focus: var(--fw-surface-2);
+    --cs-white-background-selected: var(--fw-brand-tint);
+
+    /* disabled */
+    --cs-disabled: var(--fw-text-secondary);
+    --cs-disabled-background: var(--fw-surface-2);
+    --cs-disabled-border: var(--fw-border);
+    --overview-checkbox-color: var(--fw-text-on-brand);
+    --overview-checkbox-background-color-from: 255 255 255 / 1;
+    --overview-checkbox-background-color-to: 255 255 255 / 0;
+    --overview-checkbox-border: var(--fw-border-control);
+
+    /* template manager */
+
+    /* editor */
+
+    /* feedback tab */
+}

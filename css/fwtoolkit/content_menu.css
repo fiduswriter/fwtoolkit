@@ -1,0 +1,130 @@
+.fw-content-menu {
+    position: absolute;
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface);
+    box-shadow: var(--fw-shadow-2);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    /* Above open dialogs (z-index 1000): the Dialog class maintains
+     * --highest-dialog-z-index on body; when no dialog is open the fallback
+     * keeps the historical stacking just above the overlay (100). */
+    z-index: calc(var(--highest-dialog-z-index, 100) + 2);
+    padding: 0;
+    border: 0 none;
+    border-image: initial;
+    overflow: hidden;
+    border-radius: var(--fw-radius-lg);
+    outline: 0;
+}
+
+.fw-content-menu-content.fw-scrollable {
+    overflow-y: scroll;
+}
+
+.fw-content-menu-content {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+}
+
+.fw-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(var(--overlay-color));
+    z-index: 100;
+    backdrop-filter: blur(2px);
+}
+
+.fw-overlay.fw-no-blur {
+    backdrop-filter: none;
+}
+
+.fw-content-menu-list {
+    list-style: none;
+    padding: 8px 0;
+    cursor: pointer;
+}
+
+.fw-content-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 10px 24px;
+    color: var(--fw-text-primary);
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+    font-weight: var(--fw-font-weight-normal);
+    line-height: var(--fw-line-height-tight);
+    background-color: transparent;
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+
+.fw-content-menu-item.fw-disabled {
+    pointer-events: none;
+    color: var(--fw-text-secondary);
+    opacity: 0.6;
+}
+
+.fw-content-menu-item.fw-selected {
+    color: var(--fw-text-on-brand);
+    background-color: var(--fw-brand-tint-3);
+    font-weight: var(--fw-font-weight-medium);
+}
+
+.fw-content-menu-item:hover:not(.fw-disabled) {
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface-2);
+}
+
+.fw-content-menu-item:focus {
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface-2);
+    outline: none;
+}
+
+.fw-content-menu-item:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: -2px;
+}
+
+.fw-content-menu-item-divider {
+    border: 0 none;
+    border-top: 1px solid var(--fw-border-subtle) !important;
+    margin: 8px 12px;
+}
+
+.fw-content-menu-item-header {
+    line-height: 18px;
+    background-color: transparent;
+    color: var(--fw-text-secondary);
+    font-size: var(--fw-font-size-sm);
+    font-weight: var(--fw-font-weight-medium);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    display: block;
+    text-align: left;
+    padding: 12px 24px 4px;
+    min-height: 0;
+}
+
+.fw-content-menu-item-icon {
+    position: absolute;
+    right: 24px;
+    color: var(--fw-text-secondary);
+}
+
+.fw-content-menu-columns {
+    display: flex;
+    flex-direction: row;
+}
+
+.fw-content-menu-columns .fw-content-menu-list {
+    flex: 1 0 200px;
+    min-width: 200px;
+    padding: 8px 0;
+}

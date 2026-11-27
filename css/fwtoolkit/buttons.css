@@ -1,0 +1,469 @@
+.fw-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: auto;
+    min-height: 34px;
+    height: 34px;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0 16px;
+    font-family: inherit;
+    font-size: var(--fw-font-size-base);
+    font-weight: var(--fw-font-weight-medium);
+    color: var(--fw-text-primary);
+    border: 1px solid var(--fw-border-subtle);
+    border-radius: var(--fw-radius-pill);
+    cursor: pointer;
+    text-decoration: none;
+    background: var(--fw-surface);
+    box-shadow: none;
+    box-sizing: border-box;
+    position: relative;
+    transition:
+        background-color var(--fw-motion-fast) var(--fw-motion-ease),
+        border-color var(--fw-motion-fast) var(--fw-motion-ease),
+        color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+
+/* Default (unstyled) buttons behave like a neutral pill. */
+.fw-button:not(
+    .fw-light,
+    .fw-white,
+    .fw-green,
+    .fw-orange,
+    .fw-dark,
+    .fw-socialaccount
+) {
+    background-color: var(--fw-neutral);
+    border-color: transparent;
+    color: var(--fw-neutral-text);
+}
+
+.fw-button:not(
+        .fw-light,
+        .fw-white,
+        .fw-green,
+        .fw-orange,
+        .fw-dark,
+        .fw-socialaccount
+    ):not(.fw-disabled):hover {
+    background-color: var(--fw-neutral-hover);
+}
+
+.fw-button:not(
+        .fw-light,
+        .fw-white,
+        .fw-green,
+        .fw-orange,
+        .fw-dark,
+        .fw-socialaccount
+    ):not(.fw-disabled):active {
+    background-color: var(--fw-neutral-active);
+}
+
+.fw-button label {
+    cursor: pointer;
+}
+
+.fw-button:focus {
+    outline: none;
+}
+
+/* Single consistent focus indicator (WCAG 2.4.11/2.4.13, >=3:1). */
+.fw-button:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+}
+
+.fw-button.fw-uppercase {
+    text-transform: uppercase;
+}
+
+.fw-button.fw-large {
+    height: 44px;
+    min-height: 44px;
+    line-height: 1.2;
+    padding: 0 24px;
+    font-size: var(--fw-font-size-lg);
+}
+
+.fw-button.fw-small {
+    height: 26px;
+    min-height: 26px;
+    line-height: 1.2;
+    padding: 0 10px;
+    font-size: var(--fw-font-size-sm);
+}
+
+.fw-button.fw-square {
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    min-height: 34px;
+    padding: 0;
+    text-align: center;
+    border-radius: var(--fw-radius-circle);
+}
+
+.fw-button.fw-large.fw-square {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
+}
+
+.fw-button.fw-small.fw-square {
+    width: 26px;
+    min-width: 26px;
+    height: 26px;
+    min-height: 26px;
+}
+
+.fw-button .fw-button-icon::before {
+    line-height: 1;
+    margin: 0;
+}
+
+.fw-button.fw-large.fw-dropdown {
+    padding-right: 40px;
+}
+
+.fw-button.fw-dropdown .fa-caret-down {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.fw-button.fw-light {
+    border-color: var(--fw-border-subtle);
+    background-color: var(--fw-surface);
+    color: var(--fw-text-primary);
+}
+
+.fw-button.fw-white {
+    border: 1px solid var(--fw-border-subtle);
+    background-color: var(--fw-surface);
+    color: var(--fw-text-primary);
+}
+
+.fw-button.fw-white.fw-state-active {
+    background-color: var(--fw-brand-tint);
+    border-color: var(--fw-brand);
+    color: var(--fw-text-on-brand);
+}
+
+.fw-button.fw-white:not(.fw-disabled):hover {
+    background-color: var(--fw-surface-2);
+    color: var(--fw-text-primary);
+}
+
+.fw-button.fw-light:not(.fw-disabled):hover {
+    background-color: var(--fw-surface-2);
+    color: var(--fw-text-primary);
+}
+
+.fw-button.fw-light.fw-state-active {
+    background-color: var(--fw-brand-tint);
+    border-color: var(--fw-brand);
+    color: var(--fw-text-on-brand);
+}
+
+/* Brand green: FILL only. Dark text keeps contrast at ~6.8:1. */
+.fw-button.fw-green {
+    color: var(--fw-text-on-brand);
+    border-color: transparent;
+    background-color: var(--fw-brand);
+}
+
+.fw-button.fw-green:not(.fw-disabled):hover {
+    background-color: var(--fw-brand-hover);
+    color: var(--fw-text-on-brand);
+}
+
+.fw-button.fw-green:not(.fw-disabled):active {
+    background-color: var(--fw-brand-active);
+    color: var(--fw-text-inverse);
+}
+
+.fw-button.fw-orange {
+    color: var(--fw-text-inverse);
+    background-color: var(--fw-danger);
+    border-color: transparent;
+}
+
+.fw-button.fw-orange:not(.fw-disabled):hover {
+    background-color: var(--fw-danger-text);
+    color: var(--fw-text-inverse);
+}
+
+.fw-button.fw-dark {
+    color: var(--fw-text-inverse);
+    background-color: var(--fw-surface-inverse);
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.fw-button.fw-dark:not(.fw-disabled):hover {
+    background-color: #585858;
+    color: var(--fw-text-inverse);
+}
+
+.fw-button:disabled,
+.fw-button[aria-disabled="true"] {
+    background: var(--fw-surface-2);
+    color: var(--fw-text-secondary);
+    border-color: var(--fw-border-subtle);
+    cursor: not-allowed;
+}
+
+.fw-button.fw-left {
+    float: left;
+}
+
+.fw-button.fw-strong {
+    font-weight: bold;
+}
+
+.fw-button.fw-em {
+    font-style: italic;
+}
+
+.fw-button.fw-smallcaps {
+    font-variant: small-caps;
+}
+
+.fw-button.fw-socialaccount {
+    display: inline-flex;
+    justify-content: flex-start;
+    gap: 0;
+    width: auto;
+    height: 44px;
+    min-height: 44px;
+    border-radius: var(--fw-radius-pill);
+    font-size: 15px;
+    vertical-align: top;
+    line-height: 1.2;
+    /* Left gutter reserved for the icon segment; the label follows it. */
+    padding: 0 20px 0 0;
+    background: linear-gradient(
+        to bottom left,
+        var(--cs-2-background-from),
+        var(--cs-2-background-to)
+    );
+    box-shadow: 0 0 1px 1px var(--cs-2-box-shadow) inset;
+    border-color: var(--cs-2-border);
+    color: var(--cs-2-text);
+}
+
+.fw-button.fw-socialaccount:hover {
+    box-shadow: none;
+    background: var(--cs-2-background-hover);
+}
+
+.fw-button.fw-socialaccount > span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 44px;
+    height: 100%;
+    text-align: center;
+    font-size: 16px;
+    margin-right: 16px;
+    line-height: 1;
+    border-right: 1px solid var(--cs-2-border);
+    box-shadow: 1px 0 0 0 var(--cs-2-box-shadow);
+}
+
+.fw-plain-button {
+    display: block;
+    font-size: var(--fw-font-size-xs);
+    line-height: 24px;
+    background-color: var(--fw-surface-2);
+    font-weight: var(--fw-font-weight-semibold);
+    text-align: center;
+    cursor: pointer;
+    border-radius: var(--fw-radius-sm);
+}
+
+.fw-plain-button:hover {
+    background-color: var(--fw-neutral-hover);
+}
+
+.fw-plain-button:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+}
+
+.fw-button.fw-disabled {
+    color: var(--fw-text-secondary);
+    cursor: default;
+    opacity: 0.6;
+}
+
+.fw-button.fw-disabled:hover {
+    background-color: var(--fw-surface-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fw-button {
+        transition: none;
+    }
+}
+
+/* The remainder of this file uses application specific colors */
+
+.fw-button.fw-facebook {
+    background: linear-gradient(to bottom left, #0d78be, #0d63ab);
+    box-shadow: 0 0 1px 1px #3c9fdf inset;
+    border-color: #0557a1;
+}
+
+.fw-button.fw-facebook:hover {
+    background: #0d63ab;
+}
+
+.fw-button.fw-facebook > span {
+    border-right-color: #0557a1;
+    box-shadow: 1px 0 0 0 #3c9fdf;
+    font-size: 18px;
+}
+
+.fw-button.fw-twitter {
+    background: linear-gradient(to bottom left, #3ccfff, #17addf);
+    box-shadow: 0 0 1px 1px #3dcfff inset;
+    border-color: #2498be;
+}
+
+.fw-button.fw-twitter:hover {
+    background: #17addf;
+}
+
+.fw-button.fw-twitter > span {
+    border-right-color: #2498be;
+    box-shadow: 1px 0 0 0 #8ddffc;
+}
+
+.fw-button.fw-google {
+    background: linear-gradient(to bottom left, #879ded, #6d84d8);
+    box-shadow: 0 0 1px 1px #93a6e6 inset;
+    border-color: #6578bb;
+}
+
+.fw-button.fw-google:hover {
+    background: #6d84d8;
+}
+
+.fw-button.fw-google > span {
+    border-right-color: #6578bb;
+    box-shadow: 1px 0 0 0 #b1c0f2;
+    font-size: 18px;
+}
+
+.fw-button.fw-soundcloud {
+    background: linear-gradient(to bottom left, #f76700, #fa3219);
+    box-shadow: 0 0 1px 1px #f79955 inset;
+    border-color: #c53421;
+}
+
+.fw-button.fw-soundcloud:hover {
+    background: #fa1b19;
+}
+
+.fw-button.fw-soundcloud > span {
+    border-right-color: #c53421;
+    box-shadow: 1px 0 0 0 #f79955;
+    font-size: 18px;
+}
+
+.fw-button.fw-openid {
+    background: linear-gradient(to bottom left, #fae719, #fac219);
+    box-shadow: 0 0 1px 1px #fad819 inset;
+    border-color: #faad19;
+}
+
+.fw-button.fw-openid:hover {
+    background: #e8c817;
+}
+
+.fw-button.fw-openid > span {
+    border-right-color: #faad19;
+    box-shadow: 1px 0 0 0 #fad819;
+    font-size: 18px;
+}
+
+.fw-button.fw-persona {
+    background: linear-gradient(to bottom left, #17e861, #1bbd54);
+    box-shadow: 0 0 1px 1px #29e76c inset;
+    border-color: #168e40;
+}
+
+.fw-button.fw-persona:hover {
+    background: #17a74a;
+}
+
+.fw-button.fw-persona > span {
+    border-right-color: #168e40;
+    box-shadow: 1px 0 0 0 #29e76c;
+    font-size: 18px;
+}
+
+.fw-button.fw-linkedin {
+    background: linear-gradient(to bottom left, #c529e7, #ad22cb);
+    box-shadow: 0 0 1px 1px #d648f4 inset;
+    border-color: #841c9a;
+}
+
+.fw-button.fw-linkedin:hover {
+    background: #9720b0;
+}
+
+.fw-button.fw-linkedin > span {
+    border-right-color: #841c9a;
+    box-shadow: 1px 0 0 0 #d648f4;
+    font-size: 18px;
+}
+
+.fw-button.fw-github {
+    background: linear-gradient(to bottom left, #f95858, #f92958);
+    box-shadow: 0 0 1px 1px #f87795 inset;
+    border-color: #d20e3c;
+}
+
+.fw-button.fw-github:hover {
+    background: #e32653;
+}
+
+.fw-button.fw-github > span {
+    border-right-color: #d20e3c;
+    box-shadow: 1px 0 0 0 #f87795;
+    font-size: 18px;
+}
+
+.fw-button.fw-stackexchange {
+    background: linear-gradient(to bottom left, #fcff23, #eaed0d);
+    box-shadow: 0 0 1px 1px #fdff91 inset;
+    border-color: #ced03f;
+    color: #585854;
+}
+
+.fw-button.fw-stackexchange:hover {
+    background: #fcff00;
+}
+
+.fw-button.fw-stackexchange > span {
+    border-right-color: #ced03f;
+    box-shadow: 1px 0 0 0 #fdff91;
+    font-size: 18px;
+}
+
+.fw-add-button::after {
+    margin-left: 10px;
+}
+
+#fw-comment-filter-dropdown {
+    width: 100px;
+}

@@ -1,0 +1,66 @@
+/* Horizontal pulldown menu bar */
+
+.fw-pulldown-menu-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--fw-font-sans);
+    font-size: var(--fw-font-size-base);
+}
+
+.fw-pulldown-menu-header {
+    position: relative;
+}
+
+.fw-pulldown-menu-title {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 8px 16px;
+    color: var(--fw-text-primary);
+    font-weight: var(--fw-font-weight-medium);
+    cursor: pointer;
+    border-radius: var(--fw-radius-pill);
+    user-select: none;
+    transition: background-color var(--fw-motion-fast) var(--fw-motion-ease);
+}
+
+.fw-pulldown-menu-title:hover {
+    color: var(--fw-text-primary);
+    background-color: var(--fw-surface-2);
+}
+
+.fw-pulldown-menu-title:focus {
+    outline: none;
+}
+
+.fw-pulldown-menu-title:focus-visible {
+    outline: 2px solid var(--fw-focus);
+    outline-offset: 2px;
+}
+
+.fw-pulldown-menu-title.fw-disabled {
+    color: var(--fw-text-secondary);
+    cursor: not-allowed;
+}
+
+.fw-pulldown-menu-title .fw-access-key {
+    text-decoration: underline;
+}
+
+.fw-pulldown-menu-header > .fw-pulldown {
+    top: 100%;
+    margin-top: 4px;
+}
+
+/* A top-level menu that would reach past the bottom of the viewport is
+   flipped up above its header (see the fw-flip-up note in
+   pulldown.css). */
+.fw-pulldown-menu-header > .fw-pulldown.fw-flip-up {
+    top: auto;
+    bottom: calc(100% + 4px);
+}
+
+.fw-pulldown-menu-item.fw-cursor {
+    background-color: var(--fw-surface-2);
+}

@@ -1,0 +1,158 @@
+/*
+ * Design 5 semantic token layer.
+ *
+ * Load order: this file must come first (right after colors.css), because
+ * every other stylesheet consumes these tokens. The legacy tokens in
+ * colors.css (--main-*, --cs-*, --overview-*) are kept as aliases of the
+ * semantic layer below so that downstream repositories continue to work
+ * unchanged.
+ *
+ * Contrast rules (WCAG 2.2 AA) enforced by the palette:
+ * - --fw-brand (#50c95f) is a FILL only, never text on white (2.1:1).
+ *   Text on brand fills must use --fw-text-on-brand (#292929, ~6.8:1).
+ * - --fw-accent (#1b57ff) may be used for text/links on white (5.4:1) and
+ *   with white text on top (5.4:1).
+ * - Non-text UI (icons, control borders) must reach 3:1 on white, hence
+ *   --fw-border-strong (#8c8c8c); --fw-border is decorative only.
+ */
+
+:root {
+    /* Typography */
+    --fw-font-sans:
+        "Poppins", "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+    --fw-font-serif:
+        "EB Garamond", "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --fw-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    --fw-font-size-xs: 11px;
+    --fw-font-size-sm: 12px;
+    --fw-font-size-md: 13px;
+    --fw-font-size-base: 14px;
+    --fw-font-size-lg: 15px;
+    --fw-font-size-xl: 16px;
+    --fw-font-size-2xl: 19px;
+    --fw-font-size-3xl: 22px;
+    --fw-font-size-title: 26px;
+    --fw-font-size-display: 33px;
+
+    --fw-font-weight-light: 300;
+    --fw-font-weight-normal: 400;
+    --fw-font-weight-medium: 500;
+    --fw-font-weight-semibold: 600;
+
+    --fw-line-height-tight: 1.2;
+    --fw-line-height-base: 1.4;
+    --fw-line-height-relaxed: 1.6;
+
+    /* Text */
+    --fw-text-primary: #3a3a3a;
+    /* Secondary text must pass AA at body sizes: #848383 only reaches
+       3.8:1, so the design's "muted" grey is used here instead. */
+    --fw-text-secondary: #656565;
+    --fw-text-muted: #515151;
+    /* Decorative / large-only hint colour from the design (#848383). */
+    --fw-text-tertiary: #848383;
+    --fw-text-inverse: #ffffff;
+    --fw-text-on-brand: #292929;
+    --fw-text-on-accent: #ffffff;
+
+    /* Surfaces */
+    --fw-surface: #ffffff;
+    --fw-surface-1: #fcfcfc;
+    --fw-surface-2: #f0f0f0;
+    --fw-surface-3: #eeeeee;
+    --fw-surface-inverse: #3a3a3a;
+
+    /* Borders */
+    --fw-border: #c4c4c4;
+    --fw-border-strong: #8c8c8c;
+    --fw-border-subtle: #e5e5e5;
+    --fw-border-control: #8c8c8c;
+
+    /* Brand (green) — fills only */
+    --fw-brand: #50c95f;
+    --fw-brand-hover: #46ad53;
+    --fw-brand-active: #35883f;
+    --fw-brand-tint: #edfaef;
+    --fw-brand-tint-2: #ceead2;
+    --fw-brand-tint-3: rgb(80 201 95 / 10%);
+
+    /* Accent (blue) — text and fills */
+    --fw-accent: #1b57ff;
+    --fw-accent-hover: #3269fd;
+    --fw-accent-active: #1d4bcd;
+    --fw-accent-tint: #e8eefe;
+
+    /* Neutral control (gray pill buttons) */
+    --fw-neutral: #f0f0f0;
+    --fw-neutral-hover: #e2e2e2;
+    --fw-neutral-active: #d2d2d2;
+    --fw-neutral-text: #3a3a3a;
+
+    /* Status */
+    --fw-danger: #fc6310;
+    --fw-danger-text: #c22c00;
+    --fw-warning: #f5c518;
+    /* Success fill takes white text at 4.5:1+ (the mock's lighter green
+       only reached ~4.4:1). */
+    --fw-success: #2f7d38;
+    --fw-info: #1b57ff;
+    --fw-highlight: #fffad0;
+
+    /* Overlays & elevation */
+    --fw-overlay: rgb(0 0 0 / 70%);
+    --fw-shadow-1: 0 1px 2px rgb(0 0 0 / 8%);
+    --fw-shadow-2: 0 4px 16px rgb(0 0 0 / 12%);
+    --fw-shadow-3: 0 12px 40px rgb(0 0 0 / 18%);
+
+    /* Focus — single consistent ring, ≥3:1 against both white and brand */
+    --fw-focus: #1b57ff;
+    --fw-focus-ring: 0 0 0 2px var(--fw-surface), 0 0 0 4px var(--fw-focus);
+    --fw-focus-ring-inset: inset 0 0 0 2px var(--fw-focus);
+
+    /* Radii */
+    --fw-radius-pill: 30px;
+    --fw-radius-card: 30px;
+    --fw-radius-lg: 16px;
+    --fw-radius-md: 8px;
+    --fw-radius-sm: 4px;
+    --fw-radius-control: 3px;
+    --fw-radius-circle: 50%;
+
+    /* Sizing */
+    --fw-control-height: 60px;
+    --fw-control-height-sm: 44px;
+    --fw-icon-button: 60px;
+    --fw-icon-button-sm: 44px;
+    --fw-topbar-height: 100px;
+    --fw-hit-area: 44px;
+
+    /* Spacing */
+    --fw-space-1: 4px;
+    --fw-space-2: 8px;
+    --fw-space-3: 12px;
+    --fw-space-4: 16px;
+    --fw-space-5: 24px;
+    --fw-space-6: 32px;
+    --fw-space-7: 48px;
+
+    /* Motion */
+    --fw-motion-fast: 120ms;
+    --fw-motion-base: 200ms;
+    --fw-motion-ease: cubic-bezier(0.2, 0, 0, 1);
+
+    /* Layering (kept in sync with dialog.ts / overview menus) */
+    --fw-z-overlay: 100;
+    --fw-z-dialog: 1000;
+    --fw-z-menu: 1100;
+    --fw-z-tooltip: 1200;
+    --fw-z-alert: 1300;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --fw-motion-fast: 0ms;
+        --fw-motion-base: 0ms;
+    }
+}
